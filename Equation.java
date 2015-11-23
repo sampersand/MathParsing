@@ -7,7 +7,9 @@ import java.util.ArrayList;
 public class Equation {
     public static void main(String[] args) {
         // Equation eq = new Equation("1 + b * (2 + 3) + f(x, 4 + 1, a(5)) + 6");
-        Equation eq = new Equation("3 * (2 + 1)");
+        Equation eq = new Equation("1 + a(b, 2) * (c/3)^4");
+        // Equation eq = new Equation("b * (2 + 3 - (4 * 5)) / f( 6 ) ");
+        // Equation eq = new Equation("3 / f(4) - 5");
     }
 
     /** The raw equation, totally untouched. Gets set right when Equation is initialized. */
@@ -16,7 +18,7 @@ public class Equation {
     /** An ArrayList of tokens that comprise <code>RAW_EQ</code>. */
     public final ArrayList<Token> TOKENS;
 
-    public final ArrayList<Node> NODES;
+    public final Node EQ_NODE;
 
     /** 
      * Default constructor. Just passes null to the main constructor.
@@ -31,103 +33,73 @@ public class Equation {
      */ 
     public Equation(String pEq){
         RAW_EQ = pEq;
-        // System.out.println(RAW_EQ);
+        System.out.println(RAW_EQ);
+        System.out.println("--");        
         TOKENS = parseTokens(RAW_EQ);
         System.out.println(TOKENS);
-        NODES = generateNodes(TOKENS);
-        System.out.println(NODES);
-    }
-    private Object[] operDecant (Node n, int pos, ArrayList<Token> pTokens){
-        int paren = 0;
-        pos++;
-        do{
-            Token t2 = pTokens.get(pos);
-            if(t2.TYPE == Token.Types.RPAR) paren--;
-            else if(t2.TYPE == Token.Types.LPAR) paren++;
-            else if(t2.TYPE == Token.Types.NUM || t2.TYPE == Token.Types.VAR) n.subNodes.add(new FinalNode(t2));
-            else if(t2.TYPE == Token.Types.FUNC || t2.TYPE == Token.Types.GROUP){
-                Object[] temp = decant(t2,pos,pTokens);
-                pos = (int) temp[0];
-                n.subNodes.add((Node)temp[1]);
-            }
-            else if(t2.TYPE == Token.Types.OPER){
-                Object[] temp = decant(t2, pos,pTokens);
-                pos = (int) temp[0];
-                Node N = n.copy();
-                n = new Node(t2, new ArrayList<Node>(){{add(N); add((Node)temp[1]);}});
-            }
-            pos++;
-        } while(paren > 0 && pos < pTokens.size());
-        return new Object[]{pos-1, n};
+        System.out.println("--");        
+        EQ_NODE = generateNodes(TOKENS);
+        System.out.println(EQ_NODE);
     }
 
+    // private Object[] decant(int pos, ArrayList<Token> pTokens){
+    //     Node n = new Node();
+    //     while(pos < pTokens.size()){
+    //         Token t = pTokens.get(pos);
+    //         if(t.isConst()){
+    //             n.add(new FinalNode(t));
+    //         }
+    //         if(t.isOper()){
+    //             Object[] temp = decant(pos, pTokens);
+    //             pos = (int)temp[0];
+    //             n.subNodes.set(n.subNodes.size() - 1, new Node(t, nodes.get(nodes.size()-1), (Node) temp[1]));
+    //         }
+    //         pos++;
+    //     } 
+    //     return new Object[]{pos,n};
 
-    /** The return type is int, node. I couldn't think of a better way of passing 2 parameters. */
-    private Object[] decant (Token t, int pos, ArrayList<Token> pTokens){
-        int paren = 0;
-        pos++;
-        Node n = new Node(t);
-        do{
-            Token t2 = pTokens.get(pos);
-            if(t2.TYPE == Token.Types.RPAR) paren--;
-            else if(t2.TYPE == Token.Types.LPAR) paren++;
-            else if(t2.TYPE == Token.Types.NUM || t2.TYPE == Token.Types.VAR) n.subNodes.add(new FinalNode(t2));
-            else if(t2.TYPE == Token.Types.FUNC || t2.TYPE == Token.Types.GROUP){
-                Object[] temp = decant(t2,pos,pTokens);
-                pos = (int) temp[0];
-                n.subNodes.add((Node)temp[1]);
-            }
-            else if(t2.TYPE == Token.Types.OPER){
-                Object[] temp = operDecant(n.subNodes.get(n.subNodes.size()-1), pos,pTokens);
-                pos = (int) temp[0];
-                Node N = n.copy();
-                n = new Node(t2, new ArrayList<Node>(){{add(N); add((Node)temp[1]);}});
-            }
-            pos++;
-            System.out.println(t2);            
-        } while(paren > 0 && pos < pTokens.size());
-        return new Object[]{pos-1, n};
+    // }
+    private Node generateNodes(ArrayList<Token> pTokens){
+        return (Node)generateNodes(0, new Node(new Token("Equation", Token.Types.NULL)), pTokens)[1];
     }
-    private ArrayList<Node> generateNodes(ArrayList<Token> pTokens){
-        ArrayList<Node> nodes = new ArrayList<Node>();
-        int pos = 0;
-        // Token t;        
+    private Object[] generateNodes(int pos, Node n, ArrayList<Token> pTokens){
         while(pos < pTokens.size()){
-            System.out.println(nodes);
             Token t = pTokens.get(pos);
-            if(t.TYPE == Token.Types.FUNC || t.TYPE == Token.Types.GROUP){
-                if(pTokens.get(pos + 1).TYPE != Token.Types.LPAR)
-                    System.err.println("[ERROR]: The Function '" + t +
-                                       "' token doesn't have a Left Paren '(' after it.");
-                Object[] temp = decant(t,pos,pTokens);
-                pos = (int) temp[0];
-                nodes.add((Node)temp[1]);
+            if(t.isConst()){
+                n.add(new FinalNode(t));
             }
-            else if(t.TYPE == Token.Types.VAR || t.TYPE == Token.Types.NUM)
-                nodes.add(new FinalNode(t));
-            else if(t.TYPE == Token.Types.OPER){
-                // nodes.add(new Node(t, new ArrayList<Node>()));
-                //     nodes.get(nodes.size()-1).subNodes.add(nodes.get(nodes.size()-2)); 
-                //     Token t2 = pTokens.get(pos+1);
-                //     if(t2.TYPE == Token.Types.VAR || t2.TYPE == Token.Types.NUM)
-                //         nodes.get(nodes.size()-1).subNodes.add(new FinalNode(t2));
-                //     else if(t2.TYPE == Token.Types.FUNC || t2.TYPE == Token.Types.GROUP){
-                //         pos+=2;
-                //         if(pTokens.get(pos + 1).TYPE != Token.Types.LPAR)
-                //             System.err.println("[ERROR]: The Function '" + t +
-                //                                "' token doesn't have a Left Paren '(' after it.");
-                //         Object[] temp = decant(t,pos,pTokens);
-                //         pos = (int) temp[0];
-                //         // nodes.add((Node)temp[1]);
-                //         nodes.get(nodes.size()-1).subNodes.add((Node)temp[1]);
-                //     }
-                //     nodes.remove(nodes.size()-2);
-                //     // nodes.remove(nodes.size()-1);
-                // pos++;
+            if(t.isGroup()){
+                if(pTokens.get(pos+1).TYPE != Token.Types.LPAR)
+                    System.err.println("[ERROR] Pos is FUNC / GROUP, but POS + 1 isn't an LPAR. Continuing anyway.");
+                int paren = 1;
+                int x;
+                for(x = pos + 2; paren > 0 && x < pTokens.size(); x++){
+                    if(pTokens.get(x).TYPE == Token.Types.RPAR) paren--;
+                    if(pTokens.get(x).TYPE == Token.Types.LPAR) paren++;
+                }
+                ArrayList<Token> passTokens = new ArrayList<Token>();
+                for(Token token : pTokens.subList(pos , x)) passTokens.add(token);
+                System.out.println("GRP @@@@@ " + passTokens + " @@@@@ " + t + " @@@@@ " + n);
+                Object[] temp = generateNodes(1, new Node(t), passTokens);
+                pos = pos + (int)temp[0] - 1;
+                Node n2 = (Node)temp[1];
+                n.add(n2);
+            }
+            if(t.isOper()){
+                // System.out.println(n.get(n.size()-1));
+                Object[] temp = generateNodes(pos + 1, t.isConst() ? new FinalNode(t) : new Node(t), pTokens);
+                pos = (int)temp[0];
+                System.out.println("OPR @@@@@ " + pTokens + " @@@@@ " + t + " @@@@@ " + n);                
+                Node n2 = (Node)temp[1];
+                n2.add(n.get(n.size()-1));
+                n2.add(n2.get(0)); // these two swap
+                n2.remove(0); //the order
+                n.add(n2);
+                n.subNodes.remove(n.subNodes.size()-2);                
             }
             pos++;
         }
-        return nodes;
+        return new Object[]{pos, n};
     }
     /** 
      * Generates an ArrayList of tokens that make up the inputted equation. 
@@ -153,7 +125,7 @@ public class Equation {
                 case '(': // This should never be preceeded by a number.
                     if(!isAlpha(prev))
                         System.err.println("[ERROR] Uh oh! '" + prev +
-                        "' isn't Alphabetical, but is succeeded by '('. Continuing anyways.");
+                        "' isn't Alphabetical, but is succeeded by '('. Continuing anyway.");
                     if(prev.length() != 0)
                         tokens.add(new Token(prev, Token.Types.FUNC));
                     else

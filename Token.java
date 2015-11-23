@@ -8,16 +8,23 @@ public class Token {
     public static enum Types{LPAR, RPAR, VAR, NUM, FUNC, OPER, NULL, DELIM, GROUP}
     public static final Token LPAR = new Token("(",Types.LPAR);
     public static final Token RPAR = new Token(")",Types.RPAR);
+
+    public boolean isConst(){ return TYPE == Types.NUM || TYPE == Types.VAR;}
+    public boolean isGroup(){ return TYPE == Types.GROUP || TYPE == Types.FUNC;}
+    public boolean isOper(){ return TYPE == Types.OPER;}
+
     public Token(){
         this(null,null);
     }
     public Token(String pVal, Types pType){
-        VAL = pVal;
+        if(pType == Types.GROUP)
+            VAL = "GRP";
+        else
+            VAL = pVal;
         TYPE = pType;
     }
     public Token(char pVal, Types pType){
-        VAL = "" + pVal;
-        TYPE = pType;
+        this("" + pVal, pType);
     }
 
     public String toString(){
