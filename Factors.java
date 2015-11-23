@@ -48,11 +48,11 @@ public class Factors {
             }
             else if(n.TYPE == Token.Types.OPER){                
                 switch(n.NAME){
-                    case "+": for(Node n2 : n.subNodes) ret += eval(n2); break;
-                    case "-": for(Node n2 : n.subNodes) ret -= eval(n2); break;
-                    case "*": for(Node n2 : n.subNodes) ret *= eval(n2); break;
-                    case "/": for(Node n2 : n.subNodes) ret /= eval(n2); break;
-                    case "^": for(Node n2 : n.subNodes) ret = Math.pow(ret, eval(n2)); break;
+                    case "+": ret += eval(n.get(0)); for(int i = 1; i < n.size(); i++) ret += eval(n.get(i)); break;
+                    case "-": ret += eval(n.get(0)); for(int i = 1; i < n.size(); i++) ret -= eval(n.get(i)); break;
+                    case "*": ret += eval(n.get(0)); for(int i = 1; i < n.size(); i++) ret *= eval(n.get(i)); break;
+                    case "/": ret += eval(n.get(0)); for(int i = 1; i < n.size(); i++) ret /= eval(n.get(i)); break;
+                    case "^": ret += eval(n.get(0)); for(int i = 1; i < n.size(); i++) ret = Math.pow(ret, eval(n.get(i))); break;
                 }
             }
         }
