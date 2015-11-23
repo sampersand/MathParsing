@@ -23,16 +23,11 @@ public class FinalNode extends Node {
     }
     public Object getVal(){return "";}
     public String toString(){
-        String ret = "[";
-        ret += TYPE == Token.Types.VAR ? "\"" + sVal + "\"" : dVal;
-        ret += ": " + (TYPE == Token.Types.VAR ? "VAR" : "NUM") + "]";
-        return ret;
+        // String ret = "[";
+        // ret += TYPE == Token.Types.VAR ? "\"" + sVal + "\"" : dVal;
+        // ret += ": " + (TYPE == Token.Types.VAR ? "VAR" : "NUM") + "]";
+        return TYPE == Token.Types.VAR ? sVal : "" + dVal;
 
     }
-    // public FinalNode(String pVal){
-    //     try{
-    //         sVal = 
-    //     }
-    // }
     
 }

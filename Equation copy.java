@@ -6,8 +6,7 @@ import java.util.ArrayList;
  */
 public class Equation {
     public static void main(String[] args) {
-        // Equation eq = new Equation("1 + b * (2 + 3) + f(x, 4 + 1, a(5)) + 6");
-        Equation eq = new Equation("3 * (2 + 1)");
+        Equation eq = new Equation("a * + b * c(1) + d(2,3) + f(x,4,a(5)) + 6");
     }
 
     /** The raw equation, totally untouched. Gets set right when Equation is initialized. */
@@ -31,37 +30,12 @@ public class Equation {
      */ 
     public Equation(String pEq){
         RAW_EQ = pEq;
-        // System.out.println(RAW_EQ);
+        System.out.println(RAW_EQ);
         TOKENS = parseTokens(RAW_EQ);
         System.out.println(TOKENS);
         NODES = generateNodes(TOKENS);
         System.out.println(NODES);
     }
-    private Object[] operDecant (Node n, int pos, ArrayList<Token> pTokens){
-        int paren = 0;
-        pos++;
-        do{
-            Token t2 = pTokens.get(pos);
-            if(t2.TYPE == Token.Types.RPAR) paren--;
-            else if(t2.TYPE == Token.Types.LPAR) paren++;
-            else if(t2.TYPE == Token.Types.NUM || t2.TYPE == Token.Types.VAR) n.subNodes.add(new FinalNode(t2));
-            else if(t2.TYPE == Token.Types.FUNC || t2.TYPE == Token.Types.GROUP){
-                Object[] temp = decant(t2,pos,pTokens);
-                pos = (int) temp[0];
-                n.subNodes.add((Node)temp[1]);
-            }
-            else if(t2.TYPE == Token.Types.OPER){
-                Object[] temp = decant(t2, pos,pTokens);
-                pos = (int) temp[0];
-                Node N = n.copy();
-                n = new Node(t2, new ArrayList<Node>(){{add(N); add((Node)temp[1]);}});
-            }
-            pos++;
-        } while(paren > 0 && pos < pTokens.size());
-        return new Object[]{pos-1, n};
-    }
-
-
     /** The return type is int, node. I couldn't think of a better way of passing 2 parameters. */
     private Object[] decant (Token t, int pos, ArrayList<Token> pTokens){
         int paren = 0;
@@ -69,22 +43,18 @@ public class Equation {
         Node n = new Node(t);
         do{
             Token t2 = pTokens.get(pos);
-            if(t2.TYPE == Token.Types.RPAR) paren--;
-            else if(t2.TYPE == Token.Types.LPAR) paren++;
-            else if(t2.TYPE == Token.Types.NUM || t2.TYPE == Token.Types.VAR) n.subNodes.add(new FinalNode(t2));
-            else if(t2.TYPE == Token.Types.FUNC || t2.TYPE == Token.Types.GROUP){
+            if(t2.TYPE == Token.Types.RPAR)
+                    paren--;
+            else if(t2.TYPE == Token.Types.LPAR)
+                    paren++;
+            else if(t2.TYPE == Token.Types.NUM || t2.TYPE == Token.Types.VAR)
+                n.subNodes.add(new FinalNode(t2));
+            else if(t2.TYPE == Token.Types.FUNC){
                 Object[] temp = decant(t2,pos,pTokens);
                 pos = (int) temp[0];
                 n.subNodes.add((Node)temp[1]);
             }
-            else if(t2.TYPE == Token.Types.OPER){
-                Object[] temp = operDecant(n.subNodes.get(n.subNodes.size()-1), pos,pTokens);
-                pos = (int) temp[0];
-                Node N = n.copy();
-                n = new Node(t2, new ArrayList<Node>(){{add(N); add((Node)temp[1]);}});
-            }
             pos++;
-            System.out.println(t2);            
         } while(paren > 0 && pos < pTokens.size());
         return new Object[]{pos-1, n};
     }
@@ -93,37 +63,14 @@ public class Equation {
         int pos = 0;
         // Token t;        
         while(pos < pTokens.size()){
-            System.out.println(nodes);
-            Token t = pTokens.get(pos);
-            if(t.TYPE == Token.Types.FUNC || t.TYPE == Token.Types.GROUP){
+            Token t = pTokens.get(pos);            
+            if(t.TYPE == Token.Types.FUNC){
                 if(pTokens.get(pos + 1).TYPE != Token.Types.LPAR)
                     System.err.println("[ERROR]: The Function '" + t +
                                        "' token doesn't have a Left Paren '(' after it.");
                 Object[] temp = decant(t,pos,pTokens);
                 pos = (int) temp[0];
                 nodes.add((Node)temp[1]);
-            }
-            else if(t.TYPE == Token.Types.VAR || t.TYPE == Token.Types.NUM)
-                nodes.add(new FinalNode(t));
-            else if(t.TYPE == Token.Types.OPER){
-                // nodes.add(new Node(t, new ArrayList<Node>()));
-                //     nodes.get(nodes.size()-1).subNodes.add(nodes.get(nodes.size()-2)); 
-                //     Token t2 = pTokens.get(pos+1);
-                //     if(t2.TYPE == Token.Types.VAR || t2.TYPE == Token.Types.NUM)
-                //         nodes.get(nodes.size()-1).subNodes.add(new FinalNode(t2));
-                //     else if(t2.TYPE == Token.Types.FUNC || t2.TYPE == Token.Types.GROUP){
-                //         pos+=2;
-                //         if(pTokens.get(pos + 1).TYPE != Token.Types.LPAR)
-                //             System.err.println("[ERROR]: The Function '" + t +
-                //                                "' token doesn't have a Left Paren '(' after it.");
-                //         Object[] temp = decant(t,pos,pTokens);
-                //         pos = (int) temp[0];
-                //         // nodes.add((Node)temp[1]);
-                //         nodes.get(nodes.size()-1).subNodes.add((Node)temp[1]);
-                //     }
-                //     nodes.remove(nodes.size()-2);
-                //     // nodes.remove(nodes.size()-1);
-                // pos++;
             }
             pos++;
         }
@@ -156,8 +103,6 @@ public class Equation {
                         "' isn't Alphabetical, but is succeeded by '('. Continuing anyways.");
                     if(prev.length() != 0)
                         tokens.add(new Token(prev, Token.Types.FUNC));
-                    else
-                        tokens.add(new Token(prev, Token.Types.GROUP));
                     tokens.add(Token.LPAR);
                     break;
                 case ')': 

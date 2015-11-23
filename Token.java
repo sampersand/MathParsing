@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class Token {
     public final String VAL;
     public final Types TYPE;
-    public static enum Types{LPAR, RPAR, VAR, NUM, FUNC, OPER, NULL, DELIM}
+    public static enum Types{LPAR, RPAR, VAR, NUM, FUNC, OPER, NULL, DELIM, GROUP}
     public static final Token LPAR = new Token("(",Types.LPAR);
     public static final Token RPAR = new Token(")",Types.RPAR);
     public Token(){
@@ -31,6 +31,7 @@ public class Token {
             case OPER: ret += "OPER"; break;
             case NULL: ret += "NULL"; break;
             case DELIM: ret += "DELIM"; break;
+            case GROUP: ret += "GROUP"; break;
             default: ret += "UHOH"; break;
         }
         return ret + ")";

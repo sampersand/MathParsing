@@ -3,7 +3,6 @@ import java.util.ArrayList;
  * TODO: make javadoc for this thing.
  */
 public class Node {
-    public static enum NodeTypes {FUNC, OPER}
     public ArrayList<Node> subNodes;
     public final String NAME;
     public final Token.Types TYPE;
@@ -20,22 +19,20 @@ public class Node {
     }
 
     public String toString(){
-        String ret = "{\"" + NAME + "\" | " + TYPE + " | ";
+        String ret = "{" + NAME + ":";
         for(Node node : subNodes)
             ret += node + ", ";
         return ret.substring(0,ret.length()-2) + "}";
+
+        // String ret = "{\"" + NAME + "\" | " + TYPE + " | ";
+        // for(Node node : subNodes)
+        //     ret += node + ", ";
+        // return ret.substring(0,ret.length()-2) + "}";
+    }
+    public Node copy(){
+        return new Node(new Token(NAME, TYPE), subNodes);
     }
 }
-/*
-integral(1,2,f(x),dx)^-2.0
-NODE ^:
-    NODE integral:
-        VALS: 
-        1
-        2
-        NODE f:
-            VALS:
-            x
-        dx
-    -2.0
-*/
+
+
+
