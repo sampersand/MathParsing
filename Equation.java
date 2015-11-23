@@ -6,7 +6,7 @@ import java.util.ArrayList;
  */
 public class Equation {
     public static void main(String[] args) {
-        Equation eq = new Equation("integral(1,2,f(x),dx)^-2.0");
+        Equation eq = new Equation("a * + b * c(1) + d(2,3) + f(x,4,a(5)) + 6");
     }
 
     /** The raw equation, totally untouched. Gets set right when Equation is initialized. */
@@ -23,7 +23,6 @@ public class Equation {
     public Equation(){
         this(null);
     }
-
     /** 
      * Main constructor. Takes the parameter <code>pEq</code>, and parses the tokens from it, and generates a "node"
      * model for it.
@@ -31,11 +30,52 @@ public class Equation {
      */ 
     public Equation(String pEq){
         RAW_EQ = pEq;
+        System.out.println(RAW_EQ);
         TOKENS = parseTokens(RAW_EQ);
+        System.out.println(TOKENS);
         NODES = generateNodes(TOKENS);
         System.out.println(NODES);
     }
-
+    /** The return type is int, node. I couldn't think of a better way of passing 2 parameters. */
+    private Object[] decant (Token t, int pos, ArrayList<Token> pTokens){
+        int paren = 0;
+        pos++;
+        Node n = new Node(t);
+        do{
+            Token t2 = pTokens.get(pos);
+            if(t2.TYPE == Token.Types.RPAR)
+                    paren--;
+            else if(t2.TYPE == Token.Types.LPAR)
+                    paren++;
+            else if(t2.TYPE == Token.Types.NUM || t2.TYPE == Token.Types.VAR)
+                n.subNodes.add(new FinalNode(t2));
+            else if(t2.TYPE == Token.Types.FUNC){
+                Object[] temp = decant(t2,pos,pTokens);
+                pos = (int) temp[0];
+                n.subNodes.add((Node)temp[1]);
+            }
+            pos++;
+        } while(paren > 0 && pos < pTokens.size());
+        return new Object[]{pos-1, n};
+    }
+    private ArrayList<Node> generateNodes(ArrayList<Token> pTokens){
+        ArrayList<Node> nodes = new ArrayList<Node>();
+        int pos = 0;
+        // Token t;        
+        while(pos < pTokens.size()){
+            Token t = pTokens.get(pos);            
+            if(t.TYPE == Token.Types.FUNC){
+                if(pTokens.get(pos + 1).TYPE != Token.Types.LPAR)
+                    System.err.println("[ERROR]: The Function '" + t +
+                                       "' token doesn't have a Left Paren '(' after it.");
+                Object[] temp = decant(t,pos,pTokens);
+                pos = (int) temp[0];
+                nodes.add((Node)temp[1]);
+            }
+            pos++;
+        }
+        return nodes;
+    }
     /** 
      * Generates an ArrayList of tokens that make up the inputted equation. 
      * Note that this removes all whitespace (including spaces) before handling the equation.
@@ -61,7 +101,8 @@ public class Equation {
                     if(!isAlpha(prev))
                         System.err.println("[ERROR] Uh oh! '" + prev +
                         "' isn't Alphabetical, but is succeeded by '('. Continuing anyways.");
-                    tokens.add(new Token(prev, Token.Types.FUNC));
+                    if(prev.length() != 0)
+                        tokens.add(new Token(prev, Token.Types.FUNC));
                     tokens.add(Token.LPAR);
                     break;
                 case ')': 
