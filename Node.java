@@ -2,20 +2,20 @@ import java.util.HashMap;
 /** 
  * TODO: make javadoc for this thing.
  */
-public class Token {
+public class Node {
     public String val;
     public Types type;
     public static enum Types{LPAR, RPAR, VAR, NUM, FUNC, OPER, NULL, DELIM}
-    public static final Token LPAR = new Token("(",Types.LPAR);
-    public static final Token RPAR = new Token(")",Types.RPAR);
-    public Token(){
+    public static final Node LPAR = new Node("(",Types.LPAR);
+    public static final Node RPAR = new Node(")",Types.RPAR);
+    public Node(){
         this(null,null);
     }
-    public Token(String pVal, Types pType){
+    public Node(String pVal, Types pType){
         val = pVal;
         type = pType;
     }
-    public Token(char pVal, Types pType){
+    public Node(char pVal, Types pType){
         val = "" + pVal;
         type = pType;
     }

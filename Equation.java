@@ -1,18 +1,48 @@
 import java.util.ArrayList;
+/** 
+ * A class that models an equation, and its behaviour.
+ * @author Sam Westerman
+ * @version 0.1
+ */
 public class Equation {
     public static void main(String[] args) {
         Equation eq = new Equation("integral(1,2,f(x),dx)^-2.0");
     }
+
+    /** The raw equation, totally untouched. Gets set right when Equation is initialized. */
     public final String RAW_EQ;
+
+    /** An ArrayList of tokens that comprise <code>RAW_EQ</code>. */
     public final ArrayList<Token> TOKENS;
+
+    public final ArrayList<Node> NODES;
+
+    /** 
+     * Default constructor. Just passes null to the main constructor.
+     */
     public Equation(){
-        this("");
+        this(null);
     }
+
+    /** 
+     * Main constructor. Takes the parameter <code>pEq</code>, and parses the tokens from it, and generates a "node"
+     * model for it.
+     * @param pEq       The raw Equation to be parsed.
+     */ 
     public Equation(String pEq){
         RAW_EQ = pEq;
         TOKENS = parseTokens(RAW_EQ);
-        System.out.println(TOKENS);
+        NODES = generateNodes(TOKENS);
+        System.out.println(NODES);
     }
+
+    /** 
+     * Generates an ArrayList of tokens that make up the inputted equation. 
+     * Note that this removes all whitespace (including spaces) before handling the equation.
+     * @param rEq    The equation to be parsed.
+     * @return An ArrayList of tokens, each representing a different chunk of the equation. 
+     * @see Token.Tokens
+     */
     private ArrayList<Token> parseTokens(String rEq){
         rEq = rEq.trim().replaceAll(" ","");
         ArrayList<Token> tokens = new ArrayList<Token>();
@@ -62,50 +92,67 @@ public class Equation {
         return tokens;
     }
 
-    public static boolean isAlphaNum(char c){
-        return Character.isAlphabetic(c) || Character.isDigit(c);
+    /** 
+     * Checks if a character is alphanumeric or a period.
+     * @param c     The character to test.
+     * @return      True if the character is alphanumeric or a period. False otherwise.
+     */
+    public static boolean isAlphaNumP(char c){
+        return Character.isAlphabetic(c) || Character.isDigit(c) || c == '.';
     }
-    public static boolean isAlphaNum(String str){
-        for(char c : str.toCharArray())
-            if(!isAlphaNum(c))
-                return false;
-        return true; //note also uses '.'
-    }
-    public static boolean isAlphaNumP(char c){ //note: Also uses '.'
-        return isAlphaNum(c) || c == '.';
-    }
+
+    /** 
+     * Checks if a string consists only of letters, digits, and / or periods.
+     * @param str   The string to test.
+     * @return      True if the string consists only of letters, digits, and / or periods. False otherwise.
+     */
     public static boolean isAlphaNumP(String str){
         for(char c : str.toCharArray())
             if(!isAlphaNumP(c))
                 return false;
         return true; //note also uses '.'
     }
+
+    /** 
+     * Checks if a character is a letter.
+     * @param c     The character to test.
+     * @return      True if the character is a letter. False otherwise.
+     */
     public static boolean isAlpha(char c){
         return Character.isAlphabetic(c);
     }
+
+    /** 
+     * Checks if a string consists only of letters. 
+     * @param str   The string to test.
+     * @return      True if the String is only letters. False otherwise.
+     */
     public static boolean isAlpha(String str){
         for(char c : str.toCharArray())
             if(!isAlpha(c))
                 return false;
         return true;
     }
-    public static boolean isNum(char c){
-        return Character.isDigit(c);
-    }
-    public static boolean isNum(String str){
-        for(char c : str.toCharArray())
-            if(!isNum(c))
-                return false;
-        return true;
-    }
+   /** 
+     * Checks if a character is a digit or period.
+     * @param c     The character to test.
+     * @return      True if the character is a digit or period. False otherwise.
+     */
     public static boolean isNumP(char c){
         return Character.isDigit(c) || c == '.';
     }
+
+    /** 
+     * Checks if a string consists only of digits and / or periods. 
+     * Please note that this doesn't check to make sure there _are_ digits. So "...." will return true.
+     * @param str   The string to test.
+     * @return      True if the String is only digits and / or periods. False otherwise.
+     */        
     public static boolean isNumP(String str){
         for(char c : str.toCharArray())
             if(!isNumP(c))
                 return false;
         return true;
-    }      
+    } 
 }
 
