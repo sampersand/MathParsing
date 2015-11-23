@@ -7,19 +7,23 @@ import java.util.ArrayList;
 public class Equation {
     public static void main(String[] args) {
         // Equation eq = new Equation("1 + b * (2 + 3) + f(x, 4 + 1, a(5)) + 6");
-        Equation eq = new Equation("1 + a(b, 2) * (c/3)^4");
+        // Equation eq = new Equation("1 + a(b, 2) * (c/3)^4");
         // Equation eq = new Equation("b * (2 + 3 - (4 * 5)) / f( 6 ) ");
-        // Equation eq = new Equation("3 / f(4) - 5");
+        Equation eq = new Equation("3 - 4");
+        System.out.println(eq.eval());
     }
 
     /** The raw equation, totally untouched. Gets set right when Equation is initialized. */
     public final String RAW_EQ;
 
-    /** An ArrayList of tokens that comprise <code>RAW_EQ</code>. */
-    public final ArrayList<Token> TOKENS;
+    /** 
+     * An ArrayList of tokens that comprise <code>RAW_EQ</code>.
+     */
+    public ArrayList<Token> tokens;
 
-    public final Node EQ_NODE;
+    public Node node;
 
+    public Factors factors;
     /** 
      * Default constructor. Just passes null to the main constructor.
      */
@@ -32,75 +36,79 @@ public class Equation {
      * @param pEq       The raw Equation to be parsed.
      */ 
     public Equation(String pEq){
+        //TODO: PEMDAS
         RAW_EQ = pEq;
-        System.out.println(RAW_EQ);
-        System.out.println("--");        
-        TOKENS = parseTokens(RAW_EQ);
-        System.out.println(TOKENS);
-        System.out.println("--");        
-        EQ_NODE = generateNodes(TOKENS);
-        System.out.println(EQ_NODE);
+        tokens = parseTokens(RAW_EQ);
+        node = generateNodes(tokens);
+        System.out.println(node);
+        factors = new Factors();
     }
 
-    // private Object[] decant(int pos, ArrayList<Token> pTokens){
-    //     Node n = new Node();
-    //     while(pos < pTokens.size()){
-    //         Token t = pTokens.get(pos);
-    //         if(t.isConst()){
-    //             n.add(new FinalNode(t));
-    //         }
-    //         if(t.isOper()){
-    //             Object[] temp = decant(pos, pTokens);
-    //             pos = (int)temp[0];
-    //             n.subNodes.set(n.subNodes.size() - 1, new Node(t, nodes.get(nodes.size()-1), (Node) temp[1]));
-    //         }
-    //         pos++;
-    //     } 
-    //     return new Object[]{pos,n};
-
-    // }
-    private Node generateNodes(ArrayList<Token> pTokens){
-        return (Node)generateNodes(0, new Node(new Token("Equation", Token.Types.NULL)), pTokens)[1];
+    public static double eval(Factors pFactor, Node pNode){
+        return pFactor.eval(pNode);
     }
-    private Object[] generateNodes(int pos, Node n, ArrayList<Token> pTokens){
+    public double eval(){
+        return eval(factors, node);
+    }
+
+    private Object[] condeseNodes(int pos, Node n, ArrayList<Token> pTokens){
         while(pos < pTokens.size()){
             Token t = pTokens.get(pos);
-            if(t.isConst()){
+            if(t.isConst())
                 n.add(new FinalNode(t));
-            }
+            if(t.isOper())
+                n.add(new Node(t));
             if(t.isGroup()){
-                if(pTokens.get(pos+1).TYPE != Token.Types.LPAR)
-                    System.err.println("[ERROR] Pos is FUNC / GROUP, but POS + 1 isn't an LPAR. Continuing anyway.");
-                int paren = 1;
-                int x;
-                for(x = pos + 2; paren > 0 && x < pTokens.size(); x++){
-                    if(pTokens.get(x).TYPE == Token.Types.RPAR) paren--;
+                int paren = 0;
+                int x = pos + 1;
+                do{
                     if(pTokens.get(x).TYPE == Token.Types.LPAR) paren++;
-                }
+                    if(pTokens.get(x).TYPE == Token.Types.RPAR) paren--;
+                    x++;
+                } while(paren > 0 && x < pTokens.size());
+
                 ArrayList<Token> passTokens = new ArrayList<Token>();
-                for(Token token : pTokens.subList(pos , x)) passTokens.add(token);
-                System.out.println("GRP @@@@@ " + passTokens + " @@@@@ " + t + " @@@@@ " + n);
-                Object[] temp = generateNodes(1, new Node(t), passTokens);
-                pos = pos + (int)temp[0] - 1;
-                Node n2 = (Node)temp[1];
-                n.add(n2);
-            }
-            if(t.isOper()){
-                // System.out.println(n.get(n.size()-1));
-                Object[] temp = generateNodes(pos + 1, t.isConst() ? new FinalNode(t) : new Node(t), pTokens);
-                pos = (int)temp[0];
-                System.out.println("OPR @@@@@ " + pTokens + " @@@@@ " + t + " @@@@@ " + n);                
-                Node n2 = (Node)temp[1];
-                n2.add(n.get(n.size()-1));
-                n2.add(n2.get(0)); // these two swap
-                n2.remove(0); //the order
-                n.add(n2);
-                n.subNodes.remove(n.subNodes.size()-2);                
+                for(Token tk : pTokens.subList(pos + 1, x ))
+                     passTokens.add(tk);
+
+                Object[] temp = condeseNodes(0, new Node(t), passTokens);
+                pos += (int)temp[0];
+                n.add((Node)temp[1]);
             }
             pos++;
         }
-        return new Object[]{pos, n};
+        return new Object[]{pos,n};
     }
+    private Node completeNodes(Node node){
+        //TODO: PEMDAS
+        Node ret = new Node(new Token(node.NAME, node.TYPE));
+        int i = 0;
+        if(node instanceof FinalNode)
+            return node;
+        while(i < node.size()){
+            Node n = node.get(i);
+            if(n instanceof FinalNode)
+                ret.add(n);
+            else if(n.TYPE == Token.Types.OPER){
+                n.add(ret.get(ret.size() - 1));
+                n.add(completeNodes(node.get(i + 1)));
+                ret.remove(ret.size() - 1);
+                ret.add(n);
+                i++;
+            }
+            else if(n.TYPE == Token.Types.FUNC || n.TYPE == Token.Types.GROUP){
+                n = completeNodes(n);
+                ret.add(n);
+                i++;
+            } 
+            i++;
+        }
+        return ret;
+    }
+    private Node generateNodes(ArrayList<Token> pTokens){
+        return completeNodes((Node)condeseNodes(0, new Node(new Token("E", Token.Types.NULL)), pTokens)[1]);
+    }
+    
     /** 
      * Generates an ArrayList of tokens that make up the inputted equation. 
      * Note that this removes all whitespace (including spaces) before handling the equation.
