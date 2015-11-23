@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 /** 
  * A class that models an equation, and its behaviour.
  * @author Sam Westerman
@@ -9,8 +10,13 @@ public class Equation {
         // Equation eq = new Equation("1 + b * (2 + 3) + f(x, 4 + 1, a(5)) + 6");
         // Equation eq = new Equation("1 + a(b, 2) * (c/3)^4");
         // Equation eq = new Equation("b * (2 + 3 - (4 * 5)) / f( 6 ) ");
-        Equation eq = new Equation("3 - 4");
+        Equation eq = new Equation("7 * a - 1");//(a - 3) * (a * 2 + 1) - 3 * 7 - 9 ");
+        eq.factors.setVars(new HashMap<String,Double>()
+            {{
+                put("a",3.0D);
+            }});
         System.out.println(eq.eval());
+        System.out.println(eq.node);
     }
 
     /** The raw equation, totally untouched. Gets set right when Equation is initialized. */
@@ -40,7 +46,7 @@ public class Equation {
         RAW_EQ = pEq;
         tokens = parseTokens(RAW_EQ);
         node = generateNodes(tokens);
-        System.out.println(node);
+        // System.out.println(node);
         factors = new Factors();
     }
 
