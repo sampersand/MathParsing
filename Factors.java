@@ -53,12 +53,12 @@ public class Factors {
             }
             else if(n.TYPE == Token.Types.OPER){
                 System.out.println("\t\tOPER:" + n + " | " + ret);
-                System.out.println(n.get(0) + " &&&&&& " + n.get(1));
+                System.out.println(n.get(0) + " | " + n.get(1));
                 switch(n.NAME){
-                    case "+": ret += (eval(n.get(0)) + eval(n.get(1))); break;
-                    case "-": ret += (eval(n.get(0)) - eval(n.get(1))); break;
-                    case "*": ret += (eval(n.get(0)) * eval(n.get(1))); break;
-                    case "/": ret += (eval(n.get(0)) / eval(n.get(1))); break;
+                    case "+": ret += (eval(n));break;//.get(0)) + eval(n.get(1))); break;
+                    case "-": ret -= (eval(n));break;//.get(0)) - eval(n.get(1))); break;
+                    case "*": ret *= (eval(n));break;//.get(0)) * eval(n.get(1))); break;
+                    case "/": ret /= (eval(n));break;//.get(0)) / eval(n.get(1))); break;
                     case "^": ret += (Math.pow(eval(n.get(0)), eval(n.get(1)))); break;
                     default: System.out.println("[ERROR] UH OH! '" + n.NAME + "' is an OPERATOR, but doesn't have a function assaigned to it. ");
                 }
