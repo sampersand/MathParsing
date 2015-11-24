@@ -16,61 +16,113 @@ public class Factors {
         funcs = pFuncs;
     }    
     public double eval(Node pNode){
+        return eval(pNode, new HashMap<String, Double>());
+    }
+    public double eval(Node pNode, HashMap<String, Double> pVars) {
         System.out.println("NODE: " + pNode);
-
-        if(pNode instanceof FinalNode){
+        if (pNode instanceof FinalNode) {
             FinalNode fNode = (FinalNode)pNode;
-            System.out.println("\tFNODE:"+fNode);
-            if(fNode.TYPE == Token.Types.NUM){
+            if (fNode.TYPE == Token.Types.NUM) {
                 return fNode.dVal;
-            } else if(fNode.TYPE == Token.Types.VAR){
+            } else if (fNode.TYPE == Token.Types.VAR) {
                 if(vars.get(fNode.sVal) == null){
                     System.err.println("[ERROR] Varriable '" + fNode.NAME + "' isn't defined in vars! Defaulting to a value of '0' instead.");
                     return 0;
+                } else {
+                    return (double)vars.get(fNode.sVal);
                 }
-                return (double)vars.get(fNode.sVal);
             }
             else{
                 System.err.println("[ERROR] FinalNode '" +fNode.sVal + "/" + fNode.dVal +"' isn't a num or Var!");
                 return 0;
             }
         }
-        double ret = 0;
-        for(int pos = 0; pos < pNode.size(); pos++){
-            Node n = pNode.get(pos);
-            System.out.println("\tSUBNODE: " + n);
-            if(n.TYPE == Token.Types.FUNC ){
-                if(funcs.get(n.NAME) == null){
-                    System.err.println("[ERROR] Function '" + n.NAME + "' isn't defined in functions! Defaulting to a value of '0' instead.");
-                    return 0;
-                }
-                else{
-                    ret += funcs.get(n.NAME).exec(this, n);
-                }
-            }
-            else if(n.TYPE == Token.Types.GROUP || (n.TYPE == Token.Types.NULL && n.NAME == "E")){
-                ret += eval(n);
-            }
-            else if(n.TYPE == Token.Types.OPER){
-                System.out.println("\t\tOPER:" + n + " | " + ret);
-                System.out.println(n.get(0) + " | " + n.get(1));
-                switch(n.NAME){
-                    case "+": ret += (eval(n));break;//.get(0)) + eval(n.get(1))); break;
-                    case "-": ret -= (eval(n));break;//.get(0)) - eval(n.get(1))); break;
-                    case "*": ret *= (eval(n));break;//.get(0)) * eval(n.get(1))); break;
-                    case "/": ret /= (eval(n));break;//.get(0)) / eval(n.get(1))); break;
-                    case "^": ret += (Math.pow(eval(n.get(0)), eval(n.get(1)))); break;
-                    default: System.out.println("[ERROR] UH OH! '" + n.NAME + "' is an OPERATOR, but doesn't have a function assaigned to it. ");
-                }
-            }
-            else if (n instanceof FinalNode){
-                ret += eval(n);
+
+        if(pNode.TYPE == Token.Types.FUNC){
+            if(funcs.get(pNode.NAME) == null){
+                System.err.println("[ERROR] Function '" + pNode.NAME + "' isn't defined in functions! Defaulting to a value of '0' instead.");
+                return 0;
             }
             else{
-                System.err.println("[ERROR] UH OH! The type of '" + n.NAME + "' (" + n.TYPE + ") doesn't have a known way to evaluate");
+                return funcs.get(pNode.NAME).exec(this, pNode);
             }
         }
-System.out.println(ret);        
-        return ret;
-    }
+        else if(pNode.TYPE == Token.Types.GROUP || pNode instanceof FinalNode || (pNode.TYPE == Token.Types.NULL && pNode.NAME == "E")){
+            return eval(pNode);
+        }
+        else if(pNode.TYPE == Token.Types.OPER){
+            switch(pNode.NAME){
+                case "+": return eval(pNode.get(0)) + eval(pNode.get(1));
+                case "-": return eval(pNode.get(0)) - eval(pNode.get(1));
+                case "*": return eval(pNode.get(0)) * eval(pNode.get(1));
+                case "/": return eval(pNode.get(0)) / eval(pNode.get(1));
+                case "^": return Math.pow(eval(pNode.get(0)), eval(pNode.get(1)));
+                default:
+                    System.out.println("[ERROR] UH OH! '" + pNode.NAME + "' is an OPERATOR, but doesn't have a function assaigned to it. ");
+                    return 0;
+            }
+        }
+        else{
+            System.err.println("[ERROR] UH OH! The type of '" + pNode.NAME + "' (" + pNode.TYPE + ") doesn't have a known way to evaluate");
+            return 0;
+        }
+    }        
+    
+    // public double eval(Node pNode){
+    //     System.out.println("NODE: " + pNode);
+    //     if(pNode instanceof FinalNode){
+    //         FinalNode fNode = (FinalNode)pNode;
+    //         System.out.println("\tFNODE:"+fNode);
+    //         if(fNode.TYPE == Token.Types.NUM){
+    //             return fNode.dVal;
+    //         } else if(fNode.TYPE == Token.Types.VAR){
+    //             if(vars.get(fNode.sVal) == null){
+    //                 System.err.println("[ERROR] Varriable '" + fNode.NAME + "' isn't defined in vars! Defaulting to a value of '0' instead.");
+    //                 return 0;
+    //             }
+    //             return (double)vars.get(fNode.sVal);
+    //         }
+    //         else{
+    //             System.err.println("[ERROR] FinalNode '" +fNode.sVal + "/" + fNode.dVal +"' isn't a num or Var!");
+    //             return 0;
+    //         }
+    //     }
+    //     double ret = 0;
+    //     for(int pos = 0; pos < pNode.size(); pos++){
+    //         Node n = pNode.get(pos);
+    //         System.out.println("\tSUBNODE: " + n);
+    //         if(n.TYPE == Token.Types.FUNC ){
+    //             if(funcs.get(n.NAME) == null){
+    //                 System.err.println("[ERROR] Function '" + n.NAME + "' isn't defined in functions! Defaulting to a value of '0' instead.");
+    //                 return 0;
+    //             }
+    //             else{
+    //                 ret += funcs.get(n.NAME).exec(this, n);
+    //             }
+    //         }
+    //         else if(n.TYPE == Token.Types.GROUP || (n.TYPE == Token.Types.NULL && n.NAME == "E")){
+    //             ret += eval(n);
+    //         }
+    //         else if(n.TYPE == Token.Types.OPER){
+    //             System.out.println("\t\tOPER:" + n + " | " + ret);
+    //             System.out.println(n.get(0) + " | " + n.get(1));
+    //             switch(n.NAME){
+    //                 case "+": ret += (eval(n));break;//.get(0)) + eval(n.get(1))); break;
+    //                 case "-": ret -= (eval(n));break;//.get(0)) - eval(n.get(1))); break;
+    //                 case "*": ret *= (eval(n));break;//.get(0)) * eval(n.get(1))); break;
+    //                 case "/": ret /= (eval(n));break;//.get(0)) / eval(n.get(1))); break;
+    //                 case "^": ret += (Math.pow(eval(n.get(0)), eval(n.get(1)))); break;
+    //                 default: System.out.println("[ERROR] UH OH! '" + n.NAME + "' is an OPERATOR, but doesn't have a function assaigned to it. ");
+    //             }
+    //         }
+    //         else if (n instanceof FinalNode){
+    //             ret += eval(n);
+    //         }
+    //         else{
+    //             System.err.println("[ERROR] UH OH! The type of '" + n.NAME + "' (" + n.TYPE + ") doesn't have a known way to evaluate");
+    //         }
+    //     }
+    //     System.out.println(ret);        
+    //     return ret;
+    // }
 }

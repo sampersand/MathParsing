@@ -43,6 +43,7 @@ public class Equation {
      */ 
     public Equation(String pEq){
         //TODO: PEMDAS
+        //TODO: Throw custom exceptions
         RAW_EQ = pEq;
         tokens = parseTokens(RAW_EQ);
         node = generateNodes(tokens);
@@ -55,6 +56,12 @@ public class Equation {
     }
     public double eval(){
         return eval(factors, node);
+    }
+    public static double eval(Factors pFactor, Node pNode, HashMap<String, Double> pVals){
+        return pFactor.eval(pNode, pVals);
+    }    
+    public double eval(HashMap<String, Double> pVals){
+        return eval(factors, node, pVals);
     }
 
     private Object[] condeseNodes(int pos, Node n, ArrayList<Token> pTokens){
