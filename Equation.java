@@ -8,12 +8,11 @@ import java.util.HashMap;
 public class Equation {
     public static void main(String[] args) {
         // Equation eq = new Equation("1 + b * (2 + 3) + f(x, 4 + 1, a(5)) + 6");
-        // Equation eq = new Equation("1 + a(b, 2) * (c/3)^4");
-        // Equation eq = new Equation("b * (2 + 3 - (4 * 5)) / f( 6 ) ");
-        Equation eq = new Equation("7 * a - 1");//(a - 3) * (a * 2 + 1) - 3 * 7 - 9 ");
+        Equation eq = new Equation("1 + a(b, 2) * (c/3)^4");
+        // Equation eq = new Equation("7 * a - 1 + 2");
         eq.factors.setVars(new HashMap<String,Double>()
             {{
-                put("a",3.0D);
+                put("b",3.0D);
             }});
         System.out.println(eq.eval());
         System.out.println(eq.node);
@@ -129,7 +128,7 @@ public class Equation {
      * @return An ArrayList of tokens, each representing a different chunk of the equation. 
      * @see Token.Tokens
      */
-    private ArrayList<Token> parseTokens(String rEq){
+    private ArrayList<Token> parseTokens(String rEq) throws TypeMisMatchException{
         rEq = rEq.trim().replaceAll(" ","");
         ArrayList<Token> tokens = new ArrayList<Token>();
         String prev = "";
@@ -144,34 +143,39 @@ public class Equation {
             }
             switch(c){
                 case '(': // This should never be preceeded by a number.
-                    if(!isAlpha(prev))
-                        System.err.println("[ERROR] Uh oh! '" + prev +
-                        "' isn't Alphabetical, but is succeeded by '('. Continuing anyway.");
-                    if(prev.length() != 0)
+                    if(!isAlpha(prev)){
+                        throw new TypeMisMatchException("'" + prev + "'isn't alphabetical, but a group / function was" +
+                            "attempted to be made because it is succeeded by a '('");
+                    } if(prev.length() != 0){
                         tokens.add(new Token(prev, Token.Types.FUNC));
-                    else
+                    } else{
                         tokens.add(new Token(prev, Token.Types.GROUP));
+                    }
                     tokens.add(Token.LPAR);
                     break;
                 case ')': 
-                    if(prev.length() != 0)
+                    if(prev.length() != 0){
                         tokens.add(new Token(prev, isNumP(prev) ? Token.Types.NUM : Token.Types.VAR));
+                    }
                     tokens.add(Token.RPAR);
                     break;
                 case '-': case '+': case '*': case '/': case '^':
-                    if(prev.length() != 0)
+                    if(prev.length() != 0){
                         tokens.add(new Token(prev, isNumP(prev) ? Token.Types.NUM : Token.Types.VAR));
+                    }
                     tokens.add(new Token(c, Token.Types.OPER));
                     break;
                 case ',':
-                    if(prev.length() != 0)
+                    if(prev.length() != 0){
                         tokens.add(new Token(prev, isNumP(prev) ? Token.Types.NUM : Token.Types.VAR));
+                    }
                     tokens.add(new Token(c, Token.Types.DELIM));
                     break;
 
                 default:
-                    if(prev.length() != 0)
+                    if(prev.length() != 0){
                         tokens.add(new Token(prev, isNumP(prev) ? Token.Types.NUM : Token.Types.VAR));
+                    }
                     tokens.add(new Token(c, Token.Types.NULL));
                     break;
 

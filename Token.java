@@ -14,7 +14,7 @@ public class Token {
     public boolean isOper(){ return TYPE == Types.OPER;}
 
     public Token(){
-        this(null,null);
+        this(null, null);
     }
     public Token(String pVal, Types pType){
         if(pType == Types.GROUP)

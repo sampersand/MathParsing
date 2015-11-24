@@ -14,7 +14,7 @@ public class Function {
         NAME = pFileName;
     }
     public double exec(Factors pFactors, Node pNode){
-        return 0;
+        return pFactors.eval(pNode);
     };
 
 }
