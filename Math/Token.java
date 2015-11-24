@@ -11,8 +11,8 @@ public class Token {
 
     public boolean isConst(){ return TYPE == Types.NUM || TYPE == Types.VAR;}
     public boolean isGroup(){ return TYPE == Types.GROUP || TYPE == Types.FUNC;}
-    public boolean isOper(){ return TYPE == Types.OPER;}
-    public int importance(){
+    public boolean isOper(){return  TYPE == Types.OPER;}
+    public int priority(){
         if(TYPE != Types.OPER && TYPE != Types.FUNC && TYPE != Types.GROUP){ return -1; }
         switch(VAL){
             case "+": return 0;

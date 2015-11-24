@@ -11,10 +11,11 @@ public class Equation {
             java.lang.reflect.InvocationTargetException, IllegalAccessException {
         // Equation eq = new Equation("1 + b * (2 + 3) + f(x, 4 + 1, a(5)) + 6");
         // Equation eq = new Equation("1 + fac(a) - summ(10) * c/3");
-            Equation eq = new Equation("2 * (x ^ 2) + (18 ^ 4) - 5");
+            Equation eq = new Equation("1 - 2 * 3 + 4");
         eq.factors.setVars(new HashMap<String, Double>()
             {{
-                put("x",3.0D);
+                put("a",3.0D);
+                put("c",9.0D);
             }});
         eq.factors.setFuncs(new HashMap<String, Function>()
             {{
@@ -115,6 +116,7 @@ public class Equation {
         if(node instanceof FinalNode)
             return node;
         while(i < node.size()){
+            System.err.println(ret);
             Node n = node.get(i);
             if(n instanceof FinalNode)
                 ret.add(n);
