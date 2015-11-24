@@ -11,19 +11,24 @@ public class Equation {
             java.lang.reflect.InvocationTargetException, IllegalAccessException {
         // Equation eq = new Equation("1 + b * (2 + 3) + f(x, 4 + 1, a(5)) + 6");
         // Equation eq = new Equation("1 + fac(a) - summ(10) * c/3");
-            Equation eq = new Equation("1 - 2 * 3 + 4");
+            // Equation eq = new Equation("A + B * C + D ^ E + F");
+            Equation eq = new Equation("B * C + D ^ E ");
         eq.factors.setVars(new HashMap<String, Double>()
             {{
-                put("a",3.0D);
-                put("c",9.0D);
+                put("A",1.0D);
+                put("B",2.0D);
+                put("C",3.0D);
+                put("D",4.0D);
+                put("E",5.0D);
+                put("F",6.0D);
             }});
         eq.factors.setFuncs(new HashMap<String, Function>()
             {{
                 put("summ",new Function("summation"));
             }});
         System.out.println(eq.RAW_EQ);
-        System.out.println(eq.eval());
         System.out.println(eq.node);
+        System.out.println("ANSWER: "+eq.eval());
     }
 
     /** The raw equation, totally untouched. Gets set right when Equation is initialized. */
@@ -111,26 +116,72 @@ public class Equation {
         return new Object[]{pos,n};
     }
     private Node completeNodes(Node node){
-        Node ret = new Node(new Token(node.NAME, node.TYPE));
+        Node ret = new Node(new Token(node.TOKEN.VAL, node.TOKEN.TYPE));
         int i = 0;
         if(node instanceof FinalNode)
             return node;
         while(i < node.size()){
-            System.err.println(ret);
             Node n = node.get(i);
             if(n instanceof FinalNode)
                 ret.add(n);
-            else if(n.TYPE == Token.Types.OPER){
-                for(int p = i; p < node.size(); p ++){
-                        //TODO: IMPORTANCE
+            else if(n.TOKEN.TYPE == Token.Types.OPER){
+                for(int depth = 0; depth < ret.depth(); depth++){
+                    Node nD = ret.getD(depth);
+                    if(!(nD instanceof FinalNode)){
+                        if(n.TOKEN.priority() > nD.TOKEN.priority()){
+                            System.out.println("A|" + n + "(" + n.TOKEN.priority() + ") | " + nD 
+                                + "(" + nD.TOKEN.priority() + ")");
+                            n.add(nD.get(nD.size() - 1)); // Add last value of depth node to new node
+                            nD.rem(nD.size() -1); // Remove the last value from the depth node
+                            n.add(completeNodes(node.get(i + 1))); // Add the next node to new node
+                            i++; // Have to increase i because we parsed the next node
+                            nD.add(n); // Add the new node to the end of the old node
+                            ret.remD(depth); // Remove the  old depth node in return node
+                            ret.addD(depth, nD); // Add the new depth node in return node.
+                            break;
+                        }
+                        // else if(n.TOKEN.priority() <= nD.TOKEN.priority() &&! nD.TOKEN.isUni()){
+                        //     System.out.println("B|" + n + "(" + n.TOKEN.priority() + ") | " + nD 
+                        //         + "(" + nD.TOKEN.priority() + ")");
+                        //     n.add(nD); // Add last value of depth node to new node
+                        //     n.add(completeNodes(node.get(i + 1))); // Add the next node to new node
+                        //     ret.remD(depth); // Remove the old depth node in return node
+                        //     ret.addD(depth, nD); // Add the new depth node in return node.
+                        //     i++; // Have to increase i because we parsed the next node
+                        //     break;
+                        // }
+                        else if(nD.TOKEN.isUni() &&! n.TOKEN.isUni() && ret.depth() == 1){
+                            System.out.println("C|" + n + "(" + n.TOKEN.priority() + ") | " + nD
+                                + "(" + nD.TOKEN.priority() + ")");
+                            n.add(ret.get(ret.size() -1)); // Add last value of depth node to new node
+                            n.add(completeNodes(node.get(i + 1))); // Add the next node to new node
+                            ret.add(n);
+                            i++; // Have to increase i because we parsed the next node
+                            break;
+                        }
+
+                    }
+                    else if(nD instanceof FinalNode){
+                        System.out.println("D|" + n + "(" + n.TOKEN.priority() + ") | " + nD 
+                                + "(" + nD.TOKEN.priority() + ")");                        
+                        n.add(nD);
+                        n.add(completeNodes(node.get(i + 1))); // Add the next node to new node
+                        i++; // Have to increase i because we parsed the next node
+                        ret.remD(depth - 1);
+                        ret.addD(depth - 1, n);
+                        break;
+                    }
+                    else if(depth == ret.depth()){
+                        nD.add(n);
+                        ret.remD(depth);
+                        ret.addD(depth, nD);
+                        break;
+                    }
+
                 }
-                n.add(ret.get(ret.size() - 1));
-                n.add(completeNodes(node.get(i + 1)));
-                ret.remove(ret.size() - 1);
-                ret.add(n);
                 i++;
             }
-            else if(n.TYPE == Token.Types.FUNC || n.TYPE == Token.Types.GROUP){
+            else if(n.TOKEN.TYPE == Token.Types.FUNC || n.TOKEN.TYPE == Token.Types.GROUP){
                 n = completeNodes(n);
                 ret.add(n);
                 i++;
@@ -139,6 +190,36 @@ public class Equation {
         }
         return ret;
     }
+
+    // private Node completeNodes(Node node){
+    //     Node ret = new Node(new Token(node.NAME, node.TYPE));
+    //     int i = 0;
+    //     if(node instanceof FinalNode)
+    //         return node;
+    //     while(i < node.size()){
+    //         System.err.println(ret);
+    //         Node n = node.get(i);
+    //         if(n instanceof FinalNode)
+    //             ret.add(n);
+    //         else if(n.TYPE == Token.Types.OPER){
+    //             for(int p = i; p < node.size(); p ++){
+    //                     //TODO: IMPORTANCE
+    //             }
+    //             n.add(ret.get(ret.size() - 1));
+    //             n.add(completeNodes(node.get(i + 1)));
+    //             ret.rem(ret.size() - 1);
+    //             ret.add(n);
+    //             i++;
+    //         }
+    //         else if(n.TYPE == Token.Types.FUNC || n.TYPE == Token.Types.GROUP){
+    //             n = completeNodes(n);
+    //             ret.add(n);
+    //             i++;
+    //         } 
+    //         i++;
+    //     }
+    //     return ret;
+    // }
     private Node generateNodes(ArrayList<Token> pTokens){
         return completeNodes((Node)condeseNodes(0, new Node(new Token("E", Token.Types.NULL)), pTokens)[1]);
     }

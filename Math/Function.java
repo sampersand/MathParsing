@@ -13,7 +13,7 @@ public class Function {
             IllegalAccessException, ArrayIndexOutOfBoundsException {
         double[] args = new double[pNode.size()];
         for(int i = 0; i < args.length; i++) args[i] = pFactors.eval(pNode.get(i));
-        switch(pNode.NAME.toLowerCase()){
+        switch(pNode.TOKEN.VAL.toLowerCase()){
             case "sin": return Math.sin(args[0]);
             case "cos": return Math.cos(args[0]);
             case "tan": return Math.tan(args[0]);

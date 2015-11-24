@@ -4,8 +4,7 @@ import java.util.ArrayList;
  */
 public class Node {
     public ArrayList<Node> subNodes;
-    public final String NAME;
-    public final Token.Types TYPE;
+    public final Token TOKEN;
     public Node(){
         this(new Token());
     }
@@ -14,16 +13,14 @@ public class Node {
     }
     public Node(Token pToken, ArrayList<Node> pSubNodes){
         subNodes = pSubNodes;
-        NAME = pToken.VAL;
-        TYPE = pToken.TYPE;
+        TOKEN = pToken;
     }
     public Node(Token pToken, Node... pSubNodes){
         subNodes = new ArrayList<Node>(){{
             for(Node n : pSubNodes)
                 add(n);
             }};
-        NAME = pToken.VAL;
-        TYPE = pToken.TYPE;
+        TOKEN = pToken;
     }    
     public void add(Node n){
         subNodes.add(n);
@@ -41,11 +38,43 @@ public class Node {
         return subNodes.set(i, n);
     }
 
-    public Node remove(int i){
-        return subNodes.remove(i);
+    public void rem(int i){
+        subNodes.remove(i);
+    }    
+    public int depth(){
+        if(this instanceof FinalNode)
+            return 1;
+        return size() == 0 ? 1 : 1 + get(size() - 1).depth();
+    }
+    public Node getD(int i){
+        if(this instanceof FinalNode)
+            return this;
+        return i <= 0 ? this : get(size() - 1).getD(i - 1);
+    }
+    public void addD(int i, Node n){
+        if(this instanceof FinalNode)
+            throw new TypeMisMatchException("Can't add subnodes to a FinalNode!");
+        // if(i <= 0 && size == 0)
+            // throw new DoesntExistException("Can't add subnodes to a FinalNode!");
+
+        if(i > 0 && size() > 0)
+            get(size() - 1).addD(i - 1, n);
+        else
+            add(n);
+            
+
+    }
+    public void remD(int i) throws TypeMisMatchException{
+        if(this instanceof FinalNode)
+            return;
+            // throw new TypeMisMatchException("Can't delete subnodes from a FinalNode!");
+        if(i <= 0)
+            rem(size() - 1);
+        else
+            get(size() - 1).remD(i - 1);
     }    
     public String toString(){
-        String ret = "{\"" + NAME + "\" | " + TYPE + " | ";
+        String ret = "{\"" + TOKEN.VAL + "\" | " + TOKEN.TYPE + " | ";
         for(Node node : subNodes)
             ret += node + ", ";
         return ret.substring(0,ret.length()-2) + "}";

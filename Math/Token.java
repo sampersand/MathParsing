@@ -12,8 +12,13 @@ public class Token {
     public boolean isConst(){ return TYPE == Types.NUM || TYPE == Types.VAR;}
     public boolean isGroup(){ return TYPE == Types.GROUP || TYPE == Types.FUNC;}
     public boolean isOper(){return  TYPE == Types.OPER;}
+    public boolean isUni(){return TYPE == Types.NULL && VAL == "E";}
     public int priority(){
-        if(TYPE != Types.OPER && TYPE != Types.FUNC && TYPE != Types.GROUP){ return -1; }
+        if(TYPE == Types.NULL && VAL == "E")
+            return 4;
+        if(TYPE != Types.OPER && TYPE != Types.FUNC && TYPE != Types.GROUP){
+            return -1;
+        }
         switch(VAL){
             case "+": return 0;
             case "-": return 0;
