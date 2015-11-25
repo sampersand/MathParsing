@@ -11,8 +11,7 @@ public class Equation {
             java.lang.reflect.InvocationTargetException, IllegalAccessException {
         // Equation eq = new Equation("1 + b * (2 + 3) + f(x, 4 + 1, a(5)) + 6");
         Equation eq = new Equation("2 * fac(A) - summ(10) ^ (C/3)");
-
-            // Equation eq = new Equation("A + B * C + D ^ E + F");
+        // Equation eq = new Equation("A + B * C + D ^ E + F");
         eq.factors.setVars(new HashMap<String, Double>()
             {{
                 put("A",1.0D);
