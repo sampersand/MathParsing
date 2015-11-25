@@ -19,12 +19,15 @@ public class FinalNode extends Node {
             throw new TypeMisMatchException("pToken.TOKEN.TYPE isn't NUM or VAR!");
         
     }
-    public String toString(){
+    public String fullString(){
         String ret = "[";
         ret += TOKEN.TYPE == Token.Types.VAR ? "\"" + sVal + "\"" : dVal;
         ret += ": " + (TOKEN.TYPE == Token.Types.VAR ? "VAR" : TOKEN.TYPE == Token.Types.NUM ? "NUM" : "NULL");
         return ret + "]";
 
+    }
+    public String toString(){
+        return "[" + (TOKEN.TYPE == Token.Types.VAR ? sVal : dVal) + "]";
     }
     
 }
