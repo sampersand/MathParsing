@@ -2,16 +2,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 /** 
  * A class that models an equation, and its behaviour.
- * TODO: cause '1 * -2' to NOT crash.
  * @author Sam Westerman
  * @version 0.2
  */
 
 public class Equation {
+// TODO: cause '1 * -2' to NOT crash.
+// TODO: toString for all classes
     public static void main(String[] args) throws NotDefinedException, TypeMisMatchException {
         // Equation eq = new Equation("1 + b * (2 + 3) + f(x, 4 + 1, a(5)) + 6");
-        Equation eq = new Equation("2 * fac(A) - summ(10) ^ (C/3)");
-        // Equation eq = new Equation("A + B * C + D ^ E + F");
+        // Equation eq = new Equation("2 * fac(A) - summ(10) ^ (C/3)");
+        // Equation eq = new Equation("1 + !(3) * 4");
+        Equation eq = new Equation("A + B * C + D ^ E + F");
         eq.factors.vars = new HashMap<String, Double>()
             {{
                 put("A",1.0D);
@@ -23,7 +25,7 @@ public class Equation {
             }};
         eq.factors.funcs = new HashMap<String, Function>()
             {{
-                put("summ", new Function("summation"));
+                put("!", new Function("summation"));
             }};
         System.out.println(eq.RAW_EQ);
         System.out.println(eq.node);
@@ -54,7 +56,7 @@ public class Equation {
     /** 
      * The default constructor for the Equation class. Just passes null to the main constructor.
      */
-    public Equation(){
+    public Equation() {
         this(null);
     }
 
@@ -63,38 +65,32 @@ public class Equation {
      * and generates a {@link Node} model for it.
      * @param pEq       A string containing the equation that this class will be modeled after.
      */ 
-    public Equation(String pEq){
+    public Equation(String pEq) {
         RAW_EQ = pEq;
         tokens = parseTokens(RAW_EQ);
         node = generateNodes(tokens);
         factors = new Factors();
     }
 
+
     /** 
-     * Evaluates pNode using pFactors.
-     * @param pFactors  The factors (varriable values and function definitions) that will be used to evaluate pNode.
-     * @param pNode     The node that will be evaluated using pFactors.
+     * Evaluates pNode using pFactor.
+     * @param pFactor  The factors (varriable values and function definitions) that will be used to evaluate pNode.
+     * @param pNode     The node that will be evaluated using pFactor.
+     * @return A numerical representation of pNode, when evaluated using pFactor.     
      * @throws NotDefinedException      Thrown if either a varriable or a function wasn't defined.
-     * @see  Factors#eval(Node);
+     * @see  Factors#eval(Node)
      */
     public static double eval(Factors pFactor, Node pNode) throws NotDefinedException {
         return pFactor.eval(pNode);
     }
 
     /** 
-     * Evaluates {@link #node} using {@link #factors}.
-     * @throws NotDefinedException      Thrown if either a varriable or a function wasn't defined.
-     * @see  #eval(Factors, Node);
-     */
-    public double eval() throws  NotDefinedException {
-        return eval(factors, node);
-    }
-
-    /** 
-     * Evaluates pNode using pFactors and pVars.
-     * @param pFactors  The factors (varriable values and function definitions) that will be used to evaluate pNode.
-     * @param pNode     The node that will be evaluated using pFactors.
+     * Evaluates pNode using pFactor and pVars.
+     * @param pFactor  The factors (varriable values and function definitions) that will be used to evaluate pNode.
+     * @param pNode     The node that will be evaluated using pFactor.
      * @param pVars     Used instead of pFactor's vars if a conflict between the two arises. 
+     * @return A numerical representation of pNode, when evaluated using pFactor, and pVars.
      * @throws NotDefinedException      Thrown if either a varriable or a function wans't defined.
      * @see  Factors#eval(Node, HashMap)
      */
@@ -103,10 +99,21 @@ public class Equation {
     }
 
     /** 
+     * Evaluates {@link #node} using {@link #factors}.
+     * @return A numerical representation of {@link #node}, when evaluated using {@link #factors}.
+     * @throws NotDefinedException      Thrown if either a varriable or a function wasn't defined.
+     * @see  #eval(Factors, Node)
+     */
+    public double eval() throws  NotDefinedException {
+        return eval(factors, node);
+    }
+
+    /** 
      * Evaluates {@link #node} using {@link #factors} and pVars.
      * @param pVars     Used instead of {@link #factors}'s vars if a conflict between the two arises.      
+     * @return A numerical representation of {@link #node}, when evaluated using {@link #factors} and pVars.
      * @throws NotDefinedException      Thrown if either a varriable or a function wasn't defined.     
-     * @see  #eval(Factors, Node, HashMap);
+     * @see  #eval(Factors, Node, HashMap)
      */    
     public double eval(HashMap<String, Double> pVars) throws NotDefinedException {
         return eval(factors, node, pVars);
@@ -122,14 +129,14 @@ public class Equation {
      * @return The return type might seem odd, however, it always returns an updated pos as argument 1, and the new node
      *         to add as argument 2.
      */
-    private Object[] condeseNodes(int pos, Node n, ArrayList<Token> pTokens){
-        while(pos < pTokens.size()){
+    private Object[] condeseNodes(int pos, Node n, ArrayList<Token> pTokens) {
+        while(pos < pTokens.size()) {
             Token t = pTokens.get(pos);
             if(t.isConst())
                 n.add(new FinalNode(t));
             if(t.isOper())
                 n.add(new Node(t));
-            if(t.isGroup()){
+            if(t.isGroup()) {
                 int paren = 0;
                 int x = pos + 1;
                 do{
@@ -158,25 +165,25 @@ public class Equation {
      * @param pNode    The node that will be used to generate the new hierarchically-structured master node.
      * @return The "master" node - that is, the node to control all other nodes. HAH - LOTR reference.
      */
-    private Node completeNodes(Node pNode){
+    private Node completeNodes(Node pNode) {
         if(node instanceof FinalNode)
             return pNode;      
         Node e = new Node(pNode.TOKEN);
         int i = 0;
-        while(i < pNode.size()){
+        while(i < pNode.size()) {
             Node n = pNode.get(i);
-            if(n instanceof FinalNode){
+            if(n instanceof FinalNode) {
                 e.addD(n);
-            } else if(n.TOKEN.TYPE == Token.Types.OPER){
-                for(int depth = 1; depth < e.depth(); depth++){
+            } else if(n.TOKEN.TYPE == Token.Types.OPER) {
+                for(int depth = 1; depth < e.depth(); depth++) {
                     Node nD = e.getD(depth);
-                    if(nD instanceof FinalNode){
+                    if(nD instanceof FinalNode) {
                         n.add(nD);
                         e.remD(depth - 1); //depth is a final node.
                         e.addD(depth - 1, n);
                         break;
                     }
-                    else if(n.TOKEN.priority() < nD.TOKEN.priority()){
+                    else if(n.TOKEN.priority() < nD.TOKEN.priority()) {
                         n.add(nD);
                         n.add(completeNodes(pNode.get(i + 1)));
                         e.setD(depth - 1, n);
@@ -186,7 +193,7 @@ public class Equation {
                 }
 
             }
-            else if(n.TOKEN.TYPE == Token.Types.FUNC || n.TOKEN.TYPE == Token.Types.GROUP){
+            else if(n.TOKEN.TYPE == Token.Types.FUNC || n.TOKEN.TYPE == Token.Types.GROUP) {
                 e.addD(completeNodes(n));
             }
             else{
@@ -203,7 +210,7 @@ public class Equation {
      * @param pTokens   The list of tokens that the master node will be based off of.
      * @return The new master node - usually set to {@link #node}.
      */
-    private Node generateNodes(ArrayList<Token> pTokens){
+    private Node generateNodes(ArrayList<Token> pTokens) {
         return completeNodes((Node)condeseNodes(0, new Node(new Token("E", Token.Types.NULL)), pTokens)[1]);
     }
     
@@ -221,45 +228,45 @@ public class Equation {
         char c;
         for(int x = 0; x < rEq.length(); x++) {
             c = rEq.charAt(x);
-            if(isAlphaNumP(c)){
+            if(isAlphaNumP(c)) {
                 prev += c;
                 if(x == rEq.length() - 1)
                     tokens.add(new Token(prev, isNumP(prev) ? Token.Types.NUM : Token.Types.VAR));                    
                 continue;
             }
-            switch(c){
+            switch(c) {
                 case '(': // This should never be preceeded by a number.
-                    if(!isAlpha(prev)){
+                    if(!isAlpha(prev)) {
                         throw new TypeMisMatchException("'" + prev + "'isn't alphabetical, but a group / function was" +
-                            "attempted to be made because it is succeeded by a '('");
-                    } if(prev.length() != 0){
+                            " attempted to be made because it is succeeded by a '('");
+                    } if(prev.length() != 0) {
                         tokens.add(new Token(prev, Token.Types.FUNC));
                     } else{
                         tokens.add(new Token(prev, Token.Types.GROUP));
                     }
-                    tokens.add(Token.LPAR);
+                    tokens.add(new Token("(",Token.Types.LPAR));
                     break;
                 case ')': 
-                    if(prev.length() != 0){
+                    if(prev.length() != 0) {
                         tokens.add(new Token(prev, isNumP(prev) ? Token.Types.NUM : Token.Types.VAR));
                     }
-                    tokens.add(Token.RPAR);
+                    tokens.add(new Token(")",Token.Types.RPAR));
                     break;
                 case '-': case '+': case '*': case '/': case '^':
-                    if(prev.length() != 0){
+                    if(prev.length() != 0) {
                         tokens.add(new Token(prev, isNumP(prev) ? Token.Types.NUM : Token.Types.VAR));
                     }
                     tokens.add(new Token(c, Token.Types.OPER));
                     break;
                 case ',':
-                    if(prev.length() != 0){
+                    if(prev.length() != 0) {
                         tokens.add(new Token(prev, isNumP(prev) ? Token.Types.NUM : Token.Types.VAR));
                     }
                     tokens.add(new Token(c, Token.Types.DELIM));
                     break;
 
                 default:
-                    if(prev.length() != 0){
+                    if(prev.length() != 0) {
                         tokens.add(new Token(prev, isNumP(prev) ? Token.Types.NUM : Token.Types.VAR));
                     }
                     tokens.add(new Token(c, Token.Types.NULL));
@@ -276,7 +283,7 @@ public class Equation {
      * @param c     The character to test.
      * @return      True if the character is alphanumeric or a period. False otherwise.
      */
-    public static boolean isAlphaNumP(char c){
+    public static boolean isAlphaNumP(char c) {
         return Character.isAlphabetic(c) || Character.isDigit(c) || c == '.';
     }
 
@@ -285,7 +292,7 @@ public class Equation {
      * @param str   The string to test.
      * @return      True if the string consists only of letters, digits, and / or periods. False otherwise.
      */
-    public static boolean isAlphaNumP(String str){
+    public static boolean isAlphaNumP(String str) {
         for(char c : str.toCharArray())
             if(!isAlphaNumP(c))
                 return false;
@@ -297,7 +304,7 @@ public class Equation {
      * @param c     The character to test.
      * @return      True if the character is a letter. False otherwise.
      */
-    public static boolean isAlpha(char c){
+    public static boolean isAlpha(char c) {
         return Character.isAlphabetic(c);
     }
 
@@ -306,7 +313,7 @@ public class Equation {
      * @param str   The string to test.
      * @return      True if the String is only letters. False otherwise.
      */
-    public static boolean isAlpha(String str){
+    public static boolean isAlpha(String str) {
         for(char c : str.toCharArray())
             if(!isAlpha(c))
                 return false;
@@ -317,7 +324,7 @@ public class Equation {
      * @param c     The character to test.
      * @return      True if the character is a digit or period. False otherwise.
      */
-    public static boolean isNumP(char c){
+    public static boolean isNumP(char c) {
         return Character.isDigit(c) || c == '.';
     }
 
@@ -327,7 +334,7 @@ public class Equation {
      * @param str   The string to test.
      * @return      True if the String is only digits and / or periods. False otherwise.
      */        
-    public static boolean isNumP(String str){
+    public static boolean isNumP(String str) {
         for(char c : str.toCharArray())
             if(!isNumP(c))
                 return false;

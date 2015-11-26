@@ -6,7 +6,7 @@ import java.io.*;
  * For example, in <code>f(x)</code>, this class would represent f.
  * 
  * @author Sam Westerman
- * @verison 0.1
+ * @version 0.1
  */
 public class Function {
 
@@ -16,7 +16,7 @@ public class Function {
     /**
      * The default constructor for the Function class. Passes null for the pFileName to the other Constructor.
      */
-    public Function(){
+    public Function() {
         this(null);
     }
 
@@ -24,7 +24,7 @@ public class Function {
      * The main cosntructor for the Function class. All it does is instantiates filePath.
      * @param pFileName         The name of the file which stores the code for how to execute the custom function.
      */
-    public Function(String pFileName){
+    public Function(String pFileName) {
         filePath = pFileName;
     }
 
@@ -39,7 +39,7 @@ public class Function {
         double[] args = new double[pNode.size()];
         for(int i = 0; i < args.length; i++)
             args[i] = pFactors.eval(pNode.get(i));
-        switch(pNode.TOKEN.VAL.toLowerCase()){
+        switch(pNode.TOKEN.VAL.toLowerCase()) {
             case "sin":
                 return Math.sin(args[0]);
             case "cos":
@@ -98,16 +98,16 @@ public class Function {
                     Object[] argListForInvokedExec = new Object[]{pFactors, pNode};
                     System.out.println("B");
                     return (double)execMethod.invoke(null, argListForInvokedExec);
-                } catch (ClassNotFoundException err){
+                } catch (ClassNotFoundException err) {
                     System.err.println("[ERROR] A ClassNotFoundException happened when attempting to execute a " +
                                        "custom method (File Name: " + filePath + "): " + err.getCause());
-                } catch (NoSuchMethodException err){
+                } catch (NoSuchMethodException err) {
                     System.err.println("[ERROR] A NoSuchMethodException happened when attempting to execute a " +
                                        "custom method (File Name: " + filePath + "): " + err.getCause());
-                } catch (InvocationTargetException err){
+                } catch (InvocationTargetException err) {
                     System.err.println("[ERROR] A InvocationTargetException happened when attempting to execute a " +
                                        "custom method (File Name: " + filePath + "): " + err.getCause());
-                } catch (IllegalAccessException err){
+                } catch (IllegalAccessException err) {
                     System.err.println("[ERROR] A IllegalAccessException happened when attempting to execute a " +
                                        "custom method (File Name: " + filePath + "): " + err.getCause());
                 } return 0;

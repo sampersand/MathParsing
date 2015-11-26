@@ -1,6 +1,6 @@
 /** 
  * A node that represents either a varriable or a constant.
- * Note that this class doesn't interact with {@link Node#subNode}, and consequently, <code>this.size()</code> will
+ * Note: This class doesn't interact with {@link Node#subNodes}, and consequently, <code>this.size()</code> will
  * always yeild 0.
  * @author Sam Westerman
  * @version 0.1
@@ -16,7 +16,7 @@ public class FinalNode extends Node {
     /** 
      * The default constructor for FinalNode. Just passes null to the main constructor.
      */
-    public FinalNode(){
+    public FinalNode() {
         this(null);
     }
 
@@ -43,7 +43,7 @@ public class FinalNode extends Node {
     }
 
     @Override
-    public String fullString(){
+    public String fullString() {
         String ret = "[";
         ret += TOKEN.TYPE == Token.Types.VAR ? "\"" + sVal + "\"" : dVal;
         ret += ": " + (TOKEN.TYPE == Token.Types.VAR ? "VAR" : TOKEN.TYPE == Token.Types.NUM ? "NUM" : "NULL");
@@ -52,7 +52,7 @@ public class FinalNode extends Node {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "[" + (TOKEN.TYPE == Token.Types.VAR ? sVal : dVal) + "]";
     }
     

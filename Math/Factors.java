@@ -34,6 +34,7 @@ public class Factors {
 
     /** 
      * Overloaded eval constructor. Just passes to the main one with an empty pVars.
+     * @param pNode         The node that will be evaluated.     
      * @return A double representing the value of pNode when evaluated with "vars" and "funcs".
      */
     public double eval(Node pNode) throws NotDefinedException {
@@ -55,7 +56,7 @@ public class Factors {
             else if (fNode.TOKEN.TYPE == Token.Types.VAR) {
                 if(pVars.get(fNode.sVal) != null) {return (double)pVars.get(fNode.sVal); }
                 else if(vars.get(fNode.sVal) == null) {
-                    switch(fNode.sVal.toLowerCase()){
+                    switch(fNode.sVal.toLowerCase()) {
                         case "e": return Math.E;
                         case "pi": case "π": return Math.PI;
                         default:
@@ -72,10 +73,10 @@ public class Factors {
         if(pNode.TOKEN.TYPE == Token.Types.FUNC ) {
             try{
                 return funcs.get(pNode.TOKEN.VAL).exec(this, pNode);
-            } catch (NullPointerException err){
+            } catch (NullPointerException err) {
                 try {
                     return new Function(pNode.TOKEN.VAL).exec(this, pNode);
-                } catch (NullPointerException err2){
+                } catch (NullPointerException err2) {
                     throw new NotDefinedException("Function '" + pNode.TOKEN.VAL +
                         "' isn't defined in functions!");
                 }
