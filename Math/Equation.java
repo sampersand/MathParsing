@@ -13,8 +13,9 @@ public class Equation {
         // Equation eq = new Equation("1 + b * (2 + 3) + f(x, 4 + 1, a(5)) + 6");
         // Equation eq = new Equation("2 * fac(A) - summ(10) ^ (C/3)");
         // Equation eq = new Equation("1 + !(3) * 4");
-        Equation eq = new Equation("A + B * C + D ^ E + F");
-        eq.factors.vars = new HashMap<String, Double>()
+        // Equation eq = new Equation("A + B * C + D ^ E + F");
+        Equation eq = new Equation("cos(x)");
+        eq.factors.addVars(new HashMap<String, Double>()
             {{
                 put("A",1.0D);
                 put("B",2.0D);
@@ -22,11 +23,12 @@ public class Equation {
                 put("D",4.0D);
                 put("E",5.0D);
                 put("F",6.0D);
-            }};
-        eq.factors.funcs = new HashMap<String, Function>()
+                put("x",10D);
+            }});
+        eq.factors.addFuncs(new HashMap<String, CustomFunction>()
             {{
-                put("!", new Function("summation"));
-            }};
+                put("!", new CustomFunction("summation"));
+            }});
         System.out.println(eq.RAW_EQ);
         System.out.println(eq.node);
         System.out.println("ANSWER: "+eq.eval());
@@ -246,7 +248,7 @@ private Node completeNodes(Node pNode){
                             " attempted to be made because it is succeeded by a '('");
                     } if(prev.length() != 0) {
                         tokens.add(new Token(prev, Token.Types.FUNC));
-                    } else{
+                    } else {
                         tokens.add(new Token(prev, Token.Types.GROUP));
                     }
                     tokens.add(new Token("(",Token.Types.LPAR));

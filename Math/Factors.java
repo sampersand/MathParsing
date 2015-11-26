@@ -8,26 +8,26 @@ public class Factors {
     /**
      * A HashMap of varriables; The keys are the names, the values are, well, the values of the varriables.
      */
-    public HashMap<String, Double> vars;
+    private HashMap<String, Double> vars;
 
     /**
-     * A HashMap of functions; The keys are the names, and the values are Function Classes that correspond to the names.
+     * A HashMap of functions; The keys are the names, and the values are CustomFunction Classes that correspond to the names.
     */
-    public HashMap<String, Function> funcs;
+    private HashMap<String, CustomFunction> funcs;
 
     /** 
      * Default constructor. Just calls the main constructor with empty HashMaps.
      */
     public Factors() {
-        this(new HashMap<String, Double>(),new HashMap<String, Function>());
+        this(new HashMap<String, Double>(), new HashMap<String, CustomFunction>());
     }
 
     /** 
      * The main constructor for Factors.
      * @param pVars     The HashMap of varriable names and their corresponding values.
-     * @param pFuncs    The HashMap of function names and their corresponding Function classes.
+     * @param pFuncs    The HashMap of function names and their corresponding CustomFunction classes.
      */
-    public Factors(HashMap<String, Double> pVars, HashMap<String, Function> pFuncs) {
+    public Factors(HashMap<String, Double> pVars, HashMap<String, CustomFunction> pFuncs) {
         vars = pVars;
         funcs = pFuncs;
     }
@@ -52,39 +52,39 @@ public class Factors {
     public double eval(Node pNode, HashMap<String, Double> pVars) throws NotDefinedException {
         if (pNode instanceof FinalNode) {
             FinalNode fNode = (FinalNode)pNode;
-            if (fNode.TOKEN.TYPE == Token.Types.NUM) { return fNode.dVal; }
-            else if (fNode.TOKEN.TYPE == Token.Types.VAR) {
-                if(pVars.get(fNode.sVal) != null) {return (double)pVars.get(fNode.sVal); }
-                else if(vars.get(fNode.sVal) == null) {
+            if (fNode.TOKEN.TYPE == Token.Types.NUM) {
+                return fNode.dVal;
+            } else if (fNode.TOKEN.TYPE == Token.Types.VAR) {
+                if(pVars.get(fNode.sVal) != null) {
+                    return (double)pVars.get(fNode.sVal);
+                } else if(!inVar(fNode.sVal)) {
                     switch(fNode.sVal.toLowerCase()) {
                         case "e": return Math.E;
                         case "pi": case "π": return Math.PI;
                         default:
-                            throw new NotDefinedException("FinalNode '" + fNode.TOKEN.VAL +
-                                "' isn't defined in vars!");
-                        }
-                } else { return (double)vars.get(fNode.sVal); }
+                            throw new NotDefinedException("FinalNode '" + fNode.TOKEN.VAL + "' isn't defined in vars!");
+                    }
+                } else {
+                    return (double)getVar(fNode.sVal);
+                }
             } else {
-                throw new TypeMisMatchException("FinalNode '" +fNode.sVal + "&" + fNode.dVal 
-                    + "' isn't a NUM or VAR! WHAT?!?");
+                throw new TypeMisMatchException("FinalNode '" +fNode.sVal + "&" + fNode.dVal + "' isn't a NUM or VAR!");
             }
-        }
-
-        if(pNode.TOKEN.TYPE == Token.Types.FUNC ) {
-            try{
-                return funcs.get(pNode.TOKEN.VAL).exec(this, pNode);
-            } catch (NullPointerException err) {
+        } else if(pNode.TOKEN.TYPE == Token.Types.FUNC ) {
+            if(inFunc(pNode.TOKEN.VAL))
+                return getFunc(pNode.TOKEN.VAL).exec(this, pNode);
+            else {
                 try {
-                    return new Function(pNode.TOKEN.VAL).exec(this, pNode);
+                    return InBuiltFunction.get(pNode.TOKEN.VAL).exec(this, pNode);
                 } catch (NullPointerException err2) {
-                    throw new NotDefinedException("Function '" + pNode.TOKEN.VAL +
-                        "' isn't defined in functions!");
+                    throw new NotDefinedException("Function '" + pNode.TOKEN.VAL + "' isn't defined in funcs " + 
+                                                  "(and isn't inbuilt either)!");
                 }
             }
         }
-        else if(pNode.TOKEN.TYPE == Token.Types.GROUP || pNode instanceof FinalNode ||
-               pNode.TOKEN.isUni()) { return eval(pNode.get(0)); }
-        else if(pNode.TOKEN.TYPE == Token.Types.OPER) {
+        else if(pNode.TOKEN.TYPE == Token.Types.GROUP || pNode instanceof FinalNode || pNode.TOKEN.isUni()) {
+                return eval(pNode.get(0));
+        } else if(pNode.TOKEN.TYPE == Token.Types.OPER) {
             switch(pNode.TOKEN.VAL) {
                 case "+":
                     return eval(pNode.get(0)) + eval(pNode.get(1));
@@ -97,13 +97,86 @@ public class Factors {
                 case "^":
                     return Math.pow(eval(pNode.get(0)), eval(pNode.get(1))); // not sure this works
                 default:
-                    throw new NotDefinedException("Node: '" + pNode.TOKEN.VAL + 
-                        "' is an OPERATOR, but no known way to evaluate it.");
+                    throw new NotDefinedException("Node: '" + pNode.TOKEN.VAL + "' is an OPERATOR, but no known way " +
+                                                  "to evaluate it.");
             }
+        } else {
+            throw new NotDefinedException("Node: '" + pNode.TOKEN.VAL + "' has no known way to evaluate it");
         }
-        else {
-            throw new NotDefinedException("Node: '" + pNode.TOKEN.VAL + 
-                "' has no known way to evaluate it");
+    }
+
+    /** 
+     * Puts a {@link #CustomFunction} with the name fName into {@link #funcs} with the key fName.
+     * @param fName     The name that will be used as the key and file name for the CustomFunction in {@link #funcs}.
+     */
+    public void addFunc(String fName){
+        addFunc(fName, fName);
+    }
+    
+    /** 
+     * Puts <code>0.0D</code> into {@link #funcs} with the key vName.
+     * @param vName     The name that will be used as the varriable name.
+     */
+    public void addVar(String vName){
+        addVar(vName, 0);
+    }
+    
+    /** 
+     * Puts a {@link #CustomFunction} with the name fName into {@link #funcs} with the key kName.
+     * @param kName     The name that will be used as the key.
+     * @param fName     The name that will be used for the {@link CustomFunction}.
+     */
+    public void addFunc(String kName, String fName){
+        funcs.put(kName, new CustomFunction(fName));
+    }
+
+    /** 
+     * Puts pVal into {@link #funcs} with the key kName.
+     * @param kName     The name that will be used as the key.
+     * @param fName     The double that will be used as the value.
+     */
+    public void addVar(String vName, double pVal){
+        vars.put(vName, pVal);
+    }
+
+    /** 
+     * Calls {@link #addFunc(String)} for each String in fNames - insterting them into {@link #funcs}. The key is 
+     * each argument, with the value being a {@link CustomFunction} initiated with said argument.
+     */
+    public void addFuncs(String[] fNames){
+        for(String fName : fNames){
+            addFunc(fName);
         }
-    }        
+    }
+
+    public void addVars(String[] fNames){
+        for(String fName : fNames){
+            addVar(fName);
+        }
+    }
+
+    public void addFuncs(HashMap<String, CustomFunction> pFuncs){
+        funcs.putAll(pFuncs);
+    }
+    public void addVars(HashMap<String, Double> pFuncs){
+        vars.putAll(pFuncs);
+    }
+
+    public CustomFunction getFunc(String pKey) throws NullPointerException {
+        return funcs.get(pKey);
+    }
+
+    public double getVar(String pKey) throws NullPointerException {
+        return vars.get(pKey);
+    }
+
+    public boolean inVar(String pKey){
+        return vars.containsKey(pKey);
+    }
+
+    public boolean inFunc(String pKey){
+        return funcs.containsKey(pKey);
+    }
+
+
 }
