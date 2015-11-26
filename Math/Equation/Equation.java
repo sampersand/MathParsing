@@ -12,30 +12,68 @@ import java.util.HashMap;
 public class Equation {
 // TODO: cause '1 * -2' to NOT crash.
 // TODO: toString for all classes
+    /** 
+     * Note that if this is going to be called from the commandline, the syntax is as follows:
+     * java Equation (-v v1:val v2:val) (-f f1:val f2:val) "equation"
+     */
     public static void main(String[] args) throws NotDefinedException, TypeMisMatchException {
-        // Equation eq = new Equation("1 + B * (2 + 3) + f(x, 4 + 1, A(5)) + fac(6) ^ .5");
-        Equation eq = new Equation("f(1, rand, 4) + e ");
-        // Equation eq = new Equation("2 * fac(A) - summ(10) ^ (C/3)");
-        // Equation eq = new Equation("1 + f(3) * 4");
-        // Equation eq = new Equation("A + B * C + D ^ E + F");
-        eq.factors.addVars(new HashMap<String, Double>()
-            {{
-                put("A",1.0D);
-                put("B",2.0D);
-                put("C",3.0D);
-                put("D",4.0D);
-                put("E",5.0D);
-                put("F",6.0D);
-                put("x",10D);
-            }});
-        eq.factors.addFuncs(new HashMap<String, CustomFunction>()
-            {{
-                put("f", new CustomFunction("f"));
-                put("sum", new CustomFunction("summation"));
-            }});
-        System.out.println(eq.RAW_EQ);
-        System.out.println(eq.node);
-        System.out.println("ANSWER: "+eq.eval());
+        Equation eq;
+        if(args.length == 0){
+            eq = new Equation("graph((1,2),(2,3)) + e ");
+            eq.factors.addVars(new HashMap<String, Double>()
+                {{
+                    put("A",1.0D);
+                    put("B",2.0D);
+                    put("C",3.0D);
+                    put("D",4.0D);
+                    put("E",5.0D);
+                    put("F",6.0D);
+                    put("x",10D);
+                }});
+            eq.factors.addFuncs(new HashMap<String, CustomFunction>()
+                {{
+                    put("f", new CustomFunction("f"));
+                    put("graph", new CustomFunction("graph"));
+                    put("sum", new CustomFunction("summation"));
+                }});
+        }
+        else{
+            String rEq = args[args.length - 1];
+            eq = new Equation(rEq);
+            if(args.length > 0){
+                int i = 0;
+                boolean isArg = args[0].equals("-v");
+                if(!args[0].equals("-f") && !isArg)
+                    throw new NotDefinedException("first value has to be -f or -v");
+                while(i < args.length - 2){ //args.length is string.
+                    i++;
+                    if(args[i].equals("-v")){isArg = true; continue;}
+                    if(args[i].equals("-f")){isArg = false; continue;}
+                    if(isArg){
+                        try{
+                            eq.factors.addVar(args[i].split(":")[0], Double.parseDouble(args[i].split(":")[1]));
+                        } catch(NumberFormatException err){
+                            System.err.println("Syntax: VARNAME:VARVAL (" + args[i] + ")");
+                        } catch(ArrayIndexOutOfBoundsException err){
+                            System.err.println("Syntax: VARNAME:VARVAL (" + args[i] + ")");
+                        }                    } else {
+                        try{
+                            eq.factors.addFunc(args[i].split(":")[0], args[i].split(":")[1]);
+                        } catch(NumberFormatException err){
+                            System.err.println("Syntax: FUNCNAME:FUNCVAL (" + args[i] + ")");
+                        } catch(ArrayIndexOutOfBoundsException err){
+                            System.err.println("Syntax: FUNCNAME:FUNCVAL (" + args[i] + ")");
+                        }
+                    }       
+                }
+            }
+
+        }
+        System.out.println("RAW EQUATION: "+ eq.RAW_EQ);
+        System.out.println("NODES:" + eq.node);
+        System.out.println("RESULT: "+eq.eval());
+        System.err.println();
+        System.err.println(eq.factors.getFunc("f"));
     }
 
     /** The raw equation. */
@@ -181,20 +219,15 @@ private Node completeNodes(Node pNode){
             if(n instanceof FinalNode){
                 e.addD(n);
             }
-            else if(n.TOKEN.TYPE == Token.Types.OPER){
+            else if(n.TOKEN.isOper()){
                 for(int depth = 1; depth < e.depth(); depth++){
                     Node nD = e.getD(depth);
                     if(nD instanceof FinalNode){
-                        // System.out.println("nD=FN|n:" + n + "(" + n.TOKEN.priority() + ") |nD: " + nD 
-                        //         + "(" + nD.TOKEN.priority() + ")");
                         n.add(nD);
                         e.set(depth - 1, n); //depth is a final node.
-                        // e.addD(depth - 1, n);
                         break;
                     }
                     else if(n.TOKEN.priority() < nD.TOKEN.priority()){
-                        // System.out.println("n<nD|n:" + n + "(" + n.TOKEN.priority() + ") |nD: " + nD 
-                        //     + "(" + nD.TOKEN.priority() + ")");
                         n.add(nD);
                         n.add(completeNodes(pNode.get(i + 1)));
                         i++;
@@ -204,7 +237,7 @@ private Node completeNodes(Node pNode){
                 }
 
             }
-            else if(n.TOKEN.TYPE == Token.Types.FUNC || n.TOKEN.TYPE == Token.Types.GROUP){
+            else if(n.TOKEN.isGroup()){
                 e.addD(completeNodes(n));
             }
             else{
@@ -237,8 +270,23 @@ private Node completeNodes(Node pNode){
         String prev = "";
         char c;
         for(int x = 0; x < rEq.length(); x++) {
+            System.err.println(prev);
             c = rEq.charAt(x);
-            if(isAlphaNumP(c)) {
+            if(prev.length() != 0 && prev.charAt(0) == '\''){
+                prev += c;
+                if(c == '\''){
+                    tokens.add(new Token(prev.substring(1, prev.length() -1), Token.Types.ARGS));
+                    prev = "";
+                }
+                continue;
+            }
+            if(prev.length() > 0 && prev.charAt(0) == '\'' && c == '\''){
+                prev = prev.substring(1);
+                tokens.add(new Token(prev, Token.Types.VAR));
+                prev = "";
+                continue;
+            }
+            if(isAlphaNumPQ(c)) {
                 prev += c;
                 if(x == rEq.length() - 1)
                     tokens.add(new Token(prev, isNumP(prev) ? Token.Types.NUM : Token.Types.VAR));                    
@@ -285,7 +333,17 @@ private Node completeNodes(Node pNode){
             }
             prev = "";
         }
+        System.err.println(tokens);
         return tokens;
+    }
+
+    /** 
+     * Checks if a character is alphanumeric, period, or a single quote (').
+     * @param c     The character to test.
+     * @return      True if the character is alphanumeric, period, or a single quote ('). False otherwise.
+     */
+    public static boolean isAlphaNumPQ(char c) {
+        return isAlphaNumP(c) || c == '\'';
     }
 
     /** 

@@ -1,2 +1,4 @@
-javac /Users/westerhack/code/java/class/personal\ projects/Math/Math/Equation/Equation.java -d bin/
-java -cp /Users/westerhack/code/java/class/personal\ projects/Math/bin Math.Equation.Equation
+cd /Users/westerhack/code/java/class/personal\ projects/Math
+
+javac -d bin Math/Equation/*.java Math/Set/Set.java Math/Equation/CustomFunctions/*.java Math/Equation/Exception/*.java
+#java -cp bin Math.Equation.Equation

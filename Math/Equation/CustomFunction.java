@@ -6,12 +6,15 @@ import Math.Equation.CustomFunctions.*;
 
 import Math.Equation.Function;
 import Math.Equation.Factors;
-// import Math.Equation.Node;
-// import Math.Equation.CustomFunction;
+import Math.Equation.Node;
+import Math.Equation.CustomFunction;
 
 import java.lang.reflect.*;
 
 public class CustomFunction extends Function {
+    public static String HELP = "f(a, b, ... n) = 1/a + 1/b + ... + 1/n";
+    public static String SYNTAX = "f(a, b, ... n) such that a, b, ..., n are all numbers or variables.";
+
     public CustomFunction(){
         this(null);
     }
@@ -19,7 +22,7 @@ public class CustomFunction extends Function {
         super(pVal);
     }
     public String toString(){
-        return "CustomFunction: '" + fName + "'";
+        return "CustomFunction: '" + fName + "'\nHELP: " + HELP + "\nSYNTAX: " + SYNTAX;
     }
     /** 
      * This thing takes a node (usually the node from {@link #exec(Factors,Node) exec}), and returns an array of the 

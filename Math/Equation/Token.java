@@ -86,6 +86,11 @@ public class Token {
          * @see Factors
          */
         GROUP
+        ,
+        /** 
+         * A raw string. Used only to keep track of what is between a pair of single quotes (').
+         */
+        ARGS
     }
     /**
      * Default constructor. Just passes null, null to the main constructor.
@@ -120,9 +125,9 @@ public class Token {
     /** 
      * Used to determine if a {@link Node} based on a token should be a {@link FinalNode} or a {@link Node}
      * (in this case, it's the former).
-     * @return True if TYPE is a NUM or VAR.
+     * @return True if TYPE is a NUM or VAR or ARGS.
      */
-    public boolean isConst() { return TYPE == Types.NUM || TYPE == Types.VAR;}
+    public boolean isConst() { return TYPE == Types.NUM || TYPE == Types.VAR || TYPE == Types.ARGSR;}
 
     /** 
      * Used to determine if a //{@link Node} based on a token should be a {@link FinalNode} or a {@link Node}
@@ -154,9 +159,9 @@ public class Token {
      * @return The priority.
      */
     public int priority() {
-        if(TYPE == Types.NULL && VAL == "E")
+        if(isUni())
             return 4;
-        if(TYPE != Types.OPER && TYPE != Types.FUNC && TYPE != Types.GROUP) {
+        if(!isOper() && ! isGroup()) {
             return -1;
         }
         switch(VAL) {
@@ -185,6 +190,7 @@ public class Token {
             case NULL: ret += "NULL"; break;
             case DELIM: ret += "DELIM"; break;
             case GROUP: ret += "GROUP"; break;
+            case ARGS: ret += "ARGS"; break;
             default: ret += "UHOH"; break;
         }
         return ret + ")";

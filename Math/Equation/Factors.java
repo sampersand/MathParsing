@@ -72,7 +72,7 @@ public class Factors {
                         default:
                             throw new NotDefinedException("FinalNode '" + fNode.TOKEN.VAL + "' isn't defined in vars!");
                     }
-                } else {
+                } else if(fNode.TOKEN.TYPE == Token.Types){
                     return (double)getVar(fNode.sVal);
                 }
             } else {
@@ -139,8 +139,18 @@ public class Factors {
      * @param fName     The name that will be used for the {@link CustomFunction}.
      */
     public void addFunc(String kName, String fName){
-        funcs.put(kName, new CustomFunction(fName));
+        addFunc(kName, new CustomFunction(fName));
     }
+    
+    /** 
+     * Puts a fFunc into {@link #funcs} with the key kName.
+     * @param kName     The name that will be used as the key.
+     * @param fName     {@link CustomFunction} that will be used as the key..
+     */
+    public void addFunc(String kName, CustomFunction fFunc){
+        funcs.put(kName, fFunc);
+    }
+
 
     /** 
      * Puts pVal into {@link #funcs} with the key kName.

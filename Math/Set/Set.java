@@ -1,36 +1,37 @@
+package Math.Set;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-public class SList {
-    public static final double e = Math.E;
+public class Set {
+    // public static final double e = Math.E;
     private double[] matr;
     private double[] matr2;
     private double[] equation;
     private String name;
     public static void main(String[] args) { 
         assert false;
-        // SList mtr = new SList(new double[]{90,90,95,100,80,80,75,80,70,60,95,100,100,100,75,80,90,90,90,70,70,80,85,90,90,85});
-        SList mtr = new SList(new double[]{-3,-2,-1,0,1,2,3},new double[]{-3,-2,-1,0,1,2,3});
+        // Set mtr = new Set(new double[]{90,90,95,100,80,80,75,80,70,60,95,100,100,100,75,80,90,90,90,70,70,80,85,90,90,85});
+        Set mtr = new Set(new double[]{-3,-2,-1,0,1,2,3},new double[]{-3,-2,-1,0,1,2,3});
         mtr.graph();
 
     }   
-    public SList(double[] matrix){
+    public Set(double[] matrix){
         this(matrix, matrix);
     }
-    public SList(double[] matrix, String name){
+    public Set(double[] matrix, String name){
         this(matrix, matrix, name);
     }
-    public SList(double[] matrix, double[] matrix2){
-        this(matrix,matrix2,"Untitled SList");
+    public Set(double[] matrix, double[] matrix2){
+        this(matrix,matrix2,"Untitled Set");
     }
-    public SList(SList sl1, SList sl2){
+    public Set(Set sl1, Set sl2){
         this(sl1.getMatr(),sl2.getMatr());
     }
-    public SList(SList sl1, SList sl2, String name){
+    public Set(Set sl1, Set sl2, String name){
         this(sl1.getMatr(),sl2.getMatr(), name);
     }    
-    public SList(double[] matrix, double[] matrix2, String name){
+    public Set(double[] matrix, double[] matrix2, String name){
         this.matr = matrix;
         this.matr2 = matrix2;
         this.name = name;
@@ -240,7 +241,7 @@ public class SList {
         double[] fns = fiveNumSum(inp);
 
         System.out.printf("Min   : %f%nQ1    : %f%nMed   : %f%nQ2    : %f%nMax   : %f%nMean  : %f%nStdev : %f%n",
-            fns[0], fns[1], fns[2], fns[3], fns[4],SList.avg(inp),SList.stdev(inp));
+            fns[0], fns[1], fns[2], fns[3], fns[4],Set.avg(inp),Set.stdev(inp));
     }
     public void printLinReg(){ printLinReg(matr, matr2); }
     public static void printLinReg(double[] pMatr, double[] pMatr2){
@@ -254,7 +255,7 @@ public class SList {
         System.out.println(ret.substring(0,ret.length()-3));
     }
 
-    public void graphe(){(new SList(matr,resid(),"Residuals of "+this.name)).graph();}
+    public void graphe(){(new Set(matr,resid(),"Residuals of "+this.name)).graph();}
 
     public void graph(){
         JFrame frame = new JFrame();
@@ -264,7 +265,7 @@ public class SList {
         frame.setTitle(this.name);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        SListDisplay gdisp = new SListDisplay(this, new int[] { xScreenLimit, yScreenLimit });
+        SetDisplay gdisp = new SetDisplay(this, new int[] { xScreenLimit, yScreenLimit });
         frame.add(gdisp);        
         frame.setVisible(true);
     }
