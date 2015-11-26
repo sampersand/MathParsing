@@ -165,35 +165,41 @@ public class Equation {
      * @param pNode    The node that will be used to generate the new hierarchically-structured master node.
      * @return The "master" node - that is, the node to control all other nodes. HAH - LOTR reference.
      */
-    private Node completeNodes(Node pNode) {
-        if(node instanceof FinalNode)
+private Node completeNodes(Node pNode){
+        if(pNode instanceof FinalNode)
             return pNode;      
         Node e = new Node(pNode.TOKEN);
         int i = 0;
-        while(i < pNode.size()) {
+        while(i < pNode.size()){
+            // System.out.println("@E: "+e);
             Node n = pNode.get(i);
-            if(n instanceof FinalNode) {
+            if(n instanceof FinalNode){
                 e.addD(n);
-            } else if(n.TOKEN.TYPE == Token.Types.OPER) {
-                for(int depth = 1; depth < e.depth(); depth++) {
+            }
+            else if(n.TOKEN.TYPE == Token.Types.OPER){
+                for(int depth = 1; depth < e.depth(); depth++){
                     Node nD = e.getD(depth);
-                    if(nD instanceof FinalNode) {
+                    if(nD instanceof FinalNode){
+                        // System.out.println("nD=FN|n:" + n + "(" + n.TOKEN.priority() + ") |nD: " + nD 
+                        //         + "(" + nD.TOKEN.priority() + ")");
                         n.add(nD);
                         e.remD(depth - 1); //depth is a final node.
                         e.addD(depth - 1, n);
                         break;
                     }
-                    else if(n.TOKEN.priority() < nD.TOKEN.priority()) {
+                    else if(n.TOKEN.priority() < nD.TOKEN.priority()){
+                        // System.out.println("n<nD|n:" + n + "(" + n.TOKEN.priority() + ") |nD: " + nD 
+                        //     + "(" + nD.TOKEN.priority() + ")");
                         n.add(nD);
                         n.add(completeNodes(pNode.get(i + 1)));
-                        e.setD(depth - 1, n);
                         i++;
+                        e.setD(depth - 1, n);
                         break;
                     }
                 }
 
             }
-            else if(n.TOKEN.TYPE == Token.Types.FUNC || n.TOKEN.TYPE == Token.Types.GROUP) {
+            else if(n.TOKEN.TYPE == Token.Types.FUNC || n.TOKEN.TYPE == Token.Types.GROUP){
                 e.addD(completeNodes(n));
             }
             else{
@@ -204,7 +210,6 @@ public class Equation {
 
         return e;
     }
-
     /** 
      * Generates a "master node" from a list of tokens.
      * @param pTokens   The list of tokens that the master node will be based off of.

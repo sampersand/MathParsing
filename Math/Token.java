@@ -1,3 +1,4 @@
+
 import java.util.HashMap;
 /** 
  * A single item from an equation String.
@@ -124,16 +125,16 @@ public class Token {
     public boolean isConst() { return TYPE == Types.NUM || TYPE == Types.VAR;}
 
     /** 
-     * Used to determine if a {@link Node} based on a token should be a {@link FinalNode} or a {@link Node}
-     * (in this case, it's the latter). Also used to distinguish between {@link #Types.FUNC functions} / 
-     * {@link #Types.GROUP groups} and {@link #Types.OPER operators}.
+     * Used to determine if a //{@link Node} based on a token should be a {@link FinalNode} or a {@link Node}
+     * (in this case, it's the latter). Also used to distinguish between {@link Token.Types#FUNC functions} / 
+     * {@link Token.Types#GROUP groups} and {@link Token.Types#OPER operators}.
      * @return True if TYPE is a GROUP or FUNC.
      */
     public boolean isGroup() { return TYPE == Types.GROUP || TYPE == Types.FUNC;}
 
     /** 
-     * Used to distinguish between {@link #Types.FUNC functions} / 
-     * {@link #Types.GROUP groups} and {@link #Types.OPER operators}.
+     * Used to distinguish between {@link Token.Types#FUNC functions} / 
+     * {@link Token.Types#GROUP groups} and {@link Token.Types#OPER operators}.
      * @return True if TYPE is a OPER.
      */    
     public boolean isOper() {return  TYPE == Types.OPER;}
