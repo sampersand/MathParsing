@@ -39,7 +39,7 @@ public class Equation {
     public ArrayList<Token> tokens;
 
     /**
-     * The Node representing the whole equation. It is {@link #tokens}, but put into a higherarchy.
+     * The Node representing the whole equation. It is {@link #tokens}, but put into a hierarchy.
      * @see   #generateNodes(ArrayList)
      */
     public Node node;
@@ -114,7 +114,8 @@ public class Equation {
 
     /** 
      * Condenses functions and groups together into a single node. Creates 1-length nodes for operators and vars / nums.
-     * Note that this is only ever used with {@link #generateNodes (ArrayList)} and {@link #generateNodes (Node)}.
+     * Note that this is only ever used with {@link #generateNodes(ArrayList) generateNodes} and 
+     * {@link #completeNodes(Node) completeNodes}.
      * @param pos       The position to start condensing nodes form.
      * @param n         The "parent" node that any newly generated nodes will be put into.
      * @param pTokens   The list of tokens that will be put into nodes.
@@ -153,8 +154,8 @@ public class Equation {
 
     /**
      * Creates a master node using the pNode as a starting point by applying the Order of Operations.
-     * Note: pNode should already have been condensed via {@link #condeseNodes (int, Node, ArrayList)}. 
-     * @param pNode    The node that will be used to generate the new higherarchicaly-structured master node.
+     * Note: pNode should already have been condensed via {@link #condeseNodes(int,Node,ArrayList) condeseNodes}. 
+     * @param pNode    The node that will be used to generate the new hierarchically-structured master node.
      * @return The "master" node - that is, the node to control all other nodes. HAH - LOTR reference.
      */
     private Node completeNodes(Node pNode){

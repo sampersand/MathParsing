@@ -1,41 +1,94 @@
 import java.util.ArrayList;
 /** 
- * TODO: make javadoc for this thing.
+ * A class that represents either a function, an operator, or a group of tokens.
+ * @author Sam Westerman
+ * @version 0.1
  */
 public class Node {
+
+    /** A list of all nodes that are benith this one in the hierarchical structure. */
     public ArrayList<Node> subNodes;
+
+    /** The token that this class determins how this class interacts with its {@link #subNodes}. */
     public final Token TOKEN;
+
+    /** 
+     * The default constructor for Node. Just passes a null value to the {@link #Node(Token)} constructor. 
+     */
     public Node(){
-        this(new Token());
+        this(null);
     }
+
+    /** 
+     * A constructor for Node, which only takes a token as an input. Just passes an empty list and pToken to
+     * {@link #Node(Token,ArrayList) main} constructor.
+     * @param pToken        The token that will determine how this class interacts with its {@link #subNodes}.
+     */
     public Node(Token pToken){
         this(pToken, new ArrayList<Node>());
     }
+
+    /** 
+     * The main constructor for Node. 
+     * @param pToken        The token that will determine how this class interacts with its {@link #subNodes}.
+     * @param pSubNodes     The list of subNodes this class will have.
+     */
     public Node(Token pToken, ArrayList<Node> pSubNodes){
         subNodes = pSubNodes;
         TOKEN = pToken;
     }
+
+    /** 
+     * An alternate constructor for Node. This one utilizes varargs. 
+     * To instantiate using this constructor, you would do somehting like:
+     * <code>Node n = new Node(Token, Node1, Node2, ... , NodeN</code>.
+     * @param pToken        The token that will determine how this class interacts with its {@link #subNodes}.
+     * @param pSubNodes     A of subNodes this class will have.
+     */
     public Node(Token pToken, Node... pSubNodes){
         subNodes = new ArrayList<Node>(){{
             for(Node n : pSubNodes)
                 add(n);
             }};
         TOKEN = pToken;
-    }    
+    }
+
+    /** 
+     * Appends Node n to the end of {@link #subNodes}.
+     * @param n             The node to append.
+     */
     public void add(Node n){
         subNodes.add(n);
     }
+
+    /** 
+     * Creates a {@link Node}(or {@link FinalNode}) for t, and then appends that to the end of {@link #subNodes}.
+     * @param t             The token to create a new Node for, and then append.
+     */    
     public void add(Token t){
         add(t.isConst() ? new FinalNode(t) : new Node(t));
     }
+
+    /** 
+     * Returns the size of {@link #subnodes}.
+     * @return The size of {@link #subNodes}.
+     */
     public int size(){
         return subNodes.size();
     }
+
+    /** 
+     * Returns the node at position i in {@link #subnodes}.
+     * @return The node at position i in {@link #subNodes}.
+     */
     public Node get(int i){
         return subNodes.get(i);
     }
-    public Node set(int i, Node n){
-        return subNodes.set(i, n);
+    /** 
+     * sets the node at position i in {@link #subnodes} to n.
+     */    
+    public void set(int i, Node n){
+        subNodes.set(i, n);
     }
 
     public void rem(int i){
@@ -108,13 +161,21 @@ public class Node {
             rem(size() - 1);
         else
             get(size() - 1).remD(i - 1);
-    }    
+    }
+    /** 
+     * The more robust version of this class's {@link #toString()}.
+     * @return A more detailed String representation of this.
+     */    
     public String fullString(){
         String ret = "{\"" + TOKEN.VAL + "\" | " + TOKEN.TYPE + " | ";
         for(Node node : subNodes)
             ret += node.fullString() + ", ";
         return ret.substring(0,ret.length()-2) + "}";
     }
+    /** 
+     * A simple representation of this class.
+     * @return A simple String representation of this.
+     */      
     public String toString(){
         String ret = "{" + TOKEN.VAL + ": ";
         for(Node node : subNodes)
