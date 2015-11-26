@@ -5,7 +5,7 @@ public class FinalNode extends Node {
     public FinalNode(){
         this(null);
     }
-    public FinalNode(Token pToken) throws TypeMisMatchException {
+    public FinalNode(Token pToken) throws TypeMisMatchException, DoesntExistException{
         super(pToken);        
         if (TOKEN.TYPE == Token.Types.NUM)
             try {

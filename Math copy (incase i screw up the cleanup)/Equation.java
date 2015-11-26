@@ -2,17 +2,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 /** 
  * A class that models an equation, and its behaviour.
- * TODO: cause '1 * -2' to NOT crash.
  * @author Sam Westerman
- * @version 0.2
+ * @version 0.1
  */
-
 public class Equation {
-    public static void main(String[] args) throws NotDefinedException, TypeMisMatchException {
+    public static void main(String[] args) throws DoesntExistException, NotDefinedException,
+            TypeMisMatchException, ClassNotFoundException, NoSuchMethodException,
+            java.lang.reflect.InvocationTargetException, IllegalAccessException {
         // Equation eq = new Equation("1 + b * (2 + 3) + f(x, 4 + 1, a(5)) + 6");
         Equation eq = new Equation("2 * fac(A) - summ(10) ^ (C/3)");
         // Equation eq = new Equation("A + B * C + D ^ E + F");
-        eq.factors.vars = new HashMap<String, Double>()
+        eq.factors.setVars(new HashMap<String, Double>()
             {{
                 put("A",1.0D);
                 put("B",2.0D);
@@ -20,107 +20,72 @@ public class Equation {
                 put("D",4.0D);
                 put("E",5.0D);
                 put("F",6.0D);
-            }};
-        eq.factors.funcs = new HashMap<String, Function>()
+            }});
+        eq.factors.setFuncs(new HashMap<String, Function>()
             {{
-                put("summ", new Function("summation"));
-            }};
+                put("summ",new Function("summation"));
+            }});
         System.out.println(eq.RAW_EQ);
         System.out.println(eq.node);
         System.out.println("ANSWER: "+eq.eval());
     }
 
-    /** The raw equation. */
+    /** The raw equation, totally untouched. Gets set right when Equation is initialized. */
     public final String RAW_EQ;
 
     /** 
-     * An ArrayList of tokens that represent {@link #RAW_EQ}. Generally unused after generating {@link #node}.
+     * An ArrayList of tokens that comprise <code>RAW_EQ</code>.
      */
     public ArrayList<Token> tokens;
 
-    /**
-     * The Node representing the whole equation. It is {@link #tokens}, but put into a higherarchy.
-     * @see   #generateNodes(ArrayList)
-     */
     public Node node;
 
-    /**
-     * The list of factors for this equation. This includes what values varriables are, and where to 
-     * find what functions do.
-     */
     public Factors factors;
-
-
     /** 
-     * The default constructor for the Equation class. Just passes null to the main constructor.
+     * Default constructor. Just passes null to the main constructor.
      */
     public Equation(){
         this(null);
     }
-
     /** 
-     * The main constructor for the equaiton class. Takes the parameter pEq, and parses the tokens from it,
-     * and generates a {@link Node} model for it.
-     * @param pEq       A string containing the equation that this class will be modeled after.
+     * Main constructor. Takes the parameter <code>pEq</code>, and parses the tokens from it, and generates a "node"
+     * model for it.
+     * @param pEq       The raw Equation to be parsed.
      */ 
     public Equation(String pEq){
+        //TODO: PEMDAS
+        //TODO: a * -b won't crash.
         RAW_EQ = pEq;
         tokens = parseTokens(RAW_EQ);
         node = generateNodes(tokens);
         factors = new Factors();
     }
 
-    /** 
-     * Evaluates pNode using pFactors.
-     * @param pFactors  The factors (varriable values and function definitions) that will be used to evaluate pNode.
-     * @param pNode     The node that will be evaluated using pFactors.
-     * @throws NotDefinedException      Thrown if either a varriable or a function wasn't defined.
-     * @see  Factors#eval(Node);
-     */
-    public static double eval(Factors pFactor, Node pNode) throws NotDefinedException {
+    public static double eval(Factors pFactor, Node pNode)
+        throws DoesntExistException, NotDefinedException,
+            TypeMisMatchException, ClassNotFoundException, NoSuchMethodException,
+            java.lang.reflect.InvocationTargetException, IllegalAccessException {
         return pFactor.eval(pNode);
     }
-
-    /** 
-     * Evaluates {@link #node} using {@link #factors}.
-     * @throws NotDefinedException      Thrown if either a varriable or a function wasn't defined.
-     * @see  #eval(Factors, Node);
-     */
-    public double eval() throws  NotDefinedException {
+    public double eval()
+        throws DoesntExistException, NotDefinedException,
+            TypeMisMatchException, ClassNotFoundException, NoSuchMethodException,
+            java.lang.reflect.InvocationTargetException, IllegalAccessException {
         return eval(factors, node);
     }
-
-    /** 
-     * Evaluates pNode using pFactors and pVars.
-     * @param pFactors  The factors (varriable values and function definitions) that will be used to evaluate pNode.
-     * @param pNode     The node that will be evaluated using pFactors.
-     * @param pVars     Used instead of pFactor's vars if a conflict between the two arises. 
-     * @throws NotDefinedException      Thrown if either a varriable or a function wans't defined.
-     * @see  Factors#eval(Node, HashMap)
-     */
-    public static double eval(Factors pFactor, Node pNode, HashMap<String, Double> pVars) throws NotDefinedException {
-        return pFactor.eval(pNode, pVars);
+    public static double eval(Factors pFactor, Node pNode, HashMap<String, Double> pVals)
+        throws DoesntExistException, NotDefinedException,
+            TypeMisMatchException, ClassNotFoundException, NoSuchMethodException,
+            java.lang.reflect.InvocationTargetException, IllegalAccessException {
+        return pFactor.eval(pNode, pVals);
+    }    
+    public double eval(HashMap<String, Double> pVals)
+            throws DoesntExistException, NotDefinedException,
+            TypeMisMatchException, ClassNotFoundException, NoSuchMethodException,
+            java.lang.reflect.InvocationTargetException, IllegalAccessException {    
+        return eval(factors, node, pVals);
     }
 
-    /** 
-     * Evaluates {@link #node} using {@link #factors} and pVars.
-     * @param pVars     Used instead of {@link #factors}'s vars if a conflict between the two arises.      
-     * @throws NotDefinedException      Thrown if either a varriable or a function wasn't defined.     
-     * @see  #eval(Factors, Node, HashMap);
-     */    
-    public double eval(HashMap<String, Double> pVars) throws NotDefinedException {
-        return eval(factors, node, pVars);
-    }
-
-    /** 
-     * Condenses functions and groups together into a single node. Creates 1-length nodes for operators and vars / nums.
-     * Note that this is only ever used with {@link #generateNodes (ArrayList)} and {@link #generateNodes (Node)}.
-     * @param pos       The position to start condensing nodes form.
-     * @param n         The "parent" node that any newly generated nodes will be put into.
-     * @param pTokens   The list of tokens that will be put into nodes.
-     * @return The return type might seem odd, however, it always returns an updated pos as argument 1, and the new node
-     *         to add as argument 2.
-     */
     private Object[] condeseNodes(int pos, Node n, ArrayList<Token> pTokens){
         while(pos < pTokens.size()){
             Token t = pTokens.get(pos);
@@ -149,37 +114,35 @@ public class Equation {
         }
         return new Object[]{pos,n};
     }
-
-
-    /**
-     * Creates a master node using the pNode as a starting point by applying the Order of Operations.
-     * Note: pNode should already have been condensed via {@link #condeseNodes (int, Node, ArrayList)}. 
-     * @param pNode    The node that will be used to generate the new higherarchicaly-structured master node.
-     * @return The "master" node - that is, the node to control all other nodes. HAH - LOTR reference.
-     */
-    private Node completeNodes(Node pNode){
+    private Node completeNodes(Node node){
         if(node instanceof FinalNode)
-            return pNode;      
-        Node e = new Node(pNode.TOKEN);
+            return node;      
+        Node e = new Node(node.TOKEN);
         int i = 0;
-        while(i < pNode.size()){
-            Node n = pNode.get(i);
+        while(i < node.size()){
+            // System.out.println("@E: "+e);
+            Node n = node.get(i);
             if(n instanceof FinalNode){
                 e.addD(n);
-            } else if(n.TOKEN.TYPE == Token.Types.OPER){
+            }
+            else if(n.TOKEN.TYPE == Token.Types.OPER){
                 for(int depth = 1; depth < e.depth(); depth++){
                     Node nD = e.getD(depth);
                     if(nD instanceof FinalNode){
+                        // System.out.println("nD=FN|n:" + n + "(" + n.TOKEN.priority() + ") |nD: " + nD 
+                        //         + "(" + nD.TOKEN.priority() + ")");
                         n.add(nD);
                         e.remD(depth - 1); //depth is a final node.
                         e.addD(depth - 1, n);
                         break;
                     }
                     else if(n.TOKEN.priority() < nD.TOKEN.priority()){
+                        // System.out.println("n<nD|n:" + n + "(" + n.TOKEN.priority() + ") |nD: " + nD 
+                        //     + "(" + nD.TOKEN.priority() + ")");
                         n.add(nD);
-                        n.add(completeNodes(pNode.get(i + 1)));
-                        e.setD(depth - 1, n);
+                        n.add(completeNodes(node.get(i + 1)));
                         i++;
+                        e.setD(depth - 1, n);
                         break;
                     }
                 }
@@ -197,17 +160,12 @@ public class Equation {
         return e;
     }
 
-    /** 
-     * Generates a "master node" from a list of tokens.
-     * @param pTokens   The list of tokens that the master node will be based off of.
-     * @return The new master node - usually set to {@link #node}.
-     */
     private Node generateNodes(ArrayList<Token> pTokens){
         return completeNodes((Node)condeseNodes(0, new Node(new Token("E", Token.Types.NULL)), pTokens)[1]);
     }
     
     /** 
-     * Generates an ArrayList of tokens that represent rEq.
+     * Generates an ArrayList of tokens that make up the inputted equation. 
      * Note that this removes all whitespace (including spaces) before handling the equation.
      * @param rEq    The equation to be parsed.
      * @return An ArrayList of tokens, each representing a different chunk of the equation. 

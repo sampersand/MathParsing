@@ -8,7 +8,10 @@ public class summation {
      * if START is omitted, then 0 is used in its place
      * if STEP is omitted, 1 is used in its place
      */
-    public static double exec(Factors pFactors, Node pNode)  throws InvalidArgsException {
+    public static double exec(Factors pFactors, Node pNode) 
+    throws ClassNotFoundException, NoSuchMethodException,
+    java.lang.reflect.InvocationTargetException, IllegalAccessException,
+    InvalidArgsException {
         double[] vals = new double[pNode.size()];
         for(int i = 0; i < vals.length; i++) vals[i] = pFactors.eval(pNode.subNodes.get(i));
         if(vals.length == 0 || vals.length > 3)
