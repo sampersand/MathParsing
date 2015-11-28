@@ -244,10 +244,11 @@ public class Node {
      * @param n    The node to add to the last position at layer i.
      */
     public void addD(int i, Node n) {
+        System.err.println("HEY, i am ||"+this+"|| addding ||"+n+"|| at layer: "+ i);
         if(this instanceof FinalNode) {
             throw new TypeMisMatchException("Can't add subnodes to a FinalNode!");
         }
-        else if(this.TOKEN.isGroup() &&! this.TOKEN.isUni() ){ // not 100% sure
+        else if(this.TOKEN.isUni() ){ // not 100% sure
             add(n);                                             // these two fixed it, but oh well.
         } else if(i <= 0 || size() <= 0) {
             add(n);
