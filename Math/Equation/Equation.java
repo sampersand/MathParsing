@@ -26,7 +26,7 @@ public class Equation {
             // eq = new Equation("graph((1,2),(2,3)) + e ");
             // eq = new Equation("(40 * 12 + 2 * (52-12))/52");
             // eq = new Equation("graph('1,2,3,4,5','2,3,4,5,6')");
-            eq = new Equation("graph('2*siny')+1");
+            eq = new Equation("@graph('tan(f(y))','(y-2)*(y+2)*y')");
             // eq = new Equation("sin(x+f('e,2,C')*f(4,f(D,3,pi)))");
             eq.factors = eq.factors.addVars(new String[]{"x:10","C:3","D:4"});
             eq.factors = eq.factors.addFuncs(new String[]{"f","graph","sum:summation"});
@@ -422,10 +422,10 @@ public class Equation {
     public double solve(){return solve("");}
     public double solve(String varToSolveFor){ return solve("", new HashMap<String, Double>());}
     public double solve(String varToSolveFor, HashMap<String, Double> pVars){
-        System.err.println("Currently, solve isn't very good. Oh well." + factors.eval(node, pVars));
         return factors.eval(node, pVars);
     }
     public void graph(){
+        System.err.println("Currently, solve isn't very good. Oh well." + factors.eval(node, pVars));
         Set.graph(this);
         // throw new NotDefinedException("implement me (graph for equation)");
     }

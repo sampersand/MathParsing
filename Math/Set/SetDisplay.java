@@ -39,7 +39,7 @@ public class SetDisplay extends JComponent{
     */
    private Graphics2D drawer;
 
-   private double step = 20;
+   private double step = 100;
    
       public SetDisplay(Equation pEq, int[] winBnd) throws ArrayIndexOutOfBoundsException {
         this(new Equation[] {pEq}, winBnd);
@@ -125,10 +125,10 @@ public class SetDisplay extends JComponent{
       }
       if(equations != null){
         double cStep = (dispBounds[1] - dispBounds[0])/step;
-        for(Equation eq : equations){
+        for(int i = 0; i < equations.length; i++){
+          Equation eq = equations[i];
           for(double x = dispBounds[0]; x < dispBounds[1]; x += cStep){
-            System.out.println(eq);
-            drawl((double)x, Set.pred(x, eq, "y"), x + cStep, Set.pred(x + cStep, eq, "y"));
+            drawl((double)x, Set.pred(x, eq, "y"), x + cStep, Set.pred(x + cStep, eq, "y"), i);
           }
         }
       }
@@ -157,7 +157,10 @@ public class SetDisplay extends JComponent{
       double[] XY=fix(X,Y);
       drawer.drawLine((int) xy[0],(int)xy[1],(int)XY[0],(int)XY[1]); // width, height
    }
-   private void drawl(double x, double y, double X, double Y) { drawl(x,y,X,Y,Color.BLUE); }
+   private void drawl(double x, double y, double X, double Y, int i) {
+    Color[] colors = new Color[]{Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN};
+    drawl(x,y,X,Y,colors[i%colors.length]);
+  }
    private void drawl(int x, int y, int X, int Y, Color color) { drawl((double)x,(double)y,(double)X,(double)Y,color); }
 
 
