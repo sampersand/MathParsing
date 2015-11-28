@@ -3,7 +3,7 @@ package Math.Equation;
 import Math.Equation.Exception.NotDefinedException;
 import Math.Equation.Exception.InvalidArgsException;
 
-/** 
+/**
  * A class that simulates both any kind of non-simple operation and fuctions in Math.
  * Simply, anything that isn't <code>+ - * / ^</code> should be defined using this.
  * For example, in <code>f(x)</code>, this class would represent f.
@@ -23,10 +23,10 @@ public abstract class Function {
      * The default constructor for the Function class. Passes null for the pName to the other Constructor.
      */
     public Function() {
-        this(null);
+        this("");
     }
 
-    /** 
+    /**
      * The main cosntructor for the Function class. All it does is instantiates fName.
      * @param pName         The name of the file which stores the code for how to execute the custom function.
      */
@@ -34,15 +34,15 @@ public abstract class Function {
         fName = pName;
     }
 
-    /** 
+    /**
      * Gets a string representation of the function. In reality, just returns its name, because a string repr of the 
      * code is wayyy too hard.
      */
     public abstract String toString();
-    /** 
+    /**
      * Takes the different parameter nodes, does whatever operations it was programmed to do, and spits a result back.
-     * @param pFactors      A factor class that contains all relevant information about varriables / functions.
-     *                      This is where varriable values and function definitions are stored.
+     * @param pFactors      A factor class that contains all relevant information about variables / functions.
+     *                      This is where variable values and function definitions are stored.
      * @param pNode         The Node that is going to be solved.
      * @return A double representing the value of pNode, when solved for with pFactors.
      * @throws NotDefinedException    Thrown when the function is defined, but how to execute it isn't.

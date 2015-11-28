@@ -11,12 +11,15 @@ import Math.Equation.CustomFunction;
 
 import java.lang.reflect.*;
 
+/** 
+ * Note: all user-defined functions (as opposed to pre-defined) must inherit from this class.
+ */
 public class CustomFunction extends Function {
     public static String HELP = "f(a, b, ... n) = 1/a + 1/b + ... + 1/n";
     public static String SYNTAX = "f(a, b, ... n) such that a, b, ..., n are all numbers or variables.";
 
     public CustomFunction(){
-        this(null);
+        this("");
     }
     public CustomFunction(String pVal){
         super(pVal);
@@ -24,9 +27,13 @@ public class CustomFunction extends Function {
     public String toString(){
         return "CustomFunction: '" + fName + "'\nHELP: " + HELP + "\nSYNTAX: " + SYNTAX;
     }
-    /** 
+    /**
      * This thing takes a node (usually the node from {@link #exec(Factors,Node) exec}), and returns an array of the 
      * numerical values of each subnode.
+     * @param pFactors          The factors that will be used when evaluating pNode.
+     * @param pNode             The node to be evaluated.
+     * @return An array of doubles, with each position corresponding to the value of each Node of that position in 
+     *         {@link Node#subNodes pNode's subNodes}.
      */
     protected double[] evalNode(Factors pFactors, Node pNode){
         double[] ret = new double[pNode.size()];

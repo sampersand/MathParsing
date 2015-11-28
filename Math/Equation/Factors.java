@@ -6,14 +6,15 @@ import Math.Equation.Exception.DoesntExistException;
 
 import java.util.HashMap;
 import java.util.ArrayList;
-/** 
- * A class that keeps track of varriables and functions. Used when evaluating an {@link Node}.
+/**
+ * A class that keeps track of variables and functions. Used when evaluating an {@link Node}.
  * @author Sam Westerman
  * @version 0.1
  */
 public class Factors {
+
     /**
-     * A HashMap of varriables; The keys are the names, the values are, well, the values of the varriables.
+     * A HashMap of variables; The keys are the names, the values are, well, the values of the variables.
      */
     private HashMap<String, Double> vars;
 
@@ -22,16 +23,16 @@ public class Factors {
     */
     private HashMap<String, CustomFunction> funcs;
 
-    /** 
-     * Default constructor. Just calls the main constructor with empty HashMaps.
+    /**
+     * Default constructor. Just calls the {@link #Factors(HashMap,HashMap) main constructor} with empty HashMaps.
      */
     public Factors() {
         this(new HashMap<String, Double>(), new HashMap<String, CustomFunction>());
     }
 
-    /** 
+    /**
      * The main constructor for Factors.
-     * @param pVars     The HashMap of varriable names and their corresponding values.
+     * @param pVars     The HashMap of variable names and their corresponding values.
      * @param pFuncs    The HashMap of function names and their corresponding CustomFunction classes.
      */
     public Factors(HashMap<String, Double> pVars, HashMap<String, CustomFunction> pFuncs) {
@@ -39,7 +40,7 @@ public class Factors {
         funcs = pFuncs;
     }
 
-    /** 
+    /**
      * Overloaded eval constructor. Just passes to the main one with an empty pVars.
      * @param pNode         The node that will be evaluated.     
      * @return A double representing the value of pNode when evaluated with "vars" and "funcs".
@@ -52,9 +53,9 @@ public class Factors {
      * Gets a numerical representation of pNode using "vars", "funcs", and pVars.
      * @param pNode         The node that will be evaluated.
      * @param pVars         For ease of use, Instead of having to change vars every time eval will be re-run, pVars can
-     *                      be used. When a varriable is encountered, first pVars is consulted, then "vars" is. 
+     *                      be used. When a variable is encountered, first pVars is consulted, then "vars" is. 
      * @return A double representing the value of pNode when evaluated with "vars", "funcs", and pVars.
-     * @throws NotDefinedException      Thrown if either a varriable or a function wans't defined.
+     * @throws NotDefinedException      Thrown if either a variable or a function wans't defined.
      */
     public double eval(Node pNode, HashMap<String, Double> pVars) throws NotDefinedException {
         if (pNode instanceof FinalNode) {
@@ -72,11 +73,15 @@ public class Factors {
                         default:
                             throw new NotDefinedException("FinalNode '" + fNode.TOKEN.VAL + "' isn't defined in vars!");
                     }
-                } else if(fNode.TOKEN.TYPE == Token.Types){
+                } else {
                     return (double)getVar(fNode.sVal);
                 }
+            } else if(fNode.TOKEN.TYPE == Token.Types.ARGS){
+                System.err.println("[WARNING] Attempting to evaluate args! probably won't go well :P");
+                return (double)getVar(fNode.sVal);
             } else {
-                throw new TypeMisMatchException("FinalNode '" +fNode.sVal + "&" + fNode.dVal + "' isn't a NUM or VAR!");
+                throw new TypeMisMatchException("FinalNode '" +fNode.sVal + "&" + fNode.dVal +
+                                                "' isn't a NUM, VAR, OR ARGS!");
             }
         } else if(pNode.TOKEN.TYPE == Token.Types.FUNC ) {
             if(inFunc(pNode.TOKEN.VAL)) //if it is a function
@@ -117,88 +122,130 @@ public class Factors {
         }
     }
 
-    /** 
-     * Puts a {@link #CustomFunction} with the name fName into {@link #funcs} with the key fName.
-     * @param fName     The name that will be used as the key and file name for the CustomFunction in {@link #funcs}.
+    /**
+     * Puts a {@link CustomFunction} with the name funcName into {@link #funcs} with the key funcName.
+     * @param funcName      The function name that will be used for the key, and file name for the CustomFunction.
      */
-    public void addFunc(String fName){
-        addFunc(fName, fName);
+    public void addFunc(String funcName){
+        addFunc(funcName, funcName);
     }
     
-    /** 
-     * Puts <code>0.0D</code> into {@link #funcs} with the key vName.
-     * @param vName     The name that will be used as the varriable name.
+    /**
+     * Puts <code>0.0D</code> into {@link #vars} with the key varName.
+     * @param varName       The variable name that will be used for the key.
      */
-    public void addVar(String vName){
-        addVar(vName, 0);
+    public void addVar(String varName){
+        addVar(varName, 0);
     }
     
-    /** 
-     * Puts a {@link #CustomFunction} with the name fName into {@link #funcs} with the key kName.
-     * @param kName     The name that will be used as the key.
-     * @param fName     The name that will be used for the {@link CustomFunction}.
+    /**
+     * Puts a {@link CustomFunction} with the name fileName into {@link #funcs} with the key funcName.
+     * @param funcName      The function name that will be used for the key.
+     * @param fileName      The name of the file for the {@link CustomFunction}.
      */
-    public void addFunc(String kName, String fName){
-        addFunc(kName, new CustomFunction(fName));
+    public void addFunc(String funcName, String fileName){
+        addFunc(funcName, new CustomFunction(fileName));
     }
     
-    /** 
-     * Puts a fFunc into {@link #funcs} with the key kName.
-     * @param kName     The name that will be used as the key.
-     * @param fName     {@link CustomFunction} that will be used as the key..
+    /**
+     * Puts pFunc into {@link #funcs} with the key funcName.
+     * @param funcName      The function name that will be used for the key.
+     * @param pFunc         {@link CustomFunction} that will be used as the value.
      */
-    public void addFunc(String kName, CustomFunction fFunc){
-        funcs.put(kName, fFunc);
+    public void addFunc(String funcName, CustomFunction pFunc){
+        funcs.put(funcName, pFunc);
     }
 
 
-    /** 
-     * Puts pVal into {@link #funcs} with the key kName.
-     * @param kName     The name that will be used as the key.
-     * @param fName     The double that will be used as the value.
+    /**
+     * Puts pVal into {@link #vars} with the key varName.
+     * @param varName       The variable name that will be used for the key.
+     * @param pVal          The double that will be used for the value.
      */
-    public void addVar(String vName, double pVal){
-        vars.put(vName, pVal);
+    public void addVar(String varName, double pVal){
+        vars.put(varName, pVal);
     }
 
-    /** 
-     * Calls {@link #addFunc(String)} for each String in fNames - insterting them into {@link #funcs}. The key is 
+    /**
+     * Calls {@link #addFunc(String)} for each String in funcNames - insterting them into {@link #funcs}. The key is 
      * each argument, with the value being a {@link CustomFunction} initiated with said argument.
+     * @param funcNames     An array of each function's name.
      */
-    public void addFuncs(String[] fNames){
-        for(String fName : fNames){
-            addFunc(fName);
+    public void addFuncs(String[] funcNames){
+        for(String funcName : funcNames){
+            addFunc(funcName);
         }
     }
 
-    public void addVars(String[] fNames){
-        for(String fName : fNames){
+    /**
+     * Calls {@link #addVar(String)} for each String in varNames - insterting them into {@link #vars}. The key is 
+     * each argument, with the value being <code>0.0D</code>.
+     * @param varNames     An array of each function's name.
+     */
+    public void addVars(String[] varNames){
+        for(String fName : varNames){
             addVar(fName);
         }
     }
 
+    /**
+     * Adds each key-value pair from pFuncs into {@link #funcs}.
+     * @param pFuncs        The HashMap containing the name-function pairs. The key is a function name, while the 
+     *                      value is a {@link CustomFunction}.
+     */
     public void addFuncs(HashMap<String, CustomFunction> pFuncs){
         funcs.putAll(pFuncs);
     }
-    public void addVars(HashMap<String, Double> pFuncs){
-        vars.putAll(pFuncs);
+
+    /**
+     * Adds each key-value pair from pVars into {@link #vars}.
+     * @param pVars        The HashMap containing the name-value pairs. The key is a variable name, while the 
+     *                     value is a double.
+     */
+    public void addVars(HashMap<String, Double> pVars){
+        vars.putAll(pVars);
     }
 
-    public CustomFunction getFunc(String pKey) throws NullPointerException {
-        return funcs.get(pKey);
+    /**
+     * Returns the {@link CustomFunction} value of funcName as defined in {@link #funcs}.
+     * @param funcName      The name of the function in {@link #funcs}.
+     * @return A {@link CustomFunction} if funcName exists in {@link #funcs}. If it doesn't, it will return null.
+     */
+    public CustomFunction getFunc(String funcName){
+        return funcs.get(funcName);
     }
 
-    public double getVar(String pKey) throws NullPointerException {
-        return vars.get(pKey);
+    /**
+     * Returns the double value of varName, as defined is {@link #vars}
+     * @param varName       The name of the variable in {@link #vars}.
+     * @return A double if varName exists in {@link #funcs}. If it doesn't, it will return null (null isnt tested)
+     */
+    public double getVar(String varName){
+        return vars.get(varName);
     }
 
-    public boolean inVar(String pKey){
-        return vars.containsKey(pKey);
+    /** 
+     * Checks and sees if funcName is an actual function inside {@link #funcs}.
+     * @param funcName      The name of the function to check its existance.
+     * @return True if funcName has a value in {@link #funcs}.
+     */
+    public boolean inFunc(String funcName){
+        return funcs.containsKey(funcName);
     }
 
-    public boolean inFunc(String pKey){
-        return funcs.containsKey(pKey);
+    /** 
+     * Checks and sees if varName is an actual variable inside {@link #vars}.
+     * @param varName      The name of the variable to check its existance.
+     * @return True if varName has a value in {@link #vars}.
+     */
+    public boolean inVar(String varName){
+        return vars.containsKey(varName);
     }
+
+    /** 
+     * Just returns the vars in string format, and the funcs in string format, with a little prettier formatting.
+     * @return A string representation of this factor.
+     */
     public String toString(){
         return "Factor: \n\tVARS: " + vars.toString() + "\n\tFUNCS: " + funcs.toString();
     }

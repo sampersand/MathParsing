@@ -1,6 +1,7 @@
 package Math.Equation;
+import Math.Equation.Exception.NotDefinedException;
 import java.util.HashMap;
-/** 
+/**
  * A single item from an equation String.
  * Example: "sin(x+2)" yields the tokens <code>{"sin":FUNC, "(":LPAR, "x":VAR, "+":OPER, "2":NUM, ")":RPAR}</code>.
  * @author Sam Westerman
@@ -33,9 +34,9 @@ public class Token {
         RPAR
         ,
         /**
-         * A varriable. Distinguished from a function when parsing only because it isn't immediately before "(". 
+         * A variable. Distinguished from a function when parsing only because it isn't immediately before "(". 
          * <p> If a {@link Node} is being {@link Factors#eval(Node) evaluated}, and it's {@link Node#TOKEN token}
-         * is of this type, the {@link Factors} evaluating it will check it's {@link Factors#vars} for a varriable with
+         * is of this type, the {@link Factors} evaluating it will check it's {@link Factors#vars} for a variable with
          * the same name as {@link #VAL}.
          * <p> Note: VAL should only contain letters, as anything that isn't alphanumerical, or <code>()+*-/^</code> 
          * won't be parsed.
@@ -50,7 +51,7 @@ public class Token {
         NUM
         ,
         /**
-         * A function. Distinguished from a varriable when parsing only because it immediately preceeds "(". 
+         * A function. Distinguished from a variable when parsing only because it immediately preceeds "(". 
          * <p> If a {@link Node} is being {@link Factors#eval(Node) evaluated}, and it's {@link Node#TOKEN token}
          * is of this type, the {@link Factors} evaluating it will check it's {@link Factors#funcs} for a function with
          * the same name as {@link #VAL}.
@@ -67,13 +68,13 @@ public class Token {
          */
         OPER
         ,
-        /** 
+        /**
          * A null value. Duh? Only ever used when a token doesn't fit into one of the previous catagories, or is the
          * "master {@link Node node}".
          */
         NULL
         ,
-        /** 
+        /**
          * A deliminator. Used to space out arguments for functions. Currently, the only one is ",".
          */
         DELIM
@@ -87,7 +88,7 @@ public class Token {
          */
         GROUP
         ,
-        /** 
+        /**
          * A raw string. Used only to keep track of what is between a pair of single quotes (').
          */
         ARGS
@@ -96,7 +97,7 @@ public class Token {
      * Default constructor. Just passes null, null to the main constructor.
      */
     public Token() {
-        this(null, null);
+        this("", Types.NULL);
     }
     /**
      * The main constructor.
@@ -113,7 +114,7 @@ public class Token {
         TYPE = pType;
     }
 
-    /** 
+    /**
      * An alternate constructor. This just passes pVal as a string and pType to the main constructor.
      * @param pVal    The character that this tokenis based off of.
      * @param pType     The type of token that this token is.
@@ -122,34 +123,42 @@ public class Token {
         this("" + pVal, pType);
     }
 
-    /** 
+    /**
      * Used to determine if a {@link Node} based on a token should be a {@link FinalNode} or a {@link Node}
      * (in this case, it's the former).
      * @return True if TYPE is a NUM or VAR or ARGS.
      */
-    public boolean isConst() { return TYPE == Types.NUM || TYPE == Types.VAR || TYPE == Types.ARGSR;}
+    public boolean isConst() {
+        return TYPE == Types.NUM || TYPE == Types.VAR || TYPE == Types.ARGS;
+    }
 
-    /** 
+    /**
      * Used to determine if a //{@link Node} based on a token should be a {@link FinalNode} or a {@link Node}
      * (in this case, it's the latter). Also used to distinguish between {@link Token.Types#FUNC functions} / 
      * {@link Token.Types#GROUP groups} and {@link Token.Types#OPER operators}.
      * @return True if TYPE is a GROUP or FUNC.
      */
-    public boolean isGroup() { return TYPE == Types.GROUP || TYPE == Types.FUNC;}
+    public boolean isGroup() {
+        return TYPE == Types.GROUP || TYPE == Types.FUNC;
+    }
 
-    /** 
+    /**
      * Used to distinguish between {@link Token.Types#FUNC functions} / 
      * {@link Token.Types#GROUP groups} and {@link Token.Types#OPER operators}.
      * @return True if TYPE is a OPER.
      */    
-    public boolean isOper() {return  TYPE == Types.OPER;}
+    public boolean isOper() {
+        return  TYPE == Types.OPER;
+    }
     /**
      * Used to figure out if a {@link Node node} based off this is the "master node". 
      * @return True if TYPE == NULL and VAL == "E".
      */
-    public boolean isUni() {return TYPE == Types.NULL && VAL == "E";}
+    public boolean isUni() {
+        return TYPE == Types.NULL && VAL == "E";
+    }
 
-    /** 
+    /**
      * Used to figure out which operators come before others in the "order of operations". Parentheses are handeled
      * seperately.
      * if <code>isUni()</code>, priority is 4.
@@ -161,7 +170,7 @@ public class Token {
     public int priority() {
         if(isUni())
             return 4;
-        if(!isOper() && ! isGroup()) {
+        if(!isOper()){// && ! isGroup()) {
             return -1;
         }
         switch(VAL) {
@@ -171,28 +180,15 @@ public class Token {
             case "/": return 1;
             case "^": return 2;
             default:
-                return 3; //used for groups
+                throw new NotDefinedException("[ERROR] Operator '" + VAL + "' doesn't have a priority!");
         }
     }
-    /** 
+
+    /**
      * A String representation of a Token. 
      * @return A String representation corresponding to the VAL and the TYPE of the Token.
      */
     public String toString() {
-        String ret = "('" + VAL + "': ";
-        switch(TYPE) {
-            case LPAR: ret += "LPAR"; break;
-            case RPAR: ret += "RPAR"; break;
-            case VAR:  ret +=  "VAR"; break;
-            case NUM:  ret +=  "NUM"; break;
-            case FUNC: ret += "FUNC"; break;
-            case OPER: ret += "OPER"; break;
-            case NULL: ret += "NULL"; break;
-            case DELIM: ret += "DELIM"; break;
-            case GROUP: ret += "GROUP"; break;
-            case ARGS: ret += "ARGS"; break;
-            default: ret += "UHOH"; break;
-        }
-        return ret + ")";
+        return "('" + VAL + "': " + TYPE + ")";
     }
 }

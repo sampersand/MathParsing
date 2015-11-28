@@ -108,7 +108,7 @@ var activeTableTab = "activeTableTab";
 <br>
 <pre>public class <span class="typeNameLabel">Factors</span>
 extends java.lang.Object</pre>
-<div class="block">A class that keeps track of varriables and functions. Used when evaluating an <a href="Node.html" title="class in &lt;Unnamed&gt;"><code>Node</code></a>.</div>
+<div class="block">A class that keeps track of variables and functions. Used when evaluating an <a href="Node.html" title="class in &lt;Unnamed&gt;"><code>Node</code></a>.</div>
 </li>
 </ul>
 </div>
@@ -136,7 +136,7 @@ extends java.lang.Object</pre>
 <tr class="rowColor">
 <td class="colFirst"><code>java.util.HashMap&lt;java.lang.String,java.lang.Double&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="Factors.html#vars">vars</a></span></code>
-<div class="block">A HashMap of varriables; The keys are the names, the values are, well, the values of the varriables.</div>
+<div class="block">A HashMap of variables; The keys are the names, the values are, well, the values of the variables.</div>
 </td>
 </tr>
 </table>
@@ -221,7 +221,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>vars</h4>
 <pre>public&nbsp;java.util.HashMap&lt;java.lang.String,java.lang.Double&gt; vars</pre>
-<div class="block">A HashMap of varriables; The keys are the names, the values are, well, the values of the varriables.</div>
+<div class="block">A HashMap of variables; The keys are the names, the values are, well, the values of the variables.</div>
 </li>
 </ul>
 <a name="funcs">
@@ -263,7 +263,7 @@ extends java.lang.Object</pre>
 <div class="block">The main constructor for Factors.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>pVars</code> - The HashMap of varriable names and their corresponding values.</dd>
+<dd><code>pVars</code> - The HashMap of variable names and their corresponding values.</dd>
 <dd><code>pFuncs</code> - The HashMap of function names and their corresponding Function classes.</dd>
 </dl>
 </li>
@@ -309,11 +309,11 @@ extends java.lang.Object</pre>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>pNode</code> - The node that will be evaluated.</dd>
 <dd><code>pVars</code> - For ease of use, Instead of having to change vars every time eval will be re-run, pVars can
-                      be used. When a varriable is encountered, first pVars is consulted, then "vars" is.</dd>
+                      be used. When a variable is encountered, first pVars is consulted, then "vars" is.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>A double representing the value of pNode when evaluated with "vars", "funcs", and pVars.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="NotDefinedException.html" title="class in &lt;Unnamed&gt;">NotDefinedException</a></code> - Thrown if either a varriable or a function wans't defined.</dd>
+<dd><code><a href="NotDefinedException.html" title="class in &lt;Unnamed&gt;">NotDefinedException</a></code> - Thrown if either a variable or a function wans't defined.</dd>
 </dl>
 </li>
 </ul>

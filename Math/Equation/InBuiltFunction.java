@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class InBuiltFunction extends Function {
     public InBuiltFunction(){
-        this(null);
+        this("");
     }
     public InBuiltFunction(String pVal){
         super(pVal);

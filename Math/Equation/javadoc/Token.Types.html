@@ -182,7 +182,7 @@ extends java.lang.Enum&lt;<a href="Token.Types.html" title="enum in &lt;Unnamed&
 </tr>
 <tr class="altColor">
 <td class="colOne"><code><span class="memberNameLink"><a href="Token.Types.html#VAR">VAR</a></span></code>
-<div class="block">A varriable.</div>
+<div class="block">A variable.</div>
 </td>
 </tr>
 </table>
@@ -273,9 +273,9 @@ the order they are declared.</div>
 <li class="blockList">
 <h4>VAR</h4>
 <pre>public static final&nbsp;<a href="Token.Types.html" title="enum in &lt;Unnamed&gt;">Token.Types</a> VAR</pre>
-<div class="block">A varriable. Distinguished from a function when parsing only because it isn't immediately before "(". 
+<div class="block">A variable. Distinguished from a function when parsing only because it isn't immediately before "(". 
  <p> If a <a href="Node.html" title="class in &lt;Unnamed&gt;"><code>Node</code></a> is being <a href="Factors.html#eval-Node-"><code>evaluated</code></a>, and it's <a href="Node.html#TOKEN"><code>token</code></a>
- is of this type, the <a href="Factors.html" title="class in &lt;Unnamed&gt;"><code>Factors</code></a> evaluating it will check it's <a href="Factors.html#vars"><code>Factors.vars</code></a> for a varriable with
+ is of this type, the <a href="Factors.html" title="class in &lt;Unnamed&gt;"><code>Factors</code></a> evaluating it will check it's <a href="Factors.html#vars"><code>Factors.vars</code></a> for a variable with
  the same name as <a href="Token.html#VAL"><code>Token.VAL</code></a>.
  <p> Note: VAL should only contain letters, as anything that isn't alphanumerical, or <code>()+*-/^</code> 
  won't be parsed.</div>
@@ -303,7 +303,7 @@ the order they are declared.</div>
 <li class="blockList">
 <h4>FUNC</h4>
 <pre>public static final&nbsp;<a href="Token.Types.html" title="enum in &lt;Unnamed&gt;">Token.Types</a> FUNC</pre>
-<div class="block">A function. Distinguished from a varriable when parsing only because it immediately preceeds "(". 
+<div class="block">A function. Distinguished from a variable when parsing only because it immediately preceeds "(". 
  <p> If a <a href="Node.html" title="class in &lt;Unnamed&gt;"><code>Node</code></a> is being <a href="Factors.html#eval-Node-"><code>evaluated</code></a>, and it's <a href="Node.html#TOKEN"><code>token</code></a>
  is of this type, the <a href="Factors.html" title="class in &lt;Unnamed&gt;"><code>Factors</code></a> evaluating it will check it's <a href="Factors.html#funcs"><code>Factors.funcs</code></a> for a function with
  the same name as <a href="Token.html#VAL"><code>Token.VAL</code></a>.

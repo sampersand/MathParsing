@@ -13,7 +13,7 @@ public class summation extends CustomFunction{
     public static String help = "Add up numbers from START to END with step STEP";
     public static String args = "([START], END, [STEP])";
 
-    /** 
+    /**
      * Summation from START to END, with step STEP
      * Params: ([START],END,[STEP])
      * if START is omitted, then 0 is used in its place

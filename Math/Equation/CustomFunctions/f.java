@@ -3,6 +3,7 @@ package Math.Equation.CustomFunctions;
 import Math.Equation.Function;
 import Math.Equation.Factors;
 import Math.Equation.Node;
+import Math.Equation.Token;
 import Math.Equation.CustomFunction;
 
 import Math.Equation.Exception.NotDefinedException;
@@ -19,8 +20,7 @@ public class f extends CustomFunction{
 
     @Override
     public double exec(Factors pFactors, Node pNode) throws NotDefinedException, InvalidArgsException {
-        for(Node n : pNode.subNodes)
-            System.out.println(n);
+        System.err.println(pNode.get(0).TOKEN.TYPE == Token.Types.ARGS);
         double[] vals = evalNode(pFactors, pNode);
         double ret = 0;
         for(double val : vals)

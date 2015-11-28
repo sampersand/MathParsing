@@ -113,7 +113,7 @@ var activeTableTab = "activeTableTab";
 <br>
 <pre>public class <span class="typeNameLabel">FinalNode</span>
 extends <a href="Node.html" title="class in &lt;Unnamed&gt;">Node</a></pre>
-<div class="block">A node that represents either a varriable or a constant.
+<div class="block">A node that represents either a variable or a constant.
  Note: This class doesn't interact with <a href="Node.html#subNodes"><code>Node.subNodes</code></a>, and consequently, <code>this.size()</code> will
  always yeild 0.</div>
 </li>
@@ -240,7 +240,7 @@ extends <a href="Node.html" title="class in &lt;Unnamed&gt;">Node</a></pre>
 <li class="blockList">
 <h4>sVal</h4>
 <pre>public&nbsp;java.lang.String sVal</pre>
-<div class="block">The string representation of this. Only used if FinalNode is representing a varriable.</div>
+<div class="block">The string representation of this. Only used if FinalNode is representing a variable.</div>
 </li>
 </ul>
 <a name="dVal">
@@ -279,8 +279,8 @@ extends <a href="Node.html" title="class in &lt;Unnamed&gt;">Node</a></pre>
 <h4>FinalNode</h4>
 <pre>public&nbsp;FinalNode(<a href="Token.html" title="class in &lt;Unnamed&gt;">Token</a>&nbsp;pToken)
           throws <a href="TypeMisMatchException.html" title="class in &lt;Unnamed&gt;">TypeMisMatchException</a></pre>
-<div class="block">The main constructor for FinalNode. This attempts to determine whether it is representing a varriable or a 
- constant, and sets the respective (<a href="FinalNode.html#sVal"><code>sVal</code></a> / <a href="FinalNode.html#dVal"><code>dVal</code></a>) varriable to pToken.VAL.</div>
+<div class="block">The main constructor for FinalNode. This attempts to determine whether it is representing a variable or a 
+ constant, and sets the respective (<a href="FinalNode.html#sVal"><code>sVal</code></a> / <a href="FinalNode.html#dVal"><code>dVal</code></a>) variable to pToken.VAL.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>pToken</code> - The token that this node is based off of.</dd>
