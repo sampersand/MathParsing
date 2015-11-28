@@ -179,12 +179,19 @@ public class Factors {
 
     /**
      * Calls {@link #addVar(String)} for each String in varNames - insterting them into {@link #vars}. The key is 
-     * each argument, with the value being <code>0.0D</code>.
-     * @param varNames     An array of each function's name.
+     * each argument, with the value being it's position in the Array. Note that if a varName has a ":" in it,
+     * the String to the right of the ":" will be the name, and the String to the left will be the double.
+     * @param varNames      An array of each variable's name.
+     * @throws java.lang.NumberFormatException    Thrown only when ":" is included in a variable's name, and 
+     *                                            The part on the right of that can't be evaluated as a double.
      */
-    public void addVars(String[] varNames){
-        for(String fName : varNames){
-            addVar(fName);
+    public void addVars(String[] varNames) throws NumberFormatException{
+        for(int i = 0; i < varNames.length;i++){
+            if(varNames[i].indexOf(":") != -1){
+                addVar(varNames[i].split(":")[0], Double.parseDouble(varNames[i].split(":")[1]));
+            } else{
+                addVar(varNames[i],(double)i);
+            }
         }
     }
 

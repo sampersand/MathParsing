@@ -20,7 +20,7 @@ public class f extends CustomFunction{
 
     @Override
     public double exec(Factors pFactors, Node pNode) throws NotDefinedException, InvalidArgsException {
-        System.err.println(pNode.get(0).token.TYPE == Token.Types.ARGS);
+        if(pNode.get(0).token.TYPE == Token.Types.ARGS);
         double[] vals = evalNode(pFactors, pNode);
         double ret = 0;
         for(double val : vals)

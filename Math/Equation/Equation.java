@@ -17,27 +17,15 @@ public class Equation {
      * @param args          The arguments to pass. See description of this method for details.
      */
     public static void main(String[] args) throws NotDefinedException, TypeMisMatchException {
+        // System.out.print();
         Equation eq;
         if(args.length == 0){
-            eq = new Equation("graph((1,2),(2,3)) + e ");
+            // eq = new Equation("graph((1,2),(2,3)) + e ");
             // eq = new Equation("(40 * 12 + 2 * (52-12))/52");
-            // eq = new Equation("40 * 12");
-            eq.factors.addVars(new HashMap<String, Double>()
-                {{
-                    put("A",1.0D);
-                    put("B",2.0D);
-                    put("C",3.0D);
-                    put("D",4.0D);
-                    put("E",5.0D);
-                    put("F",6.0D);
-                    put("x",10D);
-                }});
-            eq.factors.addFuncs(new HashMap<String, CustomFunction>()
-                {{
-                    put("f", new CustomFunction("f"));
-                    put("graph", new CustomFunction("graph"));
-                    put("sum", new CustomFunction("summation"));
-                }});
+            // eq = new Equation("1*-1");
+            eq = new Equation("sin(x+f('e,2,C')*f(4,f(D,3,pi)))");
+            eq.factors.addVars(new String[]{"x:10   ","C:3","D:4"});
+            eq.factors.addFuncs(new String[]{"f","graph","sum"});
         }
         else{
             eq = new Equation();
@@ -211,6 +199,8 @@ public class Equation {
      */
     public static ArrayList<Token> parseTokens(String rEq) throws TypeMisMatchException{
         rEq = rEq.trim().replaceAll(" ","");
+        //not so sure this is the best way to fix my minus issue:
+
         ArrayList<Token> tokens = new ArrayList<Token>();
         String prev = "";
         char c;
