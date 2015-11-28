@@ -139,7 +139,7 @@ public class Node {
 
             }
             else if(n.token.isGroup()){
-                e.addD(e.depth(), completeNodes(n), true);
+                e.addD(e.depth(), completeNodes(n), false);
             }
             else{
                 throw new NotDefinedException("There is no known way to complete the node '" + n + "'.");
