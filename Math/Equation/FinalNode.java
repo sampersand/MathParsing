@@ -1,5 +1,5 @@
 package Math.Equation;
-import Math.Equation.Exception.TypeMisMatchException;
+import Math.Exception.TypeMisMatchException;
 /**
  * A node that represents either a variable or a constant.
  * Note: This class doesn't interact with {@link Node#subNodes}, and consequently, <code>this.size()</code> will

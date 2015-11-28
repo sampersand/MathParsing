@@ -1,7 +1,7 @@
 package Math.Equation;
 
-import Math.Equation.Exception.NotDefinedException;
-import Math.Equation.Exception.InvalidArgsException;
+import Math.Exception.NotDefinedException;
+import Math.Exception.InvalidArgsException;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -21,6 +21,7 @@ public class InBuiltFunction extends Function {
         double[] args = new double[pNode.size()];
         for(int i = 0; i < args.length; i++)
             args[i] = pFactors.eval(pNode.get(i));
+        System.out.println(pNode + " @ " + fName);
         switch(fName) {
             case "sin":
                 return Math.sin(args[0]);

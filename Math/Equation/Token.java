@@ -1,5 +1,5 @@
 package Math.Equation;
-import Math.Equation.Exception.NotDefinedException;
+import Math.Exception.NotDefinedException;
 import java.util.HashMap;
 /**
  * A single item from an equation String.
@@ -92,9 +92,12 @@ public class Token {
          * A raw string. Used only to keep track of what is between a pair of single quotes (').
          */
         ARGS
+        ,
+        /** This type given to the master node. */
+        UNI
     }
 
-    public static final Token UNI = new Token("E",Types.NULL);
+    public static final Token UNI = new Token("E", Types.UNI);
     /**
      * Default constructor. Just passes null, null to the main constructor.
      */
@@ -157,7 +160,7 @@ public class Token {
      * @return True if TYPE == NULL and VAL == "E".
      */
     public boolean isUni() {
-        return TYPE == Types.NULL && VAL == "E";
+        return TYPE == Types.UNI && VAL == "E";
     }
 
     /**

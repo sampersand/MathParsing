@@ -1,8 +1,8 @@
 package Math.Equation;
 
-import Math.Equation.Exception.NotDefinedException;
-import Math.Equation.Exception.TypeMisMatchException;
-import Math.Equation.Exception.DoesntExistException;
+import Math.Exception.NotDefinedException;
+import Math.Exception.TypeMisMatchException;
+import Math.Exception.DoesntExistException;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -60,9 +60,9 @@ public class Factors {
     public double eval(Node pNode, HashMap<String, Double> pVars) throws NotDefinedException {
         if (pNode instanceof FinalNode) {
             FinalNode fNode = (FinalNode)pNode;
-            if (fNode.token.TYPE == Token.Types.NUM) {
+            if (fNode.type() == Token.Types.NUM) {
                 return fNode.dVal;
-            } else if (fNode.token.TYPE == Token.Types.VAR) {
+            } else if (fNode.type() == Token.Types.VAR) {
                 if(pVars.get(fNode.sVal) != null) {
                     return (double)pVars.get(fNode.sVal);
                 } else if(!inVar(fNode.sVal)) {
@@ -76,14 +76,14 @@ public class Factors {
                 } else {
                     return (double)getVar(fNode.sVal);
                 }
-            } else if(fNode.token.TYPE == Token.Types.ARGS){
+            } else if(fNode.type() == Token.Types.ARGS){
                 System.err.println("[WARNING] Attempting to evaluate args! probably won't go well :P");
                 return (double)getVar(fNode.sVal);
             } else {
                 throw new TypeMisMatchException("FinalNode '" +fNode.sVal + "&" + fNode.dVal +
                                                 "' isn't a NUM, VAR, OR ARGS!");
             }
-        } else if(pNode.token.TYPE == Token.Types.FUNC ) {
+        } else if(pNode.type() == Token.Types.FUNC ) {
             if(inFunc(pNode.token.VAL)) //if it is a function
                 return getFunc(pNode.token.VAL).exec(this, pNode);
             else {
@@ -99,9 +99,9 @@ public class Factors {
                 }
             }
         }
-        else if(pNode.token.TYPE == Token.Types.GROUP || pNode instanceof FinalNode || pNode.token.isUni()) {
+        else if(pNode.type() == Token.Types.GROUP || pNode instanceof FinalNode || pNode.token.isUni()) {
                 return eval(pNode.get(0));
-        } else if(pNode.token.TYPE == Token.Types.OPER) {
+        } else if(pNode.type() == Token.Types.OPER) {
             switch(pNode.token.VAL) {
                 case "+":
                     return eval(pNode.get(0)) + eval(pNode.get(1));

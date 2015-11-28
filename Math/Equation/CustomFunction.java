@@ -1,7 +1,7 @@
 package Math.Equation;
 
-import Math.Equation.Exception.NotDefinedException;
-import Math.Equation.Exception.InvalidArgsException;
+import Math.Exception.NotDefinedException;
+import Math.Exception.InvalidArgsException;
 import Math.Equation.CustomFunctions.*;
 
 import Math.Equation.Function;

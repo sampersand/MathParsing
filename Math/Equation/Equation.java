@@ -1,6 +1,6 @@
 package Math.Equation;
-import Math.Equation.Exception.TypeMisMatchException;
-import Math.Equation.Exception.NotDefinedException;
+import Math.Exception.TypeMisMatchException;
+import Math.Exception.NotDefinedException;
 import java.util.ArrayList;
 import java.util.HashMap;
 /**
@@ -17,13 +17,12 @@ public class Equation {
      * @param args          The arguments to pass. See description of this method for details.
      */
     public static void main(String[] args) throws NotDefinedException, TypeMisMatchException {
-        // System.out.print();
         Equation eq;
         if(args.length == 0){
             // eq = new Equation("graph((1,2),(2,3)) + e ");
             // eq = new Equation("(40 * 12 + 2 * (52-12))/52");
-            // eq = new Equation("1*-1");
-            eq = new Equation("sin(x+f('e,2,C')*f(4,f(D,3,pi)))");
+            eq = new Equation("sinx");
+            // eq = new Equation("sin(x+f('e,2,C')*f(4,f(D,3,pi)))");
             eq.factors.addVars(new String[]{"x:10   ","C:3","D:4"});
             eq.factors.addFuncs(new String[]{"f","graph","sum"});
         }
@@ -32,11 +31,11 @@ public class Equation {
             if(args.length == 1){
                 eq = new Equation(args[0]);
             } else if(args.length > 1){
-                int i = 0;
+                int i = -1;
                 char type = ' ';
                 if(!args[0].equals("--f") && !args[0].equals("--v") && !args[0].equals("--e"))
                     throw new NotDefinedException("first value has to be --f, --v, or --e");
-                while(i < args.length - 2){ //args.length is string.
+                while(i < args.length - 1){ //args.length is string.
                     i++;
                     if(args[i].equals("--v")){type = 'v'; continue;}
                     if(args[i].equals("--f")){type = 'f'; continue;}
@@ -67,7 +66,8 @@ public class Equation {
         }
         System.out.println("RAW EQUATION: "+ eq.equation);
         System.out.println("NODES:\n" + eq.node);
-        System.out.println("RESULT: "+eq.eval());
+        System.out.println("RESULT: " + eq.eval());
+        System.out.println("GUESS OF EQ: " + eq.node.genEqString());
     }
 
     /** The raw equation. */
@@ -190,6 +190,22 @@ public class Equation {
         return eval(factors, node, pVars);
     }
 
+    /** 
+     * Fixes any terms that might be misleading to the compiler. For example, <code>sinx</code> will become
+     * <code>sin(x)</code>. Note: To not have it do any fixing, put a "@" at the beginning of the input String
+     * @param eq            The equation to be corrected.
+     * @return A corrected version of the equation.
+     */
+    public static String fixEquation(String eq){
+        if(eq.charAt(0) == '@') return eq;
+        String[] trigf = new String[]{"sec", "csc", "cot", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "asin",
+                                      "acos", "atan", "sin", "cos", "tan"};
+        for(String trig : trigf)
+            eq = eq.replaceAll("(?:^|\\W)" + trig + "(\\w*)(?:$|\\W)", trig + "($1)");
+
+        eq = eq.replaceAll("\\-\\(", "-1*(");
+        return eq;
+    }
     /**
      * Generates an ArrayList of tokens that represent rEq.
      * Note that this removes all whitespace (including spaces) before handling the equation.
@@ -198,7 +214,7 @@ public class Equation {
      * @see Token
      */
     public static ArrayList<Token> parseTokens(String rEq) throws TypeMisMatchException{
-        rEq = rEq.trim().replaceAll(" ","");
+        rEq = fixEquation(rEq.trim().replaceAll(" ",""));
         //not so sure this is the best way to fix my minus issue:
 
         ArrayList<Token> tokens = new ArrayList<Token>();

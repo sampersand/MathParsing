@@ -1,7 +1,8 @@
 package Math.Equation;
-import Math.Equation.Exception.TypeMisMatchException;
-import Math.Equation.Exception.DoesntExistException;
-import Math.Equation.Exception.NotDefinedException;
+import Math.Exception.TypeMisMatchException;
+import Math.Exception.DoesntExistException;
+import Math.Exception.NotDefinedException;
+import static Math.Equation.Token.Types.*;
 import java.util.ArrayList;
 /**
  * A class that represents either a function, an operator, or a group of tokens.
@@ -21,6 +22,15 @@ public class Node {
      */
     public Node() {
         this(new Token());
+    }
+
+    /**
+     * A constructor for Node, which only takes a Node as an input. Just passes pNode's token and an empty list to the
+     * {@link #Node(Token,ArrayList) main} constructor.
+     * @param pNode        The Node whose token will determine how this class interacts with its {@link #subNodes}.
+     */
+    public Node(Node pNode) {
+        this(pNode.token, new ArrayList<Node>());
     }
 
     /**
@@ -59,8 +69,8 @@ public class Node {
 
     /**
      * Condenses functions and groups together into a single node. Creates 1-length nodes for operators and vars / nums.
-     * Note that this is only ever used with {@link #generateNodes(ArrayList) generateNodes} and 
-     * {@link #completeNodes(Node) completeNodes}.
+     * Note that this is only ever used with {@link #fixNodes(Node) fixNodes}, 
+     * {@link #generateNodes(ArrayList) generateNodes} and {@link #completeNodes(Node) completeNodes}.
      * @param pos       The position to start condensing nodes form.
      * @param n         The "parent" node that any newly generated nodes will be put into.
      * @param pTokens   The list of tokens that will be put into nodes.
@@ -78,8 +88,8 @@ public class Node {
                 int paren = 0;
                 int x = pos + 1;
                 do{
-                    if(pTokens.get(x).TYPE == Token.Types.LPAR) paren++;
-                    if(pTokens.get(x).TYPE == Token.Types.RPAR) paren--;
+                    if(pTokens.get(x).TYPE == LPAR) paren++;
+                    if(pTokens.get(x).TYPE == RPAR) paren--;
                     x++;
                 } while(0 < paren && x < pTokens.size());
 
@@ -89,7 +99,7 @@ public class Node {
 
                 Object[] temp = condeseNodes(0, new Node(t), passTokens);
                 pos += (int)temp[0];
-                n.add((Node)temp[1]);
+                n.add(fixNodes((Node)temp[1]));
             }
             pos++;
         }
@@ -99,7 +109,8 @@ public class Node {
 
     /**
      * Creates a master node using the pNode as a starting point by applying the Order of Operations.
-     * Note: pNode should already have been condensed via {@link #condeseNodes(int,Node,ArrayList) condeseNodes}. 
+     * Note: pNode should already have been condensed via {@link #condeseNodes(int,Node,ArrayList) condeseNodes}, and
+     * fixed via {@link #fixNodes(Node) fixNodes}.
      * @param pNode    The node that will be used to generate the new hierarchically-structured master node.
      * @return The "master" node - that is, the node to control all other nodes. HAH - LOTR reference.
      */
@@ -146,8 +157,32 @@ public class Node {
             }
             i++;
         }
-        e.token = pNode.token;
         return e;
+    }
+
+    /** 
+     * Fixes nodes to prevent horrible things like "1*-1" from crashing.
+     * @param pNode         The node whose subnodes will be fixed.
+     * @return A "fixed" version of the nodes.
+     */
+    public static Node fixNodes(Node pNode){
+        int i = 0;
+        while(i < pNode.size()){
+            Node n = pNode.get(i);
+            if(n.type() == OPER && n.token.VAL.equals("-") && pNode.get(i - 1).type() == OPER &&
+                                   (pNode.get(i - 1).token.VAL.equals("/") || pNode.get(i - 1).token.VAL.equals("*"))){
+                Node n2 = new Node(new Token("doesnt matter what I put here", GROUP));
+                n2.add(new FinalNode(new Token("0", NUM)));
+                n2.add(n);
+                n2.add(pNode.get(i + 1));
+                pNode.rem(i + 1);
+                pNode.set(i, n2);
+                i++;
+            }
+            i++;
+        }
+
+        return pNode;
     }
     /**
      * Generates a "master node" from a list of tokens.
@@ -155,7 +190,7 @@ public class Node {
      * @return The new master node - usually {@link Equation#node} is set to this.
      */
     public static Node generateNodes(ArrayList<Token> pTokens) {
-        return completeNodes((Node)condeseNodes(0, new Node(Token.UNI), pTokens)[1]);
+        return completeNodes(fixNodes((Node)condeseNodes(0, new Node(Token.UNI), pTokens)[1]));
     }
 
 
@@ -246,7 +281,7 @@ public class Node {
     public Node getD(int i, boolean pOver) {
         if(this instanceof FinalNode)
             return this;
-        if(i <= 0 || (get(size() - 1).token.TYPE == Token.Types.GROUP &&! pOver)){
+        if(i <= 0 || (get(size() - 1).type() == GROUP &&! pOver)){
             return this;
         } else {
             return get(size() - 1).getD(i - 1, pOver);
@@ -275,13 +310,13 @@ public class Node {
      * @param pOver     Whether or not it will "override", and continue going down if a group is encountered.
      */
     public void addD(int i, Node n, boolean pOver) {
-        // System.err.println("HEY, i am ||"+this+"|| addding ||"+n+"|| at layer: "+ i);
         if(this instanceof FinalNode) {
             throw new TypeMisMatchException("Can't add subnodes to a FinalNode!");
         }
-        else if(this.token.isUni() ){ // not 100% sure
-            add(n);                   // these two fixed it, but oh well.
-        } else if(i <= 0 || size() <= 0 || (get(size() - 1).token.TYPE == Token.Types.GROUP &&! pOver)) {
+        // else if(this.token.isUni()){ // not 100% sure
+            // System.out.println("pos 1");
+            // add(n); }                  // these two fixed it, but oh well.
+        else if(i <= 0 || size() <= 0 || (get(size() - 1).type() == GROUP &&! pOver)) {
             add(n);
         } else {
             if(i == 2 && get(size() - 1) instanceof FinalNode) {
@@ -338,7 +373,7 @@ public class Node {
             if(i == 2 && get(size() - 1) instanceof FinalNode ) {
                 System.err.println("Trying to setD to a FinalNode. Going one level up instead.");
                 set(size() - 1,n);
-            } else if(get(size() - 1).token.TYPE == Token.Types.GROUP &&! pOver){
+            } else if(get(size() - 1).type() == GROUP &&! pOver){
                 set(p, n);
             } else {
                 get(size() - 1).setD(i - 1, p, n, pOver);
@@ -380,12 +415,27 @@ public class Node {
             get(size() - 1).remD(i - 1, p, pOver);
     }
 
+    /** 
+     * Gets this node's type (like group, function, var, etc).
+     * @return This node's type, as defined by {@link #token}.
+     */
+    public Token.Types type(){
+        return token.TYPE;
+    }
+
+    /** 
+     * Gets an exact copy of this current node
+     * @return An exact duplicate of this node, except for its position in memory.
+     */
+    public Node copy(){
+        return new Node(token, subNodes);
+    }
     /**
      * The more robust version of this class's {@link #toString()}, but without the indentation.
      * @return A more detailed String representation of this.
      */    
     public String fullString() {
-        String ret = "{\"" + token.VAL + "\" | " + token.TYPE + " | ";
+        String ret = "{\"" + token.VAL + "\" | " + type() + " | ";
         for(Node node : subNodes)
             ret += node.fullString() + ", ";
         return ret.substring(0,ret.length()-2) + "}";
@@ -395,7 +445,12 @@ public class Node {
      * @return A simple String representation of this.
      */      
     public String toString() {
-        return toStringL(1);
+        String ret = '{' + token.VAL + ':';
+        for(Node node : subNodes){
+            ret += node + ", ";
+        }
+        return ret.substring(0, ret.length() - (size() > 0 ? 2 : 0)) + '}';
+
     }
     /** 
      * Effectively {@link #toString} but allows for indentations
@@ -427,8 +482,26 @@ public class Node {
      * @return The best guess as to what a function comprised of the subnodes would look like.
      */
     public String genEqString(){
-        throw new NotDefinedException("DEFINE ME!");
-        // return "";
+        String ret = "";
+        switch(type()){
+            case FUNC: ret += token.VAL;
+            case GROUP: ret += "("; break;
+            case ARGS: return "'" + token.VAL + "'";
+            case NUM: case VAR: return token.VAL;
+        }
+        for(Node n : subNodes){
+            ret += n.genEqString();
+            switch(type()){
+                case FUNC: case GROUP: ret += ", "; break;
+                case OPER: ret += " " + token.VAL + " ";
+            }
+        }
+        if(type() == FUNC || type() == GROUP){
+            return ret.substring(0, ret.length() - (size() > 0 ? 2 : 0)) + ")";
+        } else if(type() == OPER){
+            return ret.substring(0, ret.length() - (size() > 0 ? 3 : 0));
+        } else
+            return ret;
     }
 }
 

@@ -6,8 +6,8 @@ import Math.Equation.Node;
 import Math.Equation.CustomFunction;
 
 
-import Math.Equation.Exception.InvalidArgsException;
-import Math.Equation.Exception.NotDefinedException;
+import Math.Exception.InvalidArgsException;
+import Math.Exception.NotDefinedException;
 
 public class summation extends CustomFunction{
     public static String help = "Add up numbers from START to END with step STEP";

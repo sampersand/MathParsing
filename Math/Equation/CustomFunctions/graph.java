@@ -6,8 +6,8 @@ import Math.Equation.Factors;
 import Math.Equation.Node;
 import Math.Equation.CustomFunction;
 
-import Math.Equation.Exception.NotDefinedException;
-import Math.Equation.Exception.InvalidArgsException;
+import Math.Exception.NotDefinedException;
+import Math.Exception.InvalidArgsException;
 
 
 public class graph extends CustomFunction{

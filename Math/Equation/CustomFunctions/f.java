@@ -6,8 +6,8 @@ import Math.Equation.Node;
 import Math.Equation.Token;
 import Math.Equation.CustomFunction;
 
-import Math.Equation.Exception.NotDefinedException;
-import Math.Equation.Exception.InvalidArgsException;
+import Math.Exception.NotDefinedException;
+import Math.Exception.InvalidArgsException;
 
 public class f extends CustomFunction{
     public static String HELP1 = "f(a, b, ... n) = 1/a + 1/b + ... + 1/n";
@@ -20,7 +20,7 @@ public class f extends CustomFunction{
 
     @Override
     public double exec(Factors pFactors, Node pNode) throws NotDefinedException, InvalidArgsException {
-        if(pNode.get(0).token.TYPE == Token.Types.ARGS);
+        if(pNode.get(0).type() == Token.Types.ARGS);
         double[] vals = evalNode(pFactors, pNode);
         double ret = 0;
         for(double val : vals)
