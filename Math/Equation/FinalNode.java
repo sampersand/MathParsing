@@ -9,7 +9,7 @@ import Math.Exception.TypeMisMatchException;
  */
 public class FinalNode extends Node {
 
-    /** The string representation of this. Only used if FinalNode is representing a variable. */
+    /** The String representation of this. Only used if FinalNode is representing a variable. */
     public String sVal;
 
     /** The numeric representation of this. Only used if FinalNode is representing a constant. */    

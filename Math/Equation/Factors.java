@@ -16,12 +16,12 @@ public class Factors {
     /**
      * A HashMap of variables; The keys are the names, the values are, well, the values of the variables.
      */
-    private HashMap<String, Double> vars;
+    public HashMap<String, Double> vars;
 
     /**
      * A HashMap of functions; The keys are the names, and the values are CustomFunction Classes that correspond to the names.
     */
-    private HashMap<String, CustomFunction> funcs;
+    public HashMap<String, CustomFunction> funcs;
 
     /**
      * Default constructor. Just calls the {@link #Factors(HashMap,HashMap) main constructor} with empty HashMaps.
@@ -30,10 +30,18 @@ public class Factors {
         this(new HashMap<String, Double>(), new HashMap<String, CustomFunction>());
     }
 
+    /** 
+     * A constructor for Factors that just takes varriables and no functions.
+     * @param pVars         The HashMap of variable names and their corresponding values.
+     */
+    public Factors(HashMap<String, Double> pVars) {
+        this(pVars, new HashMap<String, CustomFunction>());
+    }
+
     /**
      * The main constructor for Factors.
-     * @param pVars     The HashMap of variable names and their corresponding values.
-     * @param pFuncs    The HashMap of function names and their corresponding CustomFunction classes.
+     * @param pVars         The HashMap of variable names and their corresponding values.
+     * @param pFuncs        The HashMap of function names and their corresponding CustomFunction classes.
      */
     public Factors(HashMap<String, Double> pVars, HashMap<String, CustomFunction> pFuncs) {
         vars = pVars;
@@ -168,29 +176,36 @@ public class Factors {
 
     /**
      * Calls {@link #addFunc(String)} for each String in funcNames - insterting them into {@link #funcs}. The key is 
-     * each argument, with the value being a {@link CustomFunction} initiated with said argument.
-     * @param funcNames     An array of each function's name.
+     * each argument, with the value being it's position in the Array.
+     * If a function name has a ":" in it, the String to the left of the ":" will be the name, and the String to the
+     * right will be the file name. If no ":" appear in the argument, the file's name will be set to the argument.
+     * @param funcNames      An array of each variable's name.
      */
     public void addFuncs(String[] funcNames){
-        for(String funcName : funcNames){
-            addFunc(funcName);
+       for(String func : funcNames){
+            if(func.indexOf(":") != -1){
+                addFunc(func.split(":")[0], new CustomFunction(func.split(":")[1]));
+            } else{
+                addFunc(func);
+            }
         }
     }
 
     /**
      * Calls {@link #addVar(String)} for each String in varNames - insterting them into {@link #vars}. The key is 
-     * each argument, with the value being it's position in the Array. Note that if a varName has a ":" in it,
-     * the String to the right of the ":" will be the name, and the String to the left will be the double.
+     * each argument, with the value being it's position in the Array. 
+     * If a variable name has a ":" in it, the String to the left of the ":" will be the name, and the String to the
+     * right will be the variable name. If no ":" appear in the argument, the value will be set to <code>0.0D</code>.
      * @param varNames      An array of each variable's name.
      * @throws java.lang.NumberFormatException    Thrown only when ":" is included in a variable's name, and 
      *                                            The part on the right of that can't be evaluated as a double.
      */
     public void addVars(String[] varNames) throws NumberFormatException{
-        for(int i = 0; i < varNames.length;i++){
-            if(varNames[i].indexOf(":") != -1){
-                addVar(varNames[i].split(":")[0], Double.parseDouble(varNames[i].split(":")[1]));
+        for(String var : varNames){
+            if(var.indexOf(":") != -1){
+                addVar(var.split(":")[0], Double.parseDouble(var.split(":")[1]));
             } else{
-                addVar(varNames[i],(double)i);
+                addVar(var);
             }
         }
     }
@@ -250,11 +265,11 @@ public class Factors {
     }
 
     /** 
-     * Just returns the vars in string format, and the funcs in string format, with a little prettier formatting.
-     * @return A string representation of this factor.
+     * Just returns the vars in String format, and the funcs in String format, with a little prettier formatting.
+     * @return A String representation of this factor.
      */
     public String toString(){
-        return "Factor: \n\tVARS: " + vars.toString() + "\n\tFUNCS: " + funcs.toString();
+        return "\n\tVARS: " + vars.toString() + "\n\tFUNCS: " + funcs.toString();
     }
 
 }

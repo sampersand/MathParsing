@@ -21,12 +21,11 @@ public class Equation {
         if(args.length == 0){
             // eq = new Equation("graph((1,2),(2,3)) + e ");
             // eq = new Equation("(40 * 12 + 2 * (52-12))/52");
-            eq = new Equation("sinx");
+            eq = new Equation("f(x)");
             // eq = new Equation("sin(x+f('e,2,C')*f(4,f(D,3,pi)))");
-            eq.factors.addVars(new String[]{"x:10   ","C:3","D:4"});
-            eq.factors.addFuncs(new String[]{"f","graph","sum"});
-        }
-        else{
+            eq.factors.addVars(new String[]{"x:10","C:3","D:4"});
+            eq.factors.addFuncs(new String[]{"f","graph","sum:summation"});
+        } else {
             eq = new Equation();
             if(args.length == 1){
                 eq = new Equation(args[0]);
@@ -35,7 +34,7 @@ public class Equation {
                 char type = ' ';
                 if(!args[0].equals("--f") && !args[0].equals("--v") && !args[0].equals("--e"))
                     throw new NotDefinedException("first value has to be --f, --v, or --e");
-                while(i < args.length - 1){ //args.length is string.
+                while(i < args.length - 1){ //args.length is String.
                     i++;
                     if(args[i].equals("--v")){type = 'v'; continue;}
                     if(args[i].equals("--f")){type = 'f'; continue;}
@@ -64,10 +63,11 @@ public class Equation {
             }
 
         }
-        System.out.println("RAW EQUATION: "+ eq.equation);
-        System.out.println("NODES:\n" + eq.node);
-        System.out.println("RESULT: " + eq.eval());
+        // System.out.println("RAW EQUATION: "+ eq.equation);
+        // System.out.println("NODES:\n" + eq.node);
+        System.out.println(eq);
         System.out.println("GUESS OF EQ: " + eq.node.genEqString());
+        System.out.println("RESULT: " + eq.eval());
     }
 
     /** The raw equation. */
@@ -102,20 +102,31 @@ public class Equation {
     /**
      * The String-only constructor for the equation class. Just passes a Node created based off pEq, and an empty
      * {@link Factors} class to the {@link #Equation(String,Node,Factors) main equation constructor}.
-     * @param pEq       A string containing the equation that this class will be modeled after.
+     * @param pEq       A String containing the equation that this class will be modeled after.
      */ 
     public Equation(String pEq) {
         this(pEq, Node.generateNodes(Equation.parseTokens(pEq)), new Factors());
     }
 
     /**
-     * The Node-only for the equation class. Just passes a string created based on Node's subnodes, and an empty
+     * The String and Factors constructor for the equation class. Just passes a Node created based off pEq, and pFactors
+     * to the {@link #Equation(String,Node,Factors) main equation constructor}.
+     * @param pEq       The String representation of the equation. Is only ever used to identify individual equations.
+     * @param pFactors  The {@link Factors} instance for the equation.
+     */ 
+    public Equation(String pEq, Factors pFactors) {
+        this(pEq, Node.generateNodes(Equation.parseTokens(pEq)), pFactors);
+    }
+
+    /**
+     * The Node-only for the equation class. Just passes a String created based on Node's subnodes, and an empty
      * {@link Factors} class to the {@link #Equation(String,Node,Factors) main equation constructor}.
      * @param pN        The Node that the equation class will be modeled after.
      */ 
     public Equation(Node pN) {
         this(pN.genEqString(), pN, new Factors());
     }
+
 
     /**
      * The main constructor for the equation class. Takes the parameter pEq, and parses the tokens from it,
@@ -129,6 +140,7 @@ public class Equation {
         node = pN;
         factors = pFactors;
     }
+
 
     /** 
      * Generates {@link #node} using {@link #equation}.
@@ -204,6 +216,7 @@ public class Equation {
             eq = eq.replaceAll("(?:^|\\W)" + trig + "(\\w*)(?:$|\\W)", trig + "($1)");
 
         eq = eq.replaceAll("\\-\\(", "-1*(");
+        eq = eq.replaceAll("([\\d.])+(\\(|(?:[A-Za-z]+))", "$1*$2");
         return eq;
     }
     /**
@@ -286,6 +299,7 @@ public class Equation {
         return tokens;
     }
 
+
     /**
      * Checks if a character is alphanumeric, period, or a single quote (').
      * @param c     The character to test.
@@ -305,9 +319,9 @@ public class Equation {
     }
 
     /**
-     * Checks if a string consists only of letters, digits, and / or periods.
-     * @param str   The string to test.
-     * @return      True if the string consists only of letters, digits, and / or periods. False otherwise.
+     * Checks if a String consists only of letters, digits, and / or periods.
+     * @param str   The String to test.
+     * @return      True if the String consists only of letters, digits, and / or periods. False otherwise.
      */
     public static boolean isAlphaNumP(String str) {
         for(char c : str.toCharArray())
@@ -326,8 +340,8 @@ public class Equation {
     }
 
     /**
-     * Checks if a string consists only of letters. 
-     * @param str   The string to test.
+     * Checks if a String consists only of letters. 
+     * @param str   The String to test.
      * @return      True if the String is only letters. False otherwise.
      */
     public static boolean isAlpha(String str) {
@@ -346,9 +360,9 @@ public class Equation {
     }
 
     /**
-     * Checks if a string consists only of digits and / or periods. 
+     * Checks if a String consists only of digits and / or periods. 
      * Please note that this doesn't check to make sure there _are_ digits. So "...." will return true.
-     * @param str   The string to test.
+     * @param str   The String to test.
      * @return      True if the String is only digits and / or periods. False otherwise.
      */        
     public static boolean isNumP(String str) {
@@ -357,5 +371,36 @@ public class Equation {
                 return false;
         return true;
     } 
+
+    /** 
+     * Gives a String representation of this equation. Comprised of {@link #equation}, {@link #factors}, and
+     * {@link #node}.
+     * @return A String representation of this equation. 
+     */
+    public String fullString(){
+        return "--Equation--\n--RawEq--\n" + equation + "\n--Factors--\n" + factors + "\n--Nodes--\n" + node.toStringL(1);
+    }
+    /** 
+     * Gives a pretty-looking representation of this equation. comprised of {@link #equation}, and {@link #factors}' 
+     * {@link Factors#vars} and {@link Factors#funcs}.
+     * @return A fancy String representation of this equation.
+     */
+    public String toString(){
+        String ret = "------=[" + equation + "]=------\nVarriables:";
+        for(String var : factors.vars.keySet()){
+            ret += "\n\t" + var + " = " + factors.getVar(var);
+        }
+        ret += "\nFunctions:";
+        for(String func : factors.funcs.keySet()){
+            ret += "\n\t" + func + " : " + factors.getFunc(func);
+        }
+        ret += "\n";
+        for(char c : equation.toCharArray()) ret += ("-");
+        ret += "----------------\n";
+        return ret;
+    }
+
+public double solve(){return solve("");}
+public double solve(String varToSolveFor){return 0;}
 }
 

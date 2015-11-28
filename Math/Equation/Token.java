@@ -8,7 +8,7 @@ import java.util.HashMap;
  * @version 0.1
  */
 public class Token {
-    /** The string that this class is based upon. */
+    /** The String that this class is based upon. */
     public final String VAL;
 
     /** The type of token. Used to distinguish between things such as functions, groups, and operators. */
@@ -89,7 +89,7 @@ public class Token {
         GROUP
         ,
         /**
-         * A raw string. Used only to keep track of what is between a pair of single quotes (').
+         * A raw String. Used only to keep track of what is between a pair of single quotes (').
          */
         ARGS
         ,
@@ -120,7 +120,7 @@ public class Token {
     }
 
     /**
-     * An alternate constructor. This just passes pVal as a string and pType to the main constructor.
+     * An alternate constructor. This just passes pVal as a String and pType to the main constructor.
      * @param pVal    The character that this tokenis based off of.
      * @param pType     The type of token that this token is.
      */

@@ -35,7 +35,7 @@ public abstract class Function {
     }
 
     /**
-     * Gets a string representation of the function. In reality, just returns its name, because a string repr of the 
+     * Gets a String representation of the function. In reality, just returns its name, because a String repr of the 
      * code is wayyy too hard.
      */
     public abstract String toString();

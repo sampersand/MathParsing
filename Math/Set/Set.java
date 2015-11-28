@@ -1,4 +1,7 @@
 package Math.Set;
+import Math.Equation.Equation;
+import Math.Equation.Factors;
+import java.util.HashMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -7,7 +10,7 @@ public class Set {
     // public static final double e = Math.E;
     private double[] matr;
     private double[] matr2;
-    private double[] equation;
+    private Equation equation;
     private String name;
     public static void main(String[] args) { 
         assert false;
@@ -39,24 +42,20 @@ public class Set {
 
     public void setMatr(double[] inp){ matr = inp; }
     public void setMatr2(double[] inp){ matr2 = inp; }
-    public void setEquation(double[] inp){ equation = inp; }
-    public double[] getEquation(){ return equation; }    
+    public void setEquation(Equation inp){ equation = inp; }
+    public Equation getEquation(){ return equation; }    
     public double[] getMatr(){ return matr; }
     public double[] getMatr2(){ return matr2; }
 
     public double pred(double val){return pred(val, linReg());}
     public double pred(double val, double[] pMatr, double[] pMatr2){return pred(val, linReg(pMatr, pMatr2));}
-    public double pred(double val, double[] linreg){
-        double ret = 0;
-        for(int coef = 0; coef < linreg.length; coef++){
-            ret += Math.pow(val, coef) * linreg[coef];
-        }
-        return ret;
+    public double pred(double val, Equation pEq){
+        return pEq.solve("y");
     }
     public double[] es(){return resid();}
     public double[] resid(){
         assert matr.length == matr2.length;
-        double[] lreg = linReg();
+        Equation lreg = linReg();
         double[] resid = new double[matr.length];
         for(int x = 0; x < matr.length; x++)
             resid[x] = pred(matr[x], lreg) - matr2[x];
@@ -64,17 +63,20 @@ public class Set {
     }
 
 
-    public double[] quadReg(){return quadReg(matr, matr2); }
-    public static double[] quadReg(double[] x, double[] y){
-        double b0 = 0, b1 = 0, b2 = 0;
-        return new double[]{b0, b1, b2};
+    public Equation quadReg(){return quadReg(matr, matr2); }
+    public static Equation quadReg(double[] x, double[] y){
+        Equation eq = new Equation();
+        return eq;
     }
 
-    public double[] linReg(){ return linReg(matr, matr2); }
-    public static double[] linReg(double[] x, double[] y){
+    public Equation linReg(){ return linReg(matr, matr2); }
+    public static Equation linReg(double[] x, double[] y){
         double b1 = r(x, y) * S(y) / S(x);
         double b0 = avg(y) - b1 * avg(x);
-        return new double[]{b0, b1};
+        return new Equation("yhat = b0 + b1 * y", new Factors(new HashMap<String, Double>(){{
+                    put("b0", b0);
+                    put("b1", b1);
+                }}));
     }
 
     public double r(){ return r(matr, matr2); }
@@ -245,14 +247,7 @@ public class Set {
     }
     public void printLinReg(){ printLinReg(matr, matr2); }
     public static void printLinReg(double[] pMatr, double[] pMatr2){
-        double[] linreg = linReg(pMatr, pMatr2);
-        String ret = "ŷ = ";
-        for(int x = 0; x < linreg.length; x++){
-            ret += linreg[x];
-            ret += x == 0 ? "" : "·x" + (x == 1 ? "" : "^" + x);
-            ret += " + ";
-        }
-        System.out.println(ret.substring(0,ret.length()-3));
+        System.out.println(linReg(pMatr, pMatr2));
     }
 
     public void graphe(){(new Set(matr,resid(),"Residuals of "+this.name)).graph();}

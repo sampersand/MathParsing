@@ -2,6 +2,7 @@ package Math.Equation;
 
 import Math.Exception.NotDefinedException;
 import Math.Exception.InvalidArgsException;
+import Math.Exception.DoesntExistException;
 import Math.Equation.CustomFunctions.*;
 
 import Math.Equation.Function;
@@ -15,17 +16,58 @@ import java.lang.reflect.*;
  * Note: all user-defined functions (as opposed to pre-defined) must inherit from this class.
  */
 public class CustomFunction extends Function {
-    public static String HELP = "f(a, b, ... n) = 1/a + 1/b + ... + 1/n";
-    public static String SYNTAX = "f(a, b, ... n) such that a, b, ..., n are all numbers or variables.";
-
+    public Class cl;
     public CustomFunction(){
         this("");
     }
     public CustomFunction(String pVal){
         super(pVal);
+        try {
+            if(pVal.equals("")){
+                System.err.println("[ERROR] Instantiating a CustomFunction without a class associated!");
+                cl = null;
+            } else{
+                Class cl = Class.forName("Math.Equation.CustomFunctions." + fName);
+            }
+        } catch (ClassNotFoundException err) {
+            System.err.println("[ERROR] A ClassNotFoundException happened when attempting to get the HELP / SYNTAX " +
+                               "of a CustomFunction (File Name: " + fName + "): " + err + " | " + err.getMessage() +
+                               " | " + err.getCause());
+            throw new DoesntExistException("CustomFunction '" + fName + 
+                                            "' doesn't exist! in Math.Equation.CustomFunctions.*");
+        }
     }
-    public String toString(){
-        return "CustomFunction: '" + fName + "'\nHELP: " + HELP + "\nSYNTAX: " + SYNTAX;
+    public String getHelp() {
+        return (String) getFunc("help");
+    }
+    public String getSyntax() {
+        return (String) getFunc("syntax");
+    }
+    private Object getFunc(String pName){
+        try{
+            return cl.getDeclaredMethod(pName).invoke(null);
+        } catch (IllegalAccessException err) {
+            System.err.println("[ERROR] A IllegalAccessException occured when attempting to get '" + pName + "' " +
+                               "of a CustomFunction (File Name: " + fName + "): " + err + " | " + err.getMessage() +
+                               " | " + err.getCause());
+        } catch (NullPointerException err) {
+            throw new NotDefinedException("Hey, the CustomFunction '" + fName + "' doesn't have a '" + pName + 
+                "' function and needs one!");
+        } catch (NoSuchMethodException err) {
+            System.err.println("[ERROR] A NoSuchMethodException occured when attempting to get '" + pName + "' " +
+                               "of a CustomFunction (File Name: " + fName + "): " + err + " | " + err.getMessage() +
+                               " | " + err.getCause());
+        } catch (InvocationTargetException err) {
+            System.err.println("[ERROR] A InvocationTargetException occured when attempting to get '" + pName + "' " +
+                               "of a CustomFunction (File Name: " + fName + "): " + err + " | " + err.getMessage() +
+                               " | " + err.getCause());
+        // } catch (InstantiationException err) {
+        //     System.err.println("[ERROR] A InstantiationException occured when attempting to get '" + pName + "' " +
+        //                        "of a CustomFunction (File Name: " + fName + "): " + err + " | " + err.getMessage() +
+        //                        " | " + err.getCause());
+        }
+        return null;
+
     }
     /**
      * This thing takes a node (usually the node from {@link #exec(Factors,Node) exec}), and returns an array of the 
@@ -47,30 +89,29 @@ public class CustomFunction extends Function {
     public double exec(Factors pFactors, Node pNode) throws NotDefinedException, InvalidArgsException {
         try{
             Class[] argTypes = {Factors.class, Node.class};
-            Class cl = Class.forName("Math.Equation.CustomFunctions." + fName);
             Method execMethod = cl.getDeclaredMethod("exec",argTypes);
             Object[] argListForInvokedExec = new Object[]{pFactors, pNode};
             return (double)execMethod.invoke(cl.newInstance(), argListForInvokedExec);
-        } catch (ClassNotFoundException err) {
-            System.err.println("[ERROR] A ClassNotFoundException happened when attempting to execute a " +
-                               "custom method (File Name: " + fName + "): " + err + " | " + err.getMessage() + " | " +
-                                err.getCause());
         } catch (NoSuchMethodException err) {
             System.err.println("[ERROR] A NoSuchMethodException happened when attempting to execute a " +
-                               "custom method (File Name: " + fName + "): " + err + " | " + err.getMessage() + " | " +
+                               "custom method in file '" + fName + "' " + err + " | " + err.getMessage() + " | " +
                                 err.getCause());
         } catch (InvocationTargetException err) {
             System.err.println("[ERROR] A InvocationTargetException happened when attempting to execute a " +
-                               "custom method (File Name: " + fName + "): " + err + " | " + err.getMessage() + " | " +
+                               "custom method in file '" + fName + "' " + err + " | " + err.getMessage() + " | " +
                                 err.getCause());
         } catch (IllegalAccessException err) {
             System.err.println("[ERROR] A IllegalAccessException happened when attempting to execute a " +
-                               "custom method (File Name: " + fName + "): " + err + " | " + err.getMessage() + " | " +
+                               "custom method in file '" + fName + "' " + err + " | " + err.getMessage() + " | " +
                                 err.getCause());
         } catch (InstantiationException err) {
             System.err.println("[ERROR] A InstantiationException happened when attempting to execute a " +
-                               "custom method (File Name: " + fName + "): " + err + " | " + err.getMessage() + " | " +
+                               "custom method in file '" + fName + "' " + err + " | " + err.getMessage() + " | " +
                                 err.getCause());
         } return 0;
     }
+    public String toString(){
+            return "CustomFunction '" + fName + "':\nHELP: " + getHelp() + "\nSYNTAX: " + getSyntax();
+    }
+
 }
