@@ -1,6 +1,7 @@
 package Math.Equation;
 import Math.Exception.TypeMisMatchException;
 import Math.Exception.NotDefinedException;
+import Math.Set.Set;
 import java.util.ArrayList;
 import java.util.HashMap;
 /**
@@ -17,14 +18,18 @@ public class Equation {
      * @param args          The arguments to pass. See description of this method for details.
      */
     public static void main(String[] args) throws NotDefinedException, TypeMisMatchException {
+        // Set set = new Set(new double[]{1,2,3,4,5}, new double[]{1,2,3,4,1});
+        // System.out.println(set.equation);
+        // set.graph();
         Equation eq;
         if(args.length == 0){
             // eq = new Equation("graph((1,2),(2,3)) + e ");
             // eq = new Equation("(40 * 12 + 2 * (52-12))/52");
-            eq = new Equation("f(x)");
+            // eq = new Equation("graph('1,2,3,4,5','2,3,4,5,6')");
+            eq = new Equation("graph('2*siny')+1");
             // eq = new Equation("sin(x+f('e,2,C')*f(4,f(D,3,pi)))");
-            eq.factors.addVars(new String[]{"x:10","C:3","D:4"});
-            eq.factors.addFuncs(new String[]{"f","graph","sum:summation"});
+            eq.factors = eq.factors.addVars(new String[]{"x:10","C:3","D:4"});
+            eq.factors = eq.factors.addFuncs(new String[]{"f","graph","sum:summation"});
         } else {
             eq = new Equation();
             if(args.length == 1){
@@ -41,7 +46,8 @@ public class Equation {
                     if(args[i].equals("--e")){type = 'e'; continue;}
                     if(type == 'v'){
                         try{
-                            eq.factors.addVar(args[i].split(":")[0], Double.parseDouble(args[i].split(":")[1]));
+                            eq.factors = eq.factors.addVar(args[i].split(":")[0],
+                                Double.parseDouble(args[i].split(":")[1]));
                         } catch(NumberFormatException err){
                             System.err.println("Syntax: VARNAME:VARVAL (" + args[i] + ")");
                         } catch(ArrayIndexOutOfBoundsException err){
@@ -49,7 +55,7 @@ public class Equation {
                         }
                     } else if (type == 'f'){
                         try{
-                            eq.factors.addFunc(args[i].split(":")[0], args[i].split(":")[1]);
+                            eq.factors = eq.factors.addFunc(args[i].split(":")[0], args[i].split(":")[1]);
                         } catch(NumberFormatException err){
                             System.err.println("Syntax: FUNCNAME:FUNCVAL (" + args[i] + ")");
                         } catch(ArrayIndexOutOfBoundsException err){
@@ -209,11 +215,15 @@ public class Equation {
      * @return A corrected version of the equation.
      */
     public static String fixEquation(String eq){
-        if(eq.charAt(0) == '@') return eq;
+        if(eq.charAt(0) == '@')
+            return eq.substring(1);
+        System.out.println(eq.charAt(0) + "|"+eq);
+        if(eq.indexOf("=")!=-1)
+            eq = eq.split("=")[1];
         String[] trigf = new String[]{"sec", "csc", "cot", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "asin",
                                       "acos", "atan", "sin", "cos", "tan"};
         for(String trig : trigf)
-            eq = eq.replaceAll("(?:^|\\W)" + trig + "(\\w*)(?:$|\\W)", trig + "($1)");
+            eq = eq.replaceAll("(^|[^A-Za-z0-9])" + trig + "([A-Za-z]*)($|[^A-Za-z0-9])","$1" +  trig + "($2)$3");
 
         eq = eq.replaceAll("\\-\\(", "-1*(");
         eq = eq.replaceAll("([\\d.])+(\\(|(?:[A-Za-z]+))", "$1*$2");
@@ -235,7 +245,7 @@ public class Equation {
         char c;
         for(int x = 0; x < rEq.length(); x++) {
             c = rEq.charAt(x);
-            if(prev.length() != 0 && prev.charAt(0) == '\''){
+            if(prev.length() > 0 && prev.charAt(0) == '\''){
                 prev += c;
                 if(c == '\''){
                     tokens.add(new Token(prev.substring(1, prev.length() -1), Token.Types.ARGS));
@@ -386,13 +396,22 @@ public class Equation {
      * @return A fancy String representation of this equation.
      */
     public String toString(){
-        String ret = "------=[" + equation + "]=------\nVarriables:";
-        for(String var : factors.vars.keySet()){
-            ret += "\n\t" + var + " = " + factors.getVar(var);
-        }
-        ret += "\nFunctions:";
-        for(String func : factors.funcs.keySet()){
-            ret += "\n\t" + func + " : " + factors.getFunc(func);
+        String ret = "------=[" + equation + "]=------";
+        if(factors.vars.size() > 0) {
+            ret += "\nVarriables:";
+            for(String var : factors.vars.keySet()){
+                ret += "\n\t" + var + " = " + factors.getVar(var);
+            }
+        } if(factors.funcs.size() > 0){
+            ret += "\nFunctions: (stuff in [] are optional)";
+            Object[] keys = factors.funcs.keySet().toArray();
+            for(int i = 0; i < keys.length; i++){
+                String func = (String) keys[i];
+                ret += "\n\t" + func + ": \n\t\tHelp   : " + factors.getFunc(func).getHelp()  + 
+                                          "\n\t\tSyntax : " + func + "(" + factors.getFunc(func).getSyntax() + ")";
+                if(i != keys.length - 1)
+                ret += "\n\t---\t---";
+            }
         }
         ret += "\n";
         for(char c : equation.toCharArray()) ret += ("-");
@@ -400,7 +419,14 @@ public class Equation {
         return ret;
     }
 
-public double solve(){return solve("");}
-public double solve(String varToSolveFor){return 0;}
+    public double solve(){return solve("");}
+    public double solve(String varToSolveFor){ return solve("", new HashMap<String, Double>());}
+    public double solve(String varToSolveFor, HashMap<String, Double> pVars){
+        System.err.println("Currently, solve isn't very good. Oh well." + factors.eval(node, pVars));
+        return factors.eval(node, pVars);
+    }
+    public void graph(){
+        Set.graph(this);
+        // throw new NotDefinedException("implement me (graph for equation)");
+    }
 }
-

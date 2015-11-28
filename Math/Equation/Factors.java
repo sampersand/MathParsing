@@ -93,34 +93,34 @@ public class Factors {
             }
         } else if(pNode.type() == Token.Types.FUNC ) {
             if(inFunc(pNode.token.VAL)) //if it is a function
-                return getFunc(pNode.token.VAL).exec(this, pNode);
+                return getFunc(pNode.token.VAL).exec(this.addVars(pVars), pNode);
             else {
                 try { //if it is a built in
-                    return InBuiltFunction.exec(pNode.token.VAL, this, pNode);
+                    return InBuiltFunction.exec(pNode.token.VAL, this.addVars(pVars), pNode);
                 } catch (NotDefinedException err2) {
                     // try{
                         // return new CustomFunction(pNode.token.VAL).exec(this,pNode);
                     // } //this isn't working now because of the way instantiating works.
                     // catch(e)
                     throw new NotDefinedException("Function '" + pNode.token.VAL + "' isn't defined in funcs " + 
-                                                  "(and isn't inbuilt either)!");
+                                                  "(and isn't inbuilt either), or one of the vars isn't defined!");
                 }
             }
         }
         else if(pNode.type() == Token.Types.GROUP || pNode instanceof FinalNode || pNode.token.isUni()) {
-                return eval(pNode.get(0));
+                return eval(pNode.get(0), pVars);
         } else if(pNode.type() == Token.Types.OPER) {
             switch(pNode.token.VAL) {
                 case "+":
-                    return eval(pNode.get(0)) + eval(pNode.get(1));
+                    return eval(pNode.get(0), pVars) + eval(pNode.get(1), pVars);
                 case "-":
-                    return eval(pNode.get(0)) - eval(pNode.get(1));
+                    return eval(pNode.get(0), pVars) - eval(pNode.get(1), pVars);
                 case "*":
-                    return eval(pNode.get(0)) * eval(pNode.get(1));
+                    return eval(pNode.get(0), pVars) * eval(pNode.get(1), pVars);
                 case "/":
-                    return eval(pNode.get(0)) / eval(pNode.get(1));
+                    return eval(pNode.get(0), pVars) / eval(pNode.get(1), pVars);
                 case "^":
-                    return Math.pow(eval(pNode.get(0)), eval(pNode.get(1))); // not sure this works
+                    return Math.pow(eval(pNode.get(0), pVars), eval(pNode.get(1), pVars)); // not sure this works
                 default:
                     throw new NotDefinedException("Node: '" + pNode.token.VAL + "' is an OPERATOR, but no known way " +
                                                   "to evaluate it.");
@@ -133,35 +133,41 @@ public class Factors {
     /**
      * Puts a {@link CustomFunction} with the name funcName into {@link #funcs} with the key funcName.
      * @param funcName      The function name that will be used for the key, and file name for the CustomFunction.
+     * @return The updated Factor class.
      */
-    public void addFunc(String funcName){
-        addFunc(funcName, funcName);
+    public Factors addFunc(String funcName){
+        return addFunc(funcName, funcName);
     }
     
     /**
      * Puts <code>0.0D</code> into {@link #vars} with the key varName.
      * @param varName       The variable name that will be used for the key.
+     * @return The updated Factor class.
      */
-    public void addVar(String varName){
-        addVar(varName, 0);
+    public Factors addVar(String varName){
+        return addVar(varName, 0);
     }
     
     /**
      * Puts a {@link CustomFunction} with the name fileName into {@link #funcs} with the key funcName.
      * @param funcName      The function name that will be used for the key.
      * @param fileName      The name of the file for the {@link CustomFunction}.
+     * @return The updated Factor class.
      */
-    public void addFunc(String funcName, String fileName){
-        addFunc(funcName, new CustomFunction(fileName));
+    public Factors addFunc(String funcName, String fileName){
+        return addFunc(funcName, new CustomFunction(fileName));
     }
     
     /**
      * Puts pFunc into {@link #funcs} with the key funcName.
      * @param funcName      The function name that will be used for the key.
      * @param pFunc         {@link CustomFunction} that will be used as the value.
+     * @return The updated Factor class.
      */
-    public void addFunc(String funcName, CustomFunction pFunc){
-        funcs.put(funcName, pFunc);
+    public Factors addFunc(String funcName, CustomFunction pFunc){
+        Factors ret = copy();
+        ret.funcs.put(funcName, pFunc);
+        return ret;
     }
 
 
@@ -169,9 +175,12 @@ public class Factors {
      * Puts pVal into {@link #vars} with the key varName.
      * @param varName       The variable name that will be used for the key.
      * @param pVal          The double that will be used for the value.
+     * @return The updated Factor class.
      */
-    public void addVar(String varName, double pVal){
-        vars.put(varName, pVal);
+    public Factors addVar(String varName, double pVal){
+        Factors ret = copy();
+        ret.vars.put(varName, pVal);
+        return ret;
     }
 
     /**
@@ -180,15 +189,19 @@ public class Factors {
      * If a function name has a ":" in it, the String to the left of the ":" will be the name, and the String to the
      * right will be the file name. If no ":" appear in the argument, the file's name will be set to the argument.
      * @param funcNames      An array of each variable's name.
+     * @return The updated Factor class.
      */
-    public void addFuncs(String[] funcNames){
-       for(String func : funcNames){
+    public Factors addFuncs(String[] funcNames){
+        Factors ret = copy();
+        for(int i = 0; i < funcNames.length; i++){
+            String func = funcNames[i];
             if(func.indexOf(":") != -1){
-                addFunc(func.split(":")[0], new CustomFunction(func.split(":")[1]));
+                ret = ret.addFunc(func.split(":")[0], new CustomFunction(func.split(":")[1]));
             } else{
-                addFunc(func);
+                ret = ret.addFunc(func);
             }
         }
+        return ret;
     }
 
     /**
@@ -197,35 +210,45 @@ public class Factors {
      * If a variable name has a ":" in it, the String to the left of the ":" will be the name, and the String to the
      * right will be the variable name. If no ":" appear in the argument, the value will be set to <code>0.0D</code>.
      * @param varNames      An array of each variable's name.
+     * @return The updated Factor class.
      * @throws java.lang.NumberFormatException    Thrown only when ":" is included in a variable's name, and 
      *                                            The part on the right of that can't be evaluated as a double.
      */
-    public void addVars(String[] varNames) throws NumberFormatException{
-        for(String var : varNames){
+    public Factors addVars(String[] varNames) throws NumberFormatException{
+        Factors ret = copy();
+        for(int i = 0; i < varNames.length; i++){
+            String var = varNames[i];
             if(var.indexOf(":") != -1){
-                addVar(var.split(":")[0], Double.parseDouble(var.split(":")[1]));
+                ret = ret.addVar(var.split(":")[0], Double.parseDouble(var.split(":")[1]));
             } else{
-                addVar(var);
+                ret = ret.addVar(var);
             }
         }
+        return ret;
     }
 
     /**
      * Adds each key-value pair from pFuncs into {@link #funcs}.
      * @param pFuncs        The HashMap containing the name-function pairs. The key is a function name, while the 
      *                      value is a {@link CustomFunction}.
+     * @return The updated Factor class.
      */
-    public void addFuncs(HashMap<String, CustomFunction> pFuncs){
-        funcs.putAll(pFuncs);
+    public Factors addFuncs(HashMap<String, CustomFunction> pFuncs){
+        Factors ret = copy();
+        ret.funcs.putAll(pFuncs);
+        return ret;
     }
 
     /**
      * Adds each key-value pair from pVars into {@link #vars}.
      * @param pVars        The HashMap containing the name-value pairs. The key is a variable name, while the 
      *                     value is a double.
+     * @return The updated Factor class.
      */
-    public void addVars(HashMap<String, Double> pVars){
-        vars.putAll(pVars);
+    public Factors addVars(HashMap<String, Double> pVars){
+        Factors ret = copy();
+        ret.vars.putAll(pVars);
+        return ret;
     }
 
     /**
@@ -234,7 +257,7 @@ public class Factors {
      * @return A {@link CustomFunction} if funcName exists in {@link #funcs}. If it doesn't, it will return null.
      */
     public CustomFunction getFunc(String funcName){
-        return funcs.get(funcName);
+        return copy().funcs.get(funcName);
     }
 
     /**
@@ -270,6 +293,14 @@ public class Factors {
      */
     public String toString(){
         return "\n\tVARS: " + vars.toString() + "\n\tFUNCS: " + funcs.toString();
+    }
+
+    /** 
+     * Makes an exact copy of this Factors class.
+     * @return An exact copy of this class
+     */
+    public Factors copy(){
+        return new Factors(vars, funcs);
     }
 
 }

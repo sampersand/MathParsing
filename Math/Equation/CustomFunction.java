@@ -27,12 +27,11 @@ public class CustomFunction extends Function {
                 System.err.println("[ERROR] Instantiating a CustomFunction without a class associated!");
                 cl = null;
             } else{
-                Class cl = Class.forName("Math.Equation.CustomFunctions." + fName);
+                cl = Class.forName("Math.Equation.CustomFunctions." + fName);
+                if(cl == null)
+                    throw new ClassNotFoundException();
             }
         } catch (ClassNotFoundException err) {
-            System.err.println("[ERROR] A ClassNotFoundException happened when attempting to get the HELP / SYNTAX " +
-                               "of a CustomFunction (File Name: " + fName + "): " + err + " | " + err.getMessage() +
-                               " | " + err.getCause());
             throw new DoesntExistException("CustomFunction '" + fName + 
                                             "' doesn't exist! in Math.Equation.CustomFunctions.*");
         }
@@ -43,6 +42,14 @@ public class CustomFunction extends Function {
     public String getSyntax() {
         return (String) getFunc("syntax");
     }
+
+    public static String help() {
+        throw new NotDefinedException("Implement me for your custom method!");
+    }
+    public static String syntax() {
+        throw new NotDefinedException("Implement me for your custom method!");
+    }
+
     private Object getFunc(String pName){
         try{
             return cl.getDeclaredMethod(pName).invoke(null);
@@ -111,7 +118,7 @@ public class CustomFunction extends Function {
         } return 0;
     }
     public String toString(){
-            return "CustomFunction '" + fName + "':\nHELP: " + getHelp() + "\nSYNTAX: " + getSyntax();
+            return "CustomFunction '" + fName + "'.";
     }
 
 }

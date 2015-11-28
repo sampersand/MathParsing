@@ -1,4 +1,5 @@
 package Math.Set;
+import Math.Equation.Equation;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -16,13 +17,13 @@ import javax.swing.JComponent;
  */
 public class SetDisplay extends JComponent{  
 
-   private final Set set;
-
+   private Set set;
+   private Equation[] equations;
    /** 
     * The physical amount of pixels the window is wise and tall.
     * The array will look like the following: <code>(X, Y)</code>
     */
-   private final int[] WINDOW_BOUNDS;
+   private int[] wBounds;
 
    /** 
     * The min and max x/y values used for display.
@@ -31,39 +32,61 @@ public class SetDisplay extends JComponent{
     * <p>
     * The array will look like the following: <code>(min X, max X, min Y, max Y)</code>.
     */
-   private final int[] DISPLAY_BOUNDS;
+   private int[] dispBounds;
 
    /** 
     * The element that draws the lines.
     */
    private Graphics2D drawer;
 
-   private final double STEP = 20;
+   private double step = 20;
    
+      public SetDisplay(Equation pEq, int[] winBnd) throws ArrayIndexOutOfBoundsException {
+        this(new Equation[] {pEq}, winBnd);
+      }
+    public SetDisplay(Equation[] pEq, int[] winBnd) throws ArrayIndexOutOfBoundsException {
+      equations = pEq;
+      set = null;
+      if (winBnd.length == 1) {
+         this.wBounds = new int[] { winBnd[0], winBnd[0]};
+      } else if (winBnd.length == 2) {
+         this.wBounds = new int[] {winBnd[0], winBnd[1]};
+      } else {
+         throw new ArrayIndexOutOfBoundsException("The length of winBnd needs to be 1, or 2.");
+      }
+      this.dispBounds = new int[]{-10, 10, -10, 10};
+      this.createToolTip(); // I thought these might be interesting, but right now they dont work.
+   }
+    public SetDisplay(Equation[] pEq, Set pSet, int[] winBnd) throws ArrayIndexOutOfBoundsException {
+      this(pSet,winBnd);
+      equations = pEq;
+   }
+
    /** 
     * The class that controls the drawing of the graph.
     * 
-    * @param set         The {@link Set} that contains all the graphing points
+    * @param pSet         The {@link Set} that contains all the graphing points
     * @param winBnd        The minimum and maximum (for x and y) values that will be displayed.
     * //@param dispBnd       The hight and width of the physical window. Might be removed if there is 
     *                      a function to find this w/o the input. Used to adjust coords of points.
     * @throws ArrayIndexOutOfBoundsException       thrown if the input array's lengths aren't 1, 2,
     *                                              and 4 (except steps. steps is only 1 and 2).
     */
-   public SetDisplay(Set set, int[] winBnd) throws ArrayIndexOutOfBoundsException {
-      this.set = set;
-      double[] temp = set.sort(set.getMatr());
-      double[] temp2 = set.sort(set.getMatr2());
-      // this.DISPLAY_BOUNDS = new int[]{(int)(temp[0]*0.9),(int)(temp[temp.length-1]*1.1), //these are used ot make sure the outermost points are shown
-      //                                 (int)(temp2[0]*0.9),(int)(temp2[temp2.length-1]*1.1)};
-      this.DISPLAY_BOUNDS = new int[]{5,285,1800,2000};
+   public SetDisplay(Set pSet, int[] winBnd) throws ArrayIndexOutOfBoundsException {
+      set = pSet;
+      equations = null;
+      double[] temp = set.sort(set.matr);
+      double[] temp2 = set.sort(set.matr2);
+      this.dispBounds = new int[]{(int)(temp[0]*-.2 - 5),(int)(temp[temp.length-1]*1.3), //these are used ot make sure the outermost points are shown
+                                      (int)(temp2[0]*-.2 - 5),(int)(temp2[temp2.length-1]*1.3)};
+      // this.dispBounds = new int[]{,285,1800,2000};
       this.createToolTip(); // I thought these might be interesting, but right now they dont work.
-      if(set.getMatr().length != set.getMatr2().length)
+      if(set.matr.length != set.matr2.length)
         throw new ArrayIndexOutOfBoundsException("The Set needs to have matr and matr2 be the same length.");
       if (winBnd.length == 1) {
-         this.WINDOW_BOUNDS = new int[] { winBnd[0], winBnd[0]};
+         this.wBounds = new int[] { winBnd[0], winBnd[0]};
       } else if (winBnd.length == 2) {
-         this.WINDOW_BOUNDS = new int[] {winBnd[0], winBnd[1]};
+         this.wBounds = new int[] {winBnd[0], winBnd[1]};
       } else {
          throw new ArrayIndexOutOfBoundsException("The length of winBnd needs to be 1, or 2.");
       }
@@ -91,20 +114,26 @@ public class SetDisplay extends JComponent{
     */
    public void paintComponent(Graphics g) {  
       assert g instanceof Graphics2D;
-      assert set.getMatr().length == set.getMatr2().length;
       drawer = (Graphics2D) g;
-      double[] m1 = set.getMatr();
-      double[] m2 = set.getMatr2();
-      for(int x = 0; x < set.getMatr().length; x++){
-          drawp(m1[x], m2[x]);
+      if(set != null){
+        assert set.matr.length == set.matr2.length;
+        double[] m1 = set.matr;
+        double[] m2 = set.matr2;
+        for(int x = 0; x < set.matr.length; x++){
+            drawp(m1[x], m2[x]);
+        }
       }
-      double step = (DISPLAY_BOUNDS[1] - DISPLAY_BOUNDS[0])/STEP;
-      for(double x = DISPLAY_BOUNDS[0]; x < DISPLAY_BOUNDS[1];
-          x += step){
-        drawl((double)x,set.pred(x),x+step,set.pred(x+step));
+      if(equations != null){
+        double cStep = (dispBounds[1] - dispBounds[0])/step;
+        for(Equation eq : equations){
+          for(double x = dispBounds[0]; x < dispBounds[1]; x += cStep){
+            System.out.println(eq);
+            drawl((double)x, Set.pred(x, eq, "y"), x + cStep, Set.pred(x + cStep, eq, "y"));
+          }
+        }
       }
-      drawl(0,DISPLAY_BOUNDS[2],0,DISPLAY_BOUNDS[3],Color.BLACK);
-      drawl(DISPLAY_BOUNDS[0],0,DISPLAY_BOUNDS[1],0,Color.BLACK);
+      drawl(0,dispBounds[2],0,dispBounds[3],Color.BLACK); //axis?
+      drawl(dispBounds[0],0,dispBounds[1],0,Color.BLACK); //axis?
    }
 
    /**
@@ -119,7 +148,7 @@ public class SetDisplay extends JComponent{
    private void drawp(double x, double y, Color color) {
       drawer.setColor(color);
       double[] xy=fix(x,y);
-      drawer.drawOval((int)xy[0]- 10, (int) xy[1]-10, 20, 20); // width, height
+      drawer.drawOval((int)xy[0]- 5, (int) xy[1]-5, 10, 10); // width, height
    }
 
    private void drawl(double x, double y, double X, double Y, Color color) {
@@ -134,8 +163,8 @@ public class SetDisplay extends JComponent{
 
    private double[] fix(double x, double y){
     return new double[]{
-      (x - DISPLAY_BOUNDS[0]) / (DISPLAY_BOUNDS[1] - DISPLAY_BOUNDS[0]) * WINDOW_BOUNDS[0],
-      (1-(y - DISPLAY_BOUNDS[2]) / (DISPLAY_BOUNDS[3] - DISPLAY_BOUNDS[2])) * WINDOW_BOUNDS[1]};
+      (x - dispBounds[0]) / (dispBounds[1] - dispBounds[0]) * wBounds[0],
+      (1-(y - dispBounds[2]) / (dispBounds[3] - dispBounds[2])) * wBounds[1]};
    }
    /**
     * Overloaded version of drawp with ints

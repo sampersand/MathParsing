@@ -8,10 +8,10 @@ import javax.swing.JOptionPane;
 
 public class Set {
     // public static final double e = Math.E;
-    private double[] matr;
-    private double[] matr2;
-    private Equation equation;
-    private String name;
+    public double[] matr;
+    public double[] matr2;
+    public Equation equation;
+    public String name;
     public static void main(String[] args) { 
         assert false;
         // Set mtr = new Set(new double[]{90,90,95,100,80,80,75,80,70,60,95,100,100,100,75,80,90,90,90,70,70,80,85,90,90,85});
@@ -29,28 +29,25 @@ public class Set {
         this(matrix,matrix2,"Untitled Set");
     }
     public Set(Set sl1, Set sl2){
-        this(sl1.getMatr(),sl2.getMatr());
+        this(sl1.matr,sl2.matr);
     }
     public Set(Set sl1, Set sl2, String name){
-        this(sl1.getMatr(),sl2.getMatr(), name);
+        this(sl1.matr,sl2.matr, name);
     }    
     public Set(double[] matrix, double[] matrix2, String name){
         this.matr = matrix;
         this.matr2 = matrix2;
         this.name = name;
+        this.equation = linReg();
     }
 
-    public void setMatr(double[] inp){ matr = inp; }
-    public void setMatr2(double[] inp){ matr2 = inp; }
-    public void setEquation(Equation inp){ equation = inp; }
-    public Equation getEquation(){ return equation; }    
-    public double[] getMatr(){ return matr; }
-    public double[] getMatr2(){ return matr2; }
 
     public double pred(double val){return pred(val, linReg());}
     public double pred(double val, double[] pMatr, double[] pMatr2){return pred(val, linReg(pMatr, pMatr2));}
-    public double pred(double val, Equation pEq){
-        return pEq.solve("y");
+    public double pred(double val, String toSolve){ return pred(val, linReg(), toSolve);}
+    public double pred(double val, Equation pEq){ return pred(val, pEq, "x");}
+    public static double pred(double val, Equation pEq, String toSolve){
+        return pEq.solve(toSolve, new HashMap<String, Double>(){{put(toSolve,val);}});
     }
     public double[] es(){return resid();}
     public double[] resid(){
@@ -58,7 +55,7 @@ public class Set {
         Equation lreg = linReg();
         double[] resid = new double[matr.length];
         for(int x = 0; x < matr.length; x++)
-            resid[x] = pred(matr[x], lreg) - matr2[x];
+            resid[x] = pred(matr[x], lreg, "y") - matr2[x];
         return resid;
     }
 
@@ -264,5 +261,31 @@ public class Set {
         frame.add(gdisp);        
         frame.setVisible(true);
     }
+
+    public static void graph(Equation eq){
+        JFrame frame = new JFrame();
+        int xScreenLimit = 1000; // note this is the physical screen limits
+        int yScreenLimit = 1000; // note this is the physical screen limits        
+        frame.setSize(xScreenLimit, yScreenLimit);
+        frame.setTitle("Graph of " + eq.equation);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        SetDisplay gdisp = new SetDisplay(eq, new int[] { xScreenLimit, yScreenLimit });
+        frame.add(gdisp);        
+        frame.setVisible(true);
+    }
+    public static void graph(Equation[] eq){
+        JFrame frame = new JFrame();
+        int xScreenLimit = 1000; // note this is the physical screen limits
+        int yScreenLimit = 1000; // note this is the physical screen limits        
+        frame.setSize(xScreenLimit, yScreenLimit);
+        frame.setTitle("Graph of Equations");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        SetDisplay gdisp = new SetDisplay(eq, new int[] { xScreenLimit, yScreenLimit });
+        frame.add(gdisp);        
+        frame.setVisible(true);
+    }
+
 
 }

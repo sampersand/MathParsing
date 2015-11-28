@@ -11,14 +11,13 @@ import Math.Exception.InvalidArgsException;
 
 public class f extends CustomFunction{
     public static String help(){
-        return "fhelp";
+        return "Adds up the reciprocal of each argument";
     }
     public static String syntax(){
-        return "fsyntax";
+        return "arg1, arg2, ..., N";
     }
     @Override
     public double exec(Factors pFactors, Node pNode) throws NotDefinedException, InvalidArgsException {
-        if(pNode.get(0).type() == Token.Types.ARGS);
         double[] vals = evalNode(pFactors, pNode);
         double ret = 0;
         for(double val : vals)

@@ -10,8 +10,12 @@ import Math.Exception.InvalidArgsException;
 import Math.Exception.NotDefinedException;
 
 public class summation extends CustomFunction{
-    public static String help = "Add up numbers from START to END with step STEP";
-    public static String args = "([START], END, [STEP])";
+    public static String help(){
+        return "Adds up numbers from Start to END, with STEP step. Can only be END, START + END, or START + END + STEP";
+    }
+    public static String syntax(){
+        return "[START], END, [STEP]";
+    }
 
     /**
      * Summation from START to END, with step STEP
@@ -25,7 +29,7 @@ public class summation extends CustomFunction{
     public double exec(Factors pFactors, Node pNode) throws NotDefinedException, InvalidArgsException {
         double[] vals = evalNode(pFactors, pNode);
         if(vals.length == 0 || vals.length > 3)
-            throw new InvalidArgsException("ERROR when parsing summation. Syntax: " + args);
+            throw new InvalidArgsException("ERROR when parsing summation. Syntax: " + syntax());
         if(vals.length == 1) { vals = new double[]{0,vals[0],1};}
         if(vals.length == 2) { vals = new double[]{vals[0],vals[1],1};}
         double ret = 0;

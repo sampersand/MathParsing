@@ -2,7 +2,7 @@ package Math.Equation;
 
 import Math.Exception.NotDefinedException;
 import Math.Exception.InvalidArgsException;
-
+import Math.Equation.Token.Types;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -19,9 +19,13 @@ public class InBuiltFunction extends Function {
     @Override
     public double exec(Factors pFactors, Node pNode) throws NotDefinedException, InvalidArgsException {
         double[] args = new double[pNode.size()];
-        for(int i = 0; i < args.length; i++)
+        for(int i = 0; i < args.length; i++){
+            if(pNode.get(i).type() == Types.ARGS){
+                throw new NotDefinedException("Inbuilt functions cannot take nodes of type ARGS (" + pNode.get(i) +
+                                              ").");
+            }
             args[i] = pFactors.eval(pNode.get(i));
-        System.out.println(pNode + " @ " + fName);
+        }
         switch(fName) {
             case "sin":
                 return Math.sin(args[0]);
