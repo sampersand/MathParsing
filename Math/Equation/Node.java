@@ -170,7 +170,8 @@ public class Node {
         while(i < pNode.size()){
             Node n = pNode.get(i);
             if(n.type() == OPER && n.token.VAL.equals("-") && pNode.get(i - 1).type() == OPER &&
-                                   (pNode.get(i - 1).token.VAL.equals("/") || pNode.get(i - 1).token.VAL.equals("*"))){
+                                   (pNode.get(i - 1).token.VAL.equals("/") || pNode.get(i - 1).token.VAL.equals("*") ||
+                                    pNode.get(i - 1).token.VAL.equals("^"))){
                 Node n2 = new Node(new Token("doesnt matter what I put here", GROUP));
                 n2.add(new FinalNode(new Token("0", NUM)));
                 n2.add(n);

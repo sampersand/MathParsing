@@ -18,15 +18,11 @@ public class Equation {
      * @param args          The arguments to pass. See description of this method for details.
      */
     public static void main(String[] args) throws NotDefinedException, TypeMisMatchException {
-        // Set set = new Set(new double[]{1,2,3,4,5}, new double[]{1,2,3,4,1});
-        // System.out.println(set.equation);
-        // set.graph();
         Equation eq;
         if(args.length == 0){
-            // eq = new Equation("graph((1,2),(2,3)) + e ");
-            // eq = new Equation("(40 * 12 + 2 * (52-12))/52");
+            eq = new Equation("@graph('cscy')");
             // eq = new Equation("graph('1,2,3,4,5','2,3,4,5,6')");
-            eq = new Equation("@graph('tan(f(y))','(y-2)*(y+2)*y')");
+            // eq = new Equation("@graph('tan(f(y))','(y-2)*(y+2)*y') ");
             // eq = new Equation("sin(x+f('e,2,C')*f(4,f(D,3,pi)))");
             eq.factors = eq.factors.addVars(new String[]{"x:10","C:3","D:4"});
             eq.factors = eq.factors.addFuncs(new String[]{"f","graph","sum:summation"});
@@ -69,10 +65,7 @@ public class Equation {
             }
 
         }
-        // System.out.println("RAW EQUATION: "+ eq.equation);
-        // System.out.println("NODES:\n" + eq.node);
         System.out.println(eq);
-        System.out.println("GUESS OF EQ: " + eq.node.genEqString());
         System.out.println("RESULT: " + eq.eval());
     }
 
@@ -217,13 +210,12 @@ public class Equation {
     public static String fixEquation(String eq){
         if(eq.charAt(0) == '@')
             return eq.substring(1);
-        System.out.println(eq.charAt(0) + "|"+eq);
         if(eq.indexOf("=")!=-1)
             eq = eq.split("=")[1];
-        String[] trigf = new String[]{"sec", "csc", "cot", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "asin",
-                                      "acos", "atan", "sin", "cos", "tan"};
-        for(String trig : trigf)
-            eq = eq.replaceAll("(^|[^A-Za-z0-9])" + trig + "([A-Za-z]*)($|[^A-Za-z0-9])","$1" +  trig + "($2)$3");
+        String[] trigf = new String[]{"sec", "csc", "cot", "sinh", "cosh", "tanh", "sin", "cos", "tan"};
+        for(String trig : trigf){
+            eq = eq.replaceAll("()" + trig + "(?!h)([A-za-z]+)","$1" + trig + "($2)");
+        }
 
         eq = eq.replaceAll("\\-\\(", "-1*(");
         eq = eq.replaceAll("([\\d.])+(\\(|(?:[A-Za-z]+))", "$1*$2");
@@ -425,7 +417,7 @@ public class Equation {
         return factors.eval(node, pVars);
     }
     public void graph(){
-        System.err.println("Currently, solve isn't very good. Oh well." + factors.eval(node, pVars));
+        System.err.println("Currently, solve isn't very good. Oh well.");
         Set.graph(this);
         // throw new NotDefinedException("implement me (graph for equation)");
     }

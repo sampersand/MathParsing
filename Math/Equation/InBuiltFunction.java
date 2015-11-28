@@ -25,7 +25,7 @@ public class InBuiltFunction extends Function {
                                               ").");
             }
             args[i] = pFactors.eval(pNode.get(i));
-        }
+        };
         switch(fName) {
             case "sin":
                 return Math.sin(args[0]);
@@ -33,6 +33,14 @@ public class InBuiltFunction extends Function {
                 return Math.cos(args[0]);
             case "tan":
                 return Math.tan(args[0]);
+
+            case "csc":
+                return 1D / Math.sin(args[0]);
+            case "sec":
+                return 1D / Math.cos(args[0]);
+            case "cot":
+                return 1D / Math.tan(args[0]);
+
 
             case "sinh":
                 return Math.sinh(args[0]);

@@ -24,7 +24,7 @@ public class CustomFunction extends Function {
         super(pVal);
         try {
             if(pVal.equals("")){
-                System.err.println("[ERROR] Instantiating a CustomFunction without a class associated!");
+                System.err.println("[ERROR] Instantiating a CustomFunction without a function associated!");
                 cl = null;
             } else{
                 cl = Class.forName("Math.Equation.CustomFunctions." + fName);

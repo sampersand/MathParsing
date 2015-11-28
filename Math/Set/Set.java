@@ -250,39 +250,28 @@ public class Set {
     public void graphe(){(new Set(matr,resid(),"Residuals of "+this.name)).graph();}
 
     public void graph(){
-        JFrame frame = new JFrame();
-        int xScreenLimit = 1000; // note this is the physical screen limits
-        int yScreenLimit = 1000; // note this is the physical screen limits        
-        frame.setSize(xScreenLimit, yScreenLimit);
-        frame.setTitle(this.name);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        graph(this);
+        // JFrame frame = new JFrame();
+        // int xScreenLimit = 1000; // note this is the physical screen limits
+        // int yScreenLimit = 1000; // note this is the physical screen limits        
+        // frame.setSize(xScreenLimit, yScreenLimit);
+        // frame.setTitle(this.name);
+        // frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        SetDisplay gdisp = new SetDisplay(this, new int[] { xScreenLimit, yScreenLimit });
-        frame.add(gdisp);        
-        frame.setVisible(true);
+        // SetDisplay gdisp = new SetDisplay(this, new int[] { xScreenLimit, yScreenLimit });
+        // frame.add(gdisp);        
+        // frame.setVisible(true);
     }
 
-    public static void graph(Equation eq){
+    public static void graph(Object... objs){
         JFrame frame = new JFrame();
         int xScreenLimit = 1000; // note this is the physical screen limits
         int yScreenLimit = 1000; // note this is the physical screen limits        
         frame.setSize(xScreenLimit, yScreenLimit);
-        frame.setTitle("Graph of " + eq.equation);
+        frame.setTitle("Graph of stuff");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        SetDisplay gdisp = new SetDisplay(eq, new int[] { xScreenLimit, yScreenLimit });
-        frame.add(gdisp);        
-        frame.setVisible(true);
-    }
-    public static void graph(Equation[] eq){
-        JFrame frame = new JFrame();
-        int xScreenLimit = 1000; // note this is the physical screen limits
-        int yScreenLimit = 1000; // note this is the physical screen limits        
-        frame.setSize(xScreenLimit, yScreenLimit);
-        frame.setTitle("Graph of Equations");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        SetDisplay gdisp = new SetDisplay(eq, new int[] { xScreenLimit, yScreenLimit });
+        SetDisplay gdisp = new SetDisplay(new int[] { xScreenLimit, yScreenLimit }, objs);
         frame.add(gdisp);        
         frame.setVisible(true);
     }
