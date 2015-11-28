@@ -19,9 +19,9 @@ public class Equation {
     public static void main(String[] args) throws NotDefinedException, TypeMisMatchException {
         Equation eq;
         if(args.length == 0){
-            // eq = new Equation("graph((1,2),(2,3)) + e ");
-            eq = new Equation("1 + (2 * 3)");
+            eq = new Equation("graph((1,2),(2,3)) + e ");
             // eq = new Equation("(40 * 12 + 2 * (52-12))/52");
+            // eq = new Equation("40 * 12");
             eq.factors.addVars(new HashMap<String, Double>()
                 {{
                     put("A",1.0D);
@@ -78,7 +78,7 @@ public class Equation {
 
         }
         System.out.println("RAW EQUATION: "+ eq.equation);
-        System.out.println("NODES:" + eq.node);
+        System.out.println("NODES:\n" + eq.node);
         System.out.println("RESULT: "+eq.eval());
     }
 

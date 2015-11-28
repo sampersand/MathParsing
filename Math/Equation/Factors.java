@@ -60,9 +60,9 @@ public class Factors {
     public double eval(Node pNode, HashMap<String, Double> pVars) throws NotDefinedException {
         if (pNode instanceof FinalNode) {
             FinalNode fNode = (FinalNode)pNode;
-            if (fNode.TOKEN.TYPE == Token.Types.NUM) {
+            if (fNode.token.TYPE == Token.Types.NUM) {
                 return fNode.dVal;
-            } else if (fNode.TOKEN.TYPE == Token.Types.VAR) {
+            } else if (fNode.token.TYPE == Token.Types.VAR) {
                 if(pVars.get(fNode.sVal) != null) {
                     return (double)pVars.get(fNode.sVal);
                 } else if(!inVar(fNode.sVal)) {
@@ -71,38 +71,38 @@ public class Factors {
                         case "pi": return Math.PI;
                         case "rand": case "random": return Math.random();
                         default:
-                            throw new NotDefinedException("FinalNode '" + fNode.TOKEN.VAL + "' isn't defined in vars!");
+                            throw new NotDefinedException("FinalNode '" + fNode.token.VAL + "' isn't defined in vars!");
                     }
                 } else {
                     return (double)getVar(fNode.sVal);
                 }
-            } else if(fNode.TOKEN.TYPE == Token.Types.ARGS){
+            } else if(fNode.token.TYPE == Token.Types.ARGS){
                 System.err.println("[WARNING] Attempting to evaluate args! probably won't go well :P");
                 return (double)getVar(fNode.sVal);
             } else {
                 throw new TypeMisMatchException("FinalNode '" +fNode.sVal + "&" + fNode.dVal +
                                                 "' isn't a NUM, VAR, OR ARGS!");
             }
-        } else if(pNode.TOKEN.TYPE == Token.Types.FUNC ) {
-            if(inFunc(pNode.TOKEN.VAL)) //if it is a function
-                return getFunc(pNode.TOKEN.VAL).exec(this, pNode);
+        } else if(pNode.token.TYPE == Token.Types.FUNC ) {
+            if(inFunc(pNode.token.VAL)) //if it is a function
+                return getFunc(pNode.token.VAL).exec(this, pNode);
             else {
                 try { //if it is a built in
-                    return InBuiltFunction.exec(pNode.TOKEN.VAL, this, pNode);
+                    return InBuiltFunction.exec(pNode.token.VAL, this, pNode);
                 } catch (NotDefinedException err2) {
                     // try{
-                        // return new CustomFunction(pNode.TOKEN.VAL).exec(this,pNode);
+                        // return new CustomFunction(pNode.token.VAL).exec(this,pNode);
                     // } //this isn't working now because of the way instantiating works.
                     // catch(e)
-                    throw new NotDefinedException("Function '" + pNode.TOKEN.VAL + "' isn't defined in funcs " + 
+                    throw new NotDefinedException("Function '" + pNode.token.VAL + "' isn't defined in funcs " + 
                                                   "(and isn't inbuilt either)!");
                 }
             }
         }
-        else if(pNode.TOKEN.TYPE == Token.Types.GROUP || pNode instanceof FinalNode || pNode.TOKEN.isUni()) {
+        else if(pNode.token.TYPE == Token.Types.GROUP || pNode instanceof FinalNode || pNode.token.isUni()) {
                 return eval(pNode.get(0));
-        } else if(pNode.TOKEN.TYPE == Token.Types.OPER) {
-            switch(pNode.TOKEN.VAL) {
+        } else if(pNode.token.TYPE == Token.Types.OPER) {
+            switch(pNode.token.VAL) {
                 case "+":
                     return eval(pNode.get(0)) + eval(pNode.get(1));
                 case "-":
@@ -114,11 +114,11 @@ public class Factors {
                 case "^":
                     return Math.pow(eval(pNode.get(0)), eval(pNode.get(1))); // not sure this works
                 default:
-                    throw new NotDefinedException("Node: '" + pNode.TOKEN.VAL + "' is an OPERATOR, but no known way " +
+                    throw new NotDefinedException("Node: '" + pNode.token.VAL + "' is an OPERATOR, but no known way " +
                                                   "to evaluate it.");
             }
         } else {
-            throw new NotDefinedException("Node: '" + pNode.TOKEN.VAL + "' has no known way to evaluate it");
+            throw new NotDefinedException("Node: '" + pNode.token.VAL + "' has no known way to evaluate it");
         }
     }
 

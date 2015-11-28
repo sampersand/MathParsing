@@ -14,7 +14,7 @@ public class Node {
     public ArrayList<Node> subNodes;
 
     /** The token that this class determins how this class interacts with its {@link #subNodes}. */
-    public final Token TOKEN;
+    public Token token;
 
     /**
      * The default constructor for Node. Just passes an empty Token to the {@link #Node(Token)} constructor. 
@@ -39,7 +39,7 @@ public class Node {
      */
     public Node(Token pToken, ArrayList<Node> pSubNodes) {
         subNodes = pSubNodes;
-        TOKEN = pToken;
+        token = pToken;
     }
 
     /**
@@ -54,7 +54,7 @@ public class Node {
             for(Node n : pSubNodes)
                 add(n);
             }};
-        TOKEN = pToken;
+        token = pToken;
     }
 
     /**
@@ -106,25 +106,29 @@ public class Node {
     public static Node completeNodes(Node pNode){
         if(pNode instanceof FinalNode)
             return pNode;      
-        Node e = new Node(pNode.TOKEN);
+        Node e = new Node(pNode.token);
         int i = 0;
         while(i < pNode.size()){
             Node n = pNode.get(i);
-            System.out.println("@"+n);
             if(n instanceof FinalNode){
-                System.out.println("@@@"+n+"##"+e);
                 e.addD(n);
-                System.out.println("@@@"+n+"#3#"+e);
             }
-            else if(n.TOKEN.isOper()){
+            else if(n.token.isOper()){
                 for(int depth = 1; depth < e.depth(); depth++){
-                    Node nD = e.getD(depth);
+                    Node nD = e.getD(depth, true);
                     if(nD instanceof FinalNode){
                         n.add(nD);
-                        e.set(depth - 1, n); //depth is a final node.
+                        e.setD(depth - 1, n); //depth is a final node.
                         break;
                     }
-                    else if(n.TOKEN.priority() < nD.TOKEN.priority()){
+                    else if(n.token.priority() < nD.token.priority()){
+                        n.add(nD);
+                        n.add(completeNodes(pNode.get(i + 1)));
+                        i++;
+                        e.setD(depth - 1, n);
+                        break;
+                    }
+                    else if (nD.token.isGroup()){
                         n.add(nD);
                         n.add(completeNodes(pNode.get(i + 1)));
                         i++;
@@ -134,15 +138,15 @@ public class Node {
                 }
 
             }
-            else if(n.TOKEN.isGroup()){
-                e.addD(completeNodes(n));
+            else if(n.token.isGroup()){
+                e.addD(e.depth(), completeNodes(n), true);
             }
             else{
                 throw new NotDefinedException("There is no known way to complete the node '" + n + "'.");
             }
             i++;
         }
-
+        e.token = pNode.token;
         return e;
     }
     /**
@@ -151,7 +155,7 @@ public class Node {
      * @return The new master node - usually {@link Equation#node} is set to this.
      */
     public static Node generateNodes(ArrayList<Token> pTokens) {
-        return completeNodes((Node)condeseNodes(0, new Node(new Token("E", Token.Types.NULL)), pTokens)[1]);
+        return completeNodes((Node)condeseNodes(0, new Node(Token.UNI), pTokens)[1]);
     }
 
 
@@ -216,68 +220,106 @@ public class Node {
             return 1;
         return size() == 0 ? 1 : 1 + get(size() - 1).depth();
     }
+
     /**
-     * Goes down i layers to get the last node in the subNode list. Note: if the current node is a FinalNode, and getD
-     * is called, it will just return itself.
-     * For example, getting the very last node in {@link #subNodes} (<code>subNode.get(subNode.size() - 1))</code>) is
+     * Goes down i layers, or until a group / function is hit 
+     * to get the last node in the subNode list. Note: if the current node is a FinalNode, and getD is called, it will
+     * just return itself.
+     * <br>For example, getting the very last node in {@link #subNodes} (<code>subNode.get(subNode.size() - 1))</code>) is
      * "going down one layer". Don't know how to explain much better.
-     * @param i    The amount of layers to go down.
+     * @param i         The amount of layers to go down.
      * @return The final node at layer i. Doesn't check to see if i is a valid layer.
      */
     public Node getD(int i) {
+        return getD(i, false);
+    }
+    /**
+     * Goes down i layers, or until a group / function is hit if pOver is false.
+     * to get the last node in the subNode list. Note: if the current node is a FinalNode, and getD is called, it will
+     * just return itself.
+     * <br>For example, getting the very last node in {@link #subNodes} (<code>subNode.get(subNode.size() - 1))</code>) is
+     * "going down one layer". Don't know how to explain much better.
+     * @param i         The amount of layers to go down.
+     * @param pOver     Whether or not it will "override", and continue going down if a group is encountered.
+     * @return The final node at layer i. Doesn't check to see if i is a valid layer.
+     */
+    public Node getD(int i, boolean pOver) {
         if(this instanceof FinalNode)
             return this;
-        return i <= 0 ? this : get(size() - 1).getD(i - 1);
+        if(i <= 0 || (get(size() - 1).token.TYPE == Token.Types.GROUP &&! pOver)){
+            return this;
+        } else {
+            return get(size() - 1).getD(i - 1, pOver);
+        }
     }
-
     /**
-     * Adds the node n at the maximum depth.
-     * @param n    The node to add at the deepest layer.
+     * Adds the node n at the maximum depth, or until a group or function is hit.
+     * @param n         The node to add at the deepest possible layer.
      */
     public void addD(Node n) {
         addD(depth(), n);
     }
-
     /**
-     * Adds the node n to end of the layer i. If  <code>i == 2 || i &#060;=1</code>, it will just add n to the end.
-     * @param i    The amount of layers to go down.
-     * @param n    The node to add to the last position at layer i.
+     * Adds the node n to end of the layer i, or until a group / function is hit.
+     * @param i         The amount of layers to go down.
+     * @param n         The node to add to the last position at layer i.
      */
     public void addD(int i, Node n) {
-        System.err.println("HEY, i am ||"+this+"|| addding ||"+n+"|| at layer: "+ i);
+        addD(i, n, false);
+    }
+    /**
+     * Adds the node n to end of the layer i. If  <code>i &#060;=2</code>, it will just add n to the end. Additionally,
+     * if pOver isn't true, it will stop when it encounters a group or function.
+     * @param i         The amount of layers to go down.
+     * @param n         The node to add to the last position at layer i.
+     * @param pOver     Whether or not it will "override", and continue going down if a group is encountered.
+     */
+    public void addD(int i, Node n, boolean pOver) {
+        // System.err.println("HEY, i am ||"+this+"|| addding ||"+n+"|| at layer: "+ i);
         if(this instanceof FinalNode) {
             throw new TypeMisMatchException("Can't add subnodes to a FinalNode!");
         }
-        else if(this.TOKEN.isUni() ){ // not 100% sure
-            add(n);                                             // these two fixed it, but oh well.
-        } else if(i <= 0 || size() <= 0) {
+        else if(this.token.isUni() ){ // not 100% sure
+            add(n);                   // these two fixed it, but oh well.
+        } else if(i <= 0 || size() <= 0 || (get(size() - 1).token.TYPE == Token.Types.GROUP &&! pOver)) {
             add(n);
         } else {
             if(i == 2 && get(size() - 1) instanceof FinalNode) {
                 add(n);
             } else {
-                get(size() - 1).addD(i - 1, n);
+                get(size() - 1).addD(i - 1, n, pOver);
             }
         }
 
     }
 
     /**
-     * Sets the last node at layer i to node n.
-     * @param i    The amount of layers to go down.
-     * @param n    The node to set the last node to.
+     * Sets the last node at layer i to node n, or until a group / functionis hit.
+     * @param i         The amount of layers to go down.
+     * @param n         The node to set the last node to.
      */
     public void setD(int i, Node n) {
         setD(i, -1, n);
     }
 
     /**
-     * Sets the node at position p at layer i to node n.
-     * @param i    The amount of layers to go down.
-     * @param p    The position of the node that will be replaced by n.
-     * @param n    The node that will replace the node at i layers down, at position p.
-     */    
+     * Sets the node at position p at layer i to node n, or until a group / function is hit
+     * @param i         The amount of layers to go down.
+     * @param p         The position of the node that will be replaced by n.
+     * @param n         The node that will replace the node at i layers down, at position p.
+     */
     public void setD(int i, int p, Node n) {
+        setD(i, p, n, false);
+    }
+
+    /**
+     * Sets the node at position p at layer i to node n, or until a group / function is hit (except if pOver is true).
+     * @param i         The amount of layers to go down.
+     * @param p         The position of the node that will be replaced by n.
+     * @param n         The node that will replace the node at i layers down, at position p.
+     * @param pOver     Whether or not it will "override", and continue going down if a group is encountered.
+     */   
+    public void setD(int i, int p, Node n, boolean pOver) {
         if(this instanceof FinalNode) {
             throw new TypeMisMatchException("Can't set subnodes of a FinalNode!");
         } else if(i == 0) {
@@ -296,15 +338,17 @@ public class Node {
             if(i == 2 && get(size() - 1) instanceof FinalNode ) {
                 System.err.println("Trying to setD to a FinalNode. Going one level up instead.");
                 set(size() - 1,n);
+            } else if(get(size() - 1).token.TYPE == Token.Types.GROUP &&! pOver){
+                set(p, n);
             } else {
-                get(size() - 1).setD(i - 1, p, n);
+                get(size() - 1).setD(i - 1, p, n, pOver);
             }
         }
     }
 
     /**
-     * Removes the last node at layer i.
-     * @param i    The amount of layers to go down.
+     * Removes the last node at layer i, or until a group / function is hit.
+     * @param i         The amount of layers to go down.
      * @throws TypeMisMatchException thrown when the last node at layer i is an instance of {@link FinalNode}.
      */
     public void remD(int i) throws TypeMisMatchException {
@@ -312,26 +356,36 @@ public class Node {
     }
 
     /**
-     * Removes the node at position p at layer i.
-     * @param i    The amount of layers to go down.
-     * @param p    The position of the node to remove at layer i.
+     * Removes the last node at layer i, or until a group / function is hit.
+     * @param i         The amount of layers to go down.
+     * @param p         The position of the node to remove at layer i.
      * @throws TypeMisMatchException thrown when the node at position p, layer i is an instance of {@link FinalNode}.
      */
     public void remD(int i, int p) throws TypeMisMatchException {
+        remD(i, p, false);
+    }
+    /**
+     * Removes the last node at layer i, or until a group / function is hit (except if pOver is true).
+     * @param i         The amount of layers to go down.
+     * @param p         The position of the node to remove at layer i.
+     * @param pOver     Whether or not it will "override", and continue going down if a group is encountered.
+     * @throws TypeMisMatchException thrown when the node at position p, layer i is an instance of {@link FinalNode}.
+     */
+    public void remD(int i, int p, boolean pOver) throws TypeMisMatchException {
         if(this instanceof FinalNode)
             throw new TypeMisMatchException("Can't delete subnodes from a FinalNode!");
         if(i <= 0)
             rem(p == -1 ? size() - 1 : p);
         else
-            get(size() - 1).remD(i - 1, p);
+            get(size() - 1).remD(i - 1, p, pOver);
     }
 
     /**
-     * The more robust version of this class's {@link #toString()}.
+     * The more robust version of this class's {@link #toString()}, but without the indentation.
      * @return A more detailed String representation of this.
      */    
     public String fullString() {
-        String ret = "{\"" + TOKEN.VAL + "\" | " + TOKEN.TYPE + " | ";
+        String ret = "{\"" + token.VAL + "\" | " + token.TYPE + " | ";
         for(Node node : subNodes)
             ret += node.fullString() + ", ";
         return ret.substring(0,ret.length()-2) + "}";
@@ -341,12 +395,33 @@ public class Node {
      * @return A simple String representation of this.
      */      
     public String toString() {
-        String ret = "{" + TOKEN.VAL + ": ";
-        for(Node node : subNodes)
-                ret += node + ", ";
-        return ret.substring(0,ret.length() - 2) + "}";
+        return toStringL(1);
     }
+    /** 
+     * Effectively {@link #toString} but allows for indentations
+     * @param pos    The amount of tabs out each line should be.
+     * @return A simple String representation of this.
+     */
+    public String toStringL(int pos){
+        String ret = '{' + token.VAL + ':';
+        for(Node node : subNodes){
+            ret += '\n';
+            for(int x = 0; x < pos; x++)
+                ret += '\t';
+            ret += node.toStringL(pos+1);
+        }
+        if(size() == 0){
+            ret += '\n';
+            for(int x = 0; x < pos; x++)
+                ret += '\t';
+            ret += "null";
+        }
+        ret += '\n';
+        for(int x = 0; x < pos - 1; x++)
+                ret += '\t';
+        return ret + '}';
 
+    }
     /** 
      * Takes all the {@link #subNodes} and creates its best guess at what a function comprised of them would look like.
      * @return The best guess as to what a function comprised of the subnodes would look like.

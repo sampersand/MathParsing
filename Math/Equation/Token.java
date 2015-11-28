@@ -35,7 +35,7 @@ public class Token {
         ,
         /**
          * A variable. Distinguished from a function when parsing only because it isn't immediately before "(". 
-         * <p> If a {@link Node} is being {@link Factors#eval(Node) evaluated}, and it's {@link Node#TOKEN token}
+         * <p> If a {@link Node} is being {@link Factors#eval(Node) evaluated}, and it's {@link Node#token token}
          * is of this type, the {@link Factors} evaluating it will check it's {@link Factors#vars} for a variable with
          * the same name as {@link #VAL}.
          * <p> Note: VAL should only contain letters, as anything that isn't alphanumerical, or <code>()+*-/^</code> 
@@ -52,7 +52,7 @@ public class Token {
         ,
         /**
          * A function. Distinguished from a variable when parsing only because it immediately preceeds "(". 
-         * <p> If a {@link Node} is being {@link Factors#eval(Node) evaluated}, and it's {@link Node#TOKEN token}
+         * <p> If a {@link Node} is being {@link Factors#eval(Node) evaluated}, and it's {@link Node#token token}
          * is of this type, the {@link Factors} evaluating it will check it's {@link Factors#funcs} for a function with
          * the same name as {@link #VAL}.
          * <p> Note: VAL should only contain letters, as anything that isn't alphanumerical, or <code>()+*-/^</code> 
@@ -81,7 +81,7 @@ public class Token {
         , 
         /**
          * A group. Distinguished from a function when parsing only because it no letters preceeds "(". 
-         * <p> If a {@link Node} is being {@link Factors#eval(Node) evaluated}, and it's {@link Node#TOKEN token}
+         * <p> If a {@link Node} is being {@link Factors#eval(Node) evaluated}, and it's {@link Node#token token}
          * is of this type, the {@link Factors} will just evaluate it's contents normally, as one would expect.
          * @see Node
          * @see Factors
@@ -93,6 +93,8 @@ public class Token {
          */
         ARGS
     }
+
+    public static final Token UNI = new Token("E",Types.NULL);
     /**
      * Default constructor. Just passes null, null to the main constructor.
      */

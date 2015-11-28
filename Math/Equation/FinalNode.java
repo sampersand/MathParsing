@@ -30,15 +30,15 @@ public class FinalNode extends Node {
      *                                  can be parsed from it.
      */
     public FinalNode(Token pToken) throws TypeMisMatchException {
-        super(pToken); // this sets TOKEN.
-        if (TOKEN.TYPE == Token.Types.NUM)
+        super(pToken); // this sets token.
+        if (token.TYPE == Token.Types.NUM)
             try {
-                dVal = Double.parseDouble(TOKEN.VAL);
+                dVal = Double.parseDouble(token.VAL);
             } catch(NumberFormatException err) {
                 throw new TypeMisMatchException("pToken.TYPE is a NUM, but pToken.VAL cant be parsed as a double!");
             }
-        else if (TOKEN.TYPE == Token.Types.VAR || TOKEN.TYPE == Token.Types.ARGS)
-            sVal = TOKEN.VAL;
+        else if (token.TYPE == Token.Types.VAR || token.TYPE == Token.Types.ARGS)
+            sVal = token.VAL;
         else
             throw new TypeMisMatchException("pToken.TYPE isn't NUM, VAR, or ARGS!");
         
@@ -47,15 +47,24 @@ public class FinalNode extends Node {
     @Override
     public String fullString() {
         String ret = "[";
-        ret += TOKEN.TYPE == Token.Types.NUM ? dVal : "\"" + sVal + "\"";
-        ret += ": " + TOKEN.TYPE;
+        ret += token.TYPE == Token.Types.NUM ? dVal : "\"" + sVal + "\"";
+        ret += ": " + token.TYPE;
         return ret + "]";
 
     }
 
     @Override
     public String toString() {
-        return "[" + (TOKEN.TYPE == Token.Types.NUM ? dVal : sVal) + "]";
+        return "[" + (token.TYPE == Token.Types.NUM ? dVal : sVal) + "]";
+    }
+
+    /** 
+     * Just returns the {@link #toString} of this object. Mainly used for indentations.
+     * @see   Node#toStringL
+     */
+    @Override
+    public String toStringL(int pos){
+        return "" + this;
     }
     
 }
