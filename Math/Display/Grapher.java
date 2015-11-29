@@ -58,18 +58,16 @@ public class Grapher {
 
     public void graph(){
         JFrame frame = new JFrame();
-        int xScreenLimit = 1000; // note this is the physical screen limits
-        int yScreenLimit = 1000; // note this is the physical screen limits
 
         frame.setSize(components.winBounds()[0], components.winBounds()[1]);
         frame.setTitle("Graph of stuff");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        JPanel pane = new JPanel();
-        pane.add(displays.get(0));
+
+        frame
+
         // for(Display disp : displays){
-        //     pane.add(disp);
+        //     frame.add(disp);
         // }
-        frame.add(pane);
         frame.setVisible(true);
 
     }
