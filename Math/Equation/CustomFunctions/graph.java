@@ -18,7 +18,7 @@ public class graph extends CustomFunction{
         return "Graphs the two arguments, each of which should result in a double (like a function with outputs)";
     }
     public static String syntax(){
-        return "array1, array2";
+        return "'@matr','matr1','matr2' OR 'eq1','eq2', ... 'eqN'";
     }
 
     @Override
@@ -58,8 +58,6 @@ public class graph extends CustomFunction{
             equations.add(new Equation(pNode.get(i).token.VAL, pFactors));
             }
             Set.graph(equations);
-        // } else {
-            // throw new InvalidArgsException("pNode has to be of size 2 or 1. It is actually of size: " + pNode.size());
         }
         return 0;
 
