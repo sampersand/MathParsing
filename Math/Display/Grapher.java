@@ -78,42 +78,29 @@ public class Grapher extends JPanel{
  
          //Create and set up the layered pane.
         layeredPane = new JLayeredPane();
-        layeredPane.setPreferredSize(new Dimension(300, 310));
-        layeredPane.setBorder(BorderFactory.createTitledBorder(
-                                    "Ima border factory"));
+        layeredPane.setPreferredSize(new Dimension(components.winBounds()[0], components.winBounds()[1]));
+        // layeredPane.setBorder(BorderFactory.createTitledBorder(
+                                    // "Equations"));
  
-         //This is the origin of the first label added.
-        Point origin = new Point(10, 20);
- 
-        //This is the offset for computing the origin for the next label.
-        int offset = 35;
- 
-        //Add several overlapping, colored labels to the layered pane
-        //using absolute positioning/sizing.
-        for (int i = 0; i < layerStrings.length; i++) {
-            JLabel label = createColoredLabel(layerStrings[i],
-                                              layerColors[i], origin);
-            layeredPane.add(label, new Integer(i));
-            origin.x += offset;
-            origin.y += offset;
-        }
   
+        for (int i = 0; i < displays.size(); i++) {
+            JLabel label = createDisplay(i);
+            layeredPane.add(label, new Integer(i));
+        }
+
+
         //Add control pane and layered pane to this JPanel.
         add(Box.createRigidArea(new Dimension(0, 10)));
         add(layeredPane);
     }
 
-    private JLabel createColoredLabel(String text,
-                                      Color color,
-                                      Point origin) {
-        JLabel label = new JLabel(text);
+    private JLabel createDisplay(int i) {
+        JLabel label = displays.get(i);
         label.setVerticalAlignment(JLabel.TOP);
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setOpaque(true);
-        label.setBackground(color);
-        label.setForeground(Color.black);
         label.setBorder(BorderFactory.createLineBorder(Color.black));
-        label.setBounds(origin.x, origin.y, 140, 140);
+        label.setBounds(5, 5, components.winBounds()[0], components.winBounds()[1]);//origin.x, origin.y, 140, 140);
         return label;
     }
     public void graph() {

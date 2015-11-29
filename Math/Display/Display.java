@@ -90,6 +90,7 @@ public class Display extends JLabel{
      * @param pGraphics          The graphics input that will be used to draw. Assumed to be Graphics2D.
      */
     public void paintComponent(Graphics pGraphics) throws MathException, NotDefinedException {
+        System.err.println(this);
         if(!(pGraphics instanceof Graphics2D))
             throw new MathException("Uh, Idek how this happened, but g has to be a Graphics2D...");
         drawer = (Graphics2D) pGraphics;
