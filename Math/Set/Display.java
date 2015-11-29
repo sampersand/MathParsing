@@ -143,25 +143,19 @@ public class Display extends JComponent{
                 }
             }
         }
-        else
-            System.out.println("sets are null. ;(");
         if(equations != null){
             double cStep;
             for(int i = 0; i < equations.size(); i++){
                 Equation equation = equations.get(i);
                 if(equation == null){
-                    throw new NotDefinedException("Equation '" + equation + "' is null!");
+                    throw new NotDefinedException("Can't graph equation '" + equation + "' because it is null!");
                 }
                 cStep = components.cStep();
-                System.out.println("tryikgn to draw equation " +equation );
-                System.out.println(dispBounds[0] + " | " + dispBounds[2]);
                 for(double x = dispBounds[0]; x < dispBounds[2]; x += cStep){
                     drawl((double)x, Set.pred(x, equation, "y"), x + cStep, Set.pred(x + cStep, equation, "y"), i);
                 }
             }
         }
-        else
-            System.out.println("equations are null. ;(");
         drawl(0, dispBounds[1], 0, dispBounds[3], Color.BLACK); //axis.
         drawl(dispBounds[0], 0, dispBounds[2], 0, Color.BLACK); //axis.
     }

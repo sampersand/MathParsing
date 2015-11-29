@@ -37,6 +37,10 @@ public class GraphComponents {
         step = pStep;
 
     }
+    public void setWinBounds(int[] pBounds){ winBounds = pBounds; }
+    public void setDispBounds(double[] pBounds){ dispBounds = pBounds; }
+    public void setStep(double pStep){ step = pStep; }
+
     public int[] winBounds(){ return winBounds; }
     public double[] dispBounds(){ return dispBounds; }
     public double step(){ return step; }
@@ -44,9 +48,6 @@ public class GraphComponents {
     public double[] fix(double x, double y){ return new double[]{
             (x - dispBounds[0]) / (dispBounds[2] - dispBounds[0]) * winBounds[0], 
             (1 - (y - dispBounds[1]) / (dispBounds[3] - dispBounds[1])) * winBounds[1]};
-
-            // (x - dispBounds[0]) / (dispBounds[1] - dispBounds[0]) * winBounds[0], 
-            // (1 - (y - dispBounds[2]) / (dispBounds[3] - dispBounds[2])) * winBounds[1]};
 
     }
     public String toString(){

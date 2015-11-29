@@ -1,6 +1,7 @@
 package Math.Equation.CustomFunctions;
-import Math.Set.Set;
-import java.util.ArrayList;
+
+import Math.Exception.NotDefinedException;
+import Math.Exception.InvalidArgsException;
 
 import Math.Equation.Equation;
 import Math.Equation.Function;
@@ -8,17 +9,20 @@ import Math.Equation.Factors;
 import Math.Equation.Node;
 import Math.Equation.CustomFunction;
 import Math.Equation.Token.Types;
-import Math.Exception.NotDefinedException;
-import Math.Exception.InvalidArgsException;
+
+import Math.Set.Set;
+import Math.Set.GraphComponents;
+
+import java.util.ArrayList;
 
 
 public class graph extends CustomFunction{
 
     public static String help(){
-        return "Graphs the two arguments, each of which should result in a double (like a function with outputs)";
+        return "Graphs any combination of sets and / or functions";
     }
     public static String syntax(){
-        return "'@matr','matr1','matr2' OR 'eq1','eq2', ... 'eqN'";
+        return "Any combination of '@matr','eq', '$graphcomp'.";
     }
 
     @Override
@@ -51,6 +55,8 @@ public class graph extends CustomFunction{
             set.graph();
         } else {
             ArrayList<Equation> equations = new ArrayList<Equation>();
+            ArrayList<Set> sets = new ArrayList<Set>();
+            GraphComponent gcomp = new GraphComponent();
             for(int i = 0; i < pNode.size(); i++){
                 if(pNode.get(i).type() != Types.ARGS)
                     throw new InvalidArgsException("uh oh, you need to have each argument to be of type ARG (" + i +
