@@ -1,10 +1,9 @@
 package Math.Set;
 import Math.Equation.Equation;
 import Math.Equation.Factors;
+
 import java.util.HashMap;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import java.util.ArrayList;
 
 public class Set {
     // public static final double e = Math.E;
@@ -249,21 +248,8 @@ public class Set {
     public void graphe(){(new Set(matr,resid(),linReg(matr,resid()))).graph();}
 
     public void graph(){
-        graph(this);
+        Grapher grapher = new Grapher(this);
+        grapher.graph();
     }
-
-    public static void graph(Object... objs){
-        JFrame frame = new JFrame();
-        int xScreenLimit = 1000; // note this is the physical screen limits
-        int yScreenLimit = 1000; // note this is the physical screen limits
-        frame.setSize(xScreenLimit, yScreenLimit);
-        frame.setTitle("Graph of stuff");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        Display gdisp = new Display(objs);
-        frame.add(gdisp);        
-        frame.setVisible(true);
-    }
-
 
 }

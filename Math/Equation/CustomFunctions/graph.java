@@ -56,14 +56,14 @@ public class graph extends CustomFunction{
         } else {
             ArrayList<Equation> equations = new ArrayList<Equation>();
             ArrayList<Set> sets = new ArrayList<Set>();
-            GraphComponent gcomp = new GraphComponent();
+            GraphComponents gcomp = new GraphComponents();
             for(int i = 0; i < pNode.size(); i++){
                 if(pNode.get(i).type() != Types.ARGS)
                     throw new InvalidArgsException("uh oh, you need to have each argument to be of type ARG (" + i +
                                                    ") isn't");
             equations.add(new Equation(pNode.get(i).token.VAL, pFactors));
             }
-            Set.graph(equations);
+            // Set.graph(equations);
         }
         return 0;
 

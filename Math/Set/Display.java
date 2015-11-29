@@ -32,74 +32,32 @@ public class Display extends JComponent{
      */
     public Graphics2D drawer;   
  
-    public Display(Object... args) throws InvalidArgsException {
-        sets = new ArrayList<Set>();
-        equations = new ArrayList<Equation>();
-        ArrayList<Object> objs = decant(new ArrayList<Object>(){{
-            for(Object arg : args)
-                add(arg);
-        }});
-        for(Object obj : objs){
-            if(obj instanceof Set){
-                try{
-                    sets.add((Set)obj);
-                } catch (ClassCastException err){
-                    throw new InvalidArgsException("Object '" + obj + 
-                                            "' was an instance of Set, but can't be cast to a Set!");
-                }
-            } else if(obj instanceof Equation){
-                try{
-                    equations.add((Equation)obj);
-                } catch (ClassCastException err){
-                    throw new InvalidArgsException("Object '" + obj + 
-                                            "' was an instance of Equation, but can't be cast to a Equation!");
-                }
-            } else if(obj instanceof GraphComponents){
-                if(components != null){
-                    throw new InvalidArgsException("We already have a components! Don't pass more than one!");
-                }
-                try{
-                    components = (GraphComponents)obj;
-                } catch (ClassCastException err){
-                    throw new InvalidArgsException("Object '" + obj + 
-                                            "' was an instance of GraphComponents, but can't be cast to a Equation!");
-                }
-            } else {
-                throw new InvalidArgsException("Object '" + obj + "' isn't a Set, Equation, or GraphComponents! I "+
-                    "don't know what to do with it!");
-            }
-        }
+    public Display(){
+        this(null, null);
+    }
+    
+    public Display(Set pSet){
+        this(new ArrayList<Set>(){{add(pSet);}}, null);
+    }
 
-        if(components == null){
-            System.err.println("[ERROR] No GraphComponents in the arguments. Using a default one!");
-            components = new GraphComponents();
-        }
+    public Display(Equation pEquation){
+        this(null, new ArrayList<Equation>(){{add(pEquation);}});
+    }
+
+    public Display(GraphComponents pComponent){
+        this(null, null, pComponent);
+    }
+
+    public Display(ArrayList<Set> pSets, ArrayList<Equation> pEquations) {
+        this(pSets, pEquations, new GraphComponents());
+    }
+
+    public Display(ArrayList<Set> pSets, ArrayList<Equation> pEquations, GraphComponents pComponent) {
+        sets = pSets;
+        equations = pEquations;
+        components = pComponent;
         this.createToolTip(); 
-        System.out.println("Sets: " + sets);
-        System.out.println("Equations: " + equations);
-        System.out.println("Components: " + components);
     }
-
-    public ArrayList<Object> decant(ArrayList<Object> objs){
-        if(objs.size() == 1 && ! (objs.get(0) instanceof ArrayList)){
-            System.out.println("objs size of 1");
-            return new ArrayList<Object>(){{add(objs.get(0));}};
-        }
-        return new ArrayList<Object>(){{
-            for(Object obj : objs){
-                if(obj instanceof ArrayList){
-                    System.out.println("obj '" + obj + "' (Type '" + obj.getClass() + "') is an arraylist or array");
-                    addAll(decant((ArrayList)obj));
-                }
-                else{
-                    System.out.println("obj '" + obj + "' (Type '" + obj.getClass() + "') isnt an arraylist or array");
-                    add(obj);
-                }
-            }
-        }};
-
-    }
-
 
     /** 
      * The function that controls the drawing of the graphics.

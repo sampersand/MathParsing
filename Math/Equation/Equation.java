@@ -2,6 +2,7 @@ package Math.Equation;
 import Math.Exception.TypeMisMatchException;
 import Math.Exception.NotDefinedException;
 import Math.Set.Set;
+import Math.Set.Grapher;
 import java.util.ArrayList;
 import java.util.HashMap;
 /**
@@ -425,7 +426,7 @@ public class Equation {
     }
     public void graph(){
         System.err.println("Currently, solve isn't very good. Oh well.");
-        Set.graph(this);
-        // throw new NotDefinedException("implement me (graph for equation)");
+        Grapher grapher = new Grapher(this);
+        grapher.graph();
     }
 }
