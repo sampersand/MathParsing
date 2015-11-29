@@ -45,7 +45,7 @@ public class FinalNode extends Node {
     }
 
     @Override
-    public String fullString() {
+    public String toFullString() {
         String ret = "[";
         ret += token.TYPE == Token.Types.NUM ? dVal : "\"" + sVal + "\"";
         ret += ": " + token.TYPE;

@@ -1,5 +1,6 @@
 package Math.Equation.CustomFunctions;
 import Math.Set.Set;
+import java.util.ArrayList;
 
 import Math.Equation.Equation;
 import Math.Equation.Function;
@@ -49,14 +50,14 @@ public class graph extends CustomFunction{
             Set set = new Set(vals1, vals2);
             set.graph();
         } else {
-            Equation[] equations = new Equation[pNode.size()] ;
+            ArrayList<Equation> equations = new ArrayList<Equation>();
             for(int i = 0; i < pNode.size(); i++){
                 if(pNode.get(i).type() != Types.ARGS)
                     throw new InvalidArgsException("uh oh, you need to have each argument to be of type ARG (" + i +
                                                    ") isn't");
-                equations[i] = new Equation(pNode.get(i).token.VAL, pFactors);
+            equations.add(new Equation(pNode.get(i).token.VAL, pFactors));
             }
-            Set.graph(equations,"@");
+            Set.graph(equations);
         // } else {
             // throw new InvalidArgsException("pNode has to be of size 2 or 1. It is actually of size: " + pNode.size());
         }

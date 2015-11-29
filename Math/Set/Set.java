@@ -11,7 +11,6 @@ public class Set {
     public double[] matr;
     public double[] matr2;
     public Equation equation;
-    public String name;
     public static void main(String[] args) { 
         assert false;
         // Set mtr = new Set(new double[]{90,90,95,100,80,80,75,80,70,60,95,100,100,100,75,80,90,90,90,70,70,80,85,90,90,85});
@@ -22,25 +21,25 @@ public class Set {
     public Set(double[] matrix){
         this(matrix, matrix);
     }
-    public Set(double[] matrix, String name){
-        this(matrix, matrix, name);
-    }
-    public Set(double[] matrix, double[] matrix2){
-        this(matrix,matrix2,"Untitled Set");
-    }
     public Set(Set sl1, Set sl2){
         this(sl1.matr,sl2.matr);
     }
-    public Set(Set sl1, Set sl2, String name){
-        this(sl1.matr,sl2.matr, name);
-    }    
-    public Set(double[] matrix, double[] matrix2, String name){
-        this.matr = matrix;
-        this.matr2 = matrix2;
-        this.name = name;
-        this.equation = linReg();
+    public Set(double[] matrix, double[] matrix2){
+        this(matrix, matrix2, linReg(matrix, matrix2));
     }
+    public Set(double[] matrix, double[] matrix2, Equation eq){
+        matr = matrix;
+        matr2 = matrix2;
+        equation = eq;
+    }
+    public Set(Equation eq){
+        this(eq, 1, -10, 10);
+    }
+    public Set(Equation eq, double step, double min, double max){
+        equation = eq;
+        matr = new double[(int)Math.floor((Math.abs(min) + Math.abs(max)) / Math.abs(step))];
 
+    }
 
     public double pred(double val){return pred(val, linReg());}
     public double pred(double val, double[] pMatr, double[] pMatr2){return pred(val, linReg(pMatr, pMatr2));}
@@ -247,31 +246,21 @@ public class Set {
         System.out.println(linReg(pMatr, pMatr2));
     }
 
-    public void graphe(){(new Set(matr,resid(),"Residuals of "+this.name)).graph();}
+    public void graphe(){(new Set(matr,resid(),linReg(matr,resid()))).graph();}
 
     public void graph(){
         graph(this);
-        // JFrame frame = new JFrame();
-        // int xScreenLimit = 1000; // note this is the physical screen limits
-        // int yScreenLimit = 1000; // note this is the physical screen limits        
-        // frame.setSize(xScreenLimit, yScreenLimit);
-        // frame.setTitle(this.name);
-        // frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        // SetDisplay gdisp = new SetDisplay(this, new int[] { xScreenLimit, yScreenLimit });
-        // frame.add(gdisp);        
-        // frame.setVisible(true);
     }
 
     public static void graph(Object... objs){
         JFrame frame = new JFrame();
         int xScreenLimit = 1000; // note this is the physical screen limits
-        int yScreenLimit = 1000; // note this is the physical screen limits        
+        int yScreenLimit = 1000; // note this is the physical screen limits
         frame.setSize(xScreenLimit, yScreenLimit);
         frame.setTitle("Graph of stuff");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        SetDisplay gdisp = new SetDisplay(new int[] { xScreenLimit, yScreenLimit }, objs);
+        Display gdisp = new Display(objs);
         frame.add(gdisp);        
         frame.setVisible(true);
     }

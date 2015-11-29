@@ -435,10 +435,10 @@ public class Node {
      * The more robust version of this class's {@link #toString()}, but without the indentation.
      * @return A more detailed String representation of this.
      */    
-    public String fullString() {
+    public String toFullString() {
         String ret = "{\"" + token.VAL + "\" | " + type() + " | ";
         for(Node node : subNodes)
-            ret += node.fullString() + ", ";
+            ret += node.toFullString() + ", ";
         return ret.substring(0,ret.length()-2) + "}";
     }
     /**

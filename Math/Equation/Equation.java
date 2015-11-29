@@ -20,7 +20,7 @@ public class Equation {
     public static void main(String[] args) throws NotDefinedException, TypeMisMatchException {
         Equation eq;
         if(args.length == 0){
-            eq = new Equation("@graph('cscy')");
+            eq = new Equation("@graph('y')");
             // eq = new Equation("graph('1,2,3,4,5','2,3,4,5,6')");
             // eq = new Equation("@graph('tan(f(y))','(y-2)*(y+2)*y') ");
             // eq = new Equation("sin(x+f('e,2,C')*f(4,f(D,3,pi)))");
@@ -379,15 +379,22 @@ public class Equation {
      * {@link #node}.
      * @return A String representation of this equation. 
      */
-    public String fullString(){
+    public String toFullString(){
         return "--Equation--\n--RawEq--\n" + equation + "\n--Factors--\n" + factors + "\n--Nodes--\n" + node.toStringL(1);
+    }
+    /** 
+     * Just returns {@link #equation}.
+     * @return A basic String representation of this equation.
+     */
+    public String toString(){
+        return "Equation '" + equation + "'.";
     }
     /** 
      * Gives a pretty-looking representation of this equation. comprised of {@link #equation}, and {@link #factors}' 
      * {@link Factors#vars} and {@link Factors#funcs}.
      * @return A fancy String representation of this equation.
      */
-    public String toString(){
+    public String toFancyString(){
         String ret = "------=[" + equation + "]=------";
         if(factors.vars.size() > 0) {
             ret += "\nVarriables:";
