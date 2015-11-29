@@ -16,14 +16,14 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.Dimension;
 
-import javax.swing.JComponent;
+import javax.swing.JLabel;
 /**
  * The component that is used to graph an equation.
  *
  * @author Sam Westerman
  * @version 1 Sep 29, 2015.
  */
-public class Display extends JComponent{  
+public class Display extends JLabel{  
 
     private Grapher grapher;
     private Equation equation;
@@ -70,6 +70,7 @@ public class Display extends JComponent{
         set = pSet;
         color = pColor;
         this.createToolTip();
+        // setPreferredSize(new Dimension(grapher.components().winBounds()[0], grapher.components().winBounds()[1]));
     }
     
     /** 
