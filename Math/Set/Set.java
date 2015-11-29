@@ -1,6 +1,7 @@
 package Math.Set;
 import Math.Equation.Equation;
 import Math.Equation.Factors;
+import Math.Display.Grapher;
 
 import java.util.HashMap;
 import java.util.ArrayList;

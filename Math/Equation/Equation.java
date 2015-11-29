@@ -2,7 +2,7 @@ package Math.Equation;
 import Math.Exception.TypeMisMatchException;
 import Math.Exception.NotDefinedException;
 import Math.Set.Set;
-import Math.Set.Grapher;
+import Math.Display.Grapher;
 import java.util.ArrayList;
 import java.util.HashMap;
 /**

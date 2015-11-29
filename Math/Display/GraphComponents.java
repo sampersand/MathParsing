@@ -1,4 +1,4 @@
-package Math.Set;
+package Math.Display;
 import Math.Exception.InvalidArgsException;
 
 public class GraphComponents {

@@ -11,7 +11,8 @@ import Math.Equation.CustomFunction;
 import Math.Equation.Token.Types;
 
 import Math.Set.Set;
-import Math.Set.GraphComponents;
+import Math.Display.GraphComponents;
+import Math.Display.Grapher;
 
 import java.util.ArrayList;
 
@@ -63,7 +64,8 @@ public class graph extends CustomFunction{
                                                    ") isn't");
             equations.add(new Equation(pNode.get(i).token.VAL, pFactors));
             }
-            // Set.graph(equations);
+            Grapher grapher = new Grapher(equations, sets, gcomp);
+            grapher.graph();
         }
         return 0;
 

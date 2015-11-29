@@ -1,5 +1,6 @@
-package Math.Set;
+package Math.Display;
 import Math.Equation.Equation;
+import Math.Set.Set;
 import Math.Exception.InvalidArgsException;
 import Math.Exception.MathException;
 import Math.Exception.NotDefinedException;
@@ -24,68 +25,61 @@ import javax.swing.JComponent;
  */
 public class Display extends JComponent{  
 
-    public ArrayList<Set> sets;
-    public ArrayList<Equation> equations;
-    public GraphComponents components;
-    /** 
-     * The element that draws the lines.
-     */
+    public Grapher grapher;
+    public Equation eq;
+    public Set set;
+
+    /** The element that draws the lines. */
     public Graphics2D drawer;   
  
     public Display(){
-        this(null, null);
-    }
-    
-    public Display(Set pSet){
-        this(new ArrayList<Set>(){{add(pSet);}}, null);
+        throw new InvalidArgsException("You need to have a grapher to base a Display class of!");
     }
 
-    public Display(Equation pEquation){
-        this(null, new ArrayList<Equation>(){{add(pEquation);}});
+    public Display(Grapher pGrapher){
+        grapher = pGrapher;
+        set = null;
+        eq = null;
+        this.createToolTip();
+    }
+    public Display(Grapher pGrapher, Set pSet){
+        grapher = pGrapher;
+        set = pSet;
+        eq = null;
+        this.createToolTip();
+    }
+    public Display(Grapher pGrapher, Set pSet){
+        grapher = pGrapher;
+        set = pSet;
+        eq = null;
+        this.createToolTip();
     }
 
-    public Display(GraphComponents pComponent){
-        this(null, null, pComponent);
-    }
-
-    public Display(ArrayList<Set> pSets, ArrayList<Equation> pEquations) {
-        this(pSets, pEquations, new GraphComponents());
-    }
-
-    public Display(ArrayList<Set> pSets, ArrayList<Equation> pEquations, GraphComponents pComponent) {
-        sets = pSets;
-        equations = pEquations;
-        components = pComponent;
-        this.createToolTip(); 
-    }
 
     /** 
      * The function that controls the drawing of the graphics.
      *
      * <p>
-     * If <code>ISEQIMAG</code> is <code>true</code>, then both <code>x</code> and <code>y</code> will be
+     * If ISEQIMAG is true, then both x and y will be
      * incremented.
      * <p>
-     * The (<code>X</code>, <code>Y</code>) coords will be:
-     * <ul><code>X</code>: The 'real' value of the complex number yielded when <code>X</code>
-     *        and <code>Y</code> are plugged into <code>EQUATION</code>. </ul>
-     * <ul><code>Y</code>: The 'imaginary' value of the complex number yielded when
-     *        <code>X</code> and <code>Y</code> are plugged into <code>EQUATION</code>. </ul>
-     * The (<code>X</code>, <code>Y</code>) coords will be:
-     * <ul><code>X</code>: The <code>x</code> value (which is being incremented). </ul>
-     * <ul><code>Y</code>: The resulting value when <code>X</code> is plugged into the
-     * <code>EQUATION</code>. </ul>
-     *
+     * The (X, Y) coords will be:
+     * <br>X: The 'real' value of the complex number yielded when X and Y are plugged into EQUATION.
+     * <br>Y: The 'imaginary' value of the complex number yielded when X and Y are plugged into EQUATION.
+     * The (X, Y) coords will be:
+     * <br>X: The x value (which is being incremented).
+     * <br>Y: The resulting value when X is plugged into theEQUATION.
      * @param g          The graphics input that will be used to draw. Assumed to be 
-     *                   <code>Graphics2D</code>.
+     *                   Graphics2D.
      */
     public void paintComponent(Graphics g) throws MathException, NotDefinedException {
         if(!(g instanceof Graphics2D))
             throw new MathException("Uh, Idek how this happened, but g has to be a Graphics2D...");
-        double[] dispBounds = components.dispBounds();
         drawer = (Graphics2D) g;
-        if(sets != null){
-            for(Set set : sets){
+        double[] dispBounds = grapher.components().dispBounds();
+
+        if(grapher.sets() != null){
+            for(Set set : grapher.sets()){
                 if(set == null){
                     throw new NotDefinedException("Set '" + set + "' is null!");
                 } else if(set.matr == null){
@@ -101,14 +95,14 @@ public class Display extends JComponent{
                 }
             }
         }
-        if(equations != null){
+        if(grapher.equations() != null){
             double cStep;
-            for(int i = 0; i < equations.size(); i++){
-                Equation equation = equations.get(i);
+            for(int i = 0; i < grapher.equations().size(); i++){
+                Equation equation = grapher.equations().get(i);
                 if(equation == null){
                     throw new NotDefinedException("Can't graph equation '" + equation + "' because it is null!");
                 }
-                cStep = components.cStep();
+                cStep = grapher.components().cStep();
                 for(double x = dispBounds[0]; x < dispBounds[2]; x += cStep){
                     drawl((double)x, Set.pred(x, equation, "y"), x + cStep, Set.pred(x + cStep, equation, "y"), i);
                 }
@@ -151,7 +145,7 @@ public class Display extends JComponent{
  
  
     private double[] fix(double x, double y){
-        return components.fix(x,y);
+        return grapher.components().fix(x,y);
     }
     /**
      * Overloaded version of drawp with ints
