@@ -100,21 +100,25 @@ public class CustomFunction extends Function {
             Object[] argListForInvokedExec = new Object[]{pFactors, pNode};
             return (double)execMethod.invoke(cl.newInstance(), argListForInvokedExec);
         } catch (NoSuchMethodException err) {
-            System.err.println("[ERROR] A NoSuchMethodException happened when attempting to execute a " +
-                               "custom method in file '" + fName + "' " + err + " | " + err.getMessage() + " | " +
-                                err.getCause());
+            System.err.print("[ERROR] A NoSuchMethodException happened when attempting to execute a " +
+                               "custom method in file '" + fName + "'. ERROR: " + err + " | MESSAGE:  " +
+                                err.getMessage() + " | CAUSE: " + err.getCause() + " | CAUSE'S STACKTRACE:\n");
+            err.getCause().printStackTrace();
         } catch (InvocationTargetException err) {
-            System.err.println("[ERROR] A InvocationTargetException happened when attempting to execute a " +
-                               "custom method in file '" + fName + "' " + err + " | " + err.getMessage() + " | " +
-                                err.getCause());
+            System.err.print("[ERROR] A InvocationTargetException happened when attempting to execute a " +
+                               "custom method in file '" + fName + "'. ERROR: " + err + " | MESSAGE:  " +
+                                err.getMessage() + " | CAUSE: " + err.getCause() + " | CAUSE'S STACKTRACE:\n");
+            err.getCause().printStackTrace();
         } catch (IllegalAccessException err) {
-            System.err.println("[ERROR] A IllegalAccessException happened when attempting to execute a " +
-                               "custom method in file '" + fName + "' " + err + " | " + err.getMessage() + " | " +
-                                err.getCause());
+            System.err.print("[ERROR] A IllegalAccessException happened when attempting to execute a " +
+                               "custom method in file '" + fName + "'. ERROR: " + err + " | MESSAGE:  " +
+                                err.getMessage() + " | CAUSE: " + err.getCause() + " | CAUSE'S STACKTRACE:\n");
+            err.getCause().printStackTrace();
         } catch (InstantiationException err) {
-            System.err.println("[ERROR] A InstantiationException happened when attempting to execute a " +
-                               "custom method in file '" + fName + "' " + err + " | " + err.getMessage() + " | " +
-                                err.getCause());
+            System.err.print("[ERROR] A InstantiationException happened when attempting to execute a " +
+                               "custom method in file '" + fName + "'. ERROR: " + err + " | MESSAGE:  " +
+                                err.getMessage() + " | CAUSE: " + err.getCause() + " | CAUSE'S STACKTRACE:\n");
+            err.getCause().printStackTrace();
         } return 0;
     }
     public String toString(){

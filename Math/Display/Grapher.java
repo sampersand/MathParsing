@@ -1,7 +1,11 @@
 package Math.Display;
-import javax.swing.JComponent;
+
+import java.awt.Color;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import java.awt.FlowLayout;
+
+
 import java.util.ArrayList;
 
 import Math.Equation.Equation;
@@ -38,10 +42,14 @@ public class Grapher {
         equations = pEquations;
         sets = pSets;
         components = pComponents;
-        for(Equation equation : pEquations)
-            displays.add(new Display(this, equation));
-        for(Set set : pSets)
-            displays.add(new Display(this, set));
+        displays = new ArrayList<Display>();
+        Color[] colors = new Color[]{Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN};
+
+        for(int i = 0; i < equations.size(); i++)
+            displays.add(new Display(this, equations.get(i), colors[i%colors.length]));
+        for(int i = 0; i < sets.size(); i++)
+            displays.add(new Display(this, sets.get(i), colors[i%colors.length]));
+        displays.add(new Display(this)); //adds axis
     }
 
     public ArrayList<Set> sets(){ return sets; }
@@ -56,8 +64,12 @@ public class Grapher {
         frame.setSize(components.winBounds()[0], components.winBounds()[1]);
         frame.setTitle("Graph of stuff");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        frame.add(gdisp);        
+        JPanel pane = new JPanel();
+        pane.add(displays.get(0));
+        // for(Display disp : displays){
+        //     pane.add(disp);
+        // }
+        frame.add(pane);
         frame.setVisible(true);
 
     }
