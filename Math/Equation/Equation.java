@@ -21,7 +21,7 @@ public class Equation {
     public static void main(String[] args) throws NotDefinedException, TypeMisMatchException {
         Equation eq;
         if(args.length == 0){
-            eq = new Equation("@graph('y')");
+            eq = new Equation("@graph('sinx', 'cosx', 'tanx')");
             // eq = new Equation("graph('1,2,3,4,5','2,3,4,5,6')");
             // eq = new Equation("@graph('tan(f(y))','(y-2)*(y+2)*y') ");
             // eq = new Equation("sin(x+f('e,2,C')*f(4,f(D,3,pi)))");
@@ -388,7 +388,7 @@ public class Equation {
      * @return A basic String representation of this equation.
      */
     public String toString(){
-        return "Equation '" + equation + "'.";
+        return "Equation '" + equation + "'";
     }
     /** 
      * Gives a pretty-looking representation of this equation. comprised of {@link #equation}, and {@link #factors}' 

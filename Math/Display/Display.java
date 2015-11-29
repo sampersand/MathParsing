@@ -99,21 +99,19 @@ public class Display extends JLabel{
         double[] dispBounds = grapher.components().dispBounds();
 
         if(set != null){
-            if(set.matr == null){
-                throw new NotDefinedException("Set '" + set + "' doesn't have the first Matrix! can't graph it.");
-            } else if(set.matr2 == null){
-                throw new NotDefinedException("Set '" + set + "' doesn't have the second Matrix! can't graph it.");
-            } else if(set.matr.length != set.matr2.length){
-                throw new NotDefinedException("The first Matrix's length and the Second Matrix's length of Set '" +
-                                              set + "' aren't equal!");
-            }
-            for(int x = 0; x < set.matr.length; x++){
-                drawp(set.matr[x], set.matr2[x]);
+            if(set.arr2 == null){
+                throw new NotDefinedException("Set '" + set + "' doesn't have the first Array! can't graph it.");
+            } else if(set.arr2 == null){
+                throw new NotDefinedException("Set '" + set + "' doesn't have the second Array! can't graph it.");
+            } 
+            set.verifySize();
+            for(int x = 0; x < set.arr2.length; x++){
+                drawp(set.arr2[x], set.arr2[x]);
             }
         } else if(equation != null){
             double cStep = grapher.components().cStep();
             for(double x = dispBounds[0]; x < dispBounds[2]; x += cStep){
-                drawl((double)x, Set.pred(x, equation, "y"), x + cStep, Set.pred(x + cStep, equation, "y"));
+                drawl((double)x, Set.pred(x, equation, "x"), x + cStep, Set.pred(x + cStep, equation, "x"));
             }
         }
         else{

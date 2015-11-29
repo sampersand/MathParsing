@@ -72,9 +72,8 @@ public class Grapher extends JPanel{
  
          //Create and set up the layered pane.
         layeredPane = new JLayeredPane();
-        layeredPane.setPreferredSize(new Dimension(components.winBounds()[0] + 5, components.winBounds()[1] + 5));
-        // layeredPane.setBorder(BorderFactory.createTitledBorder(
-                                    // "Equations"));
+        layeredPane.setPreferredSize(new Dimension(components.winBounds()[0] + 10, components.winBounds()[1] + 10));
+        layeredPane.setBorder(BorderFactory.createTitledBorder("Graph"));
   
         for (int i = 0; i < displays.size(); i++) {
             JLabel label = createDisplay(i);
@@ -93,12 +92,29 @@ public class Grapher extends JPanel{
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setOpaque(false);
         label.setBorder(BorderFactory.createLineBorder(Color.black));
-        label.setBounds(50, 0, components.winBounds()[0], components.winBounds()[1]);
+        label.setBounds(0, 10, components.winBounds()[0], components.winBounds()[1]);
         return label;
     }
     public void graph() {
         //Create and set up the window.
-        JFrame frame = new JFrame("Graph of Stuff");
+        String title = "Graph of ";
+        if(equations.size() + sets.size() > 5){
+            title += "A lot of stuff";
+        } else if(equations.size() + sets.size() == 0){
+            title += "Nothing...? Lol why graph that.";
+        } else if(equations.size() + sets.size() == 1){
+            title += equations.size() == 1 ? equations.get(0).equation : sets.get(0);
+        } else {
+            for(int i = 0; i < equations.size(); i++){ // for each loop will crash if equation's size is 0.
+                title += equations.get(i) + ", ";
+            }
+            for(int i =0; i < sets.size(); i++){
+                 title += sets.get(i) + ", ";   
+            }
+            title = title.substring(0, title.length() - 2);
+
+        }
+        JFrame frame = new JFrame(title);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
  
         this.setOpaque(true); 

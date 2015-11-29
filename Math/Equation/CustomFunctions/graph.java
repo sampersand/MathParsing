@@ -30,30 +30,31 @@ public class graph extends CustomFunction{
     public double exec(Factors pFactors, Node pNode) throws NotDefinedException, InvalidArgsException {
         if(pNode.size() == 0)
             throw new InvalidArgsException("the size has to be greater than 1!");
-        if(pNode.get(0).token.VAL.equals("@matr")){
-            double[] vals1, vals2;
-            if(pNode.get(1).type() == Types.ARGS){
-                String[] vals = pNode.get(1).token.VAL.split(",");
-                vals1 = new double[vals.length];
-                for(int i = 0; i < vals.length; i++){
-                    vals1[i] = Double.parseDouble(vals[i]);
-                }
-            } else{
-                vals1 = evalNode(pFactors, pNode.get(1));
+        for(Node n : pNode.subNodes){
+            if(n.type() != Types.ARGS){
+                throw new InvalidArgsException("All arguments of graph must be of Token.Types 'ARG'!");
             }
-
-            if(pNode.get(2).type() == Types.ARGS){
-                String[] vals = pNode.get(2).token.VAL.split(",");
-                vals2 = new double[vals.length];
-                for(int i = 0; i < vals.length; i++){
-                    vals2[i] = Double.parseDouble(vals[i]);
-                }
-            } else{
-                vals2 = evalNode(pFactors, pNode.get(2));
+        }
+        if(pNode.get(0).token.VAL.equals("@arr")){
+            double[] arr1, arr2;
+            String arrs[];
+            //array 1
+            arrs = pNode.get(1).token.VAL.split(",");
+            arr1 = new double[arrs.length];
+            for(int i = 0; i < arrs.length; i++){
+                arr1[i] = Double.parseDouble(arrs[i]);
             }
-
-            Set set = new Set(vals1, vals2);
-            set.graph();
+            //array 2
+            arrs = pNode.get(2).token.VAL.split(",");
+            arr2 = new double[arrs.length];
+            for(int i = 0; i < arrs.length; i++){
+                arr2[i] = Double.parseDouble(arrs[i]);
+            }
+            
+            Set set = new Set(arr1, arr2);
+            System.out.println("@@@@@@8");
+            System.out.println(set);
+            System.out.println("@@@@@@9");
         } else {
             ArrayList<Equation> equations = new ArrayList<Equation>();
             ArrayList<Set> sets = new ArrayList<Set>();

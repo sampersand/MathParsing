@@ -2,34 +2,33 @@ package Math.Set;
 import Math.Equation.Equation;
 import Math.Equation.Factors;
 import Math.Display.Grapher;
+import Math.Exception.InvalidArgsException;
 
 import java.util.HashMap;
-import java.util.ArrayList;
 
 public class Set {
     // public static final double e = Math.E;
-    public double[] matr;
-    public double[] matr2;
+    public double[] arr1;
+    public double[] arr2;
     public Equation equation;
     public static void main(String[] args) { 
-        assert false;
         // Set mtr = new Set(new double[]{90,90,95,100,80,80,75,80,70,60,95,100,100,100,75,80,90,90,90,70,70,80,85,90,90,85});
-        Set mtr = new Set(new double[]{-3,-2,-1,0,1,2,3},new double[]{-3,-2,-1,0,1,2,3});
+        Set mtr = new Set(new double[]{-3,-2,-1,0,1,2,3}, new double[]{-3,-2,-1,0,1,2,3});
         mtr.graph();
 
     }   
-    public Set(double[] matrix){
-        this(matrix, matrix);
+    public Set(double[] pArr1){
+        this(pArr1, pArr1);
     }
     public Set(Set sl1, Set sl2){
-        this(sl1.matr,sl2.matr);
+        this(sl1.arr1,sl2.arr1);
     }
-    public Set(double[] matrix, double[] matrix2){
-        this(matrix, matrix2, linReg(matrix, matrix2));
+    public Set(double[] pArr1, double[] pArr2){
+        this(pArr1, pArr2, linReg(pArr1, pArr2));
     }
-    public Set(double[] matrix, double[] matrix2, Equation eq){
-        matr = matrix;
-        matr2 = matrix2;
+    public Set(double[] pArr1, double[] pArr2, Equation eq){
+        arr1 = pArr1;
+        arr2 = pArr2;
         equation = eq;
     }
     public Set(Equation eq){
@@ -37,12 +36,20 @@ public class Set {
     }
     public Set(Equation eq, double step, double min, double max){
         equation = eq;
-        matr = new double[(int)Math.floor((Math.abs(min) + Math.abs(max)) / Math.abs(step))];
+        arr1 = new double[(int)Math.floor((Math.abs(min) + Math.abs(max)) / Math.abs(step))];
+        arr2 = new double[(int)Math.floor((Math.abs(min) + Math.abs(max)) / Math.abs(step))];
+        int pos = 0;
+        for(double i = min; i < max; i+=step){
+            arr1[pos] = pred(i, equation);
+            arr2[pos] = i;
+            pos++;
+        }
+
 
     }
 
     public double pred(double val){return pred(val, linReg());}
-    public double pred(double val, double[] pMatr, double[] pMatr2){return pred(val, linReg(pMatr, pMatr2));}
+    public double pred(double val, double[] pArr1, double[] pArr2){return pred(val, linReg(pArr1, pArr2));}
     public double pred(double val, String toSolve){ return pred(val, linReg(), toSolve);}
     public double pred(double val, Equation pEq){ return pred(val, pEq, "x");}
     public static double pred(double val, Equation pEq, String toSolve){
@@ -50,78 +57,86 @@ public class Set {
     }
     public double[] es(){return resid();}
     public double[] resid(){
-        assert matr.length == matr2.length;
+        verifySize();
         Equation lreg = linReg();
-        double[] resid = new double[matr.length];
-        for(int x = 0; x < matr.length; x++)
-            resid[x] = pred(matr[x], lreg, "y") - matr2[x];
+        double[] resid = new double[arr1.length];
+        for(int x = 0; x < arr1.length; x++)
+            resid[x] = pred(arr1[x], lreg, "y") - arr2[x];
         return resid;
     }
 
 
-    public Equation quadReg(){return quadReg(matr, matr2); }
-    public static Equation quadReg(double[] x, double[] y){
+    public Equation quadReg(){return quadReg(arr1, arr2); }
+    public static Equation quadReg(double[] pArr1, double[] pArr2){
         Equation eq = new Equation();
         return eq;
     }
 
-    public Equation linReg(){ return linReg(matr, matr2); }
-    public static Equation linReg(double[] x, double[] y){
-        double b1 = r(x, y) * S(y) / S(x);
-        double b0 = avg(y) - b1 * avg(x);
+    public Equation linReg(){ return linReg(arr1, arr2); }
+    public static Equation linReg(double[] pArr1, double[] pArr2){
+        double b1 = r(pArr1, pArr2) * S(pArr2) / S(pArr1);
+        double b0 = avg(pArr2) - b1 * avg(pArr1);
         return new Equation("yhat = b0 + b1 * y", new Factors(new HashMap<String, Double>(){{
                     put("b0", b0);
                     put("b1", b1);
                 }}));
     }
 
-    public double r(){ return r(matr, matr2); }
-    public static double r(double[] x, double[] y){
-        assert x.length == y.length;
+    public double r(){ return r(arr1, arr2); }
+    public static double r(double[] pArr1, double[] pArr2){
+        verifySize(pArr1, pArr2);
         double sigZxZy = 0;
-        for(int i = 0; i < x.length; i++)
-            sigZxZy += Z(x[i], x) * Z(y[i], y);
-        return sigZxZy /( n(x) - 1 ); }
+        for(int i = 0; i < pArr1.length; i++)
+            sigZxZy += Z(pArr1[i], pArr1) * Z(pArr2[i], pArr2);
+        return sigZxZy /( n(pArr1) - 1 ); }
 
-    public double R2(){ return R2(matr, matr2); }
-    public static double R2(double[] inp, double[] inp2){ return Math.pow(r(inp, inp2), 2);}
+    public double R2(){ return R2(arr1, arr2); }
+    public static double R2(double[] pArr1, double[] pArr2){ return Math.pow(r(pArr1, pArr2), 2);}
 
-    public int n(){ return n(matr); }
-    public static int n(double[] inp){ return inp.length; }
+    public void verifySize() throws InvalidArgsException {verifySize(this);}
+    public void verifySize(Set pSet) throws InvalidArgsException {verifySize(pSet.arr1, pSet.arr2);}
+    public static void verifySize(double[] pArr1, double[] pArr2) throws InvalidArgsException{
+        if(pArr1.length != pArr2.length)
+            throw new InvalidArgsException("The Arrays (" + arrToString(pArr1) + " and (" + arrToString(pArr2) + ") " + 
+                "need to be of the same length!");
+    }
 
-    public double Z(double x){ return Z(x, matr); }
-    public static double Z(double x, double[] inp){ return (x - avg(inp)) / stdev(inp); }
-    public double[] Z(){ return Z(matr);}
-    public static double[] Z(double[] inp){
-        double[] ret = new double[inp.length];
+    public int n(){ return n(arr1); }
+    public static int n(double[] pArr1){ return pArr1.length; }
+
+    public double Z(double x){ return Z(x, arr1); }
+    public static double Z(double x, double[] pArr1){ return (x - avg(pArr1)) / stdev(pArr1); }
+    public double[] Z(){ return Z(arr1);}
+    public static double[] Z(double[] pArr1){
+        double[] ret = new double[pArr1.length];
         for(int x = 0; x < ret.length; x++)
-            ret[x] = Z(inp[x], inp);
+            ret[x] = Z(pArr1[x], pArr1);
         return ret;
     }
 
-    public double avg(){ return avg(matr);}
-    public double mean(){ return mean(matr);}
-    public static double mean(double[] inp){return avg(inp);}    
-    public static double avg(double[] inp){
-        assert inp.length > 0;
+    public double avg(){ return avg(arr1);}
+    public double mean(){ return mean(arr1);}
+    public static double mean(double[] pArr1){return avg(pArr1);}    
+    public static double avg(double[] pArr1){
+        assert pArr1.length > 0;
         double sum = 0;
-        for(double i : inp)
+        for(double i : pArr1)
             sum += i;
-        return sum / inp.length;
+        return sum / pArr1.length;
     }
 
-    public double[] outliers(){return outliers(matr);}
-    public static double[] outliers(double[] inp){
-        double std = stdev(inp);
-        double mean = mean(inp);
+    public double[] outliers(){return outliers(arr1);}
+    public static double[] outliers(double[] pArr1){
+        double std = stdev(pArr1);
+        double mean = mean(pArr1);
         int count = 0;
-        for(double d : inp)
+        for(double d : pArr1)
             if(d < mean - std * 1.5 || d > mean + std * 1.5)
                 count++;
         double[] ret = new double[count];
         count = 0;
-        for(int x = 0; x < inp.length; x++){
-            double d = inp[x];
+        for(int x = 0; x < pArr1.length; x++){
+            double d = pArr1[x];
             if(d < mean - std * 1.5 || d > mean + std * 1.5){
                 ret[count] = d;
                 count++;
@@ -130,21 +145,21 @@ public class Set {
         return ret;
     }
 
-    public double stdev(){ return stdev(matr); }
-    public double S(){ return stdev(matr); }
-    public static double S(double[] inp){ return stdev(inp); }
-    public static double stdev(double[] inp){ 
-        double Σyȳ = 0;
-        double ȳ  = avg(inp);
-        for(double y : inp)
-            Σyȳ  += Math.pow(y - ȳ, 2);
-        return Math.sqrt(Σyȳ  / (n(inp) - 1));
+    public double stdev(){ return stdev(arr1); }
+    public double S(){ return stdev(arr1); }
+    public static double S(double[] pArr1){ return stdev(pArr1); }
+    public static double stdev(double[] pArr1){ 
+        double sigYy_ = 0;
+        double y_  = avg(pArr1);
+        for(double y : pArr1)
+            sigYy_  += Math.pow(y - y_, 2);
+        return Math.sqrt(sigYy_  / (n(pArr1) - 1));
     }
 
-    public double[] fiveNumSum(){ return fiveNumSum(matr); }
-    public static double[] fiveNumSum(double[] inp){
-        assert inp.length > 0;
-        double[] sorted = sort(inp);
+    public double[] fiveNumSum(){ return fiveNumSum(arr1); }
+    public static double[] fiveNumSum(double[] pArr1){
+        assert pArr1.length > 0;
+        double[] sorted = sort(pArr1);
         int length = sorted.length;        
         double[] ret = {sorted[0], 0, 0, 0, sorted[length - 1]};
         ret[3] = length % 4 == 0 ? (sorted[length * 3 / 4 - 1] + sorted[length * 3 / 4]) / 2 : 
@@ -156,16 +171,16 @@ public class Set {
         return ret;
     } // NOT 100% THIS WORKS
 
-    public double iqr(){ return iqr(matr); }
-    public static double iqr(double[] inp){
-        double[] sum = fiveNumSum(inp);
+    public double iqr(){ return iqr(arr1); }
+    public static double iqr(double[] pArr1){
+        double[] sum = fiveNumSum(pArr1);
         return sum[3] - sum[1];
     }
 
-    public double[] sort(){ return sort(matr); }
-    public static double[] sort(double[] inp) {
-        double[] ret = new double[inp.length];
-        for(int i = 0; i < inp.length; i++) ret[i] = inp[i];
+    public double[] sort(){ return sort(arr1); }
+    public static double[] sort(double[] pArr1) {
+        double[] ret = new double[pArr1.length];
+        for(int i = 0; i < pArr1.length; i++) ret[i] = pArr1[i];
         //bubble sort b/c screw it
         int x = 0;
         double temp = 0;
@@ -182,9 +197,9 @@ public class Set {
         return ret;
     }
 
-    public void printBarGraph(){ printBarGraph(matr); }
-    public static void printBarGraph(double[] inp){
-        double[] fns = fiveNumSum(inp);
+    public void printBarGraph(){ printBarGraph(arr1); }
+    public static void printBarGraph(double[] pArr1){
+        double[] fns = fiveNumSum(pArr1);
         double[] prl = new double[5];
         for(int x = 0; x < fns.length; x++)
             prl[x] = fns[x];
@@ -206,7 +221,7 @@ public class Set {
         }
 
         for(int x = 0; x < prl.length; x++ )
-            prl[x] = Z(prl[x],inp) * 25 + 50;
+            prl[x] = Z(prl[x], pArr1) * 25 + 50;
         
         double upN =  (double)(is1fence ? (fns[1] - iqr * 1.5) : fns[0]);
         double mdN =  (double)(           (fns[2]            )         );
@@ -233,24 +248,43 @@ public class Set {
        System.out.println();
     }
 
-    public void printFiveNumSum(){ printFiveNumSum(matr); }
-    public static void printFiveNumSum(double[] inp){
+    public void printFiveNumSum(){ printFiveNumSum(arr1); }
+    public static void printFiveNumSum(double[] pArr1){
 
-        double[] fns = fiveNumSum(inp);
+        double[] fns = fiveNumSum(pArr1);
 
         System.out.printf("Min   : %f%nQ1    : %f%nMed   : %f%nQ2    : %f%nMax   : %f%nMean  : %f%nStdev : %f%n",
-            fns[0], fns[1], fns[2], fns[3], fns[4],Set.avg(inp),Set.stdev(inp));
+            fns[0], fns[1], fns[2], fns[3], fns[4], avg(pArr1), stdev(pArr1));
     }
-    public void printLinReg(){ printLinReg(matr, matr2); }
-    public static void printLinReg(double[] pMatr, double[] pMatr2){
-        System.out.println(linReg(pMatr, pMatr2));
+    public void printLinReg(){ printLinReg(arr1, arr2); }
+    public static void printLinReg(double[] pArr1, double[] pArr2){
+        System.out.println(linReg(pArr1, pArr2));
     }
 
-    public void graphe(){(new Set(matr,resid(),linReg(matr,resid()))).graph();}
+    public void graphe(){(new Set(arr1, resid(), linReg(arr1, resid()))).graph();}
 
     public void graph(){
         Grapher grapher = new Grapher(this);
         grapher.graph();
+    }
+
+    public static String arrToString(double[] pArr11){
+        String ret = "(";
+        for(double d : pArr1)
+            ret += d + ", ";
+        return ret.substring(0, ret.length() - 2) + ")[" + pArr1.length + "]";
+    }
+
+    public String toString(){
+        if(arr1.length == 0 && arr2.length == 0 )
+            return "Empty set";
+        String ret = "Set";
+        if(arr1.length != 0)
+            ret += " Arr1: " + arrToString(arr1) + (arr2.length != 0 ? ";" : "");
+
+        if(arr2.length != 0)
+            ret += " Arr2: " + arrToString(arr2);
+        return ret;
     }
 
 }
