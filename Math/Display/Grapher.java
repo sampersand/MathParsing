@@ -2,6 +2,7 @@ package Math.Display;
 
 import java.awt.Color;
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import java.awt.FlowLayout;
 
@@ -43,13 +44,13 @@ public class Grapher {
         sets = pSets;
         components = pComponents;
         displays = new ArrayList<Display>();
+        displays.add(new Display(this)); //adds axis
         Color[] colors = new Color[]{Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN};
 
         for(int i = 0; i < equations.size(); i++)
             displays.add(new Display(this, equations.get(i), colors[i%colors.length]));
         for(int i = 0; i < sets.size(); i++)
             displays.add(new Display(this, sets.get(i), colors[i%colors.length]));
-        displays.add(new Display(this)); //adds axis
     }
 
     public ArrayList<Set> sets(){ return sets; }
@@ -57,17 +58,20 @@ public class Grapher {
     public GraphComponents components(){ return components; }
 
     public void graph(){
+        //this one function is killing me
         JFrame frame = new JFrame();
 
         frame.setSize(components.winBounds()[0], components.winBounds()[1]);
         frame.setTitle("Graph of stuff");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        JLayeredPane pane = new JLayeredPane();
 
-        frame
+        for(int i = 0; i < displays.size(); i++){
+            pane.setLayer(displays.get(i), i);
+        }
+                pane.setVisible(true);
 
-        // for(Display disp : displays){
-        //     frame.add(disp);
-        // }
+        frame.add(pane);
         frame.setVisible(true);
 
     }

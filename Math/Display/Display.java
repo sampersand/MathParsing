@@ -14,9 +14,9 @@ import java.awt.BasicStroke;
 import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.awt.Dimension;
 
 import javax.swing.JComponent;
-
 /**
  * The component that is used to graph an equation.
  *
@@ -71,8 +71,7 @@ public class Display extends JComponent{
         color = pColor;
         this.createToolTip();
     }
-
-
+    
     /** 
      * The function that controls the drawing of the graphics.
      *
