@@ -64,7 +64,7 @@ public class graph extends CustomFunction{
                                                    ") isn't");
             equations.add(new Equation(pNode.get(i).token.VAL, pFactors));
             }
-            equations = new ArrayList<Equation>();
+            // equations = new ArrayList<Equation>();
             Grapher grapher = new Grapher(equations, sets, gcomp);
             grapher.graph();
         }

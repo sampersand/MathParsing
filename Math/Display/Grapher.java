@@ -32,13 +32,6 @@ public class Grapher extends JPanel{
     private ArrayList<Equation> equations;
     private GraphComponents components;
     private ArrayList<Display> displays;
-    private String[] layerStrings = { "Yellow (0)", "Magenta (1)",
-                                      "Cyan (2)",   "Red (3)",
-                                      "Green (4)" };
-    private Color[] layerColors = { Color.yellow, Color.magenta,
-                                    Color.cyan,   Color.red,
-                                    Color.green };
- 
 
     public Grapher(){
         this(null, null);
@@ -71,6 +64,7 @@ public class Grapher extends JPanel{
             displays.add(new Display(this, equations.get(i), colors[i%colors.length]));
         for(int i = 0; i < sets.size(); i++)
             displays.add(new Display(this, sets.get(i), colors[i%colors.length]));
+        System.err.println(displays);
         graphSetup();
     }
     private void graphSetup(){
@@ -78,10 +72,9 @@ public class Grapher extends JPanel{
  
          //Create and set up the layered pane.
         layeredPane = new JLayeredPane();
-        layeredPane.setPreferredSize(new Dimension(components.winBounds()[0], components.winBounds()[1]));
+        layeredPane.setPreferredSize(new Dimension(components.winBounds()[0] + 5, components.winBounds()[1] + 5));
         // layeredPane.setBorder(BorderFactory.createTitledBorder(
                                     // "Equations"));
- 
   
         for (int i = 0; i < displays.size(); i++) {
             JLabel label = createDisplay(i);
@@ -96,11 +89,11 @@ public class Grapher extends JPanel{
 
     private JLabel createDisplay(int i) {
         JLabel label = displays.get(i);
-        label.setVerticalAlignment(JLabel.TOP);
+        label.setVerticalAlignment(JLabel.CENTER);
         label.setHorizontalAlignment(JLabel.CENTER);
-        label.setOpaque(true);
+        label.setOpaque(false);
         label.setBorder(BorderFactory.createLineBorder(Color.black));
-        label.setBounds(5, 5, components.winBounds()[0], components.winBounds()[1]);//origin.x, origin.y, 140, 140);
+        label.setBounds(50, 0, components.winBounds()[0], components.winBounds()[1]);
         return label;
     }
     public void graph() {
