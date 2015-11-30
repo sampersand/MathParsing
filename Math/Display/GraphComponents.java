@@ -2,6 +2,10 @@ package Math.Display;
 import Math.Exception.InvalidArgsException;
 
 public class GraphComponents {
+
+    public static final GraphComponents TRIG = new GraphComponents(new int[]{1250 ,750}, 
+             new double[]{ -3 * Math.PI, -2, 3 * Math.PI, 2}, Math.PI/12);
+
     /** 
      * The physical amount of pixels the window is wide and tall.
      * The array will look like the following: <code>(X, Y)</code>
@@ -23,7 +27,7 @@ public class GraphComponents {
     private double step;
 
     public GraphComponents(){
-        this(new int[]{750, 750}, new double[]{-10, -10, 10, 10}, 100);
+        this(new int[]{1250, 750}, new double[]{-10, -10, 10, 10}, 1000);
     }
     public GraphComponents(int[] pWinBounds, double[] pDispBounds, double pStep) throws InvalidArgsException{
         if(pWinBounds.length != 2)
@@ -45,9 +49,15 @@ public class GraphComponents {
     public double[] dispBounds(){ return dispBounds; }
     public double step(){ return step; }
     public double cStep(){ return (dispBounds[2] - dispBounds[0]) / step;}
-    public double[] fix(double x, double y){ return new double[]{
-            (x - dispBounds[0]) / (dispBounds[2] - dispBounds[0]) * winBounds[0], 
-            (1 - (y - dispBounds[1]) / (dispBounds[3] - dispBounds[1])) * winBounds[1]};
+    public double[] fix(double x, double y){
+        return fix(x, y, dispBounds[0],  dispBounds[1],  dispBounds[2], dispBounds[3],  winBounds[0],  winBounds[1]);
+    }
+
+
+    public static double[] fix(double x, double y, double minX, double minY, double maxX,
+                               double maxY, double winX, double winY) {
+            return new double[]{ (x - minX) / (maxX - minX) * winX,
+                                 (1 - (y - minY) / (maxY - minY)) * winY};
 
     }
     public String toString(){

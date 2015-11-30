@@ -31,7 +31,7 @@ public class Grapher extends JPanel{
     private ArrayList<Set> sets;
     private ArrayList<Equation> equations;
     private GraphComponents components;
-    private ArrayList<Display> displays;
+    private ArrayList<DisplayComponent> displays;
 
     public Grapher(){
         this(null, null);
@@ -54,17 +54,17 @@ public class Grapher extends JPanel{
     }
 
     public Grapher(ArrayList<Equation> pEquations, ArrayList<Set> pSets, GraphComponents pComponents){
+        // pComponents = GraphComponents.TRIG;
         equations = pEquations;
         sets = pSets;
         components = pComponents;
-        displays = new ArrayList<Display>();
-        displays.add(new Display(this)); //adds axis
+        displays = new ArrayList<DisplayComponent>();
+        displays.add(new DisplayComponent(this)); //adds axis
         Color[] colors = new Color[]{Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN};
         for(int i = 0; i < equations.size(); i++)
-            displays.add(new Display(this, equations.get(i), colors[i%colors.length]));
+            displays.add(new DisplayComponent(this, equations.get(i), colors[i%colors.length]));
         for(int i = 0; i < sets.size(); i++)
-            displays.add(new Display(this, sets.get(i), colors[i%colors.length]));
-        System.err.println(displays);
+            displays.add(new DisplayComponent(this, sets.get(i), colors[i%colors.length]));
         graphSetup();
     }
     private void graphSetup(){
@@ -125,27 +125,27 @@ public class Grapher extends JPanel{
     }
 
 
-    // public void graph(){
-    //     //this one function is killing me
-    //     JFrame frame = new JFrame();
 
-    //     frame.setSize(components.winBounds()[0], components.winBounds()[1]);
-    //     frame.setTitle("Graph of stuff");
-    //     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    //     JLayeredPane pane = new JLayeredPane();
-
-    //     for(int i = 0; i < displays.size(); i++){
-    //         pane.setLayer(displays.get(i), i);
-    //     }
-    //             pane.setVisible(true);
-
-    //     frame.add(pane);
-    //     frame.setVisible(true);
-
-    // }
     public ArrayList<Set> sets(){ return sets; }
     public ArrayList<Equation> equations(){ return equations; }
     public GraphComponents components(){ return components; }
 
+    public String toString(){
+        String ret = "Graph of ";
+        if(sets == null && equations == null || (sets.size() == 0 && equations.size() == 0)){
+            return "Empty Graph"; 
+        } else if(equations.size() + sets.size() == 1){
+            return ret + (equations.size() == 1 ? equations.get(0).equation : sets.get(0));
+        } else {
+            for(int i = 0; i < equations.size(); i++){ // for each loop will crash if equation's size is 0.
+                ret += equations.get(i) + ", ";
+            }
+            for(int i =0; i < sets.size(); i++){
+                 ret += sets.get(i) + ", ";   
+            }
+            return ret.substring(0, ret.length() - 2);
+
+        }
+    }
 
 }

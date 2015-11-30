@@ -23,7 +23,7 @@ import javax.swing.JLabel;
  * @author Sam Westerman
  * @version 1 Sep 29, 2015.
  */
-public class Display extends JLabel{  
+public class DisplayComponent extends JLabel{  
 
     private Grapher grapher;
     private Equation equation;
@@ -33,38 +33,38 @@ public class Display extends JLabel{
     /** The element that draws the lines. */
     public Graphics2D drawer;   
  
-    public Display(){
-        throw new InvalidArgsException("You need to have a grapher to base a Display class of!");
+    public DisplayComponent(){
+        throw new InvalidArgsException("You need to have a grapher to base a DisplayComponent class of!");
     }
 
     /* 
      * I draw the axis.
      */
-    public Display(Grapher pGrapher){
+    public DisplayComponent(Grapher pGrapher){
         this(pGrapher, null, null, Color.BLACK);
     }
 
     /* 
      * I draw a set
      */
-    public Display(Grapher pGrapher, Set pSet){
+    public DisplayComponent(Grapher pGrapher, Set pSet){
         this(pGrapher, pSet, Color.BLUE);
     }
-    public Display(Grapher pGrapher, Set pSet, Color pColor){
+    public DisplayComponent(Grapher pGrapher, Set pSet, Color pColor){
         this(pGrapher, null, pSet, pColor);
     }
 
     /*
      * I draw an equation
      */
-    public Display(Grapher pGrapher, Equation pEquation){
+    public DisplayComponent(Grapher pGrapher, Equation pEquation){
         this(pGrapher, pEquation, Color.BLUE);
     }
-    public Display(Grapher pGrapher, Equation pEquation, Color pColor){
+    public DisplayComponent(Grapher pGrapher, Equation pEquation, Color pColor){
         this(pGrapher, pEquation, null, pColor);
     }
 
-    private Display(Grapher pGrapher, Equation pEquation, Set pSet, Color pColor){
+    private DisplayComponent(Grapher pGrapher, Equation pEquation, Set pSet, Color pColor){
         grapher = pGrapher;
         equation = pEquation;
         set = pSet;
@@ -90,7 +90,6 @@ public class Display extends JLabel{
      * @param pGraphics          The graphics input that will be used to draw. Assumed to be Graphics2D.
      */
     public void paintComponent(Graphics pGraphics) throws MathException, NotDefinedException {
-        System.err.println(this);
         if(!(pGraphics instanceof Graphics2D))
             throw new MathException("Uh, Idek how this happened, but g has to be a Graphics2D...");
         drawer = (Graphics2D) pGraphics;
@@ -106,12 +105,12 @@ public class Display extends JLabel{
             } 
             set.verifySize();
             for(int x = 0; x < set.arr2.length; x++){
-                drawp(set.arr2[x], set.arr2[x]);
+                drawp(set.arr1[x], set.arr2[x]);
             }
         } else if(equation != null){
             double cStep = grapher.components().cStep();
             for(double x = dispBounds[0]; x < dispBounds[2]; x += cStep){
-                drawl((double)x, Set.pred(x, equation, "x"), x + cStep, Set.pred(x + cStep, equation, "x"));
+                drawl(x, Set.pred(x, equation, "x"), x + cStep, Set.pred(x + cStep, equation, "x"));
             }
         }
         else{
@@ -143,7 +142,7 @@ public class Display extends JLabel{
         return grapher.components().fix(x,y);
     }
     public String toString(){
-        return "Display of " + (set == null ? equation == null ? "Axis" : equation : set == null);
+        return "Display of " + (set == null ? equation == null ? "Axis" : equation : set);
     }
  
 }

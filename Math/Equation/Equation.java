@@ -21,8 +21,9 @@ public class Equation {
     public static void main(String[] args) throws NotDefinedException, TypeMisMatchException {
         Equation eq;
         if(args.length == 0){
-            eq = new Equation("@graph('sinx', 'cosx', 'tanx')");
-            // eq = new Equation("graph('1,2,3,4,5','2,3,4,5,6')");
+            // eq = new Equation("@graph('sinx', 'cosx', 'tanx')");
+            // eq = new Equation("@graph('set:(1,2,3,4,5)(-1,3,4,5,6)')");
+            eq = new Equation("@graph('eqandset:sinx,25, -3.1415, 3.1415','eqtoset:sinx,50')");
             // eq = new Equation("@graph('tan(f(y))','(y-2)*(y+2)*y') ");
             // eq = new Equation("sin(x+f('e,2,C')*f(4,f(D,3,pi)))");
             eq.factors = eq.factors.addVars(new String[]{"x:10","C:3","D:4"});
@@ -408,7 +409,8 @@ public class Equation {
             for(int i = 0; i < keys.length; i++){
                 String func = (String) keys[i];
                 ret += "\n\t" + func + ": \n\t\tHelp   : " + factors.getFunc(func).getHelp()  + 
-                                          "\n\t\tSyntax : " + func + "(" + factors.getFunc(func).getSyntax() + ")";
+                                          "\n\t\tSyntax : " + func + "(" + factors.getFunc(func).getSyntax().
+                                            replaceAll("\n","\n\t\t\t") + ")";
                 if(i != keys.length - 1)
                 ret += "\n\t---\t---";
             }

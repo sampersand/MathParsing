@@ -8,15 +8,10 @@ import java.util.HashMap;
 
 public class Set {
     // public static final double e = Math.E;
-    public double[] arr1;
+    public double[] arr1; //when used for graphing, this is the x axis
     public double[] arr2;
     public Equation equation;
-    public static void main(String[] args) { 
-        // Set mtr = new Set(new double[]{90,90,95,100,80,80,75,80,70,60,95,100,100,100,75,80,90,90,90,70,70,80,85,90,90,85});
-        Set mtr = new Set(new double[]{-3,-2,-1,0,1,2,3}, new double[]{-3,-2,-1,0,1,2,3});
-        mtr.graph();
 
-    }   
     public Set(double[] pArr1){
         this(pArr1, pArr1);
     }
@@ -32,19 +27,27 @@ public class Set {
         equation = eq;
     }
     public Set(Equation eq){
-        this(eq, 1, -10, 10);
+        this(eq, -10, 10, 25);
     }
-    public Set(Equation eq, double step, double min, double max){
-        equation = eq;
-        arr1 = new double[(int)Math.floor((Math.abs(min) + Math.abs(max)) / Math.abs(step))];
-        arr2 = new double[(int)Math.floor((Math.abs(min) + Math.abs(max)) / Math.abs(step))];
-        int pos = 0;
-        for(double i = min; i < max; i+=step){
-            arr1[pos] = pred(i, equation);
-            arr2[pos] = i;
-            pos++;
+    public Set(Equation eq, double min, double max, double cStep){
+        if(min >= max){
+            throw new InvalidArgsException("When defining a set with an Equation, the min (" + min +
+                                           ") has to be smaller than the max (" + max + ")!");
+        } if(cStep == 0){
+            throw new InvalidArgsException("When defining a set with an Equation, the cStep cannot be 0!");
         }
 
+        equation = eq;
+        arr1 = new double[(int) Math.abs(Math.ceil(cStep))];
+        arr2 = new double[(int) Math.abs(Math.ceil(cStep))];
+        int pos = 0;
+        for(double i = min; i < max; i += (max - min) / cStep){
+            if(pos >= arr1.length)
+                break;
+            arr1[pos] = i;
+            arr2[pos] = pred(i, equation);
+            pos++;
+        }
 
     }
 
@@ -268,7 +271,7 @@ public class Set {
         grapher.graph();
     }
 
-    public static String arrToString(double[] pArr11){
+    public static String arrToString(double[] pArr1){
         String ret = "(";
         for(double d : pArr1)
             ret += d + ", ";
