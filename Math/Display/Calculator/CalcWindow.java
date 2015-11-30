@@ -4,7 +4,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Enumeration;
 
 import javax.swing.JButton;
@@ -36,7 +36,7 @@ public class CalcWindow extends JFrame implements ActionListener {
      * The key is the text on the buttons, and the value is an instance of the <code>Jbutton</code>
      * class.
      */
-    private HashMap <String, JButton> buttons = new HashMap <String, JButton>();
+    private Hashtable <String, JButton> buttons = new Hashtable <String, JButton>();
 
     /**
      * An instance of the <code>MainClass</code>. 
