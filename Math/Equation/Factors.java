@@ -1,4 +1,5 @@
 package Math.Equation;
+import Math.Print;
 
 import Math.Exception.NotDefinedException;
 import Math.Exception.TypeMisMatchException;
@@ -85,7 +86,7 @@ public class Factors {
                     return (double)getVar(fNode.sVal);
                 }
             } else if(fNode.type() == Token.Types.ARGS){
-                System.err.println("[WARNING] Attempting to evaluate args! probably won't go well :P");
+                Print.printw("[WARNING] Attempting to evaluate args! probably won't go well :P");
                 return (double)getVar(fNode.sVal);
             } else {
                 throw new TypeMisMatchException("FinalNode '" +fNode.sVal + "&" + fNode.dVal +

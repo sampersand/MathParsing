@@ -194,23 +194,12 @@ public class EquationDisplay extends JComponent
          double X; // The other end of the line; X is "x+step".
          double Y; // The other end of the line. Y is the equation with X plugged into it.
          while (x <= EQUATION_BOUNDS[1]) {
-            try{
-                y = Double.parseDouble(CalcWindow.getResult(new String(EQUATION).replaceAll("x", 
-                    "(" + x + ")")));
-            } catch (javax.script.ScriptException err){
-                System.err.println(err);
-            }
-            
-                // if (x >= DISPLAY_BOUNDS[0] && x <= DISPLAY_BOUNDS[1]       // if x/y isn't in bounds ..
-                // && y >= DISPLAY_BOUNDS[2] && y <= DISPLAY_BOUNDS[3]) { // don't draw.
-               X = x + STEPS[0];
-               try {
-                  Y = Double.parseDouble(CalcWindow.getResult(new String(EQUATION).replaceAll("x", 
-                  "(" + X + ")")));
-                  drawl(x, y, X, Y);
-               } catch (Exception err){
-                   System.err.println(err);
-               }
+              y = Double.parseDouble(CalcWindow.getResult(new String(EQUATION).replaceAll("x", 
+                  "(" + x + ")")));
+             X = x + STEPS[0];
+              Y = Double.parseDouble(CalcWindow.getResult(new String(EQUATION).replaceAll("x", 
+              "(" + X + ")")));
+              drawl(x, y, X, Y);
             // }
             x += STEPS[0];
          }

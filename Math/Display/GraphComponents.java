@@ -43,6 +43,7 @@ public class GraphComponents {
     }
     public void setWinBounds(int[] pBounds){ winBounds = pBounds; }
     public void setDispBounds(double[] pBounds){ dispBounds = pBounds; }
+    public void setDispBounds(double mx, double my, double Mx, double My){ dispBounds = new double[]{mx, my, Mx, My};}
     public void setStep(double pStep){ step = pStep; }
 
     public int[] winBounds(){ return winBounds; }

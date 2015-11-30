@@ -1,4 +1,5 @@
 package Math.Equation;
+import Math.Print;
 import Math.Exception.TypeMisMatchException;
 import Math.Exception.DoesntExistException;
 import Math.Exception.NotDefinedException;
@@ -314,9 +315,6 @@ public class Node {
         if(this instanceof FinalNode) {
             throw new TypeMisMatchException("Can't add subnodes to a FinalNode!");
         }
-        // else if(this.token.isUni()){ // not 100% sure
-            // System.out.println("pos 1");
-            // add(n); }                  // these two fixed it, but oh well.
         else if(i <= 0 || size() <= 0 || (get(size() - 1).type() == GROUP &&! pOver)) {
             add(n);
         } else {
@@ -372,7 +370,7 @@ public class Node {
             }
         } else {
             if(i == 2 && get(size() - 1) instanceof FinalNode ) {
-                System.err.println("Trying to setD to a FinalNode. Going one level up instead.");
+                Print.printi("Trying to setD to a FinalNode. Going one level up instead.");
                 set(size() - 1,n);
             } else if(get(size() - 1).type() == GROUP &&! pOver){
                 set(p, n);

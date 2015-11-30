@@ -58,9 +58,11 @@ public class Grapher extends JPanel{
         equations = pEquations;
         sets = pSets;
         components = pComponents;
+        // pComponents.setDispBounds(5, 20, components.winBounds()[0], components.winBounds()[1] + 10);
+
         displays = new ArrayList<DisplayComponent>();
         displays.add(new DisplayComponent(this)); //adds axis
-        Color[] colors = new Color[]{Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN};
+        Color[] colors = new Color[]{Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW};
         for(int i = 0; i < equations.size(); i++)
             displays.add(new DisplayComponent(this, equations.get(i), colors[i%colors.length]));
         for(int i = 0; i < sets.size(); i++)
@@ -73,7 +75,7 @@ public class Grapher extends JPanel{
          //Create and set up the layered pane.
         layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(components.winBounds()[0] + 10, components.winBounds()[1] + 10));
-        layeredPane.setBorder(BorderFactory.createTitledBorder("Graph"));
+        // layeredPane.setBorder(BorderFactory.createTitledBorder("Graph"));
   
         for (int i = 0; i < displays.size(); i++) {
             JLabel label = createDisplay(i);
@@ -92,7 +94,9 @@ public class Grapher extends JPanel{
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setOpaque(false);
         label.setBorder(BorderFactory.createLineBorder(Color.black));
-        label.setBounds(0, 10, components.winBounds()[0], components.winBounds()[1]);
+        label.setBounds(5, 0, components.winBounds()[0], components.winBounds()[1]);
+
+        // label.setBounds(5, 20, components.winBounds()[0], components.winBounds()[1] - 20);
         return label;
     }
     public void graph() {
@@ -115,7 +119,7 @@ public class Grapher extends JPanel{
 
         }
         JFrame frame = new JFrame(title);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
  
         this.setOpaque(true); 
         frame.setContentPane(this);

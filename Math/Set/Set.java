@@ -1,4 +1,5 @@
 package Math.Set;
+import Math.Print;
 import Math.Equation.Equation;
 import Math.Equation.Factors;
 import Math.Display.Grapher;
@@ -236,19 +237,19 @@ public class Set {
         //       + "d\n";
         // System.out.printf(upperS, (int)upN, (int)mdN, (int)dnN);
         for(int i = 0; i < 101; i ++){
-                 if(i == (int)prl[0]) System.out.print('|');
-            else if(i == (int)prl[1]) System.out.print('|');
-            else if(i == (int)prl[2]) System.out.print('|');
-            else if(i == (int)prl[3]) System.out.print('|');
-            else if(i == (int)prl[4]) System.out.print('|');
-            else if(i <  prl[0]) System.out.print(' ');            
-            else if(i >  prl[0] && i < prl[1]) System.out.print('-');
-            else if(i >  prl[1] && i < prl[2]) System.out.print('#');
-            else if(i >  prl[2] && i < prl[3]) System.out.print('#');
-            else if(i >  prl[3] && i < prl[4]) System.out.print('-');
-            else if(i >  prl[4]) System.out.print(' ');
+                 if(i == (int)prl[0]) Print.printnl('|');
+            else if(i == (int)prl[1]) Print.printnl('|');
+            else if(i == (int)prl[2]) Print.printnl('|');
+            else if(i == (int)prl[3]) Print.printnl('|');
+            else if(i == (int)prl[4]) Print.printnl('|');
+            else if(i <  prl[0]) Print.printnl(' ');            
+            else if(i >  prl[0] && i < prl[1]) Print.printnl('-');
+            else if(i >  prl[1] && i < prl[2]) Print.printnl('#');
+            else if(i >  prl[2] && i < prl[3]) Print.printnl('#');
+            else if(i >  prl[3] && i < prl[4]) Print.printnl('-');
+            else if(i >  prl[4]) Print.printnl(' ');
         }
-       System.out.println();
+       Print.print();
     }
 
     public void printFiveNumSum(){ printFiveNumSum(arr1); }

@@ -66,9 +66,10 @@ public class graph extends CustomFunction{
                 case "set":
                     sets.add(getSet(vals));
                     break;
-                case "eqresid":
-                    sets.add(varsToSet(vals).resid());
+                case "eqandresid":
                     equations.add(new Equation(vals[0], factors));
+                case "eqtoresid":
+                    sets.add(varsToSet(vals).resid());
                     break;
                 case "resid": //residuals
                     sets.add(getSet(vals).resid());
@@ -89,7 +90,7 @@ public class graph extends CustomFunction{
             if(vals.length == 1 || vals.length == 2){
                 min = gcomp.dispBounds()[0]; // this might bring up an error if eqsets are defined before 
                 max = gcomp.dispBounds()[2]; // custom gcomps are...
-                cStep = vals.length == 2 ? Double.parseDouble(vals[1]) : 10;
+                cStep = vals.length == 2 ? Double.parseDouble(vals[1]) : 50;
             } else if(vals.length == 4){
                 min = Double.parseDouble(vals[2]);
                 max = Double.parseDouble(vals[3]);

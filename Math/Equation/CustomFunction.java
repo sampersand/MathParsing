@@ -1,5 +1,5 @@
 package Math.Equation;
-
+import Math.Print;
 import Math.Exception.NotDefinedException;
 import Math.Exception.InvalidArgsException;
 import Math.Exception.DoesntExistException;
@@ -24,7 +24,7 @@ public class CustomFunction extends Function {
         super(pVal);
         try {
             if(pVal.equals("")){
-                System.err.println("[ERROR] Instantiating a CustomFunction without a function associated!");
+                Print.printe("Instantiating a CustomFunction without a function associated!");
                 cl = null;
             } else{
                 cl = Class.forName("Math.Equation.CustomFunctions." + fName);
@@ -54,24 +54,20 @@ public class CustomFunction extends Function {
         try{
             return cl.getDeclaredMethod(pName).invoke(null);
         } catch (IllegalAccessException err) {
-            System.err.println("[ERROR] A IllegalAccessException occured when attempting to get '" + pName + "' " +
+            Print.printe("A IllegalAccessException occured when attempting to get '" + pName + "' " +
                                "of a CustomFunction (File Name: " + fName + "): " + err + " | " + err.getMessage() +
                                " | " + err.getCause());
         } catch (NullPointerException err) {
             throw new NotDefinedException("Hey, the CustomFunction '" + fName + "' doesn't have a '" + pName + 
                 "' function and needs one!");
         } catch (NoSuchMethodException err) {
-            System.err.println("[ERROR] A NoSuchMethodException occured when attempting to get '" + pName + "' " +
+            Print.printe("A NoSuchMethodException occured when attempting to get '" + pName + "' " +
                                "of a CustomFunction (File Name: " + fName + "): " + err + " | " + err.getMessage() +
                                " | " + err.getCause());
         } catch (InvocationTargetException err) {
-            System.err.println("[ERROR] A InvocationTargetException occured when attempting to get '" + pName + "' " +
+            Print.printe("A InvocationTargetException occured when attempting to get '" + pName + "' " +
                                "of a CustomFunction (File Name: " + fName + "): " + err + " | " + err.getMessage() +
                                " | " + err.getCause());
-        // } catch (InstantiationException err) {
-        //     System.err.println("[ERROR] A InstantiationException occured when attempting to get '" + pName + "' " +
-        //                        "of a CustomFunction (File Name: " + fName + "): " + err + " | " + err.getMessage() +
-        //                        " | " + err.getCause());
         }
         return null;
 
@@ -100,22 +96,22 @@ public class CustomFunction extends Function {
             Object[] argListForInvokedExec = new Object[]{pFactors, pNode};
             return (double)execMethod.invoke(cl.newInstance(), argListForInvokedExec);
         } catch (NoSuchMethodException err) {
-            System.err.print("[ERROR] A NoSuchMethodException happened when attempting to execute a " +
+            Print.printe("A NoSuchMethodException happened when attempting to execute a " +
                                "custom method in file '" + fName + "'. ERROR: " + err + " | MESSAGE:  " +
                                 err.getMessage() + " | CAUSE: " + err.getCause() + " | CAUSE'S STACKTRACE:\n");
             err.getCause().printStackTrace();
         } catch (InvocationTargetException err) {
-            System.err.print("[ERROR] A InvocationTargetException happened when attempting to execute a " +
+            Print.printe("A InvocationTargetException happened when attempting to execute a " +
                                "custom method in file '" + fName + "'. ERROR: " + err + " | MESSAGE:  " +
                                 err.getMessage() + " | CAUSE: " + err.getCause() + " | CAUSE'S STACKTRACE:\n");
             err.getCause().printStackTrace();
         } catch (IllegalAccessException err) {
-            System.err.print("[ERROR] A IllegalAccessException happened when attempting to execute a " +
+            Print.printe("A IllegalAccessException happened when attempting to execute a " +
                                "custom method in file '" + fName + "'. ERROR: " + err + " | MESSAGE:  " +
                                 err.getMessage() + " | CAUSE: " + err.getCause() + " | CAUSE'S STACKTRACE:\n");
             err.getCause().printStackTrace();
         } catch (InstantiationException err) {
-            System.err.print("[ERROR] A InstantiationException happened when attempting to execute a " +
+            Print.printe("A InstantiationException happened when attempting to execute a " +
                                "custom method in file '" + fName + "'. ERROR: " + err + " | MESSAGE:  " +
                                 err.getMessage() + " | CAUSE: " + err.getCause() + " | CAUSE'S STACKTRACE:\n");
             err.getCause().printStackTrace();

@@ -1,5 +1,6 @@
 package Math.Equation;
 
+import Math.Print;
 import Math.Exception.NotDefinedException;
 import Math.Exception.InvalidArgsException;
 import Math.Equation.Token.Types;
@@ -83,16 +84,15 @@ public class InBuiltFunction extends Function {
                 if(args.length == 0) return new Random().nextInt(100);
                 if(args.length == 1) return new Random().nextInt((int)args[0]);
                 if(args.length == 2) return new Random().nextInt((int)args[1]) + args[0];
-                System.err.println(fName + " takes 0, 1, or 2 params. Returning 0 instead.");
+                Print.printw(fName + " takes 0, 1, or 2 params. Returning 0 instead.");
                 return 0;
 
             case "rand": case "random": case "randd": case "randomdouble": case "r":
-            System.err.println(args.length);
                 if(args.length == 1) return new Random().nextDouble() * args [0];
                 if(args.length == 2) return (new Random().nextDouble() + args[0]) * args[1];
                 if(args.length == 0) return Math.random();
                 if(args.length != 0)
-                    System.err.println(fName + " takes 0, 1, or 2 params. Returning a random num from 0-1 instead.");
+                    Print.printw(fName + " takes 0, 1, or 2 params. Returning a random num from 0-1 instead.");
                 
 
             case "fac":

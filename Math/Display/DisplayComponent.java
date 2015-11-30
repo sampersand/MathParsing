@@ -106,7 +106,7 @@ public class DisplayComponent extends JLabel{
             set.verifySize();
             for(int x = 0; x < set.arr2.length - 1; x++){
                 drawp(set.arr1[x], set.arr2[x]);
-                drawl(set.arr1[x], set.arr2[x], set.arr1[x+1], set.arr2[x+1]);
+                // drawl(set.arr1[x], set.arr2[x], set.arr1[x+1], set.arr2[x+1]);
             }
         } else if(equation != null){
             double cStep = grapher.components().cStep();

@@ -1,10 +1,18 @@
 package Math.Display.Calculator;
+import Math.Print;
+import Math.Equation.Equation;
+import Math.Equation.CustomFunction;
+import Math.Equation.Factors;
+import Math.Exception.InvalidArgsException;
+
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.util.Hashtable;
+import java.util.HashMap;
+
 import java.util.Enumeration;
 
 import javax.swing.JButton;
@@ -12,10 +20,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JOptionPane;
-
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptEngine;
-import javax.script.ScriptException;
 
 
 /**
@@ -181,7 +185,7 @@ public class CalcWindow extends JFrame implements ActionListener {
             try {
                 int num = Integer.parseInt(button.getText());
                 dispField.setText(dispField.getText() + num);
-            } catch (java.lang.NumberFormatException err) {
+            } catch (NumberFormatException err) {
                 String text = button.getText();
                 String eqText = dispField.getText(); // just to make it easier to use
                 switch(text) {
@@ -245,11 +249,11 @@ public class CalcWindow extends JFrame implements ActionListener {
      */
     public String getResultWithGraph(String rawEq) {
         if (rawEq.indexOf("==") == -1) { // a beginning '=' is always passed
-            try {
-                return getResult(rawEq);
-            } catch (ScriptException err){
-                System.err.println(err);
-            }
+            // try {
+            return getResult(rawEq);
+            // } catch (Exception err){
+                // System.err.println(err);
+            // }
 
         }
         MAINCL.setUpAndDrawGraph(rawEq.substring(1));
@@ -267,17 +271,53 @@ public class CalcWindow extends JFrame implements ActionListener {
      * @param rawEq             The equation which will be run in JavaScript to get the answer.
      * @return                  A String representation of the resulting <code>double</code> answer.
      *
-     * @throws ScriptException          Thrown by <code>ScriptEngine</code> if it cannot parse
-     *                                  the equation (like <code>=2++4</code>). General error.
+     * @throws InvalidArgsException     Thrown when the arguments (like for functions, etc) arent valid.
+     *                                  the equation (like <code>2++4</code>). General error.
      * @throws NumberFormatException    Thrown by <code>ScriptEngine</code> if there is a problem
      *                                  with the way the numbers are formatted
      *                                  (like <code>2+4.2.2</code>).
      */
-    public static String getResult(String rawEq) throws ScriptException, NumberFormatException {
+    public static String getResult(String rawEq) throws InvalidArgsException {
         rawEq = rawEq.replaceAll("%", "*100").replaceAll("\\*\\*", "^");
-        ScriptEngineManager mgr = new ScriptEngineManager();
-        ScriptEngine engine = mgr.getEngineByName("JavaScript");
-        return "" + engine.eval(rawEq.substring(1)); //ignore the starting "=" sign
+        String[] split = rawEq.trim().replaceAll(" ","").split(";");
+        if(split.length == 1){
+            return "" + new Equation(split[0]).solve();
+        } else {
+            HashMap<String,Double> vars = new HashMap<String,Double>(){{
+                if(!split[1].equals("")){
+                    String[] split1 = split[1].split(",");
+                    for(int i = 0; i < split1.length; i++){
+                        String[] spl = split1[i].split(":");
+                        if(spl.length != 2){
+                            throw new InvalidArgsException("When passing vars, format has to be 'Name:Val'");
+                        } else {
+                            try{
+                                put(spl[0], Double.parseDouble(spl[1]));
+                            } catch (NumberFormatException err){
+                                throw new InvalidArgsException("When passing vars, their values have to be doubles!");
+                            }
+                        }
+                    }
+                }
+            }};
+            HashMap<String,CustomFunction> funcs = new HashMap<String,CustomFunction>(){{
+                if(!split[2].equals("")){
+                    String[] split2 = split[2].split(",");
+                    for(int i = 0; i < split2.length; i++){
+                        String[] spl = split2[i].split(":");
+                        if(spl.length == 1){
+                            put(spl[0], new CustomFunction(spl[0]));
+                        } else if (spl.length == 2){
+                            put(spl[0], new CustomFunction(spl[1]));
+                        } else {
+                            throw new InvalidArgsException("When passing funcs, they have to be in format " + 
+                                "'Name:File', or 'Name'");
+                        }
+                    }
+                }
+            }};
+            return "" + new Equation(split[0],new Factors(vars, funcs)).solve();
+        }
         
     }
 

@@ -1,4 +1,6 @@
 package Math.Equation;
+import Math.Print;
+
 import Math.Exception.TypeMisMatchException;
 import Math.Exception.NotDefinedException;
 import Math.Set.Set;
@@ -21,7 +23,8 @@ public class Equation {
         Equation eq;
         if(args.length == 0){
             // eq = new Equation("@graph('sinx', 'cosx', 'tanx')");
-            eq = new Equation("@graph('eqandset:rand(20)-10,25, -3.1415, 3.1415','eqresid:rand,25, -3.1415, 3.1415')");
+            eq = new Equation("@graph('eq:x')");
+            // eq = new Equation("@graph('eqandset:sinx,25, -3.1415, 3.1415','eqresid:cosx,25, -3.1415, 3.1415')");
             // eq = new Equation("@graph('eqandset:sinx,25, -3.1415, 3.1415','eqtoset:sinx,50')");
             // eq = new Equation("@graph('tan(f(y))','(y-2)*(y+2)*y') ");
             // eq = new Equation("sin(x+f('e,2,C')*f(4,f(D,3,pi)))");
@@ -46,17 +49,17 @@ public class Equation {
                             eq.factors = eq.factors.addVar(args[i].split(":")[0],
                                 Double.parseDouble(args[i].split(":")[1]));
                         } catch(NumberFormatException err){
-                            System.err.println("Syntax: VARNAME:VARVAL (" + args[i] + ")");
+                            Print.printw("Syntax: VARNAME:VARVAL (" + args[i] + ")");
                         } catch(ArrayIndexOutOfBoundsException err){
-                            System.err.println("Syntax: VARNAME:VARVAL (" + args[i] + ")");
+                            Print.printw("Syntax: VARNAME:VARVAL (" + args[i] + ")");
                         }
                     } else if (type == 'f'){
                         try{
                             eq.factors = eq.factors.addFunc(args[i].split(":")[0], args[i].split(":")[1]);
                         } catch(NumberFormatException err){
-                            System.err.println("Syntax: FUNCNAME:FUNCVAL (" + args[i] + ")");
+                            Print.printw("Syntax: FUNCNAME:FUNCVAL (" + args[i] + ")");
                         } catch(ArrayIndexOutOfBoundsException err){
-                            System.err.println("Syntax: FUNCNAME:FUNCVAL (" + args[i] + ")");
+                            Print.printw("Syntax: FUNCNAME:FUNCVAL (" + args[i] + ")");
                         }
                     } else if (type == 'e'){
                         eq.equation += args[i];
@@ -64,20 +67,13 @@ public class Equation {
                 }
                 eq.genNode();
             }
-
         }
-        System.out.println(eq);
-        System.out.println("RESULT: " + eq.eval());
-        System.err.println(eq.node);
+        Print.print(eq);
+        Print.printi("RESULT: ",eq.solve());
     }
 
     /** The raw equation. */
     public String equation;
-
-    // /**
-    //  * An ArrayList of tokens that represent {@link #equation}. Generally unused after generating {@link #node}.
-    //  */
-    // public ArrayList<Token> tokens;
 
     /**
      * The Node representing the whole equation. 
@@ -427,12 +423,11 @@ public class Equation {
         return factors.eval(node, pVars);
     }
     public void graph(){
-        System.err.println("Currently, solve isn't very good. Oh well.");
+        Print.printi("Currently, solve isn't very good. Oh well.");
         Grapher grapher = new Grapher(this);
         grapher.graph();
     }
     public double pred(double val, String toSolve){
-        System.err.println(this + " @ " + toSolve + " @ " + val);
         return solve(toSolve, new HashMap<String, Double>(){{put(toSolve,val);}});
     }
 
