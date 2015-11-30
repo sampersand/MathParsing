@@ -58,14 +58,14 @@ public class Set {
     public static double pred(double val, Equation pEq, String toSolve){
         return pEq.solve(toSolve, new HashMap<String, Double>(){{put(toSolve,val);}});
     }
-    public double[] es(){return resid();}
-    public double[] resid(){
+    public Set es(){return resid();}
+    public Set resid(){
         verifySize();
         Equation lreg = linReg();
         double[] resid = new double[arr1.length];
         for(int x = 0; x < arr1.length; x++)
             resid[x] = pred(arr1[x], lreg, "y") - arr2[x];
-        return resid;
+        return new Set(resid, arr2);
     }
 
 
@@ -264,7 +264,7 @@ public class Set {
         System.out.println(linReg(pArr1, pArr2));
     }
 
-    public void graphe(){(new Set(arr1, resid(), linReg(arr1, resid()))).graph();}
+    public void graphe(){(new Set(arr1, resid().arr1, linReg(arr1, resid().arr1))).graph();}
 
     public void graph(){
         Grapher grapher = new Grapher(this);

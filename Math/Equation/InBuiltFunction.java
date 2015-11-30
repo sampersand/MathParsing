@@ -86,15 +86,14 @@ public class InBuiltFunction extends Function {
                 System.err.println(fName + " takes 0, 1, or 2 params. Returning 0 instead.");
                 return 0;
 
-            case "random": case "randd": case "randomdouble": case "r":
+            case "rand": case "random": case "randd": case "randomdouble": case "r":
+            System.err.println(args.length);
                 if(args.length == 1) return new Random().nextDouble() * args [0];
-                if(args.length == 2) return (new Random().nextDouble() + args[0]) * args [1];
+                if(args.length == 2) return (new Random().nextDouble() + args[0]) * args[1];
+                if(args.length == 0) return Math.random();
                 if(args.length != 0)
                     System.err.println(fName + " takes 0, 1, or 2 params. Returning a random num from 0-1 instead.");
                 
-            case "rand":
-                return Math.random();
-
 
             case "fac":
                 double ret = 1;

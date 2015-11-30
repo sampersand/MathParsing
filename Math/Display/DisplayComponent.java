@@ -104,13 +104,18 @@ public class DisplayComponent extends JLabel{
                 throw new NotDefinedException("Set '" + set + "' doesn't have the second Array! can't graph it.");
             } 
             set.verifySize();
-            for(int x = 0; x < set.arr2.length; x++){
+            for(int x = 0; x < set.arr2.length - 1; x++){
                 drawp(set.arr1[x], set.arr2[x]);
+                drawl(set.arr1[x], set.arr2[x], set.arr1[x+1], set.arr2[x+1]);
             }
         } else if(equation != null){
             double cStep = grapher.components().cStep();
             for(double x = dispBounds[0]; x < dispBounds[2]; x += cStep){
-                drawl(x, Set.pred(x, equation, "x"), x + cStep, Set.pred(x + cStep, equation, "x"));
+                try{
+                    drawl(x, equation.pred(x, "x"), x + cStep, equation.pred(x + cStep, "x"));
+                } catch (NotDefinedException err){
+                    drawl(x, equation.pred(x, "y"), x + cStep, equation.pred(x + cStep, "y"));
+                }
             }
         }
         else{

@@ -18,6 +18,11 @@ import java.util.ArrayList;
 
 
 public class graph extends CustomFunction{
+    private ArrayList<Equation> equations;
+    private ArrayList<Set> sets;
+    private GraphComponents gcomp;
+    private Node node;
+    private Factors factors;
 
     public static String help(){
         return "Graphs any combination of sets and / or functions";
@@ -40,61 +45,33 @@ public class graph extends CustomFunction{
                 throw new InvalidArgsException("All arguments of graph must be of Token.Types 'ARG'!");
             }
         }
-        ArrayList<Equation> equations = new ArrayList<Equation>();
-        ArrayList<Set> sets = new ArrayList<Set>();
-        GraphComponents gcomp = new GraphComponents();
-        for(Node n : pNode.subNodes){
+        equations = new ArrayList<Equation>();
+        sets = new ArrayList<Set>();
+        gcomp = new GraphComponents();
+        node = pNode;
+        factors = pFactors;
+
+        for(Node n : node.subNodes){
             String id = n.token.VAL.replaceAll("^(.*):.*","$1");
-            String val = n.token.VAL.replaceAll("^" + id + ":","");
-            System.err.println(id + " @ " + val);
+            String[] vals = n.token.VAL.replaceAll("^" + id + ":","").replaceAll(" ","").split(",");
             switch(id){
                 case "eq": case "":
-                    equations.add(new Equation(val, pFactors));
+                    equations.add(new Equation(vals[0], factors));
                     break;
                 case "eqandset": //make sure to put these in front l0l
-                    equations.add(new Equation(val.replaceAll(" ","").split(",")[0], pFactors));
-                    System.out.println(equations.get(equations.size()-1).toFullString());
+                    equations.add(new Equation(vals[0], factors));
                 case "eqtoset":
-                    String[] args = val.replaceAll(" ","").split(",");
-                    double min, max, cStep;
-                    try{
-                        if(args.length == 1 || args.length == 2){
-                            min = gcomp.dispBounds()[0]; // this might bring up an error if eqsets are defined before 
-                            max = gcomp.dispBounds()[2]; // custom gcomps are...
-                            cStep = args.length == 2 ? Double.parseDouble(args[1]) : 10;
-                        } else if(args.length == 4){
-                            min = Double.parseDouble(args[2]);
-                            max = Double.parseDouble(args[3]);
-                            cStep = Double.parseDouble(args[1]);
-                        } else{
-                            throw new InvalidArgsException("If using Identifier 'eqset', the only allowed arguments "+
-                                "are: 'eq' OR 'eq, cstep' OR 'eq, cstep, min, max'!");
-                        }
-                    } catch (NumberFormatException err){
-                        throw new InvalidArgsException("One of the args for eqset (not the equation) isn't a double!");
-                    }
-                    sets.add(new Set(new Equation(args[0], pFactors), min, max, cStep));
+                    sets.add(varsToSet(vals));
                     break;
                 case "set":
-                    String[] rawStr = val.replaceAll(" ","").replaceAll("\\)\\(",";").replaceAll("\\(","").
-                        replaceAll("\\)","").trim().split(";");
-
-                    double[] arr1, arr2;
-                    String arrs[];
-                    //array 1
-                    arrs = rawStr[0].split(",");
-                    arr1 = new double[arrs.length];
-                    for(int i = 0; i < arrs.length; i++){
-                        arr1[i] = Double.parseDouble(arrs[i]);
-                    }
-                    //array 2
-                    arrs = rawStr[1].split(",");
-                    arr2 = new double[arrs.length];
-                    for(int i = 0; i < arrs.length; i++){
-                        arr2[i] = Double.parseDouble(arrs[i]);
-                    }
-                    
-                    sets.add(new Set(arr1, arr2));
+                    sets.add(getSet(vals));
+                    break;
+                case "eqresid":
+                    sets.add(varsToSet(vals).resid());
+                    equations.add(new Equation(vals[0], factors));
+                    break;
+                case "resid": //residuals
+                    sets.add(getSet(vals).resid());
                     break;
                 default:
                     System.err.println("[ERROR] Unrecognized Argument: '" + id + "'!");
@@ -103,6 +80,45 @@ public class graph extends CustomFunction{
         Grapher grapher = new Grapher(equations, sets, gcomp);
         grapher.graph();
         return 0;
+
+    }
+
+    private Set varsToSet(String[] vals){
+        double min, max, cStep;
+        try{
+            if(vals.length == 1 || vals.length == 2){
+                min = gcomp.dispBounds()[0]; // this might bring up an error if eqsets are defined before 
+                max = gcomp.dispBounds()[2]; // custom gcomps are...
+                cStep = vals.length == 2 ? Double.parseDouble(vals[1]) : 10;
+            } else if(vals.length == 4){
+                min = Double.parseDouble(vals[2]);
+                max = Double.parseDouble(vals[3]);
+                cStep = Double.parseDouble(vals[1]);
+            } else{
+                throw new InvalidArgsException("If using Identifier 'eqset', the only allowed arguments "+
+                    "are: 'eq' OR 'eq, cstep' OR 'eq, cstep, min, max'!");
+            }
+        } catch (NumberFormatException err){
+            throw new InvalidArgsException("One of the args for eqset (not the equation) isn't a double!");
+        }
+        return new Set(new Equation(vals[0], factors), min, max, cStep);
+    }
+    private Set getSet(String[] vals){
+        double[] arr1, arr2;
+        String arrs[];
+        //array 1
+        arrs = vals[0].split(",");
+        arr1 = new double[arrs.length];
+        for(int i = 0; i < arrs.length; i++){
+            arr1[i] = Double.parseDouble(arrs[i]);
+        }
+        //array 2
+        arrs = vals[1].split(",");
+        arr2 = new double[arrs.length];
+        for(int i = 0; i < arrs.length; i++){
+            arr2[i] = Double.parseDouble(arrs[i]);
+        }
+        return new Set(arr1, arr2);
 
     }
 }

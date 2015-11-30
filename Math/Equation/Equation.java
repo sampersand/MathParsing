@@ -12,7 +12,6 @@ import java.util.HashMap;
  */
 
 public class Equation {
-// TODO: cause '1 * -2' to NOT crash.
     /**
      * Note that if this is going to be called from the commandline, the syntax is as follows:
      * java Equation (-v v1:val v2:val) (-f f1:val f2:val) "equation"
@@ -22,8 +21,8 @@ public class Equation {
         Equation eq;
         if(args.length == 0){
             // eq = new Equation("@graph('sinx', 'cosx', 'tanx')");
-            // eq = new Equation("@graph('set:(1,2,3,4,5)(-1,3,4,5,6)')");
-            eq = new Equation("@graph('eqandset:sinx,25, -3.1415, 3.1415','eqtoset:sinx,50')");
+            eq = new Equation("@graph('eqandset:rand(20)-10,25, -3.1415, 3.1415','eqresid:rand,25, -3.1415, 3.1415')");
+            // eq = new Equation("@graph('eqandset:sinx,25, -3.1415, 3.1415','eqtoset:sinx,50')");
             // eq = new Equation("@graph('tan(f(y))','(y-2)*(y+2)*y') ");
             // eq = new Equation("sin(x+f('e,2,C')*f(4,f(D,3,pi)))");
             eq.factors = eq.factors.addVars(new String[]{"x:10","C:3","D:4"});
@@ -69,6 +68,7 @@ public class Equation {
         }
         System.out.println(eq);
         System.out.println("RESULT: " + eq.eval());
+        System.err.println(eq.node);
     }
 
     /** The raw equation. */
@@ -431,4 +431,9 @@ public class Equation {
         Grapher grapher = new Grapher(this);
         grapher.graph();
     }
+    public double pred(double val, String toSolve){
+        System.err.println(this + " @ " + toSolve + " @ " + val);
+        return solve(toSolve, new HashMap<String, Double>(){{put(toSolve,val);}});
+    }
+
 }
