@@ -60,6 +60,7 @@ public class DisplayComponent extends JLabel{
     public DisplayComponent(Grapher pGrapher, Equation pEquation){
         this(pGrapher, pEquation, Color.BLUE);
     }
+    public DisplayComponent(Object... pobj){ throw new NotDefinedException("Define me!");}
     public DisplayComponent(Grapher pGrapher, Equation pEquation, Color pColor){
         this(pGrapher, pEquation, null, pColor);
     }
@@ -111,11 +112,12 @@ public class DisplayComponent extends JLabel{
         } else if(equation != null){
             double cStep = grapher.components().cStep();
             for(double x = dispBounds[0]; x < dispBounds[2]; x += cStep){
-                try{
-                    drawl(x, equation.pred(x, "x"), x + cStep, equation.pred(x + cStep, "x"));
-                } catch (NotDefinedException err){
-                    drawl(x, equation.pred(x, "y"), x + cStep, equation.pred(x + cStep, "y"));
-                }
+                throw new NotDefinedException("define me!");
+                // try{
+                    // drawl(x, equation.eval(x, "x"), x + cStep, equation.eval(x + cStep, "x"));
+                // } catch (NotDefinedException err){
+                    // drawl(x, equation.eval(x, "y"), x + cStep, equation.eval(x + cStep, "y"));
+                // }
             }
         }
         else{

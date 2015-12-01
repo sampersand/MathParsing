@@ -13,7 +13,7 @@ public class Print {
     private static void print(Object[] objs, String append, Level pLevel){
         String ret = pLevel != Level.PRINT ? "[" + pLevel + "] " : "";
         for(int i = 0; i < objs.length; i++){
-            ret += objs[i] + ", ";
+            ret += objs[i] + " ";
         }
         
         System.out.print(ret.substring(0, ret.length() - (objs.length == 0 ? 0 : 2)) + append);

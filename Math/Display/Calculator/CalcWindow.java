@@ -2,7 +2,6 @@ package Math.Display.Calculator;
 import Math.Print;
 import Math.Equation.Equation;
 import Math.Equation.CustomFunction;
-import Math.Equation.Factors;
 import Math.Exception.InvalidArgsException;
 
 import java.awt.BorderLayout;
@@ -281,7 +280,7 @@ public class CalcWindow extends JFrame implements ActionListener {
         rawEq = rawEq.replaceAll("%", "*100").replaceAll("\\*\\*", "^");
         String[] split = rawEq.trim().replaceAll(" ","").split(";");
         if(split.length == 1){
-            return "" + new Equation(split[0]).solve();
+            return "" + new Equation(split[0]).eval();
         } else {
             HashMap<String,Double> vars = new HashMap<String,Double>(){{
                 if(!split[1].equals("")){
@@ -316,7 +315,7 @@ public class CalcWindow extends JFrame implements ActionListener {
                     }
                 }
             }};
-            return "" + new Equation(split[0],new Factors(vars, funcs)).solve();
+            return "" + new Equation(split[0],vars, funcs).eval();
         }
         
     }

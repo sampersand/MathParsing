@@ -1,11 +1,14 @@
 package Math.Set;
 import Math.Print;
 import Math.Equation.Equation;
-import Math.Equation.Factors;
+import Math.Equation.Expression;
+
 import Math.Display.Grapher;
 import Math.Exception.InvalidArgsException;
 
 import java.util.HashMap;
+import java.util.ArrayList;
+
 
 public class Set {
     // public static final double e = Math.E;
@@ -57,7 +60,8 @@ public class Set {
     public double pred(double val, String toSolve){ return pred(val, linReg(), toSolve);}
     public double pred(double val, Equation pEq){ return pred(val, pEq, "x");}
     public static double pred(double val, Equation pEq, String toSolve){
-        return pEq.solve(toSolve, new HashMap<String, Double>(){{put(toSolve,val);}});
+        return pEq.eval(new ArrayList<Expression[]>(){{
+            add(new Expression[]{new Expression(toSolve), new Expression(val)});}},toSolve);
     }
     public Set es(){return resid();}
     public Set resid(){
@@ -80,10 +84,8 @@ public class Set {
     public static Equation linReg(double[] pArr1, double[] pArr2){
         double b1 = r(pArr1, pArr2) * S(pArr2) / S(pArr1);
         double b0 = avg(pArr2) - b1 * avg(pArr1);
-        return new Equation("yhat = b0 + b1 * y", new Factors(new HashMap<String, Double>(){{
-                    put("b0", b0);
-                    put("b1", b1);
-                }}));
+        return new Equation("yhat = b0 + b1 * y", Equation.genExprs("b0", b0, "b1", b1));
+
     }
 
     public double r(){ return r(arr1, arr2); }

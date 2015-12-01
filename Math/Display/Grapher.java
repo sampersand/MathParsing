@@ -29,7 +29,7 @@ public class Grapher extends JPanel{
     private JLayeredPane layeredPane;
 
     private ArrayList<Set> sets;
-    private ArrayList<Equation> equations;
+    private Equation equation;
     private GraphComponents components;
     private ArrayList<DisplayComponent> displays;
 
@@ -42,20 +42,20 @@ public class Grapher extends JPanel{
     }
 
     public Grapher(Equation pEquation){
-        this(new ArrayList<Equation>(){{add(pEquation);}}, null);
+        this(pEquation, null);
     }
 
     public Grapher(GraphComponents pComponents){
         this(null, null, pComponents);
     }
 
-    public Grapher(ArrayList<Equation> pEquations, ArrayList<Set> pSets) {
-        this(pEquations, pSets, new GraphComponents());
+    public Grapher(Equation pEquation, ArrayList<Set> pSets) {
+        this(pEquation, pSets, new GraphComponents());
     }
 
-    public Grapher(ArrayList<Equation> pEquations, ArrayList<Set> pSets, GraphComponents pComponents){
+    public Grapher(Equation pEquation, ArrayList<Set> pSets, GraphComponents pComponents){
         // pComponents = GraphComponents.TRIG;
-        equations = pEquations;
+        equation = pEquation;
         sets = pSets;
         components = pComponents;
         // pComponents.setDispBounds(5, 20, components.winBounds()[0], components.winBounds()[1] + 10);
@@ -63,8 +63,8 @@ public class Grapher extends JPanel{
         displays = new ArrayList<DisplayComponent>();
         displays.add(new DisplayComponent(this)); //adds axis
         Color[] colors = new Color[]{Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW};
-        for(int i = 0; i < equations.size(); i++)
-            displays.add(new DisplayComponent(this, equations.get(i), colors[i%colors.length]));
+        for(int i = 0; i < equation.size(); i++)
+            displays.add(new DisplayComponent(this, equation.get(i), colors[i%colors.length]));
         for(int i = 0; i < sets.size(); i++)
             displays.add(new DisplayComponent(this, sets.get(i), colors[i%colors.length]));
         graphSetup();
@@ -102,15 +102,15 @@ public class Grapher extends JPanel{
     public void graph() {
         //Create and set up the window.
         String title = "Graph of ";
-        if(equations.size() + sets.size() > 5){
+        if(equation.size() + sets.size() > 5){
             title += "A lot of stuff";
-        } else if(equations.size() + sets.size() == 0){
+        } else if(equation.size() + sets.size() == 0){
             title += "Nothing...? Lol why graph that.";
-        } else if(equations.size() + sets.size() == 1){
-            title += equations.size() == 1 ? equations.get(0).equation : sets.get(0);
+        } else if(equation.size() + sets.size() == 1){
+            title += equation.size() == 1 ? equation.getStr(0) : sets.get(0);
         } else {
-            for(int i = 0; i < equations.size(); i++){ // for each loop will crash if equation's size is 0.
-                title += equations.get(i) + ", ";
+            for(int i = 0; i < equation.size(); i++){ // for each loop will crash if equation's size is 0.
+                title += equation.get(i) + ", ";
             }
             for(int i =0; i < sets.size(); i++){
                  title += sets.get(i) + ", ";   
@@ -131,18 +131,18 @@ public class Grapher extends JPanel{
 
 
     public ArrayList<Set> sets(){ return sets; }
-    public ArrayList<Equation> equations(){ return equations; }
+    public Equation equation(){ return equation; }
     public GraphComponents components(){ return components; }
 
     public String toString(){
         String ret = "Graph of ";
-        if(sets == null && equations == null || (sets.size() == 0 && equations.size() == 0)){
+        if(sets == null && equation == null || (sets.size() == 0 && equation.size() == 0)){
             return "Empty Graph"; 
-        } else if(equations.size() + sets.size() == 1){
-            return ret + (equations.size() == 1 ? equations.get(0).equation : sets.get(0));
+        } else if(equation.size() + sets.size() == 1){
+            return ret + (equation.size() == 1 ? equation.getStr(0) : sets.get(0));
         } else {
-            for(int i = 0; i < equations.size(); i++){ // for each loop will crash if equation's size is 0.
-                ret += equations.get(i) + ", ";
+            for(int i = 0; i < equation.size(); i++){ // for each loop will crash if equation's size is 0.
+                ret += equation.get(i) + ", ";
             }
             for(int i =0; i < sets.size(); i++){
                  ret += sets.get(i) + ", ";   

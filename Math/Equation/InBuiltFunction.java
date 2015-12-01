@@ -14,19 +14,12 @@ public class InBuiltFunction extends Function {
     public InBuiltFunction(String pVal){
         super(pVal);
     }
-    public static double exec(String fName, Factors pFactors, Node pNode) throws NotDefinedException{
-        return new InBuiltFunction(fName).exec(pFactors, pNode);
+    public static double exec(String fName, Equation pEq, Node pNode) throws NotDefinedException{
+        return new InBuiltFunction(fName).exec(pEq, pNode);
     }
     @Override
-    public double exec(Factors pFactors, Node pNode) throws NotDefinedException, InvalidArgsException {
-        double[] args = new double[pNode.size()];
-        for(int i = 0; i < args.length; i++){
-            if(pNode.get(i).type() == Types.ARGS){
-                throw new NotDefinedException("Inbuilt functions cannot take nodes of type ARGS (" + pNode.get(i) +
-                                              ").");
-            }
-            args[i] = pFactors.eval(pNode.get(i));
-        };
+    public double exec(Equation pEq, Node pNode) throws NotDefinedException, InvalidArgsException {
+        double[] args = evalNode(pEq, pNode);
         switch(fName) {
             case "sin":
                 return Math.sin(args[0]);

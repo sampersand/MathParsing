@@ -39,6 +39,21 @@ public abstract class Function {
      * code is wayyy too hard.
      */
     public abstract String toString();
+
+    /**
+     * This thing takes a node (usually the node from {@link #exec(Factors,Node) exec}), and returns an array of the 
+     * numerical values of each subnode.
+     * @param pFactors          The factors that will be used when evaluating pNode.
+     * @param pNode             The node to be evaluated.
+     * @return An array of doubles, with each position corresponding to the value of each Node of that position in 
+     *         {@link Node#subNodes pNode's subNodes}.
+     */
+    protected double[] evalNode(Equation pEq, Node pNode){
+        double[] ret = new double[pNode.size()];
+        for(int i = 0; i < ret.length; i++) ret[i] = pEq.eval(pNode.subNodes.get(i));
+        return ret;
+
+    }
     /**
      * Takes the different parameter nodes, does whatever operations it was programmed to do, and spits a result back.
      * @param pFactors      A factor class that contains all relevant information about variables / functions.
@@ -48,5 +63,5 @@ public abstract class Function {
      * @throws NotDefinedException    Thrown when the function is defined, but how to execute it isn't.
      * @throws InvalidArgsException    Thrown when the function required parameters, and the ones passed aren't right.
      */
-    public abstract double exec(Factors pFactors, Node pNode) throws NotDefinedException, InvalidArgsException;
+    public abstract double exec(Equation pEq, Node pNode) throws NotDefinedException, InvalidArgsException;
 }
