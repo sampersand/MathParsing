@@ -1,11 +1,9 @@
 package Math.Equation;
 
 import Math.Print;
-import Math.Equation.Equation;
 import Math.Exception.NotDefinedException;
 import Math.Exception.InvalidArgsException;
 import Math.Equation.Token.Types;
-
 import java.util.HashMap;
 import java.util.Random;
 
@@ -16,12 +14,19 @@ public class InBuiltFunction extends Function {
     public InBuiltFunction(String pVal){
         super(pVal);
     }
-    public static double exec(String fName, Equation eq, Node pNode) throws NotDefinedException{
-        return new InBuiltFunction(fName).exec(eq, pNode);
+    public static double exec(String fName, Factors pFactors, Node pNode) throws NotDefinedException{
+        return new InBuiltFunction(fName).exec(pFactors, pNode);
     }
     @Override
-    public double exec(Equation eq, Node pNode) throws NotDefinedException, InvalidArgsException {
-        double[] args = evalNodes(eq, pNode);
+    public double exec(Factors pFactors, Node pNode) throws NotDefinedException, InvalidArgsException {
+        double[] args = new double[pNode.size()];
+        for(int i = 0; i < args.length; i++){
+            if(pNode.get(i).type() == Types.ARGS){
+                throw new NotDefinedException("Inbuilt functions cannot take nodes of type ARGS (" + pNode.get(i) +
+                                              ").");
+            }
+            args[i] = pFactors.eval(pNode.get(i));
+        };
         switch(fName) {
             case "sin":
                 return Math.sin(args[0]);

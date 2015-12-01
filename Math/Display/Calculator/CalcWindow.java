@@ -2,7 +2,7 @@ package Math.Display.Calculator;
 import Math.Print;
 import Math.Equation.Equation;
 import Math.Equation.CustomFunction;
-//import Math.Equation.Factors;
+import Math.Equation.Factors;
 import Math.Exception.InvalidArgsException;
 
 import java.awt.BorderLayout;

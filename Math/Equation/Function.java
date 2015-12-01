@@ -1,6 +1,5 @@
 package Math.Equation;
 
-import Math.Equation.Equation;
 import Math.Exception.NotDefinedException;
 import Math.Exception.InvalidArgsException;
 
@@ -34,21 +33,7 @@ public abstract class Function {
     public Function(String pName) {
         fName = pName;
     }
-    /**
-     * This thing takes a node (usually the node from {@link #exec(Factors,Node) exec}), and returns an array of the 
-     * numerical values of each subnode.
-     * @param pFactors          The factors that will be used when evaluating pNode.
-     * @param pNode             The node to be evaluated.
-     * @return An array of doubles, with each position corresponding to the value of each Node of that position in 
-     *         {@link Node#subNodes pNode's subNodes}.
-     */
-    protected double[] evalNodes(Equation eq, Node pNode){
-        double[] ret = new double[pNode.size()];
-        for(int i = 0; i < ret.length; i++)
-            ret[i] = eq.eval(pNode.subNodes.get(i));
-        return ret;
 
-    }
     /**
      * Gets a String representation of the function. In reality, just returns its name, because a String repr of the 
      * code is wayyy too hard.
@@ -63,5 +48,5 @@ public abstract class Function {
      * @throws NotDefinedException    Thrown when the function is defined, but how to execute it isn't.
      * @throws InvalidArgsException    Thrown when the function required parameters, and the ones passed aren't right.
      */
-    public abstract double exec(Equation eq, Node pNode) throws NotDefinedException, InvalidArgsException;
+    public abstract double exec(Factors pFactors, Node pNode) throws NotDefinedException, InvalidArgsException;
 }
