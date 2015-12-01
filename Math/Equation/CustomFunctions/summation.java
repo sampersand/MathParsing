@@ -1,7 +1,7 @@
 package Math.Equation.CustomFunctions;
 
 import Math.Equation.Function;
-import Math.Equation.Factors;
+import Math.Equation.Equation;
 import Math.Equation.Node;
 import Math.Equation.CustomFunction;
 
@@ -26,8 +26,8 @@ public class summation extends CustomFunction{
      * @return The summation of the numbers defined by pNode.
      */
     @Override
-    public double exec(Factors pFactors, Node pNode) throws NotDefinedException, InvalidArgsException {
-        double[] vals = evalNode(pFactors, pNode);
+    public double exec(Equation eq, Node pNode) throws NotDefinedException, InvalidArgsException {
+        double[] vals = evalNodes(eq, pNode);
         if(vals.length == 0 || vals.length > 3)
             throw new InvalidArgsException("ERROR when parsing summation. Syntax: " + syntax());
         if(vals.length == 1) { vals = new double[]{0,vals[0],1};}

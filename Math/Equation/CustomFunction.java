@@ -6,7 +6,7 @@ import Math.Exception.DoesntExistException;
 import Math.Equation.CustomFunctions.*;
 
 import Math.Equation.Function;
-import Math.Equation.Factors;
+import Math.Equation.Equation;
 import Math.Equation.Node;
 import Math.Equation.CustomFunction;
 
@@ -72,28 +72,14 @@ public class CustomFunction extends Function {
         return null;
 
     }
-    /**
-     * This thing takes a node (usually the node from {@link #exec(Factors,Node) exec}), and returns an array of the 
-     * numerical values of each subnode.
-     * @param pFactors          The factors that will be used when evaluating pNode.
-     * @param pNode             The node to be evaluated.
-     * @return An array of doubles, with each position corresponding to the value of each Node of that position in 
-     *         {@link Node#subNodes pNode's subNodes}.
-     */
-    protected double[] evalNode(Factors pFactors, Node pNode){
-        double[] ret = new double[pNode.size()];
-        for(int i = 0; i < ret.length; i++) ret[i] = pFactors.eval(pNode.subNodes.get(i));
-        return ret;
-
-    }
     /** this is kinda hacked together l0l */
     @Override
     @SuppressWarnings("unchecked") //stupid cl.getDeclaredMethod
-    public double exec(Factors pFactors, Node pNode) throws NotDefinedException, InvalidArgsException {
+    public double exec(Equation eq, Node pNode) throws NotDefinedException, InvalidArgsException {
         try{
-            Class[] argTypes = {Factors.class, Node.class};
+            Class[] argTypes = {Equation.class, Node.class};
             Method execMethod = cl.getDeclaredMethod("exec",argTypes);
-            Object[] argListForInvokedExec = new Object[]{pFactors, pNode};
+            Object[] argListForInvokedExec = new Object[]{eq, pNode};
             return (double)execMethod.invoke(cl.newInstance(), argListForInvokedExec);
         } catch (NoSuchMethodException err) {
             Print.printe("A NoSuchMethodException happened when attempting to execute a " +

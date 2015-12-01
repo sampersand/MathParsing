@@ -1,12 +1,12 @@
 package Math.Set;
 import Math.Print;
 import Math.Equation.Equation;
-import Math.Equation.Factors;
+import Math.Equation.Expression;
 import Math.Display.Grapher;
 import Math.Exception.InvalidArgsException;
 
 import java.util.HashMap;
-
+import java.util.ArrayList;
 public class Set {
     // public static final double e = Math.E;
     public double[] arr1; //when used for graphing, this is the x axis
@@ -28,7 +28,7 @@ public class Set {
         equation = eq;
     }
     public Set(Equation eq){
-        this(eq, -10, 10, 25);
+        this(eq, -10, 10, 50);
     }
     public Set(Equation eq, double min, double max, double cStep){
         if(min >= max){
@@ -52,12 +52,14 @@ public class Set {
 
     }
 
-    public double pred(double val){return pred(val, linReg());}
+    public double pred(double val){return pred(val, equation);}
     public double pred(double val, double[] pArr1, double[] pArr2){return pred(val, linReg(pArr1, pArr2));}
-    public double pred(double val, String toSolve){ return pred(val, linReg(), toSolve);}
+    public double pred(double val, String toSolve){ return pred(val, equation, toSolve);}
     public double pred(double val, Equation pEq){ return pred(val, pEq, "x");}
     public static double pred(double val, Equation pEq, String toSolve){
-        return pEq.solve(toSolve, new HashMap<String, Double>(){{put(toSolve,val);}});
+        return pEq.solve(toSolve, new ArrayList<Expression[]>(){{
+            add(new Expression[]{new Expression(toSolve), new Expression("" + val)});
+        }});
     }
     public Set es(){return resid();}
     public Set resid(){
@@ -72,7 +74,7 @@ public class Set {
 
     public Equation quadReg(){return quadReg(arr1, arr2); }
     public static Equation quadReg(double[] pArr1, double[] pArr2){
-        Equation eq = new Equation();
+        Equation eq = new Equation("");
         return eq;
     }
 

@@ -133,7 +133,7 @@ public class Node {
                         e.setD(depth - 1, n); //depth is a final node.
                         break;
                     }
-                    else if(n.token.priority() < nD.token.priority()){
+                    else if(n.token.priority() <= nD.token.priority()){ //i added an "=" here to try and fix 5/3*sinx
                         n.add(nD);
                         n.add(completeNodes(pNode.get(i + 1)));
                         i++;

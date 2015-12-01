@@ -5,7 +5,6 @@ import Math.Exception.InvalidArgsException;
 
 import Math.Equation.Equation;
 import Math.Equation.Function;
-import Math.Equation.Factors;
 import Math.Equation.Node;
 import Math.Equation.CustomFunction;
 import Math.Equation.Token.Types;
@@ -22,7 +21,6 @@ public class graph extends CustomFunction{
     private ArrayList<Set> sets;
     private GraphComponents gcomp;
     private Node node;
-    private Factors factors;
 
     public static String help(){
         return "Graphs any combination of sets and / or functions";
@@ -37,7 +35,7 @@ public class graph extends CustomFunction{
     }
 
     @Override
-    public double exec(Factors pFactors, Node pNode) throws NotDefinedException, InvalidArgsException {
+    public double exec(Equation eq, Node pNode) throws NotDefinedException, InvalidArgsException {
         if(pNode.size() == 0)
             throw new InvalidArgsException("the size has to be greater than 1!");
         for(Node n : pNode.subNodes){
@@ -49,17 +47,16 @@ public class graph extends CustomFunction{
         sets = new ArrayList<Set>();
         gcomp = new GraphComponents();
         node = pNode;
-        factors = pFactors;
 
         for(Node n : node.subNodes){
             String id = n.token.VAL.replaceAll("^(.*):.*","$1");
             String[] vals = n.token.VAL.replaceAll("^" + id + ":","").replaceAll(" ","").split(",");
             switch(id){
                 case "eq": case "":
-                    equations.add(new Equation(vals[0], factors));
+                    equations.add(new Equation(vals[0], eq));
                     break;
                 case "eqandset": //make sure to put these in front l0l
-                    equations.add(new Equation(vals[0], factors));
+                    equations.add(new Equation(vals[0], eq));
                 case "eqtoset":
                     sets.add(varsToSet(vals));
                     break;
@@ -67,7 +64,7 @@ public class graph extends CustomFunction{
                     sets.add(getSet(vals));
                     break;
                 case "eqandresid":
-                    equations.add(new Equation(vals[0], factors));
+                    equations.add(new Equation(vals[0], eq));
                 case "eqtoresid":
                     sets.add(varsToSet(vals).resid());
                     break;
@@ -102,7 +99,7 @@ public class graph extends CustomFunction{
         } catch (NumberFormatException err){
             throw new InvalidArgsException("One of the args for eqset (not the equation) isn't a double!");
         }
-        return new Set(new Equation(vals[0], factors), min, max, cStep);
+        return new Set(new Equation(vals[0], eq), min, max, cStep);
     }
     private Set getSet(String[] vals){
         double[] arr1, arr2;

@@ -93,7 +93,9 @@ public class Token {
          */
         ARGS
         ,
-        /** This type given to the master node. */
+        /**
+         * This type given to the master node.
+         */
         UNI
     }
 
