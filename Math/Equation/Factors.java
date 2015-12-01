@@ -66,6 +66,15 @@ public class Factors {
      * @return A double representing the value of pNode when evaluated with "vars", "funcs", and pVars.
      * @throws NotDefinedException      Thrown if either a variable or a function wans't defined.
      */
+    public static double eval(Equation pEq, Node pNode, ArrayList<Expression[]> pExprs, String toSolve)
+                              throws NotDefinedException {
+        HashMap<String, Double> vars = new HashMap<String, Double>():
+        for(Expression[] exprs : pExprs){
+            for(Expression expr: exprs){
+                
+            }
+        }
+    }
     public static double eval(Node pNode, HashMap<String, Double> pVars) throws NotDefinedException {
         if (pNode instanceof FinalNode) {
             FinalNode fNode = (FinalNode)pNode;
