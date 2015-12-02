@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Equation {
-
     public HashMap<String, CustomFunction> functions;
     public ArrayList<Expression[]> expressions;
 
