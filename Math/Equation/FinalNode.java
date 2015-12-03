@@ -1,7 +1,11 @@
 package Math.Equation;
+
+import Math.MathObject;
 import Math.Print;
+
 import Math.Exception.TypeMisMatchException;
 import Math.Exception.NotDefinedException;
+
 /**
  * A node that represents either a variable or a constant.
  * Note: This class doesn't interact with {@link Node#subNodes()}, and consequently, <code>this.size()</code> will
@@ -9,7 +13,7 @@ import Math.Exception.NotDefinedException;
  * @author Sam Westerman
  * @version 0.1
  */
-public class FinalNode extends Node {
+public class FinalNode extends Node implements MathObject{
 
     /** The String representation of this. Only used if FinalNode is representing a variable. */
     private String sVal;
@@ -48,28 +52,6 @@ public class FinalNode extends Node {
 
     public String sVal(){return sVal;}
     public double dVal(){return dVal;}
-    @Override
-    public String toFullString() {
-        String ret = "[";
-        ret += token.type() == Token.Type.NUM ? dVal : "\"" + sVal + "\"";
-        ret += ": " + token.type();
-        return ret + "]";
-
-    }
-
-    @Override
-    public String toString() {
-        return "[" + (token.type() == Token.Type.NUM ? dVal : sVal) + "]";
-    }
-
-    /** 
-     * Just returns the {@link #toString} of this object. Mainly used for indentations.
-     * @see   Node#toStringL
-     */
-    @Override
-    public String toStringL(int pos){
-        return "" + this;
-    }
 
     @Override
     public double eval(EquationSystem pEqSys) throws NotDefinedException {
@@ -102,4 +84,30 @@ public class FinalNode extends Node {
                                             "' isn't a NUM, VAR, OR ARGS!");
         }
     }
+    @Override
+    public String toFullString() {
+        String ret = "[";
+        ret += token.type() == Token.Type.NUM ? dVal : "\"" + sVal + "\"";
+        ret += ": " + token.type();
+        return ret + "]";
+
+    }
+
+    @Override
+    public String toString() {
+        return "[" + (token.type() == Token.Type.NUM ? dVal : sVal) + "]";
+    }
+    @Override
+    public String toFancyString(){
+        throw new NotDefinedException("define me!");
+    }
+    /** 
+     * Just returns the {@link #toString} of this object. Mainly used for indentations.
+     * @see   Node#toStringL
+     */
+    @Override
+    public String toStringL(int pos){
+        return "" + this;
+    }
+
 }

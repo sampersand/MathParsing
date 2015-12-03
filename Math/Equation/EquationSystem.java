@@ -1,16 +1,16 @@
 package Math.Equation;
+
+import Math.MathObject;
 import Math.Print;
 
 import Math.Exception.TypeMisMatchException;
 import Math.Exception.NotDefinedException;
 import Math.Exception.InvalidArgsException;
 
-// import Math.Set.Set;
-// import Math.Display.Grapher;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class EquationSystem {
+public class EquationSystem implements MathObject{
     private ArrayList<Equation> equations;
     private HashMap<String, CustomFunction> functions;
 
@@ -129,7 +129,39 @@ public class EquationSystem {
         // Grapher grapher = new Grapher(this);
         // grapher.graph();
     }
+    public EquationSystem copy(){
+        return new EquationSystem(equations, functions);
+    }
+    public int size(){
+        return equations.size();
+    }
+    public String toStr(){
+        return toString();
+    }
 
+    @Override
+    public String toString(){
+        String ret = "EquationSystem: Equations: (";
+        if(equations == null){
+            ret += "null";
+        } else {
+            for(Equation eq : equations){
+                ret += "'" + eq + "', ";
+            }
+        }
+        ret = ret.substring(0, ret.length() - (equations.size() == 0 ? 0 : 2));
+        ret += "), Functions: (";
+        if(functions == null){
+            ret += "null";
+        } else {
+            for(String fName : functions.keySet()){
+                ret += "'" + fName + ":" + functions.get(fName) + "', ";
+            }
+        }
+        return ret.substring(0, ret.length() - (functions.size() == 0 ? 0 : 2)) + ")";
+    }
+
+    @Override
     public String toFancyString(){
         String ret = "+-----=[EquationSystem]=------\n|";
         if(equations == null){
@@ -160,35 +192,8 @@ public class EquationSystem {
         return ret;
     }
 
-    public EquationSystem copy(){
-        return new EquationSystem(equations, functions);
+    @Override
+    public String toFullString(){
+        throw new NotDefinedException("define me!");
     }
-    public int size(){
-        return equations.size();
-    }
-    public String toStr(){
-        return toString();
-    }
-    public String toString(){
-        String ret = "EquationSystem: Equations: (";
-        if(equations == null){
-            ret += "null";
-        } else {
-            for(Equation eq : equations){
-                ret += "'" + eq + "', ";
-            }
-        }
-        ret = ret.substring(0, ret.length() - (equations.size() == 0 ? 0 : 2));
-        ret += "), Functions: (";
-        if(functions == null){
-            ret += "null";
-        } else {
-            for(String fName : functions.keySet()){
-                ret += "'" + fName + ":" + functions.get(fName) + "', ";
-            }
-        }
-        return ret.substring(0, ret.length() - (functions.size() == 0 ? 0 : 2)) + ")";
-    }
-
 }
-

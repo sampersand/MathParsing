@@ -1,9 +1,16 @@
 package Math.Equation;
-import Math.Exception.*;
+
+import Math.MathObject;
+
 import Math.Equation.CustomFunction;
 import Math.Equation.Expression;
+
+import Math.Exception.NotDefinedException;
+import Math.Exception.InvalidArgsException;
+
 import java.util.ArrayList;
-public class Equation{
+
+public class Equation implements MathObject{
     private ArrayList<Expression> expressions;
     public Equation(){
         expressions = new ArrayList<Expression>();
@@ -45,7 +52,7 @@ public class Equation{
         }
         return ret.substring(0, ret.length() - 3);
     }
-
+    @Override
     public String toString(){
         if(expressions == null)
             return "Null Expressions";
@@ -57,5 +64,10 @@ public class Equation{
             ret += expr + " = ";
         }
         return ret.substring(0, ret.length() - 3);
+    }
+
+    @Override
+    public String toFullString(){
+        throw new NotDefinedException("define me!");
     }
 }

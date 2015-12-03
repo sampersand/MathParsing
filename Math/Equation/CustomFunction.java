@@ -1,27 +1,33 @@
 package Math.Equation;
+
+import Math.MathObject;
 import Math.Print;
-import Math.Exception.NotDefinedException;
-import Math.Exception.InvalidArgsException;
-import Math.Exception.DoesntExistException;
-import Math.Equation.CustomFunctions.*;
 
 import Math.Equation.Function;
 import Math.Equation.Node;
 import Math.Equation.CustomFunction;
+
+import Math.Equation.CustomFunctions.*;
+
+import Math.Exception.NotDefinedException;
+import Math.Exception.InvalidArgsException;
+import Math.Exception.DoesntExistException;
 
 import java.lang.reflect.*;
 
 /** 
  * Note: all user-defined functions (as opposed to pre-defined) must inherit from this class.
  */
-public class CustomFunction extends Function {
+public class CustomFunction extends Function implements MathObject{
     public Class cl;
 
-    @Override    
     public CustomFunction(){
         this(null, null, null);
     }
-    @Override
+    public CustomFunction(String pVal){
+        this(pVal, null, null);
+    }
+
     public CustomFunction(String pVal, String pHelp, String pSyntax){
         super(pVal, pHelp, pSyntax);
         try {
@@ -44,6 +50,13 @@ public class CustomFunction extends Function {
     public String getSyntax() {
         return (String) getFunc("syntax");
     }
+
+    // public static String help() {
+    //     throw new NotDefinedException("Implement me for your custom method!");
+    // }
+    // public static String syntax() {
+    //     throw new NotDefinedException("Implement me for your custom method!");
+    // }
 
     private Object getFunc(String pName){
         try{
@@ -98,8 +111,19 @@ public class CustomFunction extends Function {
             err.getCause().printStackTrace();
         } return 0;
     }
+    @Override
     public String toString(){
-            return "CustomFunction '" + fName + "'.";
+        return "CustomFunction: '" + fName + "'";
+    }
+
+    @Override
+    public String toFancyString(){
+        throw new NotDefinedException("define me!");
+    }
+    
+    @Override
+    public String toFullString(){
+        throw new NotDefinedException("define me!");
     }
 
 }

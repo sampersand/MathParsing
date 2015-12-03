@@ -1,5 +1,7 @@
 package Math.Equation;
 
+import Math.MathObject;
+
 import Math.Exception.NotDefinedException;
 import Math.Exception.InvalidArgsException;
 
@@ -11,7 +13,7 @@ import Math.Exception.InvalidArgsException;
  * @author Sam Westerman
  * @version 0.1
  */
-public abstract class Function {
+public abstract class Function implements MathObject{
 
     /**
      * A String that holds either the function name ({@link InBuiltFunction}) or the file name ({@link CustomFunction}).
@@ -36,13 +38,13 @@ public abstract class Function {
     public Function(String pName, String pHelp, String pSyntax) {
         fName = pName;
         help = pHelp;
-        syntax = pSyntax
+        syntax = pSyntax;
     }
 
-    public final String help() {
+    public String help() {
         return help;
     }
-    public final String syntax() {
+    public String syntax() {
         return syntax;
 
         /*

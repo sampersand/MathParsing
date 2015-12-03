@@ -1,17 +1,21 @@
- package Math.Equation;
+package Math.Equation;
+
+import Math.MathObject;
 import Math.Print;
 
 import Math.Exception.TypeMisMatchException;
 import Math.Exception.NotDefinedException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+
 /**
  * A class that models an expression, and its behaviour.
  * @author Sam Westerman
  * @version 0.2
  */
 
-public class Expression {
+public class Expression implements MathObject{
 
     /** The raw expression. */
     public String expression;
@@ -257,6 +261,7 @@ public class Expression {
      * {@link #node}.
      * @return A String representation of this expression. 
      */
+    @Override
     public String toFullString(){
         return "--Expression--\n--RawEq--\n" + expression + "\n--Nodes--\n" + node.toStringL(1);
     }
@@ -269,16 +274,16 @@ public class Expression {
                expression.length() == 0 ? "Empty Expression" : 
                 "Expression: " + toString() + "; Nodes" + node.toStringL(1);
     }
+    @Override
     public String toFancyString(){
         return expression == null ? "Null Expression" : 
                expression.length() == 0 ? "Empty Expression" : 
                toString();
     }
-
+    @Override
     public String toString(){
         return expression == null ? "Null Expression" : 
                expression.length() == 0 ? "Empty Expression" : 
                expression.replaceAll("(\\+|\\-|\\*|/|\\^|,)", " $1 ");
     }
-
 }

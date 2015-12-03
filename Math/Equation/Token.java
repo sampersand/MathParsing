@@ -1,5 +1,9 @@
 package Math.Equation;
+
+import Math.MathObject;
+
 import Math.Exception.NotDefinedException;
+
 import java.util.HashMap;
 /**
  * A single item from an equation String.
@@ -7,7 +11,7 @@ import java.util.HashMap;
  * @author Sam Westerman
  * @version 0.1
  */
-public class Token {
+public class Token implements MathObject{
     /** The String that this class is based upon. */
     private String val;
 
@@ -195,7 +199,18 @@ public class Token {
      * A String representation of a Token. 
      * @return A String representation corresponding to the val and the type of the Token.
      */
+    @Override
     public String toString() {
         return "('" + val + "': " + type + ")";
+    }
+
+    @Override
+    public String toFancyString(){
+        throw new NotDefinedException("define me!");
+    }
+
+    @Override
+    public String toFullString(){
+        throw new NotDefinedException("define me!");
     }
 }

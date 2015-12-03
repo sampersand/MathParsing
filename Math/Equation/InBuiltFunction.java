@@ -1,9 +1,13 @@
 package Math.Equation;
 
+import Math.MathObject;
 import Math.Print;
+
+import Math.Equation.Token.Type;
+
 import Math.Exception.NotDefinedException;
 import Math.Exception.InvalidArgsException;
-import Math.Equation.Token.Type;
+
 import java.util.HashMap;
 import java.util.Random;
 
@@ -12,18 +16,12 @@ public class InBuiltFunction extends Function {
         ;
     }};
 
-    @Override
     public InBuiltFunction(){
         this(null, null, null);
     }
 
-    @Override
     public InBuiltFunction(String pVal, String pHelp, String pSyntax){
         super(pVal, pHelp, pSyntax);
-    }
-    @Override
-    public String toFancyString(){
-        return "F";
     }
 
     public static double exec(String fName, EquationSystem pEq, Node pNode) throws NotDefinedException{
@@ -125,7 +123,19 @@ public class InBuiltFunction extends Function {
             }
         }
     }
+    @Override
     public String toString(){
         return "InBuiltFunction: '" + fName + "'";
     }
+
+    @Override
+    public String toFancyString(){
+        throw new NotDefinedException("define me!");
+    }
+
+    @Override
+    public String toFullString(){
+        throw new NotDefinedException("define me!");
+    }
+
 }

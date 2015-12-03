@@ -1,18 +1,24 @@
 package Math.Equation;
+
+import Math.MathObject;
 import Math.Print;
+
 import Math.Equation.Equation;
 import Math.Equation.EquationSystem;
+import static Math.Equation.Token.Type.*;
+
 import Math.Exception.TypeMisMatchException;
 import Math.Exception.DoesntExistException;
 import Math.Exception.NotDefinedException;
-import static Math.Equation.Token.Type.*;
+
 import java.util.ArrayList;
+
 /**
  * A class that represents either a function, an operator, or a group of tokens.
  * @author Sam Westerman
  * @version 0.1
  */
-public class Node {
+public class Node implements MathObject{
 
     /** A list of all nodes that are benith this one in the hierarchical structure. */
     protected ArrayList<Node> subNodes;
@@ -429,7 +435,8 @@ public class Node {
     /**
      * The more robust version of this class's {@link #toString()}, but without the indentation.
      * @return A more detailed String representation of this.
-     */    
+     */
+    @Override
     public String toFullString() {
         String ret = "{\"" + token.val() + "\" | " + token.type() + " | ";
         for(Node node : subNodes)
@@ -439,7 +446,8 @@ public class Node {
     /**
      * A simple representation of this class.
      * @return A simple String representation of this.
-     */      
+     */
+    @Override
     public String toString() {
         String ret = '{' + token.val() + ':';
         for(Node node : subNodes){
@@ -526,10 +534,10 @@ public class Node {
         } else {
             throw new NotDefinedException("Node: '" + this.token().val() + "' has no known way to evaluate it");
         }
-        throw new NotDefinedException("uh idek what to do lol ");
+    }
+    @Override
+    public String toFancyString(){
+        throw new NotDefinedException("define me!");
     }
 
 }
-
-
-
