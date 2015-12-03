@@ -16,11 +16,14 @@ import java.lang.reflect.*;
  */
 public class CustomFunction extends Function {
     public Class cl;
+
+    @Override    
     public CustomFunction(){
-        this("");
+        this(null, null, null);
     }
-    public CustomFunction(String pVal){
-        super(pVal);
+    @Override
+    public CustomFunction(String pVal, String pHelp, String pSyntax){
+        super(pVal, pHelp, pSyntax);
         try {
             if(pVal.equals("")){
                 Print.printe("Instantiating a CustomFunction without a function associated!");
@@ -40,13 +43,6 @@ public class CustomFunction extends Function {
     }
     public String getSyntax() {
         return (String) getFunc("syntax");
-    }
-
-    public static String help() {
-        throw new NotDefinedException("Implement me for your custom method!");
-    }
-    public static String syntax() {
-        throw new NotDefinedException("Implement me for your custom method!");
     }
 
     private Object getFunc(String pName){
@@ -74,10 +70,10 @@ public class CustomFunction extends Function {
     /** this is kinda hacked together l0l */
     @Override
     @SuppressWarnings("unchecked") //stupid cl.getDeclaredMethod
-    public double exec(Equation pEq, Node pNode) throws NotDefinedException, InvalidArgsException {
+    public double exec(EquationSystem pEq, Node pNode) throws NotDefinedException, InvalidArgsException {
         try{
-            Class[] argTypes = {Equation.class, Node.class};
-            Method execMethod = cl.getDeclaredMethod("exec",argTypes);
+            Class[] argType = {EquationSystem.class, Node.class};
+            Method execMethod = cl.getDeclaredMethod("exec",argType);
             Object[] argListForInvokedExec = new Object[]{pEq, pNode};
             return (double)execMethod.invoke(cl.newInstance(), argListForInvokedExec);
         } catch (NoSuchMethodException err) {

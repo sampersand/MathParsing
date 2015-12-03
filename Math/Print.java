@@ -16,7 +16,7 @@ public class Print {
             ret += objs[i] + " ";
         }
         
-        System.out.print(ret.substring(0, ret.length() - (objs.length == 0 ? 0 : 2)) + append);
+        System.out.print(ret.substring(0, ret.length() - (objs.length == 0 ? 0 : 1)) + append);
     }
 
 }

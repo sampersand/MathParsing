@@ -9,25 +9,25 @@ import java.util.HashMap;
  */
 public class Token {
     /** The String that this class is based upon. */
-    public final String VAL;
+    private String val;
 
     /** The type of token. Used to distinguish between things such as functions, groups, and operators. */
-    public final Types TYPE;
+    private Type type;
 
     /**
-     * The different types of tokens. They are used to determine what to do with the tokens (and, eventually, the
+     * The different Type of tokens. They are used to determine what to do with the tokens (and, eventually, the
      * {@link Node}s they go into.
      */
-    public static enum Types {  //im doing the "," on the next line so as to make Sublime Text 3 not hate me.
+    public static enum Type {  //im doing the "," on the next line so as to make Sublime Text 3 not hate me.
         /**
-         * A left parenthesis. It's VAL is only ever equal to "(". 
+         * A left parenthesis. It's val is only ever equal to "(". 
          * Used when creating {@link Node nodes} to determine what goes inside a {@link #FUNC function} / 
          * {@link #GROUP group}.         
          */
         LPAR
         ,
         /**
-         * A right parenthesis. It's VAL is only ever equal to ")".
+         * A right parenthesis. It's val is only ever equal to ")".
          * Used when creating {@link Node nodes} to determine what goes inside a {@link #FUNC function} / 
          * {@link #GROUP group}.
          */ 
@@ -37,8 +37,8 @@ public class Token {
          * A variable. Distinguished from a function when parsing only because it isn't immediately before "(". 
          * <p> If a {@link Node} is being {@link Factors#eval(Node) evaluated}, and it's {@link Node#token token}
          * is of this type, the {@link Factors} evaluating it will check it's {@link Factors#vars} for a variable with
-         * the same name as {@link #VAL}.
-         * <p> Note: VAL should only contain letters, as anything that isn't alphanumerical, or <code>()+*-/^</code> 
+         * the same name as {@link #val}.
+         * <p> Note: val should only contain letters, as anything that isn't alphanumerical, or <code>()+*-/^</code> 
          * won't be parsed.
          * @see Node
          * @see Factors
@@ -54,8 +54,8 @@ public class Token {
          * A function. Distinguished from a variable when parsing only because it immediately preceeds "(". 
          * <p> If a {@link Node} is being {@link Factors#eval(Node) evaluated}, and it's {@link Node#token token}
          * is of this type, the {@link Factors} evaluating it will check it's {@link Factors#funcs} for a function with
-         * the same name as {@link #VAL}.
-         * <p> Note: VAL should only contain letters, as anything that isn't alphanumerical, or <code>()+*-/^</code> 
+         * the same name as {@link #val}.
+         * <p> Note: val should only contain letters, as anything that isn't alphanumerical, or <code>()+*-/^</code> 
          * won't be parsed.
          * @see Node
          * @see Factors
@@ -97,78 +97,80 @@ public class Token {
         UNI
     }
 
-    public static final Token UNI = new Token("E", Types.UNI);
+    public static final Token UNI = new Token("E", Type.UNI);
     /**
      * Default constructor. Just passes null, null to the main constructor.
      */
     public Token() {
-        this("", Types.NULL);
+        this("", Type.NULL);
     }
     /**
      * The main constructor.
-     * Just sets TYPE to pType, and VAL to PVL. If pType is GROUP, VAL is insteaed set to "GRP".
+     * Just sets type to ptype, and val to PVL. If ptype is GROUP, val is insteaed set to "GRP".
      * @param pVal      The String that this token is based off of.
-     * @param pType     The type of token that this token is.
+     * @param ptype     The type of token that this token is.
      */
-    public Token(String pVal, Types pType) {
-        if(pType == Types.GROUP) {
-            VAL = "GRP";
+    public Token(String pVal, Type ptype) {
+        if(ptype == Type.GROUP) {
+            val = "GRP";
         } else {
-            VAL = pVal;
+            val = pVal;
         }
-        TYPE = pType;
+        type = ptype;
     }
 
     /**
-     * An alternate constructor. This just passes pVal as a String and pType to the main constructor.
+     * An alternate constructor. This just passes pVal as a String and ptype to the main constructor.
      * @param pVal    The character that this tokenis based off of.
-     * @param pType     The type of token that this token is.
+     * @param ptype     The type of token that this token is.
      */
-    public Token(char pVal, Types pType) {
-        this("" + pVal, pType);
+    public Token(char pVal, Type ptype) {
+        this("" + pVal, ptype);
     }
 
+    public Type type(){return type;}
+    public String val(){return val;}
     /**
      * Used to determine if a {@link Node} based on a token should be a {@link FinalNode} or a {@link Node}
      * (in this case, it's the former).
-     * @return True if TYPE is a NUM or VAR or ARGS.
+     * @return True if type is a NUM or VAR or ARGS.
      */
     public boolean isConst() {
-        return TYPE == Types.NUM || TYPE == Types.VAR || TYPE == Types.ARGS;
+        return type == Type.NUM || type == Type.VAR || type == Type.ARGS;
     }
 
     /**
      * Used to determine if a //{@link Node} based on a token should be a {@link FinalNode} or a {@link Node}
-     * (in this case, it's the latter). Also used to distinguish between {@link Token.Types#FUNC functions} / 
-     * {@link Token.Types#GROUP groups} and {@link Token.Types#OPER operators}.
-     * @return True if TYPE is a GROUP or FUNC.
+     * (in this case, it's the latter). Also used to distinguish between {@link Token.Type#FUNC functions} / 
+     * {@link Token.Type#GROUP groups} and {@link Token.Type#OPER operators}.
+     * @return True if type is a GROUP or FUNC.
      */
     public boolean isGroup() {
-        return TYPE == Types.GROUP || TYPE == Types.FUNC;
+        return type == Type.GROUP || type == Type.FUNC;
     }
 
     /**
-     * Used to distinguish between {@link Token.Types#FUNC functions} / 
-     * {@link Token.Types#GROUP groups} and {@link Token.Types#OPER operators}.
-     * @return True if TYPE is a OPER.
+     * Used to distinguish between {@link Token.Type#FUNC functions} / 
+     * {@link Token.Type#GROUP groups} and {@link Token.Type#OPER operators}.
+     * @return True if type is a OPER.
      */    
     public boolean isOper() {
-        return  TYPE == Types.OPER;
+        return  type == Type.OPER;
     }
     /**
      * Used to figure out if a {@link Node node} based off this is the "master node". 
-     * @return True if TYPE == NULL and VAL == "E".
+     * @return True if type == NULL and val == "E".
      */
     public boolean isUni() {
-        return TYPE == Types.UNI && VAL == "E";
+        return type == Type.UNI && val.equals("E");
     }
 
     /**
      * Used to figure out which operators come before others in the "order of operations". Parentheses are handeled
      * seperately.
      * if <code>isUni()</code>, priority is 4.
-     * <p> else if TYPE is FUNC or GROUP, priority is 3.
-     * <p> else if TYPE is OPER: <code>+,- == 0</code>, <code>*,/ == 1</code>,and  <code>^ == 2</code>.
+     * <p> else if type is FUNC or GROUP, priority is 3.
+     * <p> else if type is OPER: <code>+,- == 0</code>, <code>*,/ == 1</code>,and  <code>^ == 2</code>.
      * <p> else priority is -1.
      * @return The priority.
      */
@@ -178,22 +180,22 @@ public class Token {
         if(!isOper()){// && ! isGroup()) {
             return -1;
         }
-        switch(VAL) {
+        switch(val) {
             case "+": return 0;
             case "-": return 0;
             case "*": return 1;
             case "/": return 1;
             case "^": return 2;
             default:
-                throw new NotDefinedException("[ERROR] Operator '" + VAL + "' doesn't have a priority!");
+                throw new NotDefinedException("[ERROR] Operator '" + val + "' doesn't have a priority!");
         }
     }
 
     /**
      * A String representation of a Token. 
-     * @return A String representation corresponding to the VAL and the TYPE of the Token.
+     * @return A String representation corresponding to the val and the type of the Token.
      */
     public String toString() {
-        return "('" + VAL + "': " + TYPE + ")";
+        return "('" + val + "': " + type + ")";
     }
 }

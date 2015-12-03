@@ -1,10 +1,8 @@
-package Math.Equation;
+ package Math.Equation;
 import Math.Print;
 
 import Math.Exception.TypeMisMatchException;
 import Math.Exception.NotDefinedException;
-import Math.Set.Set;
-import Math.Display.Grapher;
 import java.util.ArrayList;
 import java.util.HashMap;
 /**
@@ -14,11 +12,6 @@ import java.util.HashMap;
  */
 
 public class Expression {
-    /**
-     * Note that if this is going to be called from the commandline, the syntax is as follows:
-     * java Expression (-v v1:val v2:val) (-f f1:val f2:val) "expression"
-     * @param args          The arguments to pass. See description of this method for details.
-     */
 
     /** The raw expression. */
     public String expression;
@@ -67,7 +60,7 @@ public class Expression {
      * @param pFactors  The {@link Factors} instance for the expression.
      */ 
     public Expression(String pEq, Node pN){
-        expression = pEq;
+        expression = pEq.trim().replaceAll(" ","");
         node = pN;
     }
 
@@ -125,21 +118,21 @@ public class Expression {
             if(prev.length() > 0 && prev.charAt(0) == '\''){
                 prev += c;
                 if(c == '\''){
-                    tokens.add(new Token(prev.substring(1, prev.length() -1), Token.Types.ARGS));
+                    tokens.add(new Token(prev.substring(1, prev.length() -1), Token.Type.ARGS));
                     prev = "";
                 }
                 continue;
             }
             if(prev.length() > 0 && prev.charAt(0) == '\'' && c == '\''){
                 prev = prev.substring(1);
-                tokens.add(new Token(prev, Token.Types.VAR));
+                tokens.add(new Token(prev, Token.Type.VAR));
                 prev = "";
                 continue;
             }
             if(isAlphaNumPQ(c)) {
                 prev += c;
                 if(x == rEq.length() - 1)
-                    tokens.add(new Token(prev, isNumP(prev) ? Token.Types.NUM : Token.Types.VAR));                    
+                    tokens.add(new Token(prev, isNumP(prev) ? Token.Type.NUM : Token.Type.VAR));                    
                 continue;
             }
             switch(c) {
@@ -148,36 +141,36 @@ public class Expression {
                         throw new TypeMisMatchException("'" + prev + "'isn't alphabetical, but a group / function was" +
                             " attempted to be made because it is succeeded by a '('");
                     } if(prev.length() != 0) {
-                        tokens.add(new Token(prev, Token.Types.FUNC));
+                        tokens.add(new Token(prev, Token.Type.FUNC));
                     } else {
-                        tokens.add(new Token(prev, Token.Types.GROUP));
+                        tokens.add(new Token(prev, Token.Type.GROUP));
                     }
-                    tokens.add(new Token("(",Token.Types.LPAR));
+                    tokens.add(new Token("(",Token.Type.LPAR));
                     break;
                 case ')': 
                     if(prev.length() != 0) {
-                        tokens.add(new Token(prev, isNumP(prev) ? Token.Types.NUM : Token.Types.VAR));
+                        tokens.add(new Token(prev, isNumP(prev) ? Token.Type.NUM : Token.Type.VAR));
                     }
-                    tokens.add(new Token(")",Token.Types.RPAR));
+                    tokens.add(new Token(")",Token.Type.RPAR));
                     break;
                 case '-': case '+': case '*': case '/': case '^':
                     if(prev.length() != 0) {
-                        tokens.add(new Token(prev, isNumP(prev) ? Token.Types.NUM : Token.Types.VAR));
+                        tokens.add(new Token(prev, isNumP(prev) ? Token.Type.NUM : Token.Type.VAR));
                     }
-                    tokens.add(new Token(c, Token.Types.OPER));
+                    tokens.add(new Token(c, Token.Type.OPER));
                     break;
                 case ',':
                     if(prev.length() != 0) {
-                        tokens.add(new Token(prev, isNumP(prev) ? Token.Types.NUM : Token.Types.VAR));
+                        tokens.add(new Token(prev, isNumP(prev) ? Token.Type.NUM : Token.Type.VAR));
                     }
-                    tokens.add(new Token(c, Token.Types.DELIM));
+                    tokens.add(new Token(c, Token.Type.DELIM));
                     break;
 
                 default:
                     if(prev.length() != 0) {
-                        tokens.add(new Token(prev, isNumP(prev) ? Token.Types.NUM : Token.Types.VAR));
+                        tokens.add(new Token(prev, isNumP(prev) ? Token.Type.NUM : Token.Type.VAR));
                     }
-                    tokens.add(new Token(c, Token.Types.NULL));
+                    tokens.add(new Token(c, Token.Type.NULL));
                     break;
 
             }
@@ -271,8 +264,21 @@ public class Expression {
      * Just returns {@link #expression}.
      * @return A basic String representation of this expression.
      */
+    public String toFancyStringN(){
+        return expression == null ? "Null Expression" : 
+               expression.length() == 0 ? "Empty Expression" : 
+                "Expression: " + toString() + "; Nodes" + node.toStringL(1);
+    }
+    public String toFancyString(){
+        return expression == null ? "Null Expression" : 
+               expression.length() == 0 ? "Empty Expression" : 
+               toString();
+    }
+
     public String toString(){
-        return "Expression '" + expression + "'";
+        return expression == null ? "Null Expression" : 
+               expression.length() == 0 ? "Empty Expression" : 
+               expression.replaceAll("(\\+|\\-|\\*|/|\\^|,)", " $1 ");
     }
 
 }

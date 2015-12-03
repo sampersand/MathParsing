@@ -2,14 +2,16 @@ package Math;
 import Math.Exception.*;
 import Math.Equation.*;
 public class Tester {
+
+
     public static void main(String[] args) throws NotDefinedException, TypeMisMatchException {
-        Equation eq = new Equation();
+        EquationSystem eq = new EquationSystem();
         if(args.length == 0){
-            eq.add("x=1+2");
+            eq.add("e=1+2");
         } else {
-            eq = new Equation();
+            eq = new EquationSystem();
             if(args.length == 1){
-                eq = new Equation(args[0]);
+                eq = new EquationSystem().add(new Equation(args[0]));
             } else if(args.length > 1){
                 int i = -1;
                 char type = ' ';
@@ -23,17 +25,17 @@ public class Tester {
                         try{
                             eq.add(args[i].split(":")[0], new CustomFunction(args[i].split(":")[1])); //fix me.
                         } catch(NumberFormatException err){
-                            Print.printw("Syntax: FUNCNAME:FUNCVAL (" + args[i] + ")");
+                            Print.printw("Syntax: FUNCNAME:FUNC.val() (" + args[i] + ")");
                         } catch(ArrayIndexOutOfBoundsException err){
-                            Print.printw("Syntax: FUNCNAME:FUNCVAL (" + args[i] + ")");
+                            Print.printw("Syntax: FUNCNAME:FUNC.val() (" + args[i] + ")");
                         }
                     } else if (type == 'e'){
-                        eq.add(Equation.genExprs(args[i]));
+                        eq.add(EquationSystem.genEq(args[i]));
                     }
                 }
             }
         }
         Print.print(eq);
-        Print.printi("RESULT:",eq.eval("X"));
+        Print.printi("RESULT:", eq.eval("X"));
     }
 }

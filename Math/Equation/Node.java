@@ -1,9 +1,11 @@
 package Math.Equation;
 import Math.Print;
+import Math.Equation.Equation;
+import Math.Equation.EquationSystem;
 import Math.Exception.TypeMisMatchException;
 import Math.Exception.DoesntExistException;
 import Math.Exception.NotDefinedException;
-import static Math.Equation.Token.Types.*;
+import static Math.Equation.Token.Type.*;
 import java.util.ArrayList;
 /**
  * A class that represents either a function, an operator, or a group of tokens.
@@ -13,10 +15,10 @@ import java.util.ArrayList;
 public class Node {
 
     /** A list of all nodes that are benith this one in the hierarchical structure. */
-    public ArrayList<Node> subNodes;
+    protected ArrayList<Node> subNodes;
 
     /** The token that this class determins how this class interacts with its {@link #subNodes}. */
-    public Token token;
+    protected Token token;
 
     /**
      * The default constructor for Node. Just passes an empty Token to the {@link #Node(Token)} constructor. 
@@ -68,6 +70,8 @@ public class Node {
         token = pToken;
     }
 
+    public ArrayList<Node> subNodes(){return subNodes;}
+    public Token token(){return token;}
     /**
      * Condenses functions and groups together into a single node. Creates 1-length nodes for operators and vars / nums.
      * Note that this is only ever used with {@link #fixNodes(Node) fixNodes}, 
@@ -89,8 +93,8 @@ public class Node {
                 int paren = 0;
                 int x = pos + 1;
                 do{
-                    if(pTokens.get(x).TYPE == LPAR) paren++;
-                    if(pTokens.get(x).TYPE == RPAR) paren--;
+                    if(pTokens.get(x).type() == LPAR) paren++;
+                    if(pTokens.get(x).type() == RPAR) paren--;
                     x++;
                 } while(0 < paren && x < pTokens.size());
 
@@ -170,9 +174,10 @@ public class Node {
         int i = 0;
         while(i < pNode.size()){
             Node n = pNode.get(i);
-            if(n.type() == OPER && n.token.VAL.equals("-") && pNode.get(i - 1).type() == OPER &&
-                                   (pNode.get(i - 1).token.VAL.equals("/") || pNode.get(i - 1).token.VAL.equals("*") ||
-                                    pNode.get(i - 1).token.VAL.equals("^"))){
+            if(n.token().type() == OPER && n.token.val().equals("-") && pNode.get(i - 1).token().type() == OPER &&
+                                   (pNode.get(i - 1).token.val().equals("/") ||
+                                    pNode.get(i - 1).token.val().equals("*") ||
+                                    pNode.get(i - 1).token.val().equals("^"))){
                 Node n2 = new Node(new Token("doesnt matter what I put here", GROUP));
                 n2.add(new FinalNode(new Token("0", NUM)));
                 n2.add(n);
@@ -189,7 +194,7 @@ public class Node {
     /**
      * Generates a "master node" from a list of tokens.
      * @param pTokens   The list of tokens that the master node will be based off of.
-     * @return The new master node - usually {@link Equation#node} is set to this.
+     * @return The new master node - usually {@link EquationSystem#node} is set to this.
      */
     public static Node generateNodes(ArrayList<Token> pTokens) {
         return completeNodes(fixNodes((Node)condeseNodes(0, new Node(Token.UNI), pTokens)[1]));
@@ -283,7 +288,7 @@ public class Node {
     public Node getD(int i, boolean pOver) {
         if(this instanceof FinalNode)
             return this;
-        if(i <= 0 || (get(size() - 1).type() == GROUP &&! pOver)){
+        if(i <= 0 || (get(size() - 1).token().type() == GROUP &&! pOver)){
             return this;
         } else {
             return get(size() - 1).getD(i - 1, pOver);
@@ -315,7 +320,7 @@ public class Node {
         if(this instanceof FinalNode) {
             throw new TypeMisMatchException("Can't add subnodes to a FinalNode!");
         }
-        else if(i <= 0 || size() <= 0 || (get(size() - 1).type() == GROUP &&! pOver)) {
+        else if(i <= 0 || size() <= 0 || (get(size() - 1).token().type() == GROUP &&! pOver)) {
             add(n);
         } else {
             if(i == 2 && get(size() - 1) instanceof FinalNode) {
@@ -372,7 +377,7 @@ public class Node {
             if(i == 2 && get(size() - 1) instanceof FinalNode ) {
                 Print.printi("Trying to setD to a FinalNode. Going one level up instead.");
                 set(size() - 1,n);
-            } else if(get(size() - 1).type() == GROUP &&! pOver){
+            } else if(get(size() - 1).token().type() == GROUP &&! pOver){
                 set(p, n);
             } else {
                 get(size() - 1).setD(i - 1, p, n, pOver);
@@ -415,14 +420,6 @@ public class Node {
     }
 
     /** 
-     * Gets this node's type (like group, function, var, etc).
-     * @return This node's type, as defined by {@link #token}.
-     */
-    public Token.Types type(){
-        return token.TYPE;
-    }
-
-    /** 
      * Gets an exact copy of this current node
      * @return An exact duplicate of this node, except for its position in memory.
      */
@@ -434,7 +431,7 @@ public class Node {
      * @return A more detailed String representation of this.
      */    
     public String toFullString() {
-        String ret = "{\"" + token.VAL + "\" | " + type() + " | ";
+        String ret = "{\"" + token.val() + "\" | " + token.type() + " | ";
         for(Node node : subNodes)
             ret += node.toFullString() + ", ";
         return ret.substring(0,ret.length()-2) + "}";
@@ -444,7 +441,7 @@ public class Node {
      * @return A simple String representation of this.
      */      
     public String toString() {
-        String ret = '{' + token.VAL + ':';
+        String ret = '{' + token.val() + ':';
         for(Node node : subNodes){
             ret += node + ", ";
         }
@@ -457,7 +454,7 @@ public class Node {
      * @return A simple String representation of this.
      */
     public String toStringL(int pos){
-        String ret = '{' + token.VAL + ':';
+        String ret = '{' + token.val() + ':';
         for(Node node : subNodes){
             ret += '\n';
             for(int x = 0; x < pos; x++)
@@ -482,26 +479,56 @@ public class Node {
      */
     public String genEqString(){
         String ret = "";
-        switch(type()){
-            case FUNC: ret += token.VAL;
+        switch(token.type()){
+            case FUNC: ret += token.val();
             case GROUP: ret += "("; break;
-            case ARGS: return "'" + token.VAL + "'";
-            case NUM: case VAR: return token.VAL;
+            case ARGS: return "'" + token.val() + "'";
+            case NUM: case VAR: return token.val();
         }
         for(Node n : subNodes){
             ret += n.genEqString();
-            switch(type()){
+            switch(token.type()){
                 case FUNC: case GROUP: ret += ", "; break;
-                case OPER: ret += " " + token.VAL + " ";
+                case OPER: ret += " " + token.val() + " ";
             }
         }
-        if(type() == FUNC || type() == GROUP){
+        if(token.type() == FUNC || token.type() == GROUP){
             return ret.substring(0, ret.length() - (size() > 0 ? 2 : 0)) + ")";
-        } else if(type() == OPER){
+        } else if(token.type() == OPER){
             return ret.substring(0, ret.length() - (size() > 0 ? 3 : 0));
         } else
             return ret;
     }
+    public static double eval(EquationSystem pEqSys, Node pNode) throws NotDefinedException {
+        return pNode.eval(pEqSys);
+}
+    public double eval(EquationSystem pEqSys) throws NotDefinedException {
+        if (this instanceof FinalNode) {
+            throw new NotDefinedException("This is implemented in FinalNode... How was i triggered...?");
+        } else if(this.token().type() == Token.Type.FUNC || this.token().type() == Token.Type.OPER) {
+            if(pEqSys.functions().get(this.token().val()) != null) // if it is a function
+                return pEqSys.functions().get(this.token().val()).exec(pEqSys, this);
+            else {
+                try { //if it is a built in
+                    return InBuiltFunction.exec(this.token().val(), pEqSys, this);
+                } catch (NotDefinedException err2) {
+                    // try{
+                        // return new CustomFunction(this.token().val()).exec(this,this);
+                    // } //this isn't working now because of the way instantiating works.
+                    // catch(e)
+                    throw new NotDefinedException("Function '" + this.token().val() + "' isn't defined in funcs " + 
+                                                  "(and isn't inbuilt either), or one of the vars isn't defined!");
+                }
+            }
+        }
+        else if(this.token().type() == Token.Type.GROUP || this instanceof FinalNode || this.token.isUni()) {
+                return eval(pEqSys, this.get(0));
+        } else {
+            throw new NotDefinedException("Node: '" + this.token().val() + "' has no known way to evaluate it");
+        }
+        throw new NotDefinedException("uh idek what to do lol ");
+    }
+
 }
 
 

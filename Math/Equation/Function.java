@@ -19,20 +19,39 @@ public abstract class Function {
      */
     public String fName;
 
+    private String help;
+    private String syntax;
+
     /**
      * The default constructor for the Function class. Passes null for the pName to the other Constructor.
      */
     public Function() {
-        this("");
+        this(null, null, null);
     }
 
     /**
      * The main cosntructor for the Function class. All it does is instantiates fName.
      * @param pName         The name of the file which stores the code for how to execute the custom function.
      */
-    public Function(String pName) {
+    public Function(String pName, String pHelp, String pSyntax) {
         fName = pName;
+        help = pHelp;
+        syntax = pSyntax
     }
+
+    public final String help() {
+        return help;
+    }
+    public final String syntax() {
+        return syntax;
+
+        /*
+        throw new NotDefinedException("Implement me for your custom method!");
+
+        throw new NotDefinedException("Implement me for your custom method!");
+        */
+    }
+
 
     /**
      * Gets a String representation of the function. In reality, just returns its name, because a String repr of the 
@@ -40,17 +59,19 @@ public abstract class Function {
      */
     public abstract String toString();
 
+    public String toFancyString(){return "";}
+
     /**
      * This thing takes a node (usually the node from {@link #exec(Factors,Node) exec}), and returns an array of the 
      * numerical values of each subnode.
      * @param pFactors          The factors that will be used when evaluating pNode.
      * @param pNode             The node to be evaluated.
      * @return An array of doubles, with each position corresponding to the value of each Node of that position in 
-     *         {@link Node#subNodes pNode's subNodes}.
+     *         {@link Node#subNodes() pNode's subNodes()}.
      */
-    protected double[] evalNode(Equation pEq, Node pNode){
+    protected double[] evalNode(EquationSystem pEq, Node pNode){
         double[] ret = new double[pNode.size()];
-        for(int i = 0; i < ret.length; i++) ret[i] = pEq.eval(pNode.subNodes.get(i));
+        for(int i = 0; i < ret.length; i++) ret[i] = pNode.subNodes().get(i).eval(pEq);
         return ret;
 
     }
@@ -63,5 +84,5 @@ public abstract class Function {
      * @throws NotDefinedException    Thrown when the function is defined, but how to execute it isn't.
      * @throws InvalidArgsException    Thrown when the function required parameters, and the ones passed aren't right.
      */
-    public abstract double exec(Equation pEq, Node pNode) throws NotDefinedException, InvalidArgsException;
+    public abstract double exec(EquationSystem pEq, Node pNode) throws NotDefinedException, InvalidArgsException;
 }

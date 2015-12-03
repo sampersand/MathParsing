@@ -3,11 +3,11 @@ package Math.Equation.CustomFunctions;
 import Math.Exception.NotDefinedException;
 import Math.Exception.InvalidArgsException;
 
-import Math.Equation.Equation;
+import Math.Equation.EquationSystem;
 import Math.Equation.Function;
 import Math.Equation.Node;
 import Math.Equation.CustomFunction;
-import Math.Equation.Token.Types;
+import Math.Equation.Token.Type;
 
 import Math.Set.Set;
 import Math.Display.GraphComponents;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 
 public class graph extends CustomFunction{
-    private Equation equation;
+    private EquationSystem equation;
     private ArrayList<Set> sets;
     private GraphComponents gcomp;
     private Node node;
@@ -27,7 +27,7 @@ public class graph extends CustomFunction{
     }
     public static String syntax(){
         return "Any combination of 'set:','eq:', 'eqandset:' and 'eqtoset:'.\n" + 
-                "- set syntax is: \"set:(VAL1,VAL2,VAL3...)(valA,valB,ValC...)\". Just displays that set.\n" + 
+                "- set syntax is: \"set:(.val()1,.val()2,.val()3...)(valA,valB,ValC...)\". Just displays that set.\n" + 
                 "- eqandset syntax is: \"eqandset:EQUATION,[STEP],[MIN MAX]\". Displays a set based off the equation " +
                     "and params as well as the equation itself.\n" +
                 "- eqtoset syntax is: \"eqandset:EQUATION,[STEP],[MIN, MAX]\". Displays a set based off the equation " +
@@ -35,22 +35,22 @@ public class graph extends CustomFunction{
     }
 
     @Override
-    public double exec(Equation pEq, Node pNode) throws NotDefinedException, InvalidArgsException {
+    public double exec(EquationSystem pEq, Node pNode) throws NotDefinedException, InvalidArgsException {
         if(pNode.size() == 0)
             throw new InvalidArgsException("the size has to be greater than 1!");
-        for(Node n : pNode.subNodes){
-            if(n.type() != Types.ARGS){
-                throw new InvalidArgsException("All arguments of graph must be of Token.Types 'ARG'!");
+        for(Node n : pNode.subNodes()){
+            if(n.type() != Type.ARGS){
+                throw new InvalidArgsException("All arguments of graph must be of Token.Type 'ARG'!");
             }
         }
-        equation = new Equation();
+        equation = new EquationSystem();
         sets = new ArrayList<Set>();
         gcomp = new GraphComponents();
         node = pNode;
 
-        for(Node n : node.subNodes){
-            String id = n.token.VAL.replaceAll("^(.*):.*","$1");
-            String[] vals = n.token.VAL.replaceAll("^" + id + ":","").replaceAll(" ","").split(",");
+        for(Node n : node.subNodes()){
+            String id = n.token..val().replaceAll("^(.*):.*","$1");
+            String[] vals = n.token..val().replaceAll("^" + id + ":","").replaceAll(" ","").split(",");
             switch(id){
                 case "eq": case "":
                     equation.add(vals[0]);
@@ -72,7 +72,7 @@ public class graph extends CustomFunction{
                     sets.add(getSet(vals).resid());
                     break;
                 default:
-                    System.err.println("[ERROR] Unrecognized Argument: '" + id + "'!");
+                    Print.printe("[ERROR] Unrecognized Argument: '" + id + "'!");
             } 
         } 
         Grapher grapher = new Grapher(equation, sets, gcomp);
@@ -99,7 +99,7 @@ public class graph extends CustomFunction{
         } catch (NumberFormatException err){
             throw new InvalidArgsException("One of the args for eqset (not the equation) isn't a double!");
         }
-        return new Set(new Equation(vals[0]), min, max, cStep);
+        return new Set(new EquationSystem(vals[0]), min, max, cStep);
     }
     private Set getSet(String[] vals){
         double[] arr1, arr2;

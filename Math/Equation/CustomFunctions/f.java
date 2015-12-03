@@ -1,7 +1,7 @@
 package Math.Equation.CustomFunctions;
 
 import Math.Equation.Function;
-import Math.Equation.Equation;
+import Math.Equation.EquationSystem;
 import Math.Equation.Node;
 import Math.Equation.Token;
 import Math.Equation.CustomFunction;
@@ -17,7 +17,7 @@ public class f extends CustomFunction{
         return "arg1, arg2, ..., N";
     }
     @Override
-    public double exec(Equation pEq, Node pNode) throws NotDefinedException, InvalidArgsException {
+    public double exec(EquationSystem pEq, Node pNode) throws NotDefinedException, InvalidArgsException {
         double[] vals = evalNode(pEq, pNode);
         double ret = 0;
         for(double val : vals)
