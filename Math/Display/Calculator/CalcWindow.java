@@ -1,8 +1,11 @@
 package Math.Display.Calculator;
+
+import Math.MathObject;
 import Math.Print;
-import Math.Equation.Equation;
+import Math.Equation.EquationSystem;
 import Math.Equation.CustomFunction;
 import Math.Exception.InvalidArgsException;
+import Math.Exception.NotDefinedException;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -27,7 +30,7 @@ import javax.swing.JOptionPane;
  * @author Sam Westerman
  * @version 1 Sep 29, 2015.
  */
-public class CalcWindow extends JFrame implements ActionListener {
+public class CalcWindow extends JFrame implements ActionListener, MathObject {
 
     /**
      * The text field that keeps track of the used input into the calculator.
@@ -280,7 +283,7 @@ public class CalcWindow extends JFrame implements ActionListener {
         rawEq = rawEq.replaceAll("%", "*100").replaceAll("\\*\\*", "^");
         String[] split = rawEq.trim().replaceAll(" ","").split(";");
         if(split.length == 1){
-            return "" + new Equation(split[0]).eval();
+            return "" + new EquationSystem().add(split[0]).eval();
         } else {
             HashMap<String,Double> vars = new HashMap<String,Double>(){{
                 if(!split[1].equals("")){
@@ -315,7 +318,8 @@ public class CalcWindow extends JFrame implements ActionListener {
                     }
                 }
             }};
-            return "" + new Equation(split[0],vars, funcs).eval();
+            throw new NotDefinedException();
+            // return "" + new EquationSystem().add(split[0]).add(vars).add(funcs).eval();
         }
         
     }
@@ -370,4 +374,20 @@ public class CalcWindow extends JFrame implements ActionListener {
 
         return rawEq.replaceFirst("^=", "");
     }
+
+    @Override
+    public String toString(){
+        throw new NotDefinedException();
+    }
+    
+    @Override
+    public String toFancyString(){
+        throw new NotDefinedException();
+    }
+
+    @Override
+    public String toFullString(){
+        throw new NotDefinedException();
+    }
+
 }

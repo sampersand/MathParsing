@@ -10,10 +10,10 @@ import Math.Exception.InvalidArgsException;
 import Math.Exception.NotDefinedException;
 
 public class summation extends CustomFunction{
-    public static String help(){
+    public String help(){
         return "Adds up numbers from Start to END, with STEP step. Can only be END, START + END, or START + END + STEP";
     }
-    public static String syntax(){
+    public String syntax(){
         return "[START], END, [STEP]";
     }
 

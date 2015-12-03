@@ -2,13 +2,10 @@ package Math.Equation;
 
 import Math.MathObject;
 import Math.Print;
-
 import Math.Equation.Function;
 import Math.Equation.Node;
 import Math.Equation.CustomFunction;
-
 import Math.Equation.CustomFunctions.*;
-
 import Math.Exception.NotDefinedException;
 import Math.Exception.InvalidArgsException;
 import Math.Exception.DoesntExistException;
@@ -118,12 +115,12 @@ public class CustomFunction extends Function implements MathObject{
 
     @Override
     public String toFancyString(){
-        throw new NotDefinedException("define me!");
+        throw new NotDefinedException();
     }
     
     @Override
     public String toFullString(){
-        throw new NotDefinedException("define me!");
+        throw new NotDefinedException();
     }
 
 }

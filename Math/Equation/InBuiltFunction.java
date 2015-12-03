@@ -2,9 +2,7 @@ package Math.Equation;
 
 import Math.MathObject;
 import Math.Print;
-
 import Math.Equation.Token.Type;
-
 import Math.Exception.NotDefinedException;
 import Math.Exception.InvalidArgsException;
 
@@ -130,12 +128,12 @@ public class InBuiltFunction extends Function {
 
     @Override
     public String toFancyString(){
-        throw new NotDefinedException("define me!");
+        throw new NotDefinedException();
     }
 
     @Override
     public String toFullString(){
-        throw new NotDefinedException("define me!");
+        throw new NotDefinedException();
     }
 
 }

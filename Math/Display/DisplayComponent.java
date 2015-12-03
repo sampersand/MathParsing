@@ -1,5 +1,6 @@
-
 package Math.Display;
+
+import Math.MathObject;
 import Math.Equation.Equation;
 import Math.Set.Set;
 import Math.Exception.InvalidArgsException;
@@ -13,9 +14,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.BasicStroke;
 import java.awt.Rectangle;
+import java.awt.Dimension;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
-import java.awt.Dimension;
+
 
 import javax.swing.JLabel;
 /**
@@ -24,7 +26,7 @@ import javax.swing.JLabel;
  * @author Sam Westerman
  * @version 1 Sep 29, 2015.
  */
-public class DisplayComponent extends JLabel{  
+public class DisplayComponent extends JLabel implements MathObject{  
 
     private Grapher grapher;
     private Equation equation;
@@ -61,7 +63,7 @@ public class DisplayComponent extends JLabel{
     public DisplayComponent(Grapher pGrapher, Equation pEquation){
         this(pGrapher, pEquation, Color.BLUE);
     }
-    public DisplayComponent(Object... pobj){ throw new NotDefinedException("Define me!");}
+    public DisplayComponent(Object... pobj){ throw new NotDefinedException();}
     public DisplayComponent(Grapher pGrapher, Equation pEquation, Color pColor){
         this(pGrapher, pEquation, null, pColor);
     }
@@ -113,7 +115,7 @@ public class DisplayComponent extends JLabel{
         } else if(equation != null){
             double cStep = grapher.components().cStep();
             for(double x = dispBounds[0]; x < dispBounds[2]; x += cStep){
-                throw new NotDefinedException("define me!");
+                throw new NotDefinedException();
                 // try{
                     // drawl(x, equation.eval(x, "x"), x + cStep, equation.eval(x + cStep, "x"));
                 // } catch (NotDefinedException err){
@@ -149,9 +151,21 @@ public class DisplayComponent extends JLabel{
     private double[] fix(double x, double y){
         return grapher.components().fix(x,y);
     }
+
+    @Override
     public String toString(){
         return "Display of " + (set == null ? equation == null ? "Axis" : equation : set);
     }
  
+    @Override
+    public String toFancyString(){
+        throw new NotDefinedException();
+    }
+
+    @Override
+    public String toFullString(){
+        throw new NotDefinedException();
+    }
+
 }
  

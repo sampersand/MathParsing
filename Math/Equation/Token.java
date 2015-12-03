@@ -1,7 +1,6 @@
 package Math.Equation;
 
 import Math.MathObject;
-
 import Math.Exception.NotDefinedException;
 
 import java.util.HashMap;
@@ -206,11 +205,11 @@ public class Token implements MathObject{
 
     @Override
     public String toFancyString(){
-        throw new NotDefinedException("define me!");
+        throw new NotDefinedException();
     }
 
     @Override
     public String toFullString(){
-        throw new NotDefinedException("define me!");
+        throw new NotDefinedException();
     }
 }

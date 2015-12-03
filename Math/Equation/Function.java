@@ -1,7 +1,6 @@
 package Math.Equation;
 
 import Math.MathObject;
-
 import Math.Exception.NotDefinedException;
 import Math.Exception.InvalidArgsException;
 
@@ -53,15 +52,6 @@ public abstract class Function implements MathObject{
         throw new NotDefinedException("Implement me for your custom method!");
         */
     }
-
-
-    /**
-     * Gets a String representation of the function. In reality, just returns its name, because a String repr of the 
-     * code is wayyy too hard.
-     */
-    public abstract String toString();
-
-    public String toFancyString(){return "";}
 
     /**
      * This thing takes a node (usually the node from {@link #exec(Factors,Node) exec}), and returns an array of the 

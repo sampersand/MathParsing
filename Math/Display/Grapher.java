@@ -1,74 +1,121 @@
 package Math.Display;
 
-import java.awt.Color;
+import Math.MathObject;
+import Math.Equation.EquationSystem;
+import Math.Equation.Equation;
+import Math.Exception.NotDefinedException;
+import Math.Set.Set;
+import Math.Display.GraphComponents;
+ 
+import javax.swing.*;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import java.awt.FlowLayout;
-
-
-import java.util.ArrayList;
-
-import Math.Equation.Equation;
-import Math.Set.Set;
-import Math.Display.GraphComponents;
-
-
- 
-import javax.swing.*;
 import javax.swing.border.*;
+
 import javax.accessibility.*;
  
 import java.awt.*;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.event.*;
 
+import java.util.ArrayList;
 
 
 
-public class Grapher extends JPanel{
+public class Grapher extends JPanel implements MathObject{
     private JLayeredPane layeredPane;
 
     private ArrayList<Set> sets;
-    private Equation equation;
+    private ArrayList<EquationSystem> equations;
     private GraphComponents components;
     private ArrayList<DisplayComponent> displays;
 
     public Grapher(){
-        this(null, null);
+        this(new GraphComponents());
     }
-    
-    public Grapher(Set pSet){
-        this(null, new ArrayList<Set>(){{add(pSet);}});
-    }
-
-    public Grapher(Equation pEquation){
-        this(pEquation, null);
-    }
-
-    public Grapher(GraphComponents pComponents){
-        this(null, null, pComponents);
-    }
-
-    public Grapher(Equation pEquation, ArrayList<Set> pSets) {
-        this(pEquation, pSets, new GraphComponents());
-    }
-
-    public Grapher(Equation pEquation, ArrayList<Set> pSets, GraphComponents pComponents){
-        // pComponents = GraphComponents.TRIG;
-        equation = pEquation;
-        sets = pSets;
-        components = pComponents;
-        // pComponents.setDispBounds(5, 20, components.winBounds()[0], components.winBounds()[1] + 10);
-
+    public Grapher(GraphComponents pGraph){
+        sets = new ArrayList<Set>();
+        equations = new ArrayList<EquationSystem>();
+        components = pGraph;
         displays = new ArrayList<DisplayComponent>();
-        displays.add(new DisplayComponent(this)); //adds axis
-        Color[] colors = new Color[]{Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW};
-        for(int i = 0; i < equation.size(); i++)
-            displays.add(new DisplayComponent(this, equation.get(i), colors[i%colors.length]));
-        for(int i = 0; i < sets.size(); i++)
-            displays.add(new DisplayComponent(this, sets.get(i), colors[i%colors.length]));
         graphSetup();
     }
+    public Grapher add(Set... pSets){
+        if(pSets != null && pSets.length != 0)
+            for(Set set : pSets)
+                sets.add(set);
+        return this;
+    }
+    public Grapher addSets(ArrayList<Set> pSets){
+        if(pSets != null && pSets.size() != 0)
+            sets.addAll(pSets);
+        return this;
+    }
+
+    public Grapher add(EquationSystem... pEqSys){
+        if(pEqSys != null && pEqSys.length != 0)
+            for(EquationSystem eqsys : pEqSys)
+                equations.add(eqsys);
+        return this;
+
+    }
+    /** Yah, this isn't in the same vein as "add<ITEMPLURAL>", but addEqSyss just seems weird... */
+    public Grapher addEqSys(ArrayList<EquationSystem> pEqSys){
+        if(pEqSys != null && pEqSys.size() != 0)
+            equations.addAll(pEqSys);
+        return this;
+    }
+
+    public Grapher add(Equation... pEqs){
+        if(equations.size() == 0)
+            equations.add(new EquationSystem());
+        if(pEqs != null && pEqs.length != 0)
+            for(Equation eq : pEqs)
+                equations.get(equations.size() - 1).add(eq);
+        return this;
+
+    }
+    public Grapher addEquations(ArrayList<Equation> pEqs){
+        if(equations.size() == 0)
+            equations.add(new EquationSystem());
+        equations.get(equations.size() - 1).add(pEqs);
+        return this;
+    }
+
+    // public Grapher(Set pSet){
+    //     this(null, new ArrayList<Set>(){{add(pSet);}});
+    // }
+
+    // public Grapher(EquationSystem pEqSys){
+    //     this(pEqSys, null);
+    // }
+
+    // public Grapher(GraphComponents pComponents){
+    //     this(null, null, pComponents);
+    // }
+
+    // public Grapher(EquationSystem pEqSys, ArrayList<Set> pSets) {
+    //     this(pEqSys, pSets, new GraphComponents());
+    // }
+
+    // public Grapher(EquationSystem pEqSys, ArrayList<Set> pSets, GraphComponents pComponents){
+    //     // pComponents = GraphComponents.TRIG;
+    //     equation = pEqSys;
+    //     sets = pSets;
+    //     components = pComponents;
+    //     // pComponentsxetDispBounds(5, 20, components.winBounds()[0], components.winBounds()[1] + 10);
+
+    //     displays = new ArrayList<DisplayComponent>();
+    //     displays.add(new DisplayComponent(this)); //adds axis
+    //     Color[] colors = new Color[]{Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW};
+    //     for(int i = 0; i < equations.size(); i++)
+    //         displays.add(new DisplayComponent(this, equation.get(i), colors[i%colors.length]));
+    //     for(int i = 0; i < sets.size(); i++)
+    //         displays.add(new DisplayComponent(this, sets.get(i), colors[i%colors.length]));
+    //     graphSetup();
+    // }
     private void graphSetup(){
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
  
@@ -102,15 +149,15 @@ public class Grapher extends JPanel{
     public void graph() {
         //Create and set up the window.
         String title = "Graph of ";
-        if(equation.size() + sets.size() > 5){
+        if(equations.size() + sets.size() > 5){
             title += "A lot of stuff";
-        } else if(equation.size() + sets.size() == 0){
+        } else if(equations.size() + sets.size() == 0){
             title += "Nothing...? Lol why graph that.";
-        } else if(equation.size() + sets.size() == 1){
-            title += equation.size() == 1 ? equation.getStr(0) : sets.get(0);
+        } else if(equations.size() + sets.size() == 1){
+            title += equations.size() == 1 ? equations.get(0) : sets.get(0);
         } else {
-            for(int i = 0; i < equation.size(); i++){ // for each loop will crash if equation's size is 0.
-                title += equation.get(i) + ", ";
+            for(int i = 0; i < equations.size(); i++){ // for each loop will crash if equation's size is 0.
+                title += equations.get(i) + ", ";
             }
             for(int i =0; i < sets.size(); i++){
                  title += sets.get(i) + ", ";   
@@ -131,18 +178,19 @@ public class Grapher extends JPanel{
 
 
     public ArrayList<Set> sets(){ return sets; }
-    public Equation equation(){ return equation; }
+    public ArrayList<EquationSystem> equations(){ return equations; }
     public GraphComponents components(){ return components; }
 
+    @Override
     public String toString(){
         String ret = "Graph of ";
-        if(sets == null && equation == null || (sets.size() == 0 && equation.size() == 0)){
+        if(sets == null && equations == null || (sets.size() == 0 && equations.size() == 0)){
             return "Empty Graph"; 
-        } else if(equation.size() + sets.size() == 1){
-            return ret + (equation.size() == 1 ? equation.getStr(0) : sets.get(0));
+        } else if(equations.size() + sets.size() == 1){
+            return ret + (equations.size() == 1 ? equations.get(0) : sets.get(0));
         } else {
-            for(int i = 0; i < equation.size(); i++){ // for each loop will crash if equation's size is 0.
-                ret += equation.get(i) + ", ";
+            for(int i = 0; i < equations.size(); i++){ // for each loop will crash if equation's size is 0.
+                ret += equations.get(i) + ", ";
             }
             for(int i =0; i < sets.size(); i++){
                  ret += sets.get(i) + ", ";   
@@ -150,6 +198,16 @@ public class Grapher extends JPanel{
             return ret.substring(0, ret.length() - 2);
 
         }
+    }
+
+    @Override
+    public String toFancyString(){
+        throw new NotDefinedException();
+    }
+
+    @Override
+    public String toFullString(){
+        throw new NotDefinedException();
     }
 
 }

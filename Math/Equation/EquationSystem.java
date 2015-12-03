@@ -2,7 +2,6 @@ package Math.Equation;
 
 import Math.MathObject;
 import Math.Print;
-
 import Math.Exception.TypeMisMatchException;
 import Math.Exception.NotDefinedException;
 import Math.Exception.InvalidArgsException;
@@ -87,7 +86,7 @@ public class EquationSystem implements MathObject{
     }
 
     public ArrayList<Equation> solveFor(String str){
-        throw new NotDefinedException("define me!");
+        throw new NotDefinedException();
     }
 
     public double eval(ArrayList<Equation> pExpr, String toSolve) throws NotDefinedException {
@@ -194,6 +193,6 @@ public class EquationSystem implements MathObject{
 
     @Override
     public String toFullString(){
-        throw new NotDefinedException("define me!");
+        throw new NotDefinedException();
     }
 }

@@ -2,11 +2,9 @@ package Math.Equation;
 
 import Math.MathObject;
 import Math.Print;
-
 import Math.Equation.Equation;
 import Math.Equation.EquationSystem;
 import static Math.Equation.Token.Type.*;
-
 import Math.Exception.TypeMisMatchException;
 import Math.Exception.DoesntExistException;
 import Math.Exception.NotDefinedException;
@@ -432,30 +430,7 @@ public class Node implements MathObject{
     public Node copy(){
         return new Node(token, subNodes);
     }
-    /**
-     * The more robust version of this class's {@link #toString()}, but without the indentation.
-     * @return A more detailed String representation of this.
-     */
-    @Override
-    public String toFullString() {
-        String ret = "{\"" + token.val() + "\" | " + token.type() + " | ";
-        for(Node node : subNodes)
-            ret += node.toFullString() + ", ";
-        return ret.substring(0,ret.length()-2) + "}";
-    }
-    /**
-     * A simple representation of this class.
-     * @return A simple String representation of this.
-     */
-    @Override
-    public String toString() {
-        String ret = '{' + token.val() + ':';
-        for(Node node : subNodes){
-            ret += node + ", ";
-        }
-        return ret.substring(0, ret.length() - (size() > 0 ? 2 : 0)) + '}';
 
-    }
     /** 
      * Effectively {@link #toString} but allows for indentations
      * @param pos    The amount of tabs out each line should be.
@@ -535,9 +510,36 @@ public class Node implements MathObject{
             throw new NotDefinedException("Node: '" + this.token().val() + "' has no known way to evaluate it");
         }
     }
+
+    /**
+     * A simple representation of this class.
+     * @return A simple String representation of this.
+     */
+    @Override
+    public String toString() {
+        String ret = '{' + token.val() + ':';
+        for(Node node : subNodes){
+            ret += node + ", ";
+        }
+        return ret.substring(0, ret.length() - (size() > 0 ? 2 : 0)) + '}';
+
+    }
+    
+    /**
+     * The more robust version of this class's {@link #toString()}, but without the indentation.
+     * @return A more detailed String representation of this.
+     */
+    @Override
+    public String toFullString() {
+        String ret = "{\"" + token.val() + "\" | " + token.type() + " | ";
+        for(Node node : subNodes)
+            ret += node.toFullString() + ", ";
+        return ret.substring(0,ret.length()-2) + "}";
+    }
+
     @Override
     public String toFancyString(){
-        throw new NotDefinedException("define me!");
+        throw new NotDefinedException();
     }
 
 }

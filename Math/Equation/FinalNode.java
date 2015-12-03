@@ -2,7 +2,6 @@ package Math.Equation;
 
 import Math.MathObject;
 import Math.Print;
-
 import Math.Exception.TypeMisMatchException;
 import Math.Exception.NotDefinedException;
 
@@ -62,14 +61,14 @@ public class FinalNode extends Node implements MathObject{
             // if(pEqSys.functions().get(sVal()) != null) {
                 // return (double)pEqSys.functions().get(sVal());
             // } else if(!inVar(sVal())) {
-                throw new NotDefinedException("define me!");
+                throw new NotDefinedException();
             } else if(true) {//fix me too;
                 switch(sVal().toLowerCase()) {
                     case "e": return Math.E;
                     case "pi": return Math.PI;
                     case "rand": case "random": return Math.random();
                     default:
-                        throw new NotDefinedException("define me!");
+                        throw new NotDefinedException();
                 }
             } else {
                 throw new NotDefinedException("define me");
@@ -84,6 +83,17 @@ public class FinalNode extends Node implements MathObject{
                                             "' isn't a NUM, VAR, OR ARGS!");
         }
     }
+
+    @Override
+    public String toString() {
+        return "[" + (token.type() == Token.Type.NUM ? dVal : sVal) + "]";
+    }
+    
+    @Override
+    public String toFancyString(){
+        throw new NotDefinedException();
+    }
+
     @Override
     public String toFullString() {
         String ret = "[";
@@ -93,14 +103,6 @@ public class FinalNode extends Node implements MathObject{
 
     }
 
-    @Override
-    public String toString() {
-        return "[" + (token.type() == Token.Type.NUM ? dVal : sVal) + "]";
-    }
-    @Override
-    public String toFancyString(){
-        throw new NotDefinedException("define me!");
-    }
     /** 
      * Just returns the {@link #toString} of this object. Mainly used for indentations.
      * @see   Node#toStringL

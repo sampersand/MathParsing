@@ -2,7 +2,6 @@ package Math.Equation;
 
 import Math.MathObject;
 import Math.Print;
-
 import Math.Exception.TypeMisMatchException;
 import Math.Exception.NotDefinedException;
 
@@ -256,6 +255,31 @@ public class Expression implements MathObject{
         return true;
     } 
 
+
+    public String toFancyStringN(){ //for fancy string nodes
+        return expression == null ? "Null Expression" : 
+               expression.length() == 0 ? "Empty Expression" : 
+                "Expression: " + toString() + "; Nodes" + node.toStringL(1);
+    }
+
+    @Override
+    public String toString(){
+        return expression == null ? "Null Expression" : 
+               expression.length() == 0 ? "Empty Expression" : 
+               expression.replaceAll("(\\+|\\-|\\*|/|\\^|,)", " $1 ");
+    }
+
+    /** 
+     * Just returns {@link #expression}.
+     * @return A basic String representation of this expression.
+     */
+    @Override
+    public String toFancyString(){
+        return expression == null ? "Null Expression" : 
+               expression.length() == 0 ? "Empty Expression" : 
+               toString();
+    }
+
     /** 
      * Gives a String representation of this expression. Comprised of {@link #expression}, {@link #factors}, and
      * {@link #node}.
@@ -264,26 +288,5 @@ public class Expression implements MathObject{
     @Override
     public String toFullString(){
         return "--Expression--\n--RawEq--\n" + expression + "\n--Nodes--\n" + node.toStringL(1);
-    }
-    /** 
-     * Just returns {@link #expression}.
-     * @return A basic String representation of this expression.
-     */
-    public String toFancyStringN(){
-        return expression == null ? "Null Expression" : 
-               expression.length() == 0 ? "Empty Expression" : 
-                "Expression: " + toString() + "; Nodes" + node.toStringL(1);
-    }
-    @Override
-    public String toFancyString(){
-        return expression == null ? "Null Expression" : 
-               expression.length() == 0 ? "Empty Expression" : 
-               toString();
-    }
-    @Override
-    public String toString(){
-        return expression == null ? "Null Expression" : 
-               expression.length() == 0 ? "Empty Expression" : 
-               expression.replaceAll("(\\+|\\-|\\*|/|\\^|,)", " $1 ");
     }
 }

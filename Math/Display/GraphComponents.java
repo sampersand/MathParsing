@@ -1,7 +1,10 @@
 package Math.Display;
-import Math.Exception.InvalidArgsException;
 
-public class GraphComponents {
+import Math.MathObject;
+import Math.Exception.InvalidArgsException;
+import Math.Exception.NotDefinedException;
+
+public class GraphComponents implements MathObject{
 
     public static final GraphComponents TRIG = new GraphComponents(new int[]{1250 ,750}, 
              new double[]{ -3 * Math.PI, -2, 3 * Math.PI, 2}, Math.PI/12);
@@ -61,8 +64,21 @@ public class GraphComponents {
                                  (1 - (y - minY) / (maxY - minY)) * winY};
 
     }
+
+    @Override
     public String toString(){
         return "GraphingComponent: winBounds(" + winBounds[0] + ", " + winBounds[1] + "); dispBounds(" + 
             dispBounds[0] + ", " + dispBounds[1] + ", " + dispBounds[2] + ", " + dispBounds[3] + "); STEP: " + step;
     }
+
+    @Override
+    public String toFancyString(){
+        throw new NotDefinedException();
+    }
+
+    @Override
+    public String toFullString(){
+        throw new NotDefinedException();
+    }
+
 }

@@ -1,4 +1,8 @@
 package Math.Display.Calculator;
+
+import Math.MathObject;
+import Math.Exception.NotDefinedException;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -16,7 +20,7 @@ import javax.swing.JOptionPane;
  * @author Sam Westerman
  * @version 1 Sep 29, 2015.
  */ 
-public class MainClass{
+public class MainClass implements MathObject {
     private CalcWindow calcWin;
     private static JFrame graphingFrame;
 
@@ -108,5 +112,21 @@ public class MainClass{
         frame.setVisible(true);
 
     }
+
+    @Override
+    public String toString(){
+        throw new NotDefinedException();
+    }
+    
+    @Override
+    public String toFancyString(){
+        throw new NotDefinedException();
+    }
+
+    @Override
+    public String toFullString(){
+        throw new NotDefinedException();
+    }
+
 
 }

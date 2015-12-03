@@ -10,10 +10,10 @@ import Math.Exception.NotDefinedException;
 import Math.Exception.InvalidArgsException;
 
 public class f extends CustomFunction{
-    public static String help(){
+    public String help(){
         return "Adds up the reciprocal of each argument";
     }
-    public static String syntax(){
+    public String syntax(){
         return "arg1, arg2, ..., N";
     }
     @Override

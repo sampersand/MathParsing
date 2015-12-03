@@ -1,20 +1,23 @@
 package Math.Set;
+
+import Math.MathObject;
 import Math.Print;
+import Math.Equation.EquationSystem;
 import Math.Equation.Equation;
 import Math.Equation.Expression;
-
-import Math.Display.Grapher;
 import Math.Exception.InvalidArgsException;
+import Math.Exception.NotDefinedException;
+import Math.Display.Grapher;
 
 import java.util.HashMap;
 import java.util.ArrayList;
 
 
-public class Set {
+public class Set implements MathObject{
     // public static final double e = Math.E;
     public double[] arr1; //when used for graphing, this is the x axis
     public double[] arr2;
-    public Equation equation;
+    public EquationSystem equation;
 
     public Set(double[] pArr1){
         this(pArr1, pArr1);
@@ -25,20 +28,20 @@ public class Set {
     public Set(double[] pArr1, double[] pArr2){
         this(pArr1, pArr2, linReg(pArr1, pArr2));
     }
-    public Set(double[] pArr1, double[] pArr2, Equation eq){
+    public Set(double[] pArr1, double[] pArr2, EquationSystem eq){
         arr1 = pArr1;
         arr2 = pArr2;
         equation = eq;
     }
-    public Set(Equation eq){
+    public Set(EquationSystem eq){
         this(eq, -10, 10, 25);
     }
-    public Set(Equation eq, double min, double max, double cStep){
+    public Set(EquationSystem eq, double min, double max, double cStep){
         if(min >= max){
-            throw new InvalidArgsException("When defining a set with an Equation, the min (" + min +
+            throw new InvalidArgsException("When defining a set with an EquationSystem, the min (" + min +
                                            ") has to be smaller than the max (" + max + ")!");
         } if(cStep == 0){
-            throw new InvalidArgsException("When defining a set with an Equation, the cStep cannot be 0!");
+            throw new InvalidArgsException("When defining a set with an EquationSystem, the cStep cannot be 0!");
         }
 
         equation = eq;
@@ -58,15 +61,15 @@ public class Set {
     public double pred(double val){return pred(val, linReg());}
     public double pred(double val, double[] pArr1, double[] pArr2){return pred(val, linReg(pArr1, pArr2));}
     public double pred(double val, String toSolve){ return pred(val, linReg(), toSolve);}
-    public double pred(double val, Equation pEq){ return pred(val, pEq, "x");}
-    public static double pred(double val, Equation pEq, String toSolve){
-        return pEq.eval(new ArrayList<Expression[]>(){{
-            add(new Expression[]{new Expression(toSolve), new Expression(val)});}},toSolve);
+    public double pred(double val, EquationSystem pEq){ return pred(val, pEq, "x");}
+    public static double pred(double val, EquationSystem pEq, String toSolve){
+        return pEq.eval(new ArrayList<Equation>(){{
+            add(new Equation(toSolve + " = " +val));}}, toSolve);
     }
     public Set es(){return resid();}
     public Set resid(){
         verifySize();
-        Equation lreg = linReg();
+        EquationSystem lreg = linReg();
         double[] resid = new double[arr1.length];
         for(int x = 0; x < arr1.length; x++)
             resid[x] = pred(arr1[x], lreg, "y") - arr2[x];
@@ -74,17 +77,18 @@ public class Set {
     }
 
 
-    public Equation quadReg(){return quadReg(arr1, arr2); }
-    public static Equation quadReg(double[] pArr1, double[] pArr2){
-        Equation eq = new Equation();
-        return eq;
+    public EquationSystem quadReg(){return quadReg(arr1, arr2); }
+    public static EquationSystem quadReg(double[] pArr1, double[] pArr2){
+        throw new NotDefinedException();
     }
 
-    public Equation linReg(){ return linReg(arr1, arr2); }
-    public static Equation linReg(double[] pArr1, double[] pArr2){
+    public EquationSystem linReg(){ return linReg(arr1, arr2); }
+    public static EquationSystem linReg(double[] pArr1, double[] pArr2){
         double b1 = r(pArr1, pArr2) * S(pArr2) / S(pArr1);
         double b0 = avg(pArr2) - b1 * avg(pArr1);
-        return new Equation("yhat = b0 + b1 * y", Equation.genExprs("b0", b0, "b1", b1));
+        return new EquationSystem().add(new Equation("yhat = b0 + b1 * y"),
+                                      EquationSystem.genEq("b0", b0), 
+                                      EquationSystem.genEq("b1", b1));
 
     }
 
@@ -270,7 +274,7 @@ public class Set {
     public void graphe(){(new Set(arr1, resid().arr1, linReg(arr1, resid().arr1))).graph();}
 
     public void graph(){
-        Grapher grapher = new Grapher(this);
+        Grapher grapher = new Grapher().add(this);
         grapher.graph();
     }
 
@@ -281,6 +285,7 @@ public class Set {
         return ret.substring(0, ret.length() - 2) + ")[" + pArr1.length + "]";
     }
 
+    @Override
     public String toString(){
         if(arr1.length == 0 && arr2.length == 0 )
             return "Empty set";
@@ -291,6 +296,16 @@ public class Set {
         if(arr2.length != 0)
             ret += " Arr2: " + arrToString(arr2);
         return ret;
+    }
+
+    @Override
+    public String toFancyString(){
+        throw new NotDefinedException();
+    }
+
+    @Override
+    public String toFullString(){
+        throw new NotDefinedException();
     }
 
 }
