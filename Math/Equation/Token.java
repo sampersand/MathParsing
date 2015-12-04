@@ -131,8 +131,8 @@ public class Token implements MathObject{
         this("" + pVal, ptype);
     }
 
-    public Type type(){return type;}
-    public String val(){return val;}
+    public Type type() {return type;}
+    public String val() {return val;}
     /**
      * Used to determine if a {@link Node} based on a token should be a {@link FinalNode} or a {@link Node}
      * (in this case, it's the former).
@@ -180,7 +180,7 @@ public class Token implements MathObject{
     public int priority() {
         if(isUni())
             return 4;
-        if(!isOper()){// && ! isGroup()) {
+        if(!isOper()) {// && ! isGroup()) {
             return -1;
         }
         switch(val) {
@@ -204,12 +204,12 @@ public class Token implements MathObject{
     }
 
     @Override
-    public String toFancyString(){
+    public String toFancyString() {
         throw new NotDefinedException();
     }
 
     @Override
-    public String toFullString(){
+    public String toFullString() {
         throw new NotDefinedException();
     }
 }

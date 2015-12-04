@@ -278,17 +278,17 @@ public class EquationDisplay extends JComponent implements MathObject {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         throw new NotDefinedException();
     }
 
     @Override
-    public String toFancyString(){
+    public String toFancyString() {
         throw new NotDefinedException();
     }
 
     @Override
-    public String toFullString(){
+    public String toFullString() {
         throw new NotDefinedException();
     }
 

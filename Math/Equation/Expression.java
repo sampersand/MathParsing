@@ -62,39 +62,39 @@ public class Expression implements MathObject{
      * @param pN        The Node that the entire expression is based off of.
      * @param pFactors  The {@link Factors} instance for the expression.
      */ 
-    public Expression(String pEq, Node pN){
+    public Expression(String pEq, Node pN) {
         expression = pEq.trim().replaceAll(" ","");
         node = pN;
     }
 
 
-    /** 
+    /**
      * Generates {@link #node} using {@link #expression}.
      */
-    public void genNode(){
+    public void genNode() {
         genNode(expression);
     }
 
-    /** 
+    /**
      * Generates {@link #node} using pEq.
      * @param pEq       The expression that this class's node will be based off of.
      */
-    public void genNode(String pEq){
+    public void genNode(String pEq) {
         node = Node.generateNodes(Expression.parseTokens(pEq));
     }
-    /** 
+    /**
      * Fixes any terms that might be misleading to the compiler. For example, <code>sinx</code> will become
      * <code>sin(x)</code>. Note: To not have it do any fixing, put a "@" at the beginning of the input String
      * @param eq            The expression to be corrected.
      * @return A corrected version of the expression.
      */
-    public static String fixExpression(String eq){
+    public static String fixExpression(String eq) {
         if(eq.charAt(0) == '@')
             return eq.substring(1);
         if(eq.indexOf("=")!=-1)
             eq = eq.split("=")[1];
         String[] trigf = new String[]{"sec", "csc", "cot", "sinh", "cosh", "tanh", "sin", "cos", "tan"};
-        for(String trig : trigf){
+        for(String trig : trigf) {
             eq = eq.replaceAll("()" + trig + "(?!h)([A-za-z]+)","$1" + trig + "($2)");
         }
 
@@ -118,15 +118,15 @@ public class Expression implements MathObject{
         char c;
         for(int x = 0; x < rEq.length(); x++) {
             c = rEq.charAt(x);
-            if(prev.length() > 0 && prev.charAt(0) == '\''){
+            if(prev.length() > 0 && prev.charAt(0) == '\'') {
                 prev += c;
-                if(c == '\''){
+                if(c == '\'') {
                     tokens.add(new Token(prev.substring(1, prev.length() -1), Token.Type.ARGS));
                     prev = "";
                 }
                 continue;
             }
-            if(prev.length() > 0 && prev.charAt(0) == '\'' && c == '\''){
+            if(prev.length() > 0 && prev.charAt(0) == '\'' && c == '\'') {
                 prev = prev.substring(1);
                 tokens.add(new Token(prev, Token.Type.VAR));
                 prev = "";
@@ -256,37 +256,37 @@ public class Expression implements MathObject{
     } 
 
 
-    public String toFancyStringN(){ //for fancy string nodes
+    public String toFancyStringN() { //for fancy string nodes
         return expression == null ? "Null Expression" : 
                expression.length() == 0 ? "Empty Expression" : 
                 "Expression: " + toString() + "; Nodes" + node.toStringL(1);
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return expression == null ? "Null Expression" : 
                expression.length() == 0 ? "Empty Expression" : 
                expression.replaceAll("(\\+|\\-|\\*|/|\\^|,)", " $1 ");
     }
 
-    /** 
+    /**
      * Just returns {@link #expression}.
      * @return A basic String representation of this expression.
      */
     @Override
-    public String toFancyString(){
+    public String toFancyString() {
         return expression == null ? "Null Expression" : 
                expression.length() == 0 ? "Empty Expression" : 
                toString();
     }
 
-    /** 
+    /**
      * Gives a String representation of this expression. Comprised of {@link #expression}, {@link #factors}, and
      * {@link #node}.
      * @return A String representation of this expression. 
      */
     @Override
-    public String toFullString(){
+    public String toFullString() {
         return "--Expression--\n--RawEq--\n" + expression + "\n--Nodes--\n" + node.toStringL(1);
     }
 }

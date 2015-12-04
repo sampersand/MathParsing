@@ -1,9 +1,9 @@
 package Math.Exception;
 public class TypeMisMatchException extends MathException {
-    public TypeMisMatchException(){
+    public TypeMisMatchException() {
         super();
     }
-    public TypeMisMatchException(String cause){
+    public TypeMisMatchException(String cause) {
         super(cause);
     }
 }

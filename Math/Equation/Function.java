@@ -61,7 +61,7 @@ public abstract class Function implements MathObject{
      * @return An array of doubles, with each position corresponding to the value of each Node of that position in 
      *         {@link Node#subNodes() pNode's subNodes()}.
      */
-    protected double[] evalNode(EquationSystem pEq, Node pNode){
+    protected double[] evalNode(EquationSystem pEq, Node pNode) {
         double[] ret = new double[pNode.size()];
         for(int i = 0; i < ret.length; i++) ret[i] = pNode.subNodes().get(i).eval(pEq);
         return ret;

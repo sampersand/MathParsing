@@ -36,39 +36,39 @@ public class DisplayComponent extends JLabel implements MathObject{
     /** The element that draws the lines. */
     public Graphics2D drawer;   
  
-    public DisplayComponent(){
+    public DisplayComponent() {
         throw new InvalidArgsException("You need to have a grapher to base a DisplayComponent class of!");
     }
 
     /* 
      * I draw the axis.
      */
-    public DisplayComponent(Grapher pGrapher){
+    public DisplayComponent(Grapher pGrapher) {
         this(pGrapher, null, null, Color.BLACK);
     }
 
     /* 
      * I draw a set
      */
-    public DisplayComponent(Grapher pGrapher, Set pSet){
+    public DisplayComponent(Grapher pGrapher, Set pSet) {
         this(pGrapher, pSet, Color.BLUE);
     }
-    public DisplayComponent(Grapher pGrapher, Set pSet, Color pColor){
+    public DisplayComponent(Grapher pGrapher, Set pSet, Color pColor) {
         this(pGrapher, null, pSet, pColor);
     }
 
     /*
      * I draw an equation
      */
-    public DisplayComponent(Grapher pGrapher, Equation pEquation){
+    public DisplayComponent(Grapher pGrapher, Equation pEquation) {
         this(pGrapher, pEquation, Color.BLUE);
     }
-    public DisplayComponent(Object... pobj){ throw new NotDefinedException();}
-    public DisplayComponent(Grapher pGrapher, Equation pEquation, Color pColor){
+    public DisplayComponent(Object... pobj) { throw new NotDefinedException();}
+    public DisplayComponent(Grapher pGrapher, Equation pEquation, Color pColor) {
         this(pGrapher, pEquation, null, pColor);
     }
 
-    private DisplayComponent(Grapher pGrapher, Equation pEquation, Set pSet, Color pColor){
+    private DisplayComponent(Grapher pGrapher, Equation pEquation, Set pSet, Color pColor) {
         grapher = pGrapher;
         equation = pEquation;
         set = pSet;
@@ -77,7 +77,7 @@ public class DisplayComponent extends JLabel implements MathObject{
         // setPreferredSize(new Dimension(grapher.components().winBounds()[0], grapher.components().winBounds()[1]));
     }
     
-    /** 
+    /**
      * The function that controls the drawing of the graphics.
      *
      * <p>
@@ -101,24 +101,24 @@ public class DisplayComponent extends JLabel implements MathObject{
 
         double[] dispBounds = grapher.components().dispBounds();
 
-        if(set != null){
-            if(set.arr2 == null){
+        if(set != null) {
+            if(set.arr2() == null) {
                 throw new NotDefinedException("Set '" + set + "' doesn't have the first Array! can't graph it.");
-            } else if(set.arr2 == null){
+            } else if(set.arr2() == null) {
                 throw new NotDefinedException("Set '" + set + "' doesn't have the second Array! can't graph it.");
             } 
             set.verifySize();
-            for(int x = 0; x < set.arr2.length - 1; x++){
-                drawp(set.arr1[x], set.arr2[x]);
-                // drawl(set.arr1[x], set.arr2[x], set.arr1[x+1], set.arr2[x+1]);
+            for(int x = 0; x < set.arr2().length - 1; x++) {
+                drawp(set.arr1()[x], set.arr2()[x]);
+                // drawl(set.arr1()[x], set.arr2()[x], set.arr1()[x+1], set.arr2()[x+1]);
             }
-        } else if(equation != null){
+        } else if(equation != null) {
             double cStep = grapher.components().cStep();
-            for(double x = dispBounds[0]; x < dispBounds[2]; x += cStep){
+            for(double x = dispBounds[0]; x < dispBounds[2]; x += cStep) {
                 throw new NotDefinedException();
                 // try{
                     // drawl(x, equation.eval(x, "x"), x + cStep, equation.eval(x + cStep, "x"));
-                // } catch (NotDefinedException err){
+                // } catch (NotDefinedException err) {
                     // drawl(x, equation.eval(x, "y"), x + cStep, equation.eval(x + cStep, "y"));
                 // }
             }
@@ -148,22 +148,22 @@ public class DisplayComponent extends JLabel implements MathObject{
        drawer.drawLine((int) xy[0], (int)xy[1], (int)XY[0], (int)XY[1]); // width, height
     }
   
-    private double[] fix(double x, double y){
+    private double[] fix(double x, double y) {
         return grapher.components().fix(x,y);
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "Display of " + (set == null ? equation == null ? "Axis" : equation : set);
     }
  
     @Override
-    public String toFancyString(){
+    public String toFancyString() {
         throw new NotDefinedException();
     }
 
     @Override
-    public String toFullString(){
+    public String toFullString() {
         throw new NotDefinedException();
     }
 

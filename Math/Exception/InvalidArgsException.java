@@ -1,9 +1,9 @@
 package Math.Exception;
 public class InvalidArgsException extends MathException {
-    public InvalidArgsException(){
+    public InvalidArgsException() {
         super();
     }
-    public InvalidArgsException(String cause){
+    public InvalidArgsException(String cause) {
         super(cause);
     }
 }

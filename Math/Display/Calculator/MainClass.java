@@ -27,7 +27,7 @@ public class MainClass implements MathObject {
     /**
      * The constructor for <code>MainClass</code>, which creates the calculator Window.
      */
-    public MainClass(){
+    public MainClass() {
         calcWin = new CalcWindow(this,"Calculator");
         calcWin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -46,7 +46,7 @@ public class MainClass implements MathObject {
      * <code>LIMIT</code> as <code>10</code>, and <code>STEP</code> as <code>0.1D</code>.
      * @param eq            The equation that will be passed along to graph.
      */
-    public void setUpAndDrawGraph(String eq){
+    public void setUpAndDrawGraph(String eq) {
         setUpAndDrawGraph(eq, 10, 0.1D);
     }
 
@@ -57,7 +57,7 @@ public class MainClass implements MathObject {
      * @param eq            The equation that will be passed along to graph.
      * @param step          The amount that x will be incremented when graphing.
      */
-    public void setUpAndDrawGraph(String eq, double step){
+    public void setUpAndDrawGraph(String eq, double step) {
         setUpAndDrawGraph(eq, 10, step);
     }
 
@@ -69,7 +69,7 @@ public class MainClass implements MathObject {
      * @param limit         The x and y boundries for the graph. For example, if 
      *                      <code>limit = 10</code>, the boundries would be (-10x, 10x, -10y, 10y).
      */
-    public void setUpAndDrawGraph(String eq, int limit){
+    public void setUpAndDrawGraph(String eq, int limit) {
         setUpAndDrawGraph(eq, limit, 0.1D);
     }
 
@@ -82,7 +82,7 @@ public class MainClass implements MathObject {
      *                      percise the graph.
      * @see EquationDisplay
      */    
-    public void setUpAndDrawGraph(String rawEq, int limit, double step){
+    public void setUpAndDrawGraph(String rawEq, int limit, double step) {
         String[] equations = rawEq.split(";");
         Color[] colors = { Color.RED, Color.BLUE, Color.ORANGE, Color.MAGENTA, Color.PINK,
                            Color.CYAN, Color.GREEN, Color.YELLOW };
@@ -114,17 +114,17 @@ public class MainClass implements MathObject {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         throw new NotDefinedException();
     }
     
     @Override
-    public String toFancyString(){
+    public String toFancyString() {
         throw new NotDefinedException();
     }
 
     @Override
-    public String toFullString(){
+    public String toFullString() {
         throw new NotDefinedException();
     }
 

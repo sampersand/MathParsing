@@ -32,29 +32,29 @@ public class Grapher extends JPanel implements MathObject{
     private GraphComponents components;
     private ArrayList<DisplayComponent> displays;
 
-    public Grapher(){
+    public Grapher() {
         this(new GraphComponents());
     }
-    public Grapher(GraphComponents pGraph){
+    public Grapher(GraphComponents pGraph) {
         sets = new ArrayList<Set>();
         equations = new ArrayList<EquationSystem>();
         components = pGraph;
         displays = new ArrayList<DisplayComponent>();
         graphSetup();
     }
-    public Grapher add(Set... pSets){
+    public Grapher add(Set... pSets) {
         if(pSets != null && pSets.length != 0)
             for(Set set : pSets)
                 sets.add(set);
         return this;
     }
-    public Grapher addSets(ArrayList<Set> pSets){
+    public Grapher addSets(ArrayList<Set> pSets) {
         if(pSets != null && pSets.size() != 0)
             sets.addAll(pSets);
         return this;
     }
 
-    public Grapher add(EquationSystem... pEqSys){
+    public Grapher add(EquationSystem... pEqSys) {
         if(pEqSys != null && pEqSys.length != 0)
             for(EquationSystem eqsys : pEqSys)
                 equations.add(eqsys);
@@ -62,13 +62,13 @@ public class Grapher extends JPanel implements MathObject{
 
     }
     /** Yah, this isn't in the same vein as "add<ITEMPLURAL>", but addEqSyss just seems weird... */
-    public Grapher addEqSys(ArrayList<EquationSystem> pEqSys){
+    public Grapher addEqSys(ArrayList<EquationSystem> pEqSys) {
         if(pEqSys != null && pEqSys.size() != 0)
             equations.addAll(pEqSys);
         return this;
     }
 
-    public Grapher add(Equation... pEqs){
+    public Grapher add(Equation... pEqs) {
         if(equations.size() == 0)
             equations.add(new EquationSystem());
         if(pEqs != null && pEqs.length != 0)
@@ -77,22 +77,22 @@ public class Grapher extends JPanel implements MathObject{
         return this;
 
     }
-    public Grapher addEquations(ArrayList<Equation> pEqs){
+    public Grapher addEquations(ArrayList<Equation> pEqs) {
         if(equations.size() == 0)
             equations.add(new EquationSystem());
         equations.get(equations.size() - 1).add(pEqs);
         return this;
     }
 
-    // public Grapher(Set pSet){
-    //     this(null, new ArrayList<Set>(){{add(pSet);}});
+    // public Grapher(Set pSet) {
+    //     this(null, new ArrayList<Set>() {{add(pSet);}});
     // }
 
-    // public Grapher(EquationSystem pEqSys){
+    // public Grapher(EquationSystem pEqSys) {
     //     this(pEqSys, null);
     // }
 
-    // public Grapher(GraphComponents pComponents){
+    // public Grapher(GraphComponents pComponents) {
     //     this(null, null, pComponents);
     // }
 
@@ -100,7 +100,7 @@ public class Grapher extends JPanel implements MathObject{
     //     this(pEqSys, pSets, new GraphComponents());
     // }
 
-    // public Grapher(EquationSystem pEqSys, ArrayList<Set> pSets, GraphComponents pComponents){
+    // public Grapher(EquationSystem pEqSys, ArrayList<Set> pSets, GraphComponents pComponents) {
     //     // pComponents = GraphComponents.TRIG;
     //     equation = pEqSys;
     //     sets = pSets;
@@ -116,7 +116,7 @@ public class Grapher extends JPanel implements MathObject{
     //         displays.add(new DisplayComponent(this, sets.get(i), colors[i%colors.length]));
     //     graphSetup();
     // }
-    private void graphSetup(){
+    private void graphSetup() {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
  
          //Create and set up the layered pane.
@@ -149,17 +149,17 @@ public class Grapher extends JPanel implements MathObject{
     public void graph() {
         //Create and set up the window.
         String title = "Graph of ";
-        if(equations.size() + sets.size() > 5){
+        if(equations.size() + sets.size() > 5) {
             title += "A lot of stuff";
-        } else if(equations.size() + sets.size() == 0){
+        } else if(equations.size() + sets.size() == 0) {
             title += "Nothing...? Lol why graph that.";
-        } else if(equations.size() + sets.size() == 1){
+        } else if(equations.size() + sets.size() == 1) {
             title += equations.size() == 1 ? equations.get(0) : sets.get(0);
         } else {
-            for(int i = 0; i < equations.size(); i++){ // for each loop will crash if equation's size is 0.
+            for(int i = 0; i < equations.size(); i++) { // for each loop will crash if equation's size is 0.
                 title += equations.get(i) + ", ";
             }
-            for(int i =0; i < sets.size(); i++){
+            for(int i =0; i < sets.size(); i++) {
                  title += sets.get(i) + ", ";   
             }
             title = title.substring(0, title.length() - 2);
@@ -177,22 +177,22 @@ public class Grapher extends JPanel implements MathObject{
 
 
 
-    public ArrayList<Set> sets(){ return sets; }
-    public ArrayList<EquationSystem> equations(){ return equations; }
-    public GraphComponents components(){ return components; }
+    public ArrayList<Set> sets() { return sets; }
+    public ArrayList<EquationSystem> equations() { return equations; }
+    public GraphComponents components() { return components; }
 
     @Override
-    public String toString(){
+    public String toString() {
         String ret = "Graph of ";
-        if(sets == null && equations == null || (sets.size() == 0 && equations.size() == 0)){
+        if(sets == null && equations == null || (sets.size() == 0 && equations.size() == 0)) {
             return "Empty Graph"; 
-        } else if(equations.size() + sets.size() == 1){
+        } else if(equations.size() + sets.size() == 1) {
             return ret + (equations.size() == 1 ? equations.get(0) : sets.get(0));
         } else {
-            for(int i = 0; i < equations.size(); i++){ // for each loop will crash if equation's size is 0.
+            for(int i = 0; i < equations.size(); i++) { // for each loop will crash if equation's size is 0.
                 ret += equations.get(i) + ", ";
             }
-            for(int i =0; i < sets.size(); i++){
+            for(int i =0; i < sets.size(); i++) {
                  ret += sets.get(i) + ", ";   
             }
             return ret.substring(0, ret.length() - 2);
@@ -201,12 +201,12 @@ public class Grapher extends JPanel implements MathObject{
     }
 
     @Override
-    public String toFancyString(){
+    public String toFancyString() {
         throw new NotDefinedException();
     }
 
     @Override
-    public String toFullString(){
+    public String toFullString() {
         throw new NotDefinedException();
     }
 

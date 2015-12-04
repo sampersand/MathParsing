@@ -31,7 +31,7 @@
 //     //     this(new HashMap<String, Double>(), new HashMap<String, CustomFunction>());
 //     // }
 
-//     /** 
+//     /**
 //      * A constructor for Factors that just takes varriables and no functions.
 //      * @param pVars         The HashMap of variable names and their corresponding values.
 //      */
@@ -69,8 +69,8 @@
 //     public static double eval(EquationSystem pEq, Node pNode, ArrayList<Expression[]> pExprs, String toSolve)
 //                               throws NotDefinedException {
 //         HashMap<String, Double> vars = new HashMap<String, Double>();
-//         for(Expression[] exprs : pExprs){
-//             for(Expression expr: exprs){
+//         for(Expression[] exprs : pExprs) {
+//             for(Expression expr: exprs) {
                 
 //             }
 //         }
@@ -94,7 +94,7 @@
 //                 } else {
 //                     return (double)getVar(fNode.sVal);
 //                 }
-//             } else if(fNode.token().type() == Token.Type.ARGS){
+//             } else if(fNode.token().type() == Token.Type.ARGS) {
 //                 Print.printw("[WARNING] Attempting to evaluate args! probably won't go well :P");
 //                 return (double)getVar(fNode.dVal);
 //             } else {
@@ -145,7 +145,7 @@
 //     //  * @param funcName      The function name that will be used for the key, and file name for the CustomFunction.
 //     //  * @return The updated Factor class.
 //     //  */
-//     // public Factors addFunc(String funcName){
+//     // public Factors addFunc(String funcName) {
 //     //     return addFunc(funcName, funcName);
 //     // }
     
@@ -154,7 +154,7 @@
 //     //  * @param varName       The variable name that will be used for the key.
 //     //  * @return The updated Factor class.
 //     //  */
-//     // public Factors addVar(String varName){
+//     // public Factors addVar(String varName) {
 //     //     return addVar(varName, 0);
 //     // }
     
@@ -164,7 +164,7 @@
 //     //  * @param fileName      The name of the file for the {@link CustomFunction}.
 //     //  * @return The updated Factor class.
 //     //  */
-//     // public Factors addFunc(String funcName, String fileName){
+//     // public Factors addFunc(String funcName, String fileName) {
 //     //     return addFunc(funcName, new CustomFunction(fileName));
 //     // }
     
@@ -174,7 +174,7 @@
 //     //  * @param pFunc         {@link CustomFunction} that will be used as the value.
 //     //  * @return The updated Factor class.
 //     //  */
-//     // public Factors addFunc(String funcName, CustomFunction pFunc){
+//     // public Factors addFunc(String funcName, CustomFunction pFunc) {
 //     //     Factors ret = copy();
 //     //     ret.funcs.put(funcName, pFunc);
 //     //     return ret;
@@ -187,7 +187,7 @@
 //     //  * @param pVal          The double that will be used for the value.
 //     //  * @return The updated Factor class.
 //     //  */
-//     // public Factors addVar(String varName, double pVal){
+//     // public Factors addVar(String varName, double pVal) {
 //     //     Factors ret = copy();
 //     //     ret.vars.put(varName, pVal);
 //     //     return ret;
@@ -201,11 +201,11 @@
 //     //  * @param funcNames      An array of each variable's name.
 //     //  * @return The updated Factor class.
 //     //  */
-//     // public Factors addFuncs(String[] funcNames){
+//     // public Factors addFuncs(String[] funcNames) {
 //     //     Factors ret = copy();
-//     //     for(int i = 0; i < funcNames.length; i++){
+//     //     for(int i = 0; i < funcNames.length; i++) {
 //     //         String func = funcNames[i];
-//     //         if(func.indexOf(":") != -1){
+//     //         if(func.indexOf(":") != -1) {
 //     //             ret = ret.addFunc(func.split(":")[0], new CustomFunction(func.split(":")[1]));
 //     //         } else{
 //     //             ret = ret.addFunc(func);
@@ -226,9 +226,9 @@
 //     //  */
 //     // public Factors addVars(String[] varNames) throws NumberFormatException{
 //     //     Factors ret = copy();
-//     //     for(int i = 0; i < varNames.length; i++){
+//     //     for(int i = 0; i < varNames.length; i++) {
 //     //         String var = varNames[i];
-//     //         if(var.indexOf(":") != -1){
+//     //         if(var.indexOf(":") != -1) {
 //     //             ret = ret.addVar(var.split(":")[0], Double.parseDouble(var.split(":")[1]));
 //     //         } else{
 //     //             ret = ret.addVar(var);
@@ -243,7 +243,7 @@
 //     //  *                      value is a {@link CustomFunction}.
 //     //  * @return The updated Factor class.
 //     //  */
-//     // public Factors addFuncs(HashMap<String, CustomFunction> pFuncs){
+//     // public Factors addFuncs(HashMap<String, CustomFunction> pFuncs) {
 //     //     Factors ret = copy();
 //     //     ret.funcs.putAll(pFuncs);
 //     //     return ret;
@@ -255,7 +255,7 @@
 //     //  *                     value is a double.
 //     //  * @return The updated Factor class.
 //     //  */
-//     // public Factors addVars(HashMap<String, Double> pVars){
+//     // public Factors addVars(HashMap<String, Double> pVars) {
 //     //     Factors ret = copy();
 //     //     ret.vars.putAll(pVars);
 //     //     return ret;
@@ -266,7 +266,7 @@
 //     //  * @param funcName      The name of the function in {@link #funcs}.
 //     //  * @return A {@link CustomFunction} if funcName exists in {@link #funcs}. If it doesn't, it will return null.
 //     //  */
-//     // public CustomFunction getFunc(String funcName){
+//     // public CustomFunction getFunc(String funcName) {
 //     //     return copy().funcs.get(funcName);
 //     // }
 
@@ -275,41 +275,41 @@
 //     //  * @param varName       The name of the variable in {@link #vars}.
 //     //  * @return A double if varName exists in {@link #funcs}. If it doesn't, it will return null (null isnt tested)
 //     //  */
-//     // public double getVar(String varName){
+//     // public double getVar(String varName) {
 //     //     return vars.get(varName);
 //     // }
 
-//     // /** 
+//     // /**
 //     //  * Checks and sees if funcName is an actual function inside {@link #funcs}.
 //     //  * @param funcName      The name of the function to check its existance.
 //     //  * @return True if funcName has a value in {@link #funcs}.
 //     //  */
-//     // public boolean inFunc(String funcName){
+//     // public boolean inFunc(String funcName) {
 //     //     return funcs.containsKey(funcName);
 //     // }
 
-//     // /** 
+//     // /**
 //     //  * Checks and sees if varName is an actual variable inside {@link #vars}.
 //     //  * @param varName      The name of the variable to check its existance.
 //     //  * @return True if varName has a value in {@link #vars}.
 //     //  */
-//     // public boolean inVar(String varName){
+//     // public boolean inVar(String varName) {
 //     //     return vars.containsKey(varName);
 //     // }
 
-//     // /** 
+//     // /**
 //     //  * Just returns the vars in String format, and the funcs in String format, with a little prettier formatting.
 //     //  * @return A String representation of this factor.
 //     //  */
-//     // public String toString(){
+//     // public String toString() {
 //     //     return "\n\tVARS: " + vars.toString() + "\n\tFUNCS: " + funcs.toString();
 //     // }
 
-//     // /** 
+//     // /**
 //     //  * Makes an exact copy of this Factors class.
 //     //  * @return An exact copy of this class
 //     //  */
-//     // public Factors copy(){
+//     // public Factors copy() {
 //     //     return new Factors(vars, funcs);
 //     // }
 

@@ -12,23 +12,23 @@ import Math.Exception.DoesntExistException;
 
 import java.lang.reflect.*;
 
-/** 
+/**
  * Note: all user-defined functions (as opposed to pre-defined) must inherit from this class.
  */
 public class CustomFunction extends Function implements MathObject{
     public Class cl;
 
-    public CustomFunction(){
+    public CustomFunction() {
         this(null, null, null);
     }
-    public CustomFunction(String pVal){
+    public CustomFunction(String pVal) {
         this(pVal, null, null);
     }
 
-    public CustomFunction(String pVal, String pHelp, String pSyntax){
+    public CustomFunction(String pVal, String pHelp, String pSyntax) {
         super(pVal, pHelp, pSyntax);
         try {
-            if(pVal.equals("")){
+            if(pVal.equals("")) {
                 Print.printe("Instantiating a CustomFunction without a function associated!");
                 cl = null;
             } else{
@@ -55,7 +55,7 @@ public class CustomFunction extends Function implements MathObject{
     //     throw new NotDefinedException("Implement me for your custom method!");
     // }
 
-    private Object getFunc(String pName){
+    private Object getFunc(String pName) {
         try{
             return cl.getDeclaredMethod(pName).invoke(null);
         } catch (IllegalAccessException err) {
@@ -109,17 +109,17 @@ public class CustomFunction extends Function implements MathObject{
         } return 0;
     }
     @Override
-    public String toString(){
+    public String toString() {
         return "CustomFunction: '" + fName + "'";
     }
 
     @Override
-    public String toFancyString(){
+    public String toFancyString() {
         throw new NotDefinedException();
     }
     
     @Override
-    public String toFullString(){
+    public String toFullString() {
         throw new NotDefinedException();
     }
 

@@ -25,7 +25,7 @@ public class GraphDisplay extends JComponent implements MathObject {
      */
     private final String[] EQUATIONS; 
 
-    /** 
+    /**
      * The starting and ending points of <code>x</code>.
      */
     private final double[] EQUATION_BOUNDS;
@@ -45,7 +45,7 @@ public class GraphDisplay extends JComponent implements MathObject {
      */
     private final int[] DISPLAY_BOUNDS;
 
-    /** 
+    /**
      * The colors for each equation
      */
     private final Color[] COLORS; 
@@ -64,7 +64,7 @@ public class GraphDisplay extends JComponent implements MathObject {
              false, colors);
     }
 
-    /** 
+    /**
      * Overloaded initializer, without <code>isImag</code>, that takes arrays for only 
      * <code>winBnd</code> and <code>dispBnd</code>. 
      */
@@ -135,7 +135,7 @@ public class GraphDisplay extends JComponent implements MathObject {
         drawAxis();
         int largestSize = 0;
         for(String eq : this.EQUATIONS) {
-            if(eq.length()>largestSize){
+            if(eq.length()>largestSize) {
                 largestSize=eq.length();
             }
         }
@@ -165,15 +165,15 @@ public class GraphDisplay extends JComponent implements MathObject {
         double eqyb = (Math.abs(EQUATION_BOUNDS[2]) + Math.abs(EQUATION_BOUNDS[3]));
         double eqxb = (Math.abs(EQUATION_BOUNDS[0]) + Math.abs(EQUATION_BOUNDS[1]));
 
-        for(double x = EQUATION_BOUNDS[0] - eqxb / 40; x < EQUATION_BOUNDS[1]; x += eqxb / 40){
+        for(double x = EQUATION_BOUNDS[0] - eqxb / 40; x < EQUATION_BOUNDS[1]; x += eqxb / 40) {
             drawl(x, -eqyb / 140, x, eqyb / 140);
         }
-        for(double y = EQUATION_BOUNDS[0] - eqyb / 40; y < EQUATION_BOUNDS[1]; y += eqyb / 40){
+        for(double y = EQUATION_BOUNDS[0] - eqyb / 40; y < EQUATION_BOUNDS[1]; y += eqyb / 40) {
             drawl(-eqxb / 140, y, eqxb / 140, y);
         }      
     }
 
-    /** 
+    /**
      * Makes drawing lines a lot easier by modifying the coordinantes to be more like the x/y plane.
      * Without this, <code>(0, 0)</code> is in the upper left corner of the window, and positive 
      * y is downards.
@@ -200,7 +200,7 @@ public class GraphDisplay extends JComponent implements MathObject {
         drawer.drawLine( (int) x, (int) y, (int) X, (int) Y);
     }
 
-    /** 
+    /**
      * Overloaded version of drawl with ints
      */
     private void drawl(int x, int y, int X, int Y) {
@@ -211,23 +211,23 @@ public class GraphDisplay extends JComponent implements MathObject {
      * Draws the name of <code>this.EQUATION</code>.
      * @param index      The index of the string equation in Colors.
      */
-    private void drawName(int index){
+    private void drawName(int index) {
         this.drawer.setColor(this.COLORS[index%this.COLORS.length]);
         this.drawer.drawString(this.EQUATIONS[index],15,20+15*index);
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         throw new NotDefinedException();
     }
 
     @Override
-    public String toFancyString(){
+    public String toFancyString() {
         throw new NotDefinedException();
     }
 
     @Override
-    public String toFullString(){
+    public String toFullString() {
         throw new NotDefinedException();
     }
 

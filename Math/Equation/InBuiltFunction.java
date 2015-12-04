@@ -10,15 +10,15 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class InBuiltFunction extends Function {
-    public static HashMap<String, InBuiltFunction> FUNCTIONS = new HashMap<String, InBuiltFunction>(){{
+    public static HashMap<String, InBuiltFunction> FUNCTIONS = new HashMap<String, InBuiltFunction>() {{
         ;
     }};
 
-    public InBuiltFunction(){
+    public InBuiltFunction() {
         this(null, null, null);
     }
 
-    public InBuiltFunction(String pVal, String pHelp, String pSyntax){
+    public InBuiltFunction(String pVal, String pHelp, String pSyntax) {
         super(pVal, pHelp, pSyntax);
     }
 
@@ -42,7 +42,7 @@ public class InBuiltFunction extends Function {
                 return Math.pow(pNode.get(0).eval(pEq), pNode.get(1).eval(pEq)); // not sure this works
             default: 
                 double[] args = evalNode(pEq, pNode);
-                switch(fName){
+                switch(fName) {
                     case "sin":
                         return Math.sin(args[0]);
                     case "cos":
@@ -122,17 +122,17 @@ public class InBuiltFunction extends Function {
         }
     }
     @Override
-    public String toString(){
+    public String toString() {
         return "InBuiltFunction: '" + fName + "'";
     }
 
     @Override
-    public String toFancyString(){
+    public String toFancyString() {
         throw new NotDefinedException();
     }
 
     @Override
-    public String toFullString(){
+    public String toFullString() {
         throw new NotDefinedException();
     }
 

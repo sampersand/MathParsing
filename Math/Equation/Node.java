@@ -74,8 +74,8 @@ public class Node implements MathObject{
         token = pToken;
     }
 
-    public ArrayList<Node> subNodes(){return subNodes;}
-    public Token token(){return token;}
+    public ArrayList<Node> subNodes() {return subNodes;}
+    public Token token() {return token;}
     /**
      * Condenses functions and groups together into a single node. Creates 1-length nodes for operators and vars / nums.
      * Note that this is only ever used with {@link #fixNodes(Node) fixNodes}, 
@@ -123,32 +123,32 @@ public class Node implements MathObject{
      * @param pNode    The node that will be used to generate the new hierarchically-structured master node.
      * @return The "master" node - that is, the node to control all other nodes. HAH - LOTR reference.
      */
-    public static Node completeNodes(Node pNode){
+    public static Node completeNodes(Node pNode) {
         if(pNode instanceof FinalNode)
             return pNode;      
         Node e = new Node(pNode.token);
         int i = 0;
-        while(i < pNode.size()){
+        while(i < pNode.size()) {
             Node n = pNode.get(i);
-            if(n instanceof FinalNode){
+            if(n instanceof FinalNode) {
                 e.addD(n);
             }
-            else if(n.token.isOper()){
-                for(int depth = 1; depth < e.depth(); depth++){
+            else if(n.token.isOper()) {
+                for(int depth = 1; depth < e.depth(); depth++) {
                     Node nD = e.getD(depth, true);
-                    if(nD instanceof FinalNode){
+                    if(nD instanceof FinalNode) {
                         n.add(nD);
                         e.setD(depth - 1, n); //depth is a final node.
                         break;
                     }
-                    else if(n.token.priority() < nD.token.priority()){
+                    else if(n.token.priority() < nD.token.priority()) {
                         n.add(nD);
                         n.add(completeNodes(pNode.get(i + 1)));
                         i++;
                         e.setD(depth - 1, n);
                         break;
                     }
-                    else if (nD.token.isGroup()){
+                    else if (nD.token.isGroup()) {
                         n.add(nD);
                         n.add(completeNodes(pNode.get(i + 1)));
                         i++;
@@ -158,7 +158,7 @@ public class Node implements MathObject{
                 }
 
             }
-            else if(n.token.isGroup()){
+            else if(n.token.isGroup()) {
                 e.addD(e.depth(), completeNodes(n), false);
             }
             else{
@@ -169,19 +169,19 @@ public class Node implements MathObject{
         return e;
     }
 
-    /** 
+    /**
      * Fixes nodes to prevent horrible things like "1*-1" from crashing.
      * @param pNode         The node whose subnodes will be fixed.
      * @return A "fixed" version of the nodes.
      */
-    public static Node fixNodes(Node pNode){
+    public static Node fixNodes(Node pNode) {
         int i = 0;
-        while(i < pNode.size()){
+        while(i < pNode.size()) {
             Node n = pNode.get(i);
             if(n.token().type() == OPER && n.token.val().equals("-") && pNode.get(i - 1).token().type() == OPER &&
                                    (pNode.get(i - 1).token.val().equals("/") ||
                                     pNode.get(i - 1).token.val().equals("*") ||
-                                    pNode.get(i - 1).token.val().equals("^"))){
+                                    pNode.get(i - 1).token.val().equals("^"))) {
                 Node n2 = new Node(new Token("doesnt matter what I put here", GROUP));
                 n2.add(new FinalNode(new Token("0", NUM)));
                 n2.add(n);
@@ -292,7 +292,7 @@ public class Node implements MathObject{
     public Node getD(int i, boolean pOver) {
         if(this instanceof FinalNode)
             return this;
-        if(i <= 0 || (get(size() - 1).token().type() == GROUP &&! pOver)){
+        if(i <= 0 || (get(size() - 1).token().type() == GROUP &&! pOver)) {
             return this;
         } else {
             return get(size() - 1).getD(i - 1, pOver);
@@ -381,7 +381,7 @@ public class Node implements MathObject{
             if(i == 2 && get(size() - 1) instanceof FinalNode ) {
                 Print.printi("Trying to setD to a FinalNode. Going one level up instead.");
                 set(size() - 1,n);
-            } else if(get(size() - 1).token().type() == GROUP &&! pOver){
+            } else if(get(size() - 1).token().type() == GROUP &&! pOver) {
                 set(p, n);
             } else {
                 get(size() - 1).setD(i - 1, p, n, pOver);
@@ -423,28 +423,28 @@ public class Node implements MathObject{
             get(size() - 1).remD(i - 1, p, pOver);
     }
 
-    /** 
+    /**
      * Gets an exact copy of this current node
      * @return An exact duplicate of this node, except for its position in memory.
      */
-    public Node copy(){
+    public Node copy() {
         return new Node(token, subNodes);
     }
 
-    /** 
+    /**
      * Effectively {@link #toString} but allows for indentations
      * @param pos    The amount of tabs out each line should be.
      * @return A simple String representation of this.
      */
-    public String toStringL(int pos){
+    public String toStringL(int pos) {
         String ret = '{' + token.val() + ':';
-        for(Node node : subNodes){
+        for(Node node : subNodes) {
             ret += '\n';
             for(int x = 0; x < pos; x++)
                 ret += '\t';
             ret += node.toStringL(pos+1);
         }
-        if(size() == 0){
+        if(size() == 0) {
             ret += '\n';
             for(int x = 0; x < pos; x++)
                 ret += '\t';
@@ -456,28 +456,28 @@ public class Node implements MathObject{
         return ret + '}';
 
     }
-    /** 
+    /**
      * Takes all the {@link #subNodes} and creates its best guess at what a function comprised of them would look like.
      * @return The best guess as to what a function comprised of the subnodes would look like.
      */
-    public String genEqString(){
+    public String genEqString() {
         String ret = "";
-        switch(token.type()){
+        switch(token.type()) {
             case FUNC: ret += token.val();
             case GROUP: ret += "("; break;
             case ARGS: return "'" + token.val() + "'";
             case NUM: case VAR: return token.val();
         }
-        for(Node n : subNodes){
+        for(Node n : subNodes) {
             ret += n.genEqString();
-            switch(token.type()){
+            switch(token.type()) {
                 case FUNC: case GROUP: ret += ", "; break;
                 case OPER: ret += " " + token.val() + " ";
             }
         }
-        if(token.type() == FUNC || token.type() == GROUP){
+        if(token.type() == FUNC || token.type() == GROUP) {
             return ret.substring(0, ret.length() - (size() > 0 ? 2 : 0)) + ")";
-        } else if(token.type() == OPER){
+        } else if(token.type() == OPER) {
             return ret.substring(0, ret.length() - (size() > 0 ? 3 : 0));
         } else
             return ret;
@@ -518,7 +518,7 @@ public class Node implements MathObject{
     @Override
     public String toString() {
         String ret = '{' + token.val() + ':';
-        for(Node node : subNodes){
+        for(Node node : subNodes) {
             ret += node + ", ";
         }
         return ret.substring(0, ret.length() - (size() > 0 ? 2 : 0)) + '}';
@@ -538,7 +538,7 @@ public class Node implements MathObject{
     }
 
     @Override
-    public String toFancyString(){
+    public String toFancyString() {
         throw new NotDefinedException();
     }
 

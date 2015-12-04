@@ -1,9 +1,9 @@
 package Math.Exception;
 public class MathException extends RuntimeException {
-    public MathException(){
+    public MathException() {
         super();
     }
-    public MathException(String cause){
+    public MathException(String cause) {
         super(cause);
     }
 }

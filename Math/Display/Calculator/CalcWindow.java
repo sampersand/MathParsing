@@ -253,7 +253,7 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
         if (rawEq.indexOf("==") == -1) { // a beginning '=' is always passed
             // try {
             return getResult(rawEq);
-            // } catch (Exception err){
+            // } catch (Exception err) {
                 // System.err.println(err);
             // }
 
@@ -282,34 +282,34 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
     public static String getResult(String rawEq) throws InvalidArgsException {
         rawEq = rawEq.replaceAll("%", "*100").replaceAll("\\*\\*", "^");
         String[] split = rawEq.trim().replaceAll(" ","").split(";");
-        if(split.length == 1){
+        if(split.length == 1) {
             return "" + new EquationSystem().add(split[0]).eval();
         } else {
-            HashMap<String,Double> vars = new HashMap<String,Double>(){{
-                if(!split[1].equals("")){
+            HashMap<String,Double> vars = new HashMap<String,Double>() {{
+                if(!split[1].equals("")) {
                     String[] split1 = split[1].split(",");
-                    for(int i = 0; i < split1.length; i++){
+                    for(int i = 0; i < split1.length; i++) {
                         String[] spl = split1[i].split(":");
-                        if(spl.length != 2){
+                        if(spl.length != 2) {
                             throw new InvalidArgsException("When passing vars, format has to be 'Name:Val'");
                         } else {
                             try{
                                 put(spl[0], Double.parseDouble(spl[1]));
-                            } catch (NumberFormatException err){
+                            } catch (NumberFormatException err) {
                                 throw new InvalidArgsException("When passing vars, their values have to be doubles!");
                             }
                         }
                     }
                 }
             }};
-            HashMap<String,CustomFunction> funcs = new HashMap<String,CustomFunction>(){{
-                if(!split[2].equals("")){
+            HashMap<String,CustomFunction> funcs = new HashMap<String,CustomFunction>() {{
+                if(!split[2].equals("")) {
                     String[] split2 = split[2].split(",");
-                    for(int i = 0; i < split2.length; i++){
+                    for(int i = 0; i < split2.length; i++) {
                         String[] spl = split2[i].split(":");
-                        if(spl.length == 1){
+                        if(spl.length == 1) {
                             put(spl[0], new CustomFunction(spl[0]));
-                        } else if (spl.length == 2){
+                        } else if (spl.length == 2) {
                             put(spl[0], new CustomFunction(spl[1]));
                         } else {
                             throw new InvalidArgsException("When passing funcs, they have to be in format " + 
@@ -376,17 +376,17 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         throw new NotDefinedException();
     }
     
     @Override
-    public String toFancyString(){
+    public String toFancyString() {
         throw new NotDefinedException();
     }
 
     @Override
-    public String toFullString(){
+    public String toFullString() {
         throw new NotDefinedException();
     }
 

@@ -49,15 +49,15 @@ public class FinalNode extends Node implements MathObject{
         
     }
 
-    public String sVal(){return sVal;}
-    public double dVal(){return dVal;}
+    public String sVal() {return sVal;}
+    public double dVal() {return dVal;}
 
     @Override
     public double eval(EquationSystem pEqSys) throws NotDefinedException {
         if (token().type() == Token.Type.NUM) {
             return dVal();
         } else if (token().type() == Token.Type.VAR) {
-            if(false){ //fix me
+            if(false) { //fix me
             // if(pEqSys.functions().get(sVal()) != null) {
                 // return (double)pEqSys.functions().get(sVal());
             // } else if(!inVar(sVal())) {
@@ -74,7 +74,7 @@ public class FinalNode extends Node implements MathObject{
                 throw new NotDefinedException("define me");
                 // return (double)getVar(sVal());
             }
-        } else if(token().type() == Token.Type.ARGS){
+        } else if(token().type() == Token.Type.ARGS) {
             Print.printw("Attempting to evaluate args! probably won't go well :P");
             throw new NotDefinedException("define me");
             // return (double)getVar(dVal());
@@ -90,7 +90,7 @@ public class FinalNode extends Node implements MathObject{
     }
     
     @Override
-    public String toFancyString(){
+    public String toFancyString() {
         throw new NotDefinedException();
     }
 
@@ -103,12 +103,12 @@ public class FinalNode extends Node implements MathObject{
 
     }
 
-    /** 
+    /**
      * Just returns the {@link #toString} of this object. Mainly used for indentations.
      * @see   Node#toStringL
      */
     @Override
-    public String toStringL(int pos){
+    public String toStringL(int pos) {
         return "" + this;
     }
 
