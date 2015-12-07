@@ -26,4 +26,5 @@ public interface MathObject {
      * @return the complete string representation of this class.
      */
     public String toFullString();
+
 }

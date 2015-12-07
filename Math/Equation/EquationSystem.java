@@ -8,8 +8,9 @@ import Math.Exception.InvalidArgsException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
-public class EquationSystem implements MathObject{
+public class EquationSystem implements MathObject, Iterable {
     private ArrayList<Equation> equations;
     private HashMap<String, CustomFunction> functions;
 
@@ -195,4 +196,21 @@ public class EquationSystem implements MathObject{
     public String toFullString() {
         throw new NotDefinedException();
     }
+
+    public Iterator<Equation> iterator(){
+        return (Iterator<Equation>)(new EqSysIterator());
+    }
+    public class EqSysIterator<E> implements Iterator<E> {
+        private int i = 0;
+
+        public boolean hasNext(){
+            return i < EquationSystem.this.equations.size();
+        }
+        public E next(){
+            if(!hasNext())
+                throw new NotDefinedException();
+            System.out.println("@");
+            return (E) EquationSystem.this.equations().get(i++);
+        }
+}
 }

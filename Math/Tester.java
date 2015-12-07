@@ -16,13 +16,17 @@ public class Tester {
      * @throws NotDefinedException Thrown when the first value isn't equal to "--e" of --f 
      */
     public static void main(String[] args) throws NotDefinedException {
-        EquationSystem eq = new EquationSystem();
+        EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
-            eq.add("e=1+2");
+            eqsys.add("y = 1 + sin(x) + c");
+            eqsys.add("2 * x = 9.45 + alpha ^ theta");
+            eqsys.add("theta = 2 * c + alpha");
+            eqsys.add("alpha = 4 + c");
+            eqsys.add("c = 0 - 9");
         } else {
-            eq = new EquationSystem();
+            eqsys = new EquationSystem();
             if(args.length == 1) {
-                eq = new EquationSystem().add(new Equation(args[0]));
+                eqsys = new EquationSystem().add(new Equation(args[0]));
             } else if(args.length > 1) {
                 int i = -1;
                 char type = ' ';
@@ -34,19 +38,23 @@ public class Tester {
                     if(args[i].equals("--e")) {type = 'e'; continue;}
                     if (type == 'f') {
                         try{
-                            eq.add(args[i].split(":")[0], new CustomFunction(args[i].split(":")[1])); //fix me.
+                            eqsys.add(args[i].split(":")[0], new CustomFunction(args[i].split(":")[1])); //fix me.
                         } catch(NumberFormatException err) {
                             Print.printw("Syntax: FUNCNAME:FUNC.val() (" + args[i] + ")");
                         } catch(ArrayIndexOutOfBoundsException err) {
                             Print.printw("Syntax: FUNCNAME:FUNC.val() (" + args[i] + ")");
                         }
                     } else if (type == 'e') {
-                        eq.add(EquationSystem.genEq(args[i]));
+                        eqsys.add(EquationSystem.genEq(args[i]));
                     }
                 }
             }
         }
-        Print.print(eq);
-        Print.printi("RESULT:", eq.eval("X"));
+        for(Object eq : eqsys){
+            eq = (Equation)eq;
+            System.out.println(eq);
+        }
+        Print.print(eqsys);
+        Print.printi("RESULT:", eqsys.eval("X"));
     }
 }

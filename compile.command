@@ -2,7 +2,7 @@ cd /Users/westerhack/code/java/class/personal\ projects/Math
 
 javac -d bin Math/Equation/*.java Math/Set/*.java Math/Equation/CustomFunctions/*.java Math/Exception/*.java Math/Display/*.java Math/Display/Calculator/*.java Math/*.java
 
-javadoc -d javadoc Math/Set/Set.java Math/Exception/*.java 
+javadoc -d javadoc Math/Set/Set.java Math/Exception/*.java Math/Equation/CustomFunctions/*.java
 #javadoc -d javadoc Math/Equation/*.java Math/Set/Set.java Math/Equation/CustomFunctions/*.java Math/Exception/*.java Math/Display/*.java Math/Display/Calculator/*.java
 
 #java -cp bin Math.Equation.Equation
