@@ -573,7 +573,7 @@ public class Set implements MathObject{
     }
 
     /**
-     * Returns the Five Number Summary of {@link #arr1}. Just passes {@link #arr1} to
+     * Calculates and returns the Five Number Summary of {@link #arr1}. Just passes {@link #arr1} to
      * {@link #fiveNumSum(double[]) the main fiveNumSum function}
      * @return An array of length 5 containing the Five Number Summary of {@link #arr1}.
      * @see <a href="https://en.wikipedia.org/wiki/Five-number_summary">Five Number Summar</a>
@@ -583,7 +583,8 @@ public class Set implements MathObject{
     }
 
     /**
-     * Returns the Five Number Summary of <code>pArr1</code>. 
+     * Calculates and returns the Five Number Summary of <code>pArr1</code>. Note that I'm not 100% that this works,
+     * but I'm fairly confident that it does.
      * @param pArr1     The array which the Five Number Summary will be based off of.
      * @return An array of length 5 containing the Five Number Summary of <code>pArr1</code>.
      * @see <a href="https://en.wikipedia.org/wiki/Five-number_summary">Five Number Summar</a>
@@ -600,19 +601,46 @@ public class Set implements MathObject{
         ret[1] = length % 4 == 0 ? (sorted[length / 4 - 1] + sorted[length / 4]) / 2 : 
                  sorted[length / 4];
         return ret;
-    } // NOT 100% THIS WORKS
+    }
 
+    /**
+     * Calculates and Returns the IQR (Interquartile Range) of {@link #arr1}. Just passes {@link #arr1} to
+     * {@link #iqr(double[]) the main iqr function}.
+     * @return The IQR of {@link #arr1}.
+     * @see <a href="https://en.wikipedia.org/wiki/Interquartile_range">Interquartile Range</a>
+     */
     public double iqr() {
         return iqr(arr1);
     }
+
+    /**
+     * Calculates and Returns the IQR (Interquartile Range) of <code>pArr1</code>.
+     * @param pArr1     The array whose IQR will be returned.
+     * @return The IQR of <code>pArr1</code>.
+     * @see <a href="https://en.wikipedia.org/wiki/Interquartile_range">Interquartile Range</a>
+     */
     public static double iqr(double[] pArr1) {
         double[] sum = fiveNumSum(pArr1);
         return sum[3] - sum[1];
     }
 
+    /**
+     * Generates and returns a sorted version of {@link #arr1} by using Bubble Sort. Just passes {@link #arr1} to
+     *{@link #sort(double[]) the main sort function}.
+     * @return A sorted version of {@link #arr1}.
+     * @see <a href="https://en.wikipedia.org/wiki/Bubble_sort">Bubble Sort</a>
+     */
     public double[] sort() {
         return sort(arr1);
     }
+
+    /**
+     * Generates and returns a sorted version of {@link #arr1} by using Bubble Sort. Please not that since Bubble Sort
+     * is used, large arrays are going to take a particularly long time. 
+     * @param pArr1     The array to sort.
+     * @return A sorted version of <code>pArr1</code>.
+     * @see <a href="https://en.wikipedia.org/wiki/Bubble_sort">Bubble Sort</a>
+     */
     public static double[] sort(double[] pArr1) {
         double[] ret = new double[pArr1.length];
         for(int i = 0; i < pArr1.length; i++) ret[i] = pArr1[i];
@@ -632,10 +660,23 @@ public class Set implements MathObject{
         return ret;
     }
 
-    public void printBarGraph() {
-        printBarGraph(arr1);
+    /**
+     * Prints a box plot of {@link #arr1} to console. Just passes {@link #arr1} to
+     * {@link #printBoxPlot(double[]) the main printBoxPlot function}.
+     * @see <a href="https://en.wikipedia.org/wiki/Box_plot">Box Plot</a>
+     */
+    public void printBoxPlot() {
+        printBoxPlot(arr1);
     }
-    public static void printBarGraph(double[] pArr1) {
+
+    /**
+     * Prints a box plot of <code>pArr1</code> to console. Note: This isn't working very well, and will be modified 
+     * later when it becomes more relevant. 
+     * @param pArr1     The array whose box plot will be printed to console.
+     * @see <a href="https://en.wikipedia.org/wiki/Box_plot">Box Plot</a>
+     */
+    public static void printBoxPlot(double[] pArr1) {
+        //make sure to update the javadoc to reflect fixing this.
         double[] fns = fiveNumSum(pArr1);
         double[] prl = new double[5];
         for(int x = 0; x < fns.length; x++)
@@ -685,30 +726,81 @@ public class Set implements MathObject{
        Print.print();
     }
 
+    /**
+     * Prints a five number summary of {@link #arr1} to console. Just passes {@link #arr1} to
+     * {@link #printFiveNumSum(double[]) the main printFiveNumSum function}.
+     * @see #fiveNumSum(double[])
+     * @see <a href="https://en.wikipedia.org/wiki/Five-number_summary">Five Number Summar</a>
+     */
     public void printFiveNumSum() {
         printFiveNumSum(arr1);
     }
+
+    /**
+     * Prints a five number summary of <code>pArr1</code> to console. 
+     * @param pArr1     The array whose five number summary will be printed to console.
+     * @see #fiveNumSum(double[])
+     * @see <a href="https://en.wikipedia.org/wiki/Five-number_summary">Five Number Summar</a>
+     */
     public static void printFiveNumSum(double[] pArr1) {
-
         double[] fns = fiveNumSum(pArr1);
-
-        System.out.printf("Min   : %f%nQ1    : %f%nMed   : %f%nQ2    : %f%nMax   : %f%nMean  : %f%nStdev : %f%n",
+        //I replaced all %f with \n. This might make something not work right, i'm not sure.
+        System.out.printf("Min   : \n%nQ1    : \n%nMed   : \n%nQ2    : \n%nMax   : \n%nMean  : \n%nStdev : \n%n",
             fns[0], fns[1], fns[2], fns[3], fns[4], avg(pArr1), stdev(pArr1));
     }
+
+    /**
+     * Prints out the linear regression of {@link #arr1} and {@link #arr2}. Just passes {@link #arr1} and {@link #arr2}
+     * to {@link #printLinReg(double[],double[]) the main printLinReg function}.
+     * <br> Note: This is depreciated and will be removed soon. It can be replaced by
+     * <code>System.out.println(linReg())</code>.
+     * @see #linReg(double[],double[])
+     * @see <a href="https://en.wikipedia.org/wiki/Linear_regression">Linear Regression</a>
+     * @deprecated 
+     */
     public void printLinReg() {
         printLinReg(arr1, arr2);
     }
+
+    /**
+     * Prints out the linear regression of <code>pArr1</code> and <code>pArr2</code>.
+     * <br> Note: This is depreciated and will be removed soon. It can be replaced by
+     * <code>System.out.println(linReg(pArr1,pArr2))</code>.
+     * @param pArr1         The "x" array that will be used to generate the 
+     *                      {@link linReg(double[],double[]) linear equation}. 
+     * @param pArr2         The "y" array that will be used to generate the
+     *                      {@link linReg(double[],double[]) linear equation}. 
+     * @see #linReg(double[],double[])
+     * @see <a href="https://en.wikipedia.org/wiki/Linear_regression">Linear Regression</a>
+     * @deprecated 
+     */
     public static void printLinReg(double[] pArr1, double[] pArr2) {
         System.out.println(linReg(pArr1, pArr2));
     }
 
-    public void graphe() {(new Set(arr1, resid().arr1(), linReg(arr1, resid().arr1()))).graph();}
+    /**
+     * Graphs the residules of this set.
+     * @see #resid()
+     * @see <a href="https://en.wikipedia.org/wiki/Errors_and_residuals">Residuals</a>
+     */
+    public void graphe() {
+        (new Set(arr1, resid().arr1(), linReg(arr1, resid().arr1()))).graph();
+    }
 
+    /**
+     * Graphs this set using {@link Math.Display.Grapher}.
+     * @see Math.Display
+     */
     public void graph() {
         Grapher grapher = new Grapher().add(this);
         grapher.graph();
     }
 
+    /**
+     * Returns a fancy String representation of <code>pArr1</code>.
+     * @param pArr1     The array that will be made into a fancy string.
+     * @return A fancy String representation of <code>pArr1</code>.
+     */
     public static String arrToString(double[] pArr1) {
         String ret = "(";
         for(double d : pArr1)
