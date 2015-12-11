@@ -16,6 +16,17 @@ public class Tester {
      * @throws NotDefinedException Thrown when the first value isn't equal to "--e" of --f 
      */
     public static void main(String[] args) throws NotDefinedException {
+
+
+
+
+
+        //REMINDER: ONCE JAVADOC IS DONE UPDATE ALL VERSIONS TO 0.2, and put SINCE 0.1!
+
+
+
+
+
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
             eqsys.add("y = 1 + sin(x) + c");

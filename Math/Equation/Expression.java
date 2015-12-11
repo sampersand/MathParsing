@@ -14,7 +14,7 @@ import java.util.HashMap;
  * @version 0.2
  */
 
-public class Expression implements MathObject{
+public class Expression implements MathObject {
 
     /** The raw expression. */
     public String expression;

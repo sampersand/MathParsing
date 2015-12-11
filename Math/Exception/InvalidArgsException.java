@@ -9,7 +9,7 @@ package Math.Exception;
 public class InvalidArgsException extends MathException {
 
     /**
-     * The empty constructor. Just passes <code>"Define me!"</code> to
+     * Default Constructor. Just passes <code>"Define me!"</code> to
      * {@link InvalidArgsException(String) the main constructor}.
      */
     public InvalidArgsException() {

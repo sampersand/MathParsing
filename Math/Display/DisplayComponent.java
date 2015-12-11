@@ -26,7 +26,7 @@ import javax.swing.JLabel;
  * @author Sam Westerman
  * @version 1 Sep 29, 2015.
  */
-public class DisplayComponent extends JLabel implements MathObject{  
+public class DisplayComponent extends JLabel implements MathObject {  
 
     private Grapher grapher;
     private Equation equation;

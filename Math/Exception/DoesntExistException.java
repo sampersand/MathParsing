@@ -10,7 +10,7 @@ package Math.Exception;
 public class DoesntExistException extends MathException {
 
     /**
-     * The empty constructor. Just passes <code>"Define me!"</code> to
+     * Default Constructor. Just passes <code>"Define me!"</code> to
      * {@link DoesntExistException(String) the main constructor}.
      */
     public DoesntExistException() {

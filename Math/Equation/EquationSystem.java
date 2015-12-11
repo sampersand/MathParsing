@@ -44,7 +44,7 @@ public class EquationSystem implements MathObject, Iterable {
     public EquationSystem add(CustomFunction... pFuncs) {
         if(pFuncs != null && pFuncs.length != 0)
             for(CustomFunction func : pFuncs) {
-                functions.put(func.fName, func);;
+                functions.put(func.name, func);;
             }
         return this;
     }
@@ -154,8 +154,8 @@ public class EquationSystem implements MathObject, Iterable {
         if(functions == null) {
             ret += "null";
         } else {
-            for(String fName : functions.keySet()) {
-                ret += "'" + fName + ":" + functions.get(fName) + "', ";
+            for(String name : functions.keySet()) {
+                ret += "'" + name + ":" + functions.get(name) + "', ";
             }
         }
         return ret.substring(0, ret.length() - (functions.size() == 0 ? 0 : 2)) + ")";
@@ -197,6 +197,12 @@ public class EquationSystem implements MathObject, Iterable {
         throw new NotDefinedException();
     }
 
+    /**
+     * Ok, currently, this can only be used as the following:
+     * <code>for(Object obj : eqsys){obj = (Equation)obj</code>.<br>
+     * <code>for(Equation eq : eqsys{}</code> will crash ;(
+     * @return An {@link java.util.Iterator Iterator} for equations. used in for Each loop
+     */
     public Iterator<Equation> iterator(){
         return (Iterator<Equation>)(new EqSysIterator());
     }
@@ -209,8 +215,7 @@ public class EquationSystem implements MathObject, Iterable {
         public E next(){
             if(!hasNext())
                 throw new NotDefinedException();
-            System.out.println("@");
             return (E) EquationSystem.this.equations().get(i++);
         }
-}
+    }
 }

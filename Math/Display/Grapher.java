@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 
 
-public class Grapher extends JPanel implements MathObject{
+public class Grapher extends JPanel implements MathObject {
     private JLayeredPane layeredPane;
 
     private ArrayList<Set> sets;

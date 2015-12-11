@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * @author Sam Westerman
  * @version 0.1
  */
-public class Set implements MathObject{
+public class Set implements MathObject {
 
     /**
      * The first, and primary, list for this class. Whenever a function is called without parameters, this array will

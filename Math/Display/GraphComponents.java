@@ -4,7 +4,7 @@ import Math.MathObject;
 import Math.Exception.InvalidArgsException;
 import Math.Exception.NotDefinedException;
 
-public class GraphComponents implements MathObject{
+public class GraphComponents implements MathObject {
 
     public static final GraphComponents TRIG = new GraphComponents(new int[]{1250 ,750}, 
              new double[]{ -3 * Math.PI, -2, 3 * Math.PI, 2}, Math.PI/12);

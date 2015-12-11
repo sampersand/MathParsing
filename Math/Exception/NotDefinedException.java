@@ -10,7 +10,7 @@ package Math.Exception;
 public class NotDefinedException extends MathException {
 
     /**
-     * The empty constructor. Just passes <code>"Define me!"</code> to
+     * Default Constructor. Just passes <code>"Define me!"</code> to
      * {@link NotDefinedException(String) the main constructor}.
      */
     public NotDefinedException() {

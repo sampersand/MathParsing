@@ -10,7 +10,7 @@ import java.util.HashMap;
  * @author Sam Westerman
  * @version 0.1
  */
-public class Token implements MathObject{
+public class Token implements MathObject {
     /** The String that this class is based upon. */
     private String val;
 

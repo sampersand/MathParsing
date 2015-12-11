@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * @author Sam Westerman
  * @version 0.1
  */
-public class Node implements MathObject{
+public class Node implements MathObject {
 
     /** A list of all nodes that are benith this one in the hierarchical structure. */
     protected ArrayList<Node> subNodes;

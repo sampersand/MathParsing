@@ -10,7 +10,7 @@ package Math.Exception;
 public class MathException extends RuntimeException {
 
     /**
-     * The empty constructor for this class. Just calls <code>super()</code>.
+     * Default Constructor for this class. Just calls <code>super()</code>.
      */
     public MathException() {
         super();

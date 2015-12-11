@@ -12,7 +12,7 @@ import Math.Exception.NotDefinedException;
  * @author Sam Westerman
  * @version 0.1
  */
-public class FinalNode extends Node implements MathObject{
+public class FinalNode extends Node implements MathObject {
 
     /** The String representation of this. Only used if FinalNode is representing a variable. */
     private String sVal;
