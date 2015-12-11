@@ -23,31 +23,31 @@ public class EquationDisplay extends JComponent implements MathObject {
     /**
      * Equation that will be passed to <code>CalcWindow</code> to calculate the result.
      */
-    private final String EQUATION; 
+    protected final String EQUATION; 
 
     /**
      * True if the equation's result should be expected to be imaginary.
      *  If it is, then the real / imaginary axis will be used instead of the x / y axis.
      */
-    private final boolean ISEQIMAG;
+    protected final boolean ISEQIMAG;
 
     /**
      * The amount that <code>x</code> (or <code>y</code> as well if <code>ISEQIMAG</code> 
      * is <code>true</code>) will be incremented when graphing. 
      */
-    private final double[] STEPS; 
+    protected final double[] STEPS; 
 
     /**
      * The starting and ending point of <code>x</code> (and <code>y</code> if <code>ISEQIMAG</code>
      * is <code>true</code>).
      */
-    private final double[] EQUATION_BOUNDS;
+    protected final double[] EQUATION_BOUNDS;
 
     /**
      * The physical amount of pixels the window is wise and tall.
      * The array will look like the following: <code>(min X, max X, min Y, max Y)</code>
      */
-    private final int[] WINDOW_BOUNDS;
+    protected final int[] WINDOW_BOUNDS;
 
     /**
      * The min and max x/y values used for display.
@@ -56,18 +56,18 @@ public class EquationDisplay extends JComponent implements MathObject {
      * <p>
      * The array will look like the following: <code>(min X, max X, min Y, max Y)</code>.
      */
-    private final int[] DISPLAY_BOUNDS;
+    protected final int[] DISPLAY_BOUNDS;
 
     /**
      * The color that the graph will be drawn in
      */
-    private final Color COLOR; 
+    protected final Color COLOR; 
 
 
     /**
      * The element that draws the lines.
      */
-    private Graphics2D drawer;
+    protected Graphics2D drawer;
 
     /**
      * Overloaded initializer, without <code>isImag</code>, that takes non-arrays for everything.

@@ -23,18 +23,18 @@ public class GraphDisplay extends JComponent implements MathObject {
     /**
      * The equations to be displayed
      */
-    private final String[] EQUATIONS; 
+    protected final String[] EQUATIONS; 
 
     /**
      * The starting and ending points of <code>x</code>.
      */
-    private final double[] EQUATION_BOUNDS;
+    protected final double[] EQUATION_BOUNDS;
 
     /**
      * The physical amount of pixels the window is wide  and tall.
      * The array will look like the following: <code>(min X, max X, min Y, max Y)</code>
      */
-    private final int[] WINDOW_BOUNDS;
+    protected final int[] WINDOW_BOUNDS;
 
     /**
      * The min and max x/y values used for display.
@@ -43,18 +43,18 @@ public class GraphDisplay extends JComponent implements MathObject {
      * <p>
      * The array will look like the following: <code>(min X, max X, min Y, max Y)</code>.
      */
-    private final int[] DISPLAY_BOUNDS;
+    protected final int[] DISPLAY_BOUNDS;
 
     /**
      * The colors for each equation
      */
-    private final Color[] COLORS; 
+    protected final Color[] COLORS; 
 
 
     /**
      * The element that draws the lines.
      */
-    private Graphics2D drawer;
+    protected Graphics2D drawer;
 
     /**
      * Overloaded initializer, without <code>isImag</code>, that takes non-arrays for everything.

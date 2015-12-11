@@ -11,7 +11,7 @@ public class NotDefinedException extends MathException {
 
     /**
      * Default Constructor. Just passes <code>"Define me!"</code> to
-     * {@link NotDefinedException(String) the main constructor}.
+     * {@link #NotDefinedException(String) the main constructor}.
      */
     public NotDefinedException() {
         this("Define me!");

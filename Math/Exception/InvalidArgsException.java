@@ -10,7 +10,7 @@ public class InvalidArgsException extends MathException {
 
     /**
      * Default Constructor. Just passes <code>"Define me!"</code> to
-     * {@link InvalidArgsException(String) the main constructor}.
+     * {@link #InvalidArgsException(String) the main constructor}.
      */
     public InvalidArgsException() {
         super();

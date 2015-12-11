@@ -35,36 +35,33 @@ public class Expression implements MathObject {
 
 
     /**
-     * The String-only constructor for the expression class. Just passes a Node created based off pEq, and an empty
-     * {@link Factors} class to the {@link #Expression(String,Node,Factors) main expression constructor}.
-     * @param pEq       A String containing the expression that this class will be modeled after.
+     * The Object - only constructor for the expression class. Just passes <code>pObj</code>, and a Node based off
+     * <code>pObj</code>, {@link #Expression(String,Node) main expression constructor}.
+     * @param pObj       An Object that this class will be modeled after. 
      */ 
-    public Expression(String pEq) {
-        this(pEq, Node.generateNodes(Expression.parseTokens(pEq)));
-    }
     public Expression(Object pObj) {
-        this("" + pObj);
+        this("" + pObj, Node.generateNodes(Expression.parseTokens("" + pObj)));
     }
+
     /**
-     * The Node-only for the expression class. Just passes a String created based on Node's subnodes, and an empty
-     * {@link Factors} class to the {@link #Expression(String,Node,Factors) main expression constructor}.
-     * @param pN        The Node that the expression class will be modeled after.
+     * The Node-only for the expression class. Just passes a String created based on Node's subnodes to the
+     * {@link #Expression(String,Node) main expression constructor}.
+     * @param pNode        The Node that the expression class will be modeled after.
      */ 
-    public Expression(Node pN) {
-        this(pN.genEqString(), pN);
+    public Expression(Node pNode) {
+        this(pNode.genEqString(), pNode);
     }
 
 
     /**
-     * The main constructor for the expression class. Takes the parameter pEq, and parses the tokens from it,
-     * and generates a {@link Node} model for it.
+     * The main constructor for the expression class. Just sets {@link #expression} and {@link #node} to their
+     * respective constructors
      * @param pEq       The String representation of the expression. Is only ever used to identify individual expressions.
-     * @param pN        The Node that the entire expression is based off of.
-     * @param pFactors  The {@link Factors} instance for the expression.
+     * @param pNode        The Node that the entire expression is based off of.
      */ 
-    public Expression(String pEq, Node pN) {
+    public Expression(String pEq, Node pNode) {
         expression = pEq.trim().replaceAll(" ","");
-        node = pN;
+        node = pNode;
     }
 
 
@@ -82,26 +79,28 @@ public class Expression implements MathObject {
     public void genNode(String pEq) {
         node = Node.generateNodes(Expression.parseTokens(pEq));
     }
+
     /**
      * Fixes any terms that might be misleading to the compiler. For example, <code>sinx</code> will become
      * <code>sin(x)</code>. Note: To not have it do any fixing, put a "@" at the beginning of the input String
-     * @param eq            The expression to be corrected.
+     * @param pEq            The expression to be corrected.
      * @return A corrected version of the expression.
      */
-    public static String fixExpression(String eq) {
-        if(eq.charAt(0) == '@')
-            return eq.substring(1);
-        if(eq.indexOf("=")!=-1)
-            eq = eq.split("=")[1];
+    public static String fixExpression(String pEq) {
+        if(pEq.charAt(0) == '@')
+            return pEq.substring(1);
+        if(pEq.indexOf("=")!=-1)
+            pEq = pEq.split("=")[1];
         String[] trigf = new String[]{"sec", "csc", "cot", "sinh", "cosh", "tanh", "sin", "cos", "tan"};
         for(String trig : trigf) {
-            eq = eq.replaceAll("()" + trig + "(?!h)([A-za-z]+)","$1" + trig + "($2)");
+            pEq = pEq.replaceAll("()" + trig + "(?!h)([A-za-z]+)","$1" + trig + "($2)");
         }
 
-        eq = eq.replaceAll("\\-\\(", "-1*(");
-        eq = eq.replaceAll("([\\d.])+(\\(|(?:[A-Za-z]+))", "$1*$2");
-        return eq;
+        pEq = pEq.replaceAll("\\-\\(", "-1*(");
+        pEq = pEq.replaceAll("([\\d.])+(\\(|(?:[A-Za-z]+))", "$1*$2");
+        return pEq;
     }
+
     /**
      * Generates an ArrayList of tokens that represent rEq.
      * Note that this removes all whitespace (including spaces) before handling the expression.
@@ -111,8 +110,6 @@ public class Expression implements MathObject {
      */
     public static ArrayList<Token> parseTokens(String rEq) throws TypeMisMatchException{
         rEq = fixExpression(rEq.trim().replaceAll(" ",""));
-        //not so sure this is the best way to fix my minus issue:
-
         ArrayList<Token> tokens = new ArrayList<Token>();
         String prev = "";
         char c;
@@ -188,7 +185,7 @@ public class Expression implements MathObject {
      * @param c     The character to test.
      * @return      True if the character is alphanumeric, period, or a single quote ('). False otherwise.
      */
-    public static boolean isAlphaNumPQ(char c) {
+    protected static boolean isAlphaNumPQ(char c) {
         return isAlphaNumP(c) || c == '\'';
     }
 
@@ -197,7 +194,7 @@ public class Expression implements MathObject {
      * @param c     The character to test.
      * @return      True if the character is alphanumeric or a period. False otherwise.
      */
-    public static boolean isAlphaNumP(char c) {
+    protected static boolean isAlphaNumP(char c) {
         return Character.isAlphabetic(c) || Character.isDigit(c) || c == '.';
     }
 
@@ -206,7 +203,7 @@ public class Expression implements MathObject {
      * @param str   The String to test.
      * @return      True if the String consists only of letters, digits, and / or periods. False otherwise.
      */
-    public static boolean isAlphaNumP(String str) {
+    protected static boolean isAlphaNumP(String str) {
         for(char c : str.toCharArray())
             if(!isAlphaNumP(c))
                 return false;
@@ -218,7 +215,7 @@ public class Expression implements MathObject {
      * @param c     The character to test.
      * @return      True if the character is a letter. False otherwise.
      */
-    public static boolean isAlpha(char c) {
+    protected static boolean isAlpha(char c) {
         return Character.isAlphabetic(c);
     }
 
@@ -227,7 +224,7 @@ public class Expression implements MathObject {
      * @param str   The String to test.
      * @return      True if the String is only letters. False otherwise.
      */
-    public static boolean isAlpha(String str) {
+    protected static boolean isAlpha(String str) {
         for(char c : str.toCharArray())
             if(!isAlpha(c))
                 return false;
@@ -238,7 +235,7 @@ public class Expression implements MathObject {
      * @param c     The character to test.
      * @return      True if the character is a digit or period. False otherwise.
      */
-    public static boolean isNumP(char c) {
+    protected static boolean isNumP(char c) {
         return Character.isDigit(c) || c == '.';
     }
 
@@ -248,7 +245,7 @@ public class Expression implements MathObject {
      * @param str   The String to test.
      * @return      True if the String is only digits and / or periods. False otherwise.
      */        
-    public static boolean isNumP(String str) {
+    protected static boolean isNumP(String str) {
         for(char c : str.toCharArray())
             if(!isNumP(c))
                 return false;
@@ -256,6 +253,10 @@ public class Expression implements MathObject {
     } 
 
 
+    /**
+     * Generates a fancy string with indents.
+     * @return A "fancy" version of this string with indents.
+     */
     public String toFancyStringN() { //for fancy string nodes
         return expression == null ? "Null Expression" : 
                expression.length() == 0 ? "Empty Expression" : 
@@ -269,10 +270,6 @@ public class Expression implements MathObject {
                expression.replaceAll("(\\+|\\-|\\*|/|\\^|,)", " $1 ");
     }
 
-    /**
-     * Just returns {@link #expression}.
-     * @return A basic String representation of this expression.
-     */
     @Override
     public String toFancyString() {
         return expression == null ? "Null Expression" : 
@@ -280,11 +277,6 @@ public class Expression implements MathObject {
                toString();
     }
 
-    /**
-     * Gives a String representation of this expression. Comprised of {@link #expression}, {@link #factors}, and
-     * {@link #node}.
-     * @return A String representation of this expression. 
-     */
     @Override
     public String toFullString() {
         return "--Expression--\n--RawEq--\n" + expression + "\n--Nodes--\n" + node.toStringL(1);

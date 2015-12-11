@@ -11,11 +11,11 @@ import java.util.Random;
 
 public class InBuiltFunction extends Function {
     public static HashMap<String, InBuiltFunction> FUNCTIONS = new HashMap<String, InBuiltFunction>() {{
-        put("+", new OperatorFunction("+", "Adds the first number to the second one.", "A + B"));
-        put("-", new OperatorFunction("-", "Subtracts the first number to the second one.", "A - B"));
-        put("*", new OperatorFunction("*", "Multiplies the first number to the second one.", "A * B"));
-        put("/", new OperatorFunction("/", "Divides the first number to the second one.", "A / B"));
-        put("^", new OperatorFunction("^", "Raises the first number to the second one.", "A ^ B"));
+        put("+", new OperationFunction("+", "Adds the first number to the second one.", "A + B"));
+        put("-", new OperationFunction("-", "Subtracts the first number to the second one.", "A - B"));
+        put("*", new OperationFunction("*", "Multiplies the first number to the second one.", "A * B"));
+        put("/", new OperationFunction("/", "Divides the first number to the second one.", "A / B"));
+        put("^", new OperationFunction("^", "Raises the first number to the second one.", "A ^ B"));
         put("sin", new InBuiltFunction("sin", "Returns the sin of the arguments.", "sin(args)"));
         put("cos", new InBuiltFunction("cos", "Returns the cos of the arguments.", "cos(args)"));
         put("tan", new InBuiltFunction("tan", "Returns the tan of the arguments.", "tan(args)"));
@@ -42,7 +42,6 @@ public class InBuiltFunction extends Function {
         put("rand", new InBuiltFunction("rand", null, null));
         put("fac", new InBuiltFunction("fac", null, null));
     }};
-
 
     public InBuiltFunction() {
         this(null, null, null);

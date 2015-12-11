@@ -28,10 +28,10 @@ import javax.swing.JLabel;
  */
 public class DisplayComponent extends JLabel implements MathObject {  
 
-    private Grapher grapher;
-    private Equation equation;
-    private Set set;
-    private Color color;
+    protected Grapher grapher;
+    protected Equation equation;
+    protected Set set;
+    protected Color color;
 
     /** The element that draws the lines. */
     public Graphics2D drawer;   

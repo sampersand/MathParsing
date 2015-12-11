@@ -17,10 +17,10 @@ import java.util.ArrayList;
 
 
 public class graph extends CustomFunction{
-    private ArrayList<EquationSystem> equations;
-    private ArrayList<Set> sets;
-    private GraphComponents gcomp;
-    private Node node;
+    protected ArrayList<EquationSystem> equations;
+    protected ArrayList<Set> sets;
+    protected GraphComponents gcomp;
+    protected Node node;
 
     public String help() {
         return "Graphs any combination of sets and / or functions";
@@ -53,10 +53,10 @@ public class graph extends CustomFunction{
             String[] vals = n.token().val().replaceAll("^" + id + ":","").replaceAll(" ","").split(",");
             switch(id) {
                 case "eq": case "":
-                    equations.get(equations.size() - 1).add(new Equation(vals[0]));
+                    equations.get(equations.size() - 1).add(new Equation().add(vals[0]));
                     break;
                 case "eqandset": //make sure to put these in front l0l
-                    equations.get(equations.size() - 1).add(new Equation(vals[0]));
+                    equations.get(equations.size() - 1).add(new Equation().add(vals[0]));
                 case "eqtoset":
                     sets.add(varsToSet(vals));
                     break;
@@ -64,7 +64,7 @@ public class graph extends CustomFunction{
                     sets.add(getSet(vals));
                     break;
                 case "eqandresid":
-                    equations.get(equations.size() - 1).add(new Equation(vals[0]));
+                    equations.get(equations.size() - 1).add(new Equation().add(vals[0]));
                 case "eqtoresid":
                     sets.add(varsToSet(vals).resid());
                     break;

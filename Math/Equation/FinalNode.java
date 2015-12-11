@@ -15,13 +15,13 @@ import Math.Exception.NotDefinedException;
 public class FinalNode extends Node implements MathObject {
 
     /** The String representation of this. Only used if FinalNode is representing a variable. */
-    private String sVal;
+    protected String sVal;
 
     /** The numeric representation of this. Only used if FinalNode is representing a constant. */    
-    private double dVal;
+    protected double dVal;
 
     /**
-     * The default constructor for FinalNode. Just passes null to the main constructor.
+     * The default constructor for FinalNode. Just passes an empty {@link Token} to the main constructor.
      */
     public FinalNode() {
         this(new Token());

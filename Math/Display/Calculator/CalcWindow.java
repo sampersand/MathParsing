@@ -35,20 +35,20 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
     /**
      * The text field that keeps track of the used input into the calculator.
      */
-    private JTextField dispField = new JTextField(20);
+    protected JTextField dispField = new JTextField(20);
 
     /**
      * A list of the <code>JButtons</code> on the calculator screen.
      * The key is the text on the buttons, and the value is an instance of the <code>Jbutton</code>
      * class.
      */
-    private Hashtable <String, JButton> buttons = new Hashtable <String, JButton>();
+    protected Hashtable <String, JButton> buttons = new Hashtable <String, JButton>();
 
     /**
      * An instance of the <code>MainClass</code>. 
      * Used when graphing the equation obtained from <code>dispField</code>.
      */
-    private final MainClass MAINCL;
+    protected final MainClass MAINCL;
 
     /**
      * Initializer of the CalcWindow. 

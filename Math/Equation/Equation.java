@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class Equation implements MathObject {
 
     /** This classe's list of expressions that are equal to eachother. */
-    private ArrayList<Expression> expressions;
+    protected ArrayList<Expression> expressions;
 
     /**
      * The default constructor. This just instantiates {@link #expressions} as an empty ArrayList.
@@ -27,58 +27,32 @@ public class Equation implements MathObject {
         expressions = new ArrayList<Expression>();
     }
 
+
     /**
-     * The constructor that takes any amount of {@link Expression Expressions} as parameters. It just instantiates
-     * {@link #expressions} with the passed parameters <code>pExprs</code>.
-     * @param pExprs    A variable amount of Expressions that will instatiate {@link #expressions Expressions}.
+     * Adds all of the {@link Expression Expressions} as defined in <code>pExprs</code>.
+     * @param pExprs    An Arraylist of {@link Expression Expressions} that will be added to {@link #expressions}.
+    *
      */
-    public Equation(Expression... pExprs) throws InvalidArgsException{
-        expressions = new ArrayList<Expression>() {{
-            for(Expression expr : pExprs)
-                add(expr);
-        }};
+    public Equation add(ArrayList<Expression> pExprs) throws InvalidArgsException{
+        expressions.addAll(pExprs);
+        return this;
     }
 
     /**
-     * The constructor that takes an ArraylList of {@link Expression Expressions} as
-     */
-    public Equation(ArrayList<Expression> pExprs) throws InvalidArgsException{
-        expressions = pExprs;
-    }
-
-    /**
-     * The construcor that takes any amount of Strings as parameters. It just instantiates {@link #expressions} with
-     * {@link Expression expressions}, which are in turn instantiated with each string of <code>pStrs</code>. 
-     * NOTE: Somehow connect this with {@link #add(String...) }... hmm 
-     * @param pStrs    A variable amount of Strings that will instatiate {@link #expressions Expressions}.
-     * */
-    public Equation(String... pStrs) {
-        expressions = new ArrayList<Expression>();
-        for(String str : pStrs) {
-            if(str.split("=").length != 1) {
-                for(String strSpl : str.split("=")) {
-                    expressions.add(new Expression(strSpl));
-                }
-            } else {
-                expressions.add(new Expression(str));
-            }
-        }
-    }
-
-    /**
-     * Adds all of the expressions in <code>pExprs</code> to {@link #expressions}.
+     * Adds all of the {@link Expression Expressions} in <code>pExprs</code> to {@link #expressions}.
      * @param pExprs    A variable amount of {@link Expresion Expressions} that will be added to {@link #expressions}.
      */
-    public void add(Expression... pExprs) {
+    public Equation add(Expression... pExprs) {
         for(Expression expr : pExprs)
             expressions.add(expr);
+        return this;
     }
 
     /**
-     * Adds all of the expressions in <code>pExprs</code> to {@link #expressions}.
+     * Adds all of the {@link Expression Expressions} in <code>pExprs</code> to {@link #expressions}.
      * @param pExprs    A variable amount of Strings that will be added to {@link #expressions}.
      */    
-    public void add(String... pStrs) {
+    public Equation add(String... pStrs) {
         for(String str : pStrs) {
             if(str.split("=").length != 1) {
                 for(String strSpl : str.split("=")) {
@@ -88,6 +62,7 @@ public class Equation implements MathObject {
                 expressions.add(new Expression(str));
             }
         }
+        return this;
     }
 
     /**

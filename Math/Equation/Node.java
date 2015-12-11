@@ -12,7 +12,8 @@ import Math.Exception.NotDefinedException;
 import java.util.ArrayList;
 
 /**
- * A class that represents either a function, an operator, or a group of tokens.
+ * A class that represents either a {@link CustomFunction custom function}, an {@link InBuiltFunction inbuilt function}, 
+ * an {@link OperationFunction operation}, or a group of tokens.
  * @author Sam Westerman
  * @version 0.1
  */
@@ -25,7 +26,7 @@ public class Node implements MathObject {
     protected Token token;
 
     /**
-     * The default constructor for Node. Just passes an empty Token to the {@link #Node(Token)} constructor. 
+     * The default constructor for Node. Just passes an empty Token to the {@link #Node(Token) main Node constructor}.
      */
     public Node() {
         this(new Token());
@@ -77,7 +78,7 @@ public class Node implements MathObject {
     public ArrayList<Node> subNodes() {return subNodes;}
     public Token token() {return token;}
     /**
-     * Condenses functions and groups together into a single node. Creates 1-length nodes for operators and vars / nums.
+     * Condenses functions and groups together into a single node. Creates 1-length nodes for operations and vars / nums.
      * Note that this is only ever used with {@link #fixNodes(Node) fixNodes}, 
      * {@link #generateNodes(ArrayList) generateNodes} and {@link #completeNodes(Node) completeNodes}.
      * @param pos       The position to start condensing nodes form.
@@ -482,9 +483,26 @@ public class Node implements MathObject {
         } else
             return ret;
     }
+
+    /**
+     * Evaluates the Node <code>pNode</code> via the {@link EquationSystem pEqSys}.
+     * @param pEqSys    The {@link EquationSystem} that the Node <code>pNode</code> will be evaluated with.
+     * @param pNode     The Node to evaluate <code>pNode</code> with.
+     * @throws NotDefinedException  Thrown when <code>pNode</code> is a {@link FinalNode}, or a {@link CustomFunction}
+     *                              defined in {@link EquationSystem#functions} isn't able to be evaluated.
+     */
     public static double eval(EquationSystem pEqSys, Node pNode) throws NotDefinedException {
         return pNode.eval(pEqSys);
-}
+    }
+
+    /**
+     * Evaluates <code>this</code> via the {@link EquationSystem EquationSystem pEqSys}.
+     * TODO: Get a CustomFunction with {@link Token#val() token().val()} if it isn't defined elsewhere
+     * @param pEqSys    The {@link EquationSystem} that <code>this</code> will be evaluated with.
+     * @throws NotDefinedException  Thrown when <code>this</code> is a {@link FinalNode}, or a {@link CustomFunction}
+     *                              defined in {@link EquationSystem#functions() pEqSys.functions()} isn't able to be
+     *                              evaluated.
+     */
     public double eval(EquationSystem pEqSys) throws NotDefinedException {
         if (this instanceof FinalNode) {
             throw new NotDefinedException("This is implemented in FinalNode... How was i triggered...?");
@@ -511,10 +529,6 @@ public class Node implements MathObject {
         }
     }
 
-    /**
-     * A simple representation of this class.
-     * @return A simple String representation of this.
-     */
     @Override
     public String toString() {
         String ret = '{' + token.val() + ':';
@@ -525,10 +539,6 @@ public class Node implements MathObject {
 
     }
     
-    /**
-     * The more robust version of this class's {@link #toString()}, but without the indentation.
-     * @return A more detailed String representation of this.
-     */
     @Override
     public String toFullString() {
         String ret = "{\"" + token.val() + "\" | " + token.type() + " | ";

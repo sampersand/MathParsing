@@ -22,7 +22,8 @@ public class summation extends CustomFunction{
      * Params: ([START],END,[STEP])
      * if START is omitted, then 0 is used in its place
      * if STEP is omitted, 1 is used in its place
-     * @param pFactors      The factors
+     * @param pEq      The EquationSystem
+     * @param pNode     The Node
      * @return The summation of the numbers defined by pNode.
      */
     @Override

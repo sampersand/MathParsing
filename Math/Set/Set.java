@@ -25,17 +25,17 @@ public class Set implements MathObject {
      * The first, and primary, list for this class. Whenever a function is called without parameters, this array will
      * be the one passed. When graphing, this is the "X" axis.
      */
-    private double[] arr1;
+    protected double[] arr1;
 
     /**
      * The second list for this class. When graphing, this is the "Y" axis.
      */
-    private double[] arr2;
+    protected double[] arr2;
 
     /**
      * The EquationSystem that is used for this class. Most of the time, it is created via {@link #linReg()}.
      */
-    private EquationSystem equationsys;
+    protected EquationSystem equationsys;
 
     /**
      * Calls {@link #Set(double[],double[]) another constructor} passing <code>pArr1</code> as both <code>pArr1</code>,
@@ -43,9 +43,7 @@ public class Set implements MathObject {
      * @param pArr1     The array that {@link #arr1} and {@link #arr2} will be based on.
      */
     public Set(double[] pArr1) {
-
-        this(pArr1, pArr1)
-        ;
+        this(pArr1, pArr1);
     }
 
     /**
@@ -207,14 +205,14 @@ public class Set implements MathObject {
      * Passes a ArrayList of {@link Equation Equations} of length 1 to
      * {@link EquationSystem#eval(ArrayList,String) EquationSystem's eval function}, with the first element in the
      * Arraylist being instantiated by the following code:
-     * <br><code>new ArrayList&#060;Equation&#062;() {{ add(new Equation(toSolve + " = " +pVal));}}</code>
+     * <br><code>new ArrayList&#060;Equation&#062;() {{ add(new Equation(toSolve, pVal));}}</code>
      * @param pVal      The value to set "y" to when evaluating the {@link EquationSystem} <code>pEq</code>.
      * @param pEq       The {@link EquationSystem} that will be evaluated with "yhat" being set to <code>pVal</code>.
      * @param toSolve   The variable to solve for.
      * @return The result of the evaluated {@link EquationSystem}.
      */
     public static double pred(double pVal, EquationSystem pEq, String toSolve) {
-        return pEq.eval(new ArrayList<Equation>() {{ add(new Equation(toSolve + " = " +pVal));}}, toSolve);
+        return pEq.eval(new ArrayList<Equation>() {{ add(new Equation().add(toSolve, "" + pVal));}}, toSolve);
     }
 
     /**
@@ -296,7 +294,7 @@ public class Set implements MathObject {
     public static EquationSystem linReg(double[] pArr1, double[] pArr2) {
         double b1 = r(pArr1, pArr2) * S(pArr2) / S(pArr1);
         double b0 = avg(pArr2) - b1 * avg(pArr1);
-        return new EquationSystem().add(new Equation("yhat = b0 + b1 * y"),
+        return new EquationSystem().add(new Equation().add("yhat","b0 + b1 * y"),
                                       EquationSystem.genEq("b0", b0), 
                                       EquationSystem.genEq("b1", b1));
 
@@ -767,9 +765,9 @@ public class Set implements MathObject {
      * <br> Note: This is depreciated and will be removed soon. It can be replaced by
      * <code>System.out.println(linReg(pArr1,pArr2))</code>.
      * @param pArr1         The "x" array that will be used to generate the 
-     *                      {@link linReg(double[],double[]) linear equation}. 
+     *                      {@link #linReg(double[],double[]) linear equation}. 
      * @param pArr2         The "y" array that will be used to generate the
-     *                      {@link linReg(double[],double[]) linear equation}. 
+     *                      {@link #linReg(double[],double[]) linear equation}. 
      * @see #linReg(double[],double[])
      * @see <a href="https://en.wikipedia.org/wiki/Linear_regression">Linear Regression</a>
      * @deprecated 

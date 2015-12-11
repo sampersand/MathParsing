@@ -37,7 +37,7 @@ public class Tester {
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {
-                eqsys = new EquationSystem().add(new Equation(args[0]));
+                eqsys = new EquationSystem().add(new Equation().add(args[0]));
             } else if(args.length > 1) {
                 int i = -1;
                 char type = ' ';

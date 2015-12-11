@@ -11,7 +11,7 @@ public class DoesntExistException extends MathException {
 
     /**
      * Default Constructor. Just passes <code>"Define me!"</code> to
-     * {@link DoesntExistException(String) the main constructor}.
+     * {@link #DoesntExistException(String) the main constructor}.
      */
     public DoesntExistException() {
         super();

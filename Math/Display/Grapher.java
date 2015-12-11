@@ -25,12 +25,12 @@ import java.util.ArrayList;
 
 
 public class Grapher extends JPanel implements MathObject {
-    private JLayeredPane layeredPane;
+    protected JLayeredPane layeredPane;
 
-    private ArrayList<Set> sets;
-    private ArrayList<EquationSystem> equations;
-    private GraphComponents components;
-    private ArrayList<DisplayComponent> displays;
+    protected ArrayList<Set> sets;
+    protected ArrayList<EquationSystem> equations;
+    protected GraphComponents components;
+    protected ArrayList<DisplayComponent> displays;
 
     public Grapher() {
         this(new GraphComponents());

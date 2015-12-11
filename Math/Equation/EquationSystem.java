@@ -11,8 +11,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class EquationSystem implements MathObject, Iterable {
-    private ArrayList<Equation> equations;
-    private HashMap<String, CustomFunction> functions;
+    protected ArrayList<Equation> equations;
+    protected HashMap<String, CustomFunction> functions;
 
     public EquationSystem() {
         this(new ArrayList<Equation>(), new HashMap<String, CustomFunction>());
@@ -30,10 +30,12 @@ public class EquationSystem implements MathObject, Iterable {
         return this;
     }
     public EquationSystem add(String... pEqStrings) {
-        if(pEqStrings != null && pEqStrings.length != 0)
+        if(pEqStrings != null && pEqStrings.length != 0){
+            equations.add(new Equation());
             for(String eq : pEqStrings) {
-                equations.add(new Equation(eq));
+                equations.add(new Equation().add(eq));
             }
+        }
         return this;
     }
     public EquationSystem add(ArrayList<Equation> pEqs) {
@@ -44,7 +46,7 @@ public class EquationSystem implements MathObject, Iterable {
     public EquationSystem add(CustomFunction... pFuncs) {
         if(pFuncs != null && pFuncs.length != 0)
             for(CustomFunction func : pFuncs) {
-                functions.put(func.name, func);;
+                functions.put(func.name, func);
             }
         return this;
     }

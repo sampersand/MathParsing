@@ -9,14 +9,31 @@ import Math.Exception.InvalidArgsException;
 import java.util.HashMap;
 import java.util.Random;
 
-public class OperatorFunction extends InBuiltFunction {
+/**
+ * A class that represents an operation in mathametics. It acts very similar to an {@link InBuiltFunction}.
+ * 
+ * @author Sam Westerman
+ * @version 0.1 
+ * @see <a href="https://en.wikipedia.org/wiki/Operation_(mathematics)">Operation</a>
+ */
+public class OperationFunction extends InBuiltFunction {
 
-    public OperatorFunction() {
+    /**
+     * Default constructor. Just passes <code>null, null, null</code> to
+     * {@link #OperationFunction(String) another OperationFunction constructor}.
+     */
+    public OperationFunction() {
         this(null, null, null);
     }
 
-    public OperatorFunction(String pVal, String pHelp, String pSyntax) {
-        super(pVal, pHelp, pSyntax);
+    /**
+     * The main constructor for OperationFunction. Takes a name, a help string, and a syntax string.
+     * @param pOper     The symbol of the operator, like <code>+, -, *, /, ^</code>.
+     * @param pHelp     The "help" text that will be displayed when the {@link #help()} function is called.
+     * @param pSyntax   The "syntax" text that will be displayed when the {@link #syntax()} function is called.
+     */
+    public OperationFunction(String pOper, String pHelp, String pSyntax) {
+        super(pOper, pHelp, pSyntax);
     }
 
     @Override
@@ -51,13 +68,13 @@ public class OperatorFunction extends InBuiltFunction {
                 }
                 break;
             default:
-                throw new NotDefinedException("OperatorFunction " + this + " doesnt have a defined way to compute it!");
+                throw new NotDefinedException("OperationFunction " + this + " doesnt have a defined way to compute it!");
         }
         return ret;
     }
     @Override
     public String toString() {
-        return "OperatorFunction: '" + name + "'";
+        return "OperationFunction: '" + name + "'";
     }
 
     @Override

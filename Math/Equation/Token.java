@@ -12,10 +12,10 @@ import java.util.HashMap;
  */
 public class Token implements MathObject {
     /** The String that this class is based upon. */
-    private String val;
+    protected String val;
 
-    /** The type of token. Used to distinguish between things such as functions, groups, and operators. */
-    private Type type;
+    /** The type of token. Used to distinguish between things such as functions, groups, and operations. */
+    protected Type type;
 
     /**
      * The different Type of tokens. They are used to determine what to do with the tokens (and, eventually, the
@@ -66,7 +66,7 @@ public class Token implements MathObject {
         FUNC
         , 
         /**
-         * An operator. Currently, the only operators are <code>+, -, *, /, and ^</code>. Things like "!" for factorial 
+         * An operation. Currently, the only operations are <code>+, -, *, /, and ^</code>. Things like "!" for factorial 
          * need to change to {@link #FUNC functions} (but "!" isn't a valid function name; Names can only have letters).
          */
         OPER
@@ -145,7 +145,7 @@ public class Token implements MathObject {
     /**
      * Used to determine if a //{@link Node} based on a token should be a {@link FinalNode} or a {@link Node}
      * (in this case, it's the latter). Also used to distinguish between {@link Token.Type#FUNC functions} / 
-     * {@link Token.Type#GROUP groups} and {@link Token.Type#OPER operators}.
+     * {@link Token.Type#GROUP groups} and {@link Token.Type#OPER operations}.
      * @return True if type is a GROUP or FUNC.
      */
     public boolean isGroup() {
@@ -154,7 +154,7 @@ public class Token implements MathObject {
 
     /**
      * Used to distinguish between {@link Token.Type#FUNC functions} / 
-     * {@link Token.Type#GROUP groups} and {@link Token.Type#OPER operators}.
+     * {@link Token.Type#GROUP groups} and {@link Token.Type#OPER operations}.
      * @return True if type is a OPER.
      */    
     public boolean isOper() {
@@ -169,7 +169,7 @@ public class Token implements MathObject {
     }
 
     /**
-     * Used to figure out which operators come before others in the "order of operations". Parentheses are handeled
+     * Used to figure out which operations come before others in the "order of operations". Parentheses are handeled
      * seperately.
      * if <code>isUni()</code>, priority is 4.
      * <p> else if type is FUNC or GROUP, priority is 3.
@@ -190,7 +190,7 @@ public class Token implements MathObject {
             case "/": return 1;
             case "^": return 2;
             default:
-                throw new NotDefinedException("[ERROR] Operator '" + val + "' doesn't have a priority!");
+                throw new NotDefinedException("[ERROR] Operation '" + val + "' doesn't have a priority!");
         }
     }
 

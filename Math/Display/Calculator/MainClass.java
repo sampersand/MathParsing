@@ -21,8 +21,8 @@ import javax.swing.JOptionPane;
  * @version 1 Sep 29, 2015.
  */ 
 public class MainClass implements MathObject {
-    private CalcWindow calcWin;
-    private static JFrame graphingFrame;
+    protected CalcWindow calcWin;
+    protected static JFrame graphingFrame;
 
     /**
      * The constructor for <code>MainClass</code>, which creates the calculator Window.

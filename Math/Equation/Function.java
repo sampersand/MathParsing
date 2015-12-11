@@ -17,17 +17,17 @@ public abstract class Function implements MathObject {
     /**
      * A String that holds either the function name ({@link InBuiltFunction}) or the file name ({@link CustomFunction}).
      */
-    public String name;
+    protected String name;
 
     /**
      * The Help text for this function
      */
-    private String help;
+    protected String help;
 
     /**
      * The Syntax text for this function.
      */
-    private String syntax;
+    protected String syntax;
 
     /**
      * The default constructor for the Function class. Passes null for the pName to the other Constructor.
@@ -36,6 +36,13 @@ public abstract class Function implements MathObject {
         this(null);
     }
 
+    /**
+     * Returns this class's {@link #name}.
+     * @return this class's {@link #name}.
+     */
+    public final String name(){
+        return name;
+    }
     /**
      * Instantiates the Function with the name of <code>pName</code>, and <code>null</code> for help and syntax. Just 
      * passes <code>pName, null, null</code> to {@link #Function(String,String,String) the main Function constructor}.

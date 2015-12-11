@@ -115,8 +115,8 @@ public class CustomFunction extends Function implements MathObject {
      * Takes the different parameter nodes, does whatever operations it was programmed to do, and spits a result back.
      * Executes This is kinda a weird and thrown together way of getting a custom class. They have to be in 
      * <code>Math.Equation.CustomFunctions</code>, and have to have exec declared.
-     * @param pEqSys        A {@link EquationSystem} that contains all relevant information about Equations and functions
-     *                      is stored.
+     * @param pEqSys        An {@link EquationSystem} that contains all relevant information about 
+     *                      {@link Equation Equations} and {@link Function Functions} is stored.
      * @param pNode         The {@link Node} that is going to be solved.
      * @return A double representing the value of <code>pNode</code>pNode, when solved for with <code>pEqSys</code>.
      * @throws NotDefinedException    Thrown when the function is defined, but how to execute it isn't.
@@ -124,11 +124,11 @@ public class CustomFunction extends Function implements MathObject {
      */
     @Override
     @SuppressWarnings("unchecked") //stupid cl.getDeclaredMethod
-    public double exec(EquationSystem pEq, Node pNode) throws NotDefinedException, InvalidArgsException {
+    public double exec(EquationSystem pEqSys, Node pNode) throws NotDefinedException, InvalidArgsException {
         try{
             Class[] argType = {EquationSystem.class, Node.class};
             Method execMethod = cl.getDeclaredMethod("exec",argType);
-            Object[] argListForInvokedExec = new Object[]{pEq, pNode};
+            Object[] argListForInvokedExec = new Object[]{pEqSys, pNode};
             return (double)execMethod.invoke(cl.newInstance(), argListForInvokedExec);
         } catch (NoSuchMethodException err) {
             Print.printe("A NoSuchMethodException happened when attempting to execute a " +

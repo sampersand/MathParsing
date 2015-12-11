@@ -13,7 +13,7 @@ public class GraphComponents implements MathObject {
      * The physical amount of pixels the window is wide and tall.
      * The array will look like the following: <code>(X, Y)</code>
      */
-    private int[] winBounds;
+    protected int[] winBounds;
 
     /**
      * The min and max x/y values used for display.
@@ -22,12 +22,12 @@ public class GraphComponents implements MathObject {
      * <p>
      * The array will look like the following: <code>(min X, min Y, max X, max Y)</code>.
      */
-    private double[] dispBounds;
+    protected double[] dispBounds;
  
     /**
      * The amount of lines that will be drawn. "step" is a bit of a misnomer, but I couldnt think of anything better.
      */
-    private double step;
+    protected double step;
 
     public GraphComponents() {
         this(new int[]{1250, 750}, new double[]{-10, -10, 10, 10}, 1000);
