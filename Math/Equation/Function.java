@@ -54,7 +54,10 @@ public abstract class Function implements MathObject {
     
     /**
      * The main cosntructor for the Function class. All it does is instantiates name.
-     * @param pName         The name of the file which stores the code for how to execute the custom function.
+     * @param pName         The name of the function - serves as an identifier for {@link InBuiltFunction}s, and as the
+     *                      filename for {@link CustomFunction}s.
+     * @param pHelp         The help string for the function.
+     * @param pSyntax       The syntax string for the function.
      */
     public Function(String pName, String pHelp, String pSyntax) {
         name = pName;
@@ -95,11 +98,12 @@ public abstract class Function implements MathObject {
 
     }
     /**
-     * Takes the different parameter nodes, does whatever operations it was programmed to do, and spits a result back.
-     * @param pEqSys        A {@link EquationSystem} that contains all relevant information about Equations and functions
-     *                      is stored.
+     * Takes the parameter {@link Node} (and {@link EquationSystem}, performs whatever this function is defined to do,
+     * and returns the result.
+     * @param pEqSys        An {@link EquationSystem} that contains all relevant information about
+     *                      {@link Equation Equations} and {@link Function Functions} is stored.
      * @param pNode         The {@link Node} that is going to be solved.
-     * @return A double representing the value of <code>pNode</code>pNode, when solved for with <code>pEqSys</code>.
+     * @return A double representing the value of <code>pNode</code>, when solved for with <code>pEqSys</code>.
      * @throws NotDefinedException    Thrown when the function is defined, but how to execute it isn't.
      * @throws InvalidArgsException   Thrown when the function required parameters, and the ones passed aren't right.
      */

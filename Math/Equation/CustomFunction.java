@@ -111,11 +111,13 @@ public class CustomFunction extends Function implements MathObject {
         return null;
 
     }
+    
     /**
-     * Takes the different parameter nodes, does whatever operations it was programmed to do, and spits a result back.
-     * Executes This is kinda a weird and thrown together way of getting a custom class. They have to be in 
+     * Takes the parameter {@link Node} (and {@link EquationSystem}, performs whatever this function is defined to do,
+     * and returns the result.
+     * <br>NOTE: This is kinda a weird and thrown together way of getting a custom class. They have to be in 
      * <code>Math.Equation.CustomFunctions</code>, and have to have exec declared.
-     * @param pEqSys        An {@link EquationSystem} that contains all relevant information about 
+     * @param pEqSys        An {@link EquationSystem} that contains all relevant information about
      *                      {@link Equation Equations} and {@link Function Functions} is stored.
      * @param pNode         The {@link Node} that is going to be solved.
      * @return A double representing the value of <code>pNode</code>pNode, when solved for with <code>pEqSys</code>.

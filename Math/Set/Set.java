@@ -374,7 +374,7 @@ public class Set implements MathObject {
     /**
      * Verifies that the cardinality of <code>pArr1</code> and <code>pArr2</code> is the same. This means that it checks
      * and makes sure that their <code>length</code>s are the same, and if they aren't, it throws a
-     * {@link Math.Exception.MathException#MathException()}.
+     * {@link Math.Exception.MathException}.
      * @param pArr1         The first array; <code>pArr1.length</code> will be compared against
      *                      <code>pArr2.length</code>.
      * @param pArr2         The second array; <code>pArr1.length</code> will be compared against
