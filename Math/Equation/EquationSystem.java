@@ -10,23 +10,61 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+/**
+ * The main class for all equation-related things. It keeps track of different equations, and of names of 
+ * {@link CustomFunction}s (and the corresponding classes for them).
+ * 
+ * @author Sam Westerman
+ * @version 0.1
+ */
 public class EquationSystem implements MathObject, Iterable {
+
+    /**
+     * An ArrayList of all {@link Equation}s that are related to this class. The "main" Equation is the first one in the
+     * list. All others should be related to them. 
+     * <br> Note: This is also where variables are defined. To define <code>x = 4 * 3</code>, you would do
+     * <code>add(new Equation().add("x","4 * 3"))</code>.
+     */
     protected ArrayList<Equation> equations;
+
+    /**
+     * A HashMap of all {@link CustomFunction}s. The key is the user-defined name of it, and the value is the 
+     * CustomFunction associated with it.
+     * <br> Note: that a user-defined name could be the name of the file that defines
+     * the CustomFunction, or another name. For example, a CustomFunction with a {@link Function#name name} of "graphEq"
+     * might have a key of "displayEq" instead.
+     */
     protected HashMap<String, CustomFunction> functions;
 
+
+    /**
+     * The default constructor for this class. Just passes an empty ArrayList and HashMap to 
+     * {@link #EquationSystem(ArrayList,HashMap) the main EquationSystem constructor}.
+     */
     public EquationSystem() {
         this(new ArrayList<Equation>(), new HashMap<String, CustomFunction>());
     }
+
+    /**
+     * The main constructor for this class. Just instantiates {@link #equations} and {@link #functions} with
+     * <code>pEqs</code> and <code>pFuncs</code>, respectively.
+     * @param pEqs      An ArrayList of {@link Equation}s, used to instiate {@link #equations}.
+     * @param pFuncs    An ArrayList of {@link CustomFunction}s, used to instatiate {@link #functions}.
+     */
     public EquationSystem(ArrayList<Equation> pEqs, HashMap<String, CustomFunction> pFuncs) {
         equations = pEqs;
         functions = pFuncs;
     }
 
+    /**
+     * Adds the passed {@link Equation}s to {@link #equations}, and returns this class. Used as a constructor builder.
+     * @param pEqs      A variable amount of arguemnts, all of which will be added to pEqs.
+     * @return This class, with <code>pEqs</code> added to {@link #equaitons}.
+     */
     public EquationSystem add(Equation... pEqs) {
-        if(pEqs != null && pEqs.length != 0)
-            for(Equation eq : pEqs) {
-                equations.add(eq);
-            }
+        for(Equation eq : pEqs) {
+            equations.add(eq);
+        }
         return this;
     }
     public EquationSystem add(String... pEqStrings) {
