@@ -116,14 +116,14 @@ public class DisplayComponent extends JLabel implements MathObject {
             double cStep = grapher.components().cStep();
             for(double x = dispBounds[0]; x < dispBounds[2]; x += cStep) {
                 throw new NotDefinedException();
-                // try{
+                // try {
                     // drawl(x, equation.eval(x, "x"), x + cStep, equation.eval(x + cStep, "x"));
                 // } catch (NotDefinedException err) {
                     // drawl(x, equation.eval(x, "y"), x + cStep, equation.eval(x + cStep, "y"));
                 // }
             }
         }
-        else{
+        else {
             drawl(0, dispBounds[1], 0, dispBounds[3]); //axis.
             drawl(dispBounds[0], 0, dispBounds[2], 0); //axis.
         }

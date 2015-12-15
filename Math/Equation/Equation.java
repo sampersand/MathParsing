@@ -29,18 +29,19 @@ public class Equation implements MathObject {
 
 
     /**
-     * Adds all of the {@link Expression Expressions} as defined in <code>pExprs</code>.
-     * @param pExprs    An Arraylist of {@link Expression Expressions} that will be added to {@link #expressions}.
-    *
+     * Adds all of the {@link Expression}s as defined in <code>pExprs</code>.
+     * @param pExprs    An Arraylist of {@link Expression}s that will be added to {@link #expressions}.
+     * @return This class, with <code>pExprs</code> added.
      */
-    public Equation add(ArrayList<Expression> pExprs) throws InvalidArgsException{
+    public Equation add(ArrayList<Expression> pExprs) {
         expressions.addAll(pExprs);
         return this;
     }
 
     /**
-     * Adds all of the {@link Expression Expressions} in <code>pExprs</code> to {@link #expressions}.
-     * @param pExprs    A variable amount of {@link Expresion Expressions} that will be added to {@link #expressions}.
+     * Adds all of the {@link Expression}s in <code>pExprs</code> to {@link #expressions}.
+     * @param pExprs    A variable amount of {@link Expression}s that will be added to {@link #expressions}.
+     * @return This class, with <code>pExprs</code> added.
      */
     public Equation add(Expression... pExprs) {
         for(Expression expr : pExprs)
@@ -49,8 +50,9 @@ public class Equation implements MathObject {
     }
 
     /**
-     * Adds all of the {@link Expression Expressions} in <code>pExprs</code> to {@link #expressions}.
-     * @param pExprs    A variable amount of Strings that will be added to {@link #expressions}.
+     * Adds new {@link Expression}s, each instatiated by a paramater in <code>pStrs</code>, to {@link #expressions}.
+     * @param pStrs    A variable amount of Strings that will be added to {@link #expressions}.
+     * @return This class, with <code>pStrs</code> added.
      */    
     public Equation add(String... pStrs) {
         for(String str : pStrs) {

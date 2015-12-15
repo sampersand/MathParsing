@@ -35,7 +35,10 @@ public class graph extends CustomFunction{
     }
 
     @Override
-    public double exec(EquationSystem pEq, Node pNode) throws NotDefinedException, InvalidArgsException {
+    public double exec(EquationSystem pEq,
+                       Node pNode) throws
+                           NotDefinedException,
+                           InvalidArgsException {
         if(pNode.size() == 0)
             throw new InvalidArgsException("The node size has to be greater than 1!");
         for(Node n : pNode.subNodes()) {
@@ -83,7 +86,7 @@ public class graph extends CustomFunction{
 
     private Set varsToSet(String[] vals) {
         double min, max, cStep;
-        try{
+        try {
             if(vals.length == 1 || vals.length == 2) {
                 min = gcomp.dispBounds()[0]; // this might bring up an error if eqsets are defined before 
                 max = gcomp.dispBounds()[2]; // custom gcomps are...
@@ -92,7 +95,7 @@ public class graph extends CustomFunction{
                 min = Double.parseDouble(vals[2]);
                 max = Double.parseDouble(vals[3]);
                 cStep = Double.parseDouble(vals[1]);
-            } else{
+            } else {
                 throw new InvalidArgsException("If using Identifier 'eqset', the only allowed arguments "+
                     "are: 'eq' OR 'eq, cstep' OR 'eq, cstep, min, max'!");
             }

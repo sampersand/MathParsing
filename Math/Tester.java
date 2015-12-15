@@ -48,7 +48,7 @@ public class Tester {
                     if(args[i].equals("--f")) {type = 'f'; continue;}
                     if(args[i].equals("--e")) {type = 'e'; continue;}
                     if (type == 'f') {
-                        try{
+                        try {
                             eqsys.add(args[i].split(":")[0], new CustomFunction(args[i].split(":")[1])); //fix me.
                         } catch(NumberFormatException err) {
                             Print.printw("Syntax: FUNCNAME:FUNC.val() (" + args[i] + ")");
@@ -61,7 +61,7 @@ public class Tester {
                 }
             }
         }
-        for(Object eq : eqsys){
+        for(Object eq : eqsys) {
             eq = (Equation)eq;
             System.out.println(eq);
         }

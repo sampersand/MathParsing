@@ -25,11 +25,11 @@ public class Expression implements MathObject {
      */
     public Node node;
     /**
-     * The default constructor for the Expression class. Just passes an empty String, Node, and Factors to the 
-     * {@link #Expression(String,Node,Factors) main expression constructor}.
+     * The default constructor for the Expression class. Just passes an empty String, and Node to the 
+     * {@link #Expression(String,Node) main expression constructor}.
      */
     public Expression() {
-        this("",new Node());
+        this("", new Node());
     }
 
 
@@ -59,7 +59,8 @@ public class Expression implements MathObject {
      * @param pEq       The String representation of the expression. Is only ever used to identify individual expressions.
      * @param pNode        The Node that the entire expression is based off of.
      */ 
-    public Expression(String pEq, Node pNode) {
+    public Expression(String pEq,
+                      Node pNode) {
         expression = pEq.trim().replaceAll(" ","");
         node = pNode;
     }

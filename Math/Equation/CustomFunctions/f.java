@@ -17,7 +17,10 @@ public class f extends CustomFunction{
         return "arg1, arg2, ..., N";
     }
     @Override
-    public double exec(EquationSystem pEq, Node pNode) throws NotDefinedException, InvalidArgsException {
+    public double exec(EquationSystem pEq,
+                       Node pNode) throws
+                           NotDefinedException,
+                           InvalidArgsException {
         double[] vals = evalNode(pEq, pNode);
         double ret = 0;
         for(double val : vals)

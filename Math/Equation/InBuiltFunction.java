@@ -51,7 +51,7 @@ public class InBuiltFunction extends Function {
 
     /**
      * Default constructor. Just passes <code>null, null, null</code> to
-     * {@link #InBuiltFunction(String) another InBuiltFunction constructor}.
+     * {@link #InBuiltFunction(String,String,String) another InBuiltFunction constructor}.
      */
     public InBuiltFunction() {
         this(null, null, null);
@@ -63,7 +63,9 @@ public class InBuiltFunction extends Function {
      * @param pHelp     The "help" text that will be displayed when the {@link #help()} function is called.
      * @param pSyntax   The "syntax" text that will be displayed when the {@link #syntax()} function is called.
      */
-    public InBuiltFunction(String pName, String pHelp, String pSyntax) {
+    public InBuiltFunction(String pName,
+                           String pHelp,
+                           String pSyntax) {
         super(pName, pHelp, pSyntax);
     }
 
@@ -74,18 +76,25 @@ public class InBuiltFunction extends Function {
      * @param pEqSys        The {@link EquationSystem} that the function of name <code>pName</code> will be evaluated 
      *                      by.
      * @param pNode         The {@link Node} that will be passed to <code>pName</code>.
+     * @return A double representing the value of <code>pNode</code>, when solved for with <code>pEqSys</code>.
      * @throws NotDefinedException    Thrown when the function is defined, but how to execute it isn't.
      * @throws InvalidArgsException   Thrown when the function required parameters, and the ones passed aren't right.
      */
-    public static double exec(String pName, EquationSystem pEqSys, Node pNode) throws NotDefinedException,
-                              InvalidArgsException {
+    public static double exec(String pName,
+                              EquationSystem pEqSys,
+                              Node pNode) throws
+                                  NotDefinedException,
+                                  InvalidArgsException {
         if(FUNCTIONS.get(pName) == null)
             throw new NotDefinedException("There is no InBuiltFunction '" + pName + "' defined in FUNCTIONS!");
         return FUNCTIONS.get(pName).exec(pEqSys, pNode);
     }
 
     @Override
-    public double exec(EquationSystem pEqSys, Node pNode) throws NotDefinedException, InvalidArgsException {
+    public double exec(EquationSystem pEqSys,
+                       Node pNode) throws
+                           NotDefinedException,
+                           InvalidArgsException {
         double[] args = evalNode(pEqSys, pNode);
         switch(name) {
 

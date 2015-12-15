@@ -9,7 +9,7 @@ package Math.Exception;
  */
 public class TypeMisMatchException extends MathException {
     /**
-     * Default Constructor. Just passes <code>"Define me!"</code> to
+     * Default Constructor. Just calls <code>super()</code>.
      * {@link #TypeMisMatchException(String) the main constructor}.
      */
     public TypeMisMatchException() {

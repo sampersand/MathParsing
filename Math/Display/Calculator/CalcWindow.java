@@ -293,7 +293,7 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
                         if(spl.length != 2) {
                             throw new InvalidArgsException("When passing vars, format has to be 'Name:Val'");
                         } else {
-                            try{
+                            try {
                                 put(spl[0], Double.parseDouble(spl[1]));
                             } catch (NumberFormatException err) {
                                 throw new InvalidArgsException("When passing vars, their values have to be doubles!");

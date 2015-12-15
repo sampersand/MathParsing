@@ -40,7 +40,7 @@ public abstract class Function implements MathObject {
      * Returns this class's {@link #name}.
      * @return this class's {@link #name}.
      */
-    public final String name(){
+    public final String name() {
         return name;
     }
     /**
@@ -59,7 +59,9 @@ public abstract class Function implements MathObject {
      * @param pHelp         The help string for the function.
      * @param pSyntax       The syntax string for the function.
      */
-    public Function(String pName, String pHelp, String pSyntax) {
+    public Function(String pName,
+                    String pHelp,
+                    String pSyntax) {
         name = pName;
         help = pHelp;
         syntax = pSyntax;
@@ -89,9 +91,10 @@ public abstract class Function implements MathObject {
      * @return An array of doubles, with each position corresponding to the value of each Node of that position in 
      *         {@link Node#subNodes() pNode's subNodes()}.
      */
-    protected double[] evalNode(EquationSystem pEqSys, Node pNode) {
+    protected double[] evalNode(EquationSystem pEqSys,
+                                Node pNode) {
         double[] ret = new double[pNode.size()];
-        for(int i = 0; i < ret.length; i++){
+        for(int i = 0; i < ret.length; i++) {
             ret[i] = pNode.subNodes().get(i).eval(pEqSys);
         }
         return ret;
@@ -107,5 +110,8 @@ public abstract class Function implements MathObject {
      * @throws NotDefinedException    Thrown when the function is defined, but how to execute it isn't.
      * @throws InvalidArgsException   Thrown when the function required parameters, and the ones passed aren't right.
      */
-    public abstract double exec(EquationSystem pEqSys, Node pNode) throws NotDefinedException, InvalidArgsException;
+    public abstract double exec(EquationSystem pEqSys,
+                                Node pNode) throws
+                                    NotDefinedException,
+                                    InvalidArgsException;
 }

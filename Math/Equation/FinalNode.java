@@ -49,8 +49,23 @@ public class FinalNode extends Node implements MathObject {
         
     }
 
-    public String sVal() {return sVal;}
-    public double dVal() {return dVal;}
+    /**
+     * Returns this class's {@link #sVal}. Should only ever be called if
+     * {@link Token#type() This class's token's type} is {@link Token.Types#VAR a variable}.
+     * @return The name of the variable this class is modeled after.
+     */
+    public String sVal() {
+        return sVal;
+    }
+
+    /**
+     * Returns this class's {@link #sVal}. Should only ever be called if
+     * {@link Token#type() This class's token's type} is {@link Token#Types#NUM a number}.
+     * @return The name of the variable this class is modeled after.
+     */
+    public double dVal() {
+        return dVal;
+    }
 
     @Override
     public double eval(EquationSystem pEqSys) throws NotDefinedException {
@@ -105,6 +120,8 @@ public class FinalNode extends Node implements MathObject {
 
     /**
      * Just returns the {@link #toString} of this object. Mainly used for indentations.
+     * @param pos   The indentation level that would be used if this was just a {@link Node} and not a FinalNode. 
+     *              It is unused in this function.
      * @see   Node#toStringL
      */
     @Override

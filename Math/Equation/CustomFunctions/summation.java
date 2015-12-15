@@ -27,7 +27,10 @@ public class summation extends CustomFunction{
      * @return The summation of the numbers defined by pNode.
      */
     @Override
-    public double exec(EquationSystem pEq, Node pNode) throws NotDefinedException, InvalidArgsException {
+    public double exec(EquationSystem pEq,
+                       Node pNode) throws
+                           NotDefinedException,
+                           InvalidArgsException {
         double[] vals = evalNode(pEq, pNode);
         if(vals.length == 0 || vals.length > 3)
             throw new InvalidArgsException("ERROR when parsing summation. Syntax: " + syntax());

@@ -55,7 +55,8 @@ public class Node implements MathObject {
      * @param pToken        The token that will determine how this class interacts with its {@link #subNodes}.
      * @param pSubNodes     The list of subNodes this class will have.
      */
-    public Node(Token pToken, ArrayList<Node> pSubNodes) {
+    public Node(Token pToken,
+                ArrayList<Node> pSubNodes) {
         subNodes = pSubNodes;
         token = pToken;
     }
@@ -67,7 +68,8 @@ public class Node implements MathObject {
      * @param pToken        The token that will determine how this class interacts with its {@link #subNodes}.
      * @param pSubNodes     A of subNodes this class will have.
      */
-    public Node(Token pToken, Node... pSubNodes) {
+    public Node(Token pToken,
+                Node... pSubNodes) {
         subNodes = new ArrayList<Node>() {{
             for(Node n : pSubNodes)
                 add(n);
@@ -75,8 +77,22 @@ public class Node implements MathObject {
         token = pToken;
     }
 
-    public ArrayList<Node> subNodes() {return subNodes;}
-    public Token token() {return token;}
+    /**
+     * Returns this class's {@link #subNodes}. Note that this should never be called for {@link FinalNode}s.
+     * @return this class's {@link #subNodes}.
+     */
+    public ArrayList<Node> subNodes() {
+        return subNodes;
+    }
+
+    /**
+     * Returns this class's {@link #token}.
+     * @return this class's {@link #token}.
+     */
+    public Token token() {
+        return token;
+    }
+
     /**
      * Condenses functions and groups together into a single node. Creates 1-length nodes for operations and vars / nums.
      * Note that this is only ever used with {@link #fixNodes(Node) fixNodes}, 
@@ -87,7 +103,9 @@ public class Node implements MathObject {
      * @return The return type might seem odd, however, it always returns an updated pos as argument 1, and the new node
      *         to add as argument 2.
      */
-    public static Object[] condeseNodes(int pos, Node n, ArrayList<Token> pTokens) {
+    public static Object[] condeseNodes(int pos,
+                                        Node n,
+                                        ArrayList<Token> pTokens) {
         while(pos < pTokens.size()) {
             Token t = pTokens.get(pos);
             if(t.isConst())
@@ -162,7 +180,7 @@ public class Node implements MathObject {
             else if(n.token.isGroup()) {
                 e.addD(e.depth(), completeNodes(n), false);
             }
-            else{
+            else {
                 throw new NotDefinedException("There is no known way to complete the node '" + n + "'.");
             }
             i++;
@@ -199,7 +217,7 @@ public class Node implements MathObject {
     /**
      * Generates a "master node" from a list of tokens.
      * @param pTokens   The list of tokens that the master node will be based off of.
-     * @return The new master node - usually {@link EquationSystem#node} is set to this.
+     * @return The new master node.
      */
     public static Node generateNodes(ArrayList<Token> pTokens) {
         return completeNodes(fixNodes((Node)condeseNodes(0, new Node(Token.UNI), pTokens)[1]));
@@ -244,7 +262,8 @@ public class Node implements MathObject {
      * @param i         the position that n will be set to.
      * @param n         the node to replace the current one at position i.
      */    
-    public void set(int i, Node n) {
+    public void set(int i,
+                    Node n) {
         subNodes.set(i, n);
     }
 
@@ -290,7 +309,8 @@ public class Node implements MathObject {
      * @param pOver     Whether or not it will "override", and continue going down if a group is encountered.
      * @return The final node at layer i. Doesn't check to see if i is a valid layer.
      */
-    public Node getD(int i, boolean pOver) {
+    public Node getD(int i,
+                     boolean pOver) {
         if(this instanceof FinalNode)
             return this;
         if(i <= 0 || (get(size() - 1).token().type() == GROUP &&! pOver)) {
@@ -311,7 +331,8 @@ public class Node implements MathObject {
      * @param i         The amount of layers to go down.
      * @param n         The node to add to the last position at layer i.
      */
-    public void addD(int i, Node n) {
+    public void addD(int i,
+                     Node n) {
         addD(i, n, false);
     }
     /**
@@ -321,7 +342,9 @@ public class Node implements MathObject {
      * @param n         The node to add to the last position at layer i.
      * @param pOver     Whether or not it will "override", and continue going down if a group is encountered.
      */
-    public void addD(int i, Node n, boolean pOver) {
+    public void addD(int i,
+                     Node n,
+                     boolean pOver) {
         if(this instanceof FinalNode) {
             throw new TypeMisMatchException("Can't add subnodes to a FinalNode!");
         }
@@ -342,7 +365,8 @@ public class Node implements MathObject {
      * @param i         The amount of layers to go down.
      * @param n         The node to set the last node to.
      */
-    public void setD(int i, Node n) {
+    public void setD(int i,
+                     Node n) {
         setD(i, -1, n);
     }
 
@@ -352,7 +376,9 @@ public class Node implements MathObject {
      * @param p         The position of the node that will be replaced by n.
      * @param n         The node that will replace the node at i layers down, at position p.
      */
-    public void setD(int i, int p, Node n) {
+    public void setD(int i,
+                     int p,
+                     Node n) {
         setD(i, p, n, false);
     }
 
@@ -363,7 +389,10 @@ public class Node implements MathObject {
      * @param n         The node that will replace the node at i layers down, at position p.
      * @param pOver     Whether or not it will "override", and continue going down if a group is encountered.
      */   
-    public void setD(int i, int p, Node n, boolean pOver) {
+    public void setD(int i,
+                     int p,
+                     Node n,
+                     boolean pOver) {
         if(this instanceof FinalNode) {
             throw new TypeMisMatchException("Can't set subnodes of a FinalNode!");
         } else if(i == 0) {
@@ -371,10 +400,10 @@ public class Node implements MathObject {
                 throw new DoesntExistException("Can't set subnodes of a Node with no size!");
             } else if(size() <= p || (p < 0 && p != -1)) {
                 throw new DoesntExistException("p has to be between 0 and Node's length -1 (" + size() + "-1)");
-            } else{
+            } else {
                 if(p == -1) {
                     set(size() - 1,n);
-                } else{
+                } else {
                     set(p, n);
                 }
             }
@@ -405,7 +434,8 @@ public class Node implements MathObject {
      * @param p         The position of the node to remove at layer i.
      * @throws TypeMisMatchException thrown when the node at position p, layer i is an instance of {@link FinalNode}.
      */
-    public void remD(int i, int p) throws TypeMisMatchException {
+    public void remD(int i,
+                     int p) throws TypeMisMatchException {
         remD(i, p, false);
     }
     /**
@@ -415,7 +445,9 @@ public class Node implements MathObject {
      * @param pOver     Whether or not it will "override", and continue going down if a group is encountered.
      * @throws TypeMisMatchException thrown when the node at position p, layer i is an instance of {@link FinalNode}.
      */
-    public void remD(int i, int p, boolean pOver) throws TypeMisMatchException {
+    public void remD(int i,
+                     int p,
+                     boolean pOver) throws TypeMisMatchException {
         if(this instanceof FinalNode)
             throw new TypeMisMatchException("Can't delete subnodes from a FinalNode!");
         if(i <= 0)
@@ -488,10 +520,12 @@ public class Node implements MathObject {
      * Evaluates the Node <code>pNode</code> via the {@link EquationSystem pEqSys}.
      * @param pEqSys    The {@link EquationSystem} that the Node <code>pNode</code> will be evaluated with.
      * @param pNode     The Node to evaluate <code>pNode</code> with.
+     * @return A double representation of <code>pNode</code>, when evaluated using <code>pEqSys</code>.
      * @throws NotDefinedException  Thrown when <code>pNode</code> is a {@link FinalNode}, or a {@link CustomFunction}
      *                              defined in {@link EquationSystem#functions} isn't able to be evaluated.
      */
-    public static double eval(EquationSystem pEqSys, Node pNode) throws NotDefinedException {
+    public static double eval(EquationSystem pEqSys,
+                              Node pNode) throws NotDefinedException {
         return pNode.eval(pEqSys);
     }
 
@@ -499,6 +533,7 @@ public class Node implements MathObject {
      * Evaluates <code>this</code> via the {@link EquationSystem EquationSystem pEqSys}.
      * TODO: Get a CustomFunction with {@link Token#val() token().val()} if it isn't defined elsewhere
      * @param pEqSys    The {@link EquationSystem} that <code>this</code> will be evaluated with.
+     * @return A double representation of this, when evaluated using <code>pEqSys</code>.
      * @throws NotDefinedException  Thrown when <code>this</code> is a {@link FinalNode}, or a {@link CustomFunction}
      *                              defined in {@link EquationSystem#functions() pEqSys.functions()} isn't able to be
      *                              evaluated.
@@ -513,7 +548,7 @@ public class Node implements MathObject {
                 try { //if it is a built in
                     return InBuiltFunction.exec(this.token().val(), pEqSys, this);
                 } catch (NotDefinedException err2) {
-                    // try{
+                    // try {
                         // return new CustomFunction(this.token().val()).exec(this,this);
                     // } //this isn't working now because of the way instantiating works.
                     // catch(e)

@@ -108,7 +108,7 @@
 //                 try { //if it is a built in
 //                     return InBuiltFunction.exec(pNode.token().val(), this.addVars(pVars), pNode);
 //                 } catch (NotDefinedException err2) {
-//                     // try{
+//                     // try {
 //                         // return new CustomFunction(pNode.token().val()).exec(this,pNode);
 //                     // } //this isn't working now because of the way instantiating works.
 //                     // catch(e)
@@ -207,7 +207,7 @@
 //     //         String func = funcNames[i];
 //     //         if(func.indexOf(":") != -1) {
 //     //             ret = ret.addFunc(func.split(":")[0], new CustomFunction(func.split(":")[1]));
-//     //         } else{
+//     //         } else {
 //     //             ret = ret.addFunc(func);
 //     //         }
 //     //     }
@@ -230,7 +230,7 @@
 //     //         String var = varNames[i];
 //     //         if(var.indexOf(":") != -1) {
 //     //             ret = ret.addVar(var.split(":")[0], Double.parseDouble(var.split(":")[1]));
-//     //         } else{
+//     //         } else {
 //     //             ret = ret.addVar(var);
 //     //         }
 //     //     }

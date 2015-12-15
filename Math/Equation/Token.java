@@ -38,13 +38,10 @@ public class Token implements MathObject {
         ,
         /**
          * A variable. Distinguished from a function when parsing only because it isn't immediately before "(". 
-         * <p> If a {@link Node} is being {@link Factors#eval(Node) evaluated}, and it's {@link Node#token token}
-         * is of this type, the {@link Factors} evaluating it will check it's {@link Factors#vars} for a variable with
-         * the same name as {@link #val}.
-         * <p> Note: val should only contain letters, as anything that isn't alphanumerical, or <code>()+*-/^</code> 
+         * <p> Note: Val should only contain letters, as anything that isn't alphanumerical, or <code>()+*-/^</code> 
          * won't be parsed.
          * @see Node
-         * @see Factors
+         * @see EquationSystem
          */
         VAR
         ,
@@ -55,13 +52,10 @@ public class Token implements MathObject {
         ,
         /**
          * A function. Distinguished from a variable when parsing only because it immediately preceeds "(". 
-         * <p> If a {@link Node} is being {@link Factors#eval(Node) evaluated}, and it's {@link Node#token token}
-         * is of this type, the {@link Factors} evaluating it will check it's {@link Factors#funcs} for a function with
-         * the same name as {@link #val}.
          * <p> Note: val should only contain letters, as anything that isn't alphanumerical, or <code>()+*-/^</code> 
          * won't be parsed.
          * @see Node
-         * @see Factors
+         * @see EquationSystem
          */
         FUNC
         , 
@@ -84,10 +78,8 @@ public class Token implements MathObject {
         , 
         /**
          * A group. Distinguished from a function when parsing only because it no letters preceeds "(". 
-         * <p> If a {@link Node} is being {@link Factors#eval(Node) evaluated}, and it's {@link Node#token token}
-         * is of this type, the {@link Factors} will just evaluate it's contents normally, as one would expect.
          * @see Node
-         * @see Factors
+         * @see EquationSystem
          */
         GROUP
         ,
@@ -113,7 +105,8 @@ public class Token implements MathObject {
      * @param pVal      The String that this token is based off of.
      * @param ptype     The type of token that this token is.
      */
-    public Token(String pVal, Type ptype) {
+    public Token(String pVal,
+                 Type ptype) {
         if(ptype == Type.GROUP) {
             val = "GRP";
         } else {
@@ -127,12 +120,27 @@ public class Token implements MathObject {
      * @param pVal    The character that this tokenis based off of.
      * @param ptype     The type of token that this token is.
      */
-    public Token(char pVal, Type ptype) {
+    public Token(char pVal,
+                 Type ptype) {
         this("" + pVal, ptype);
     }
 
-    public Type type() {return type;}
-    public String val() {return val;}
+    /**
+     * Returns this class's {@link #type}.
+     * @return this class's {@link #type}.
+     */
+    public Type type() {
+        return type;
+    }
+
+    /**
+     * Returns this class's {@link #val}.
+     * @return this class's {@link #val}
+     */
+    public String val() {
+        return val;
+    }
+    
     /**
      * Used to determine if a {@link Node} based on a token should be a {@link FinalNode} or a {@link Node}
      * (in this case, it's the former).
@@ -180,7 +188,7 @@ public class Token implements MathObject {
     public int priority() {
         if(isUni())
             return 4;
-        if(!isOper()) {// && ! isGroup()) {
+        if(!isOper()) {
             return -1;
         }
         switch(val) {
@@ -189,15 +197,10 @@ public class Token implements MathObject {
             case "*": return 1;
             case "/": return 1;
             case "^": return 2;
-            default:
-                throw new NotDefinedException("[ERROR] Operation '" + val + "' doesn't have a priority!");
+            default: throw new NotDefinedException("[ERROR] Operation '" + val + "' doesn't have a priority!");
         }
     }
 
-    /**
-     * A String representation of a Token. 
-     * @return A String representation corresponding to the val and the type of the Token.
-     */
     @Override
     public String toString() {
         return "('" + val + "': " + type + ")";

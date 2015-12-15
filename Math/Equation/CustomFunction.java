@@ -49,13 +49,15 @@ public class CustomFunction extends Function implements MathObject {
      * @param pHelp     The "help" text that will be displayed when the {@link #help()} function is called.
      * @param pSyntax   The "syntax" text that will be displayed when the {@link #syntax()} function is called.
      */
-    public CustomFunction(String pName, String pHelp, String pSyntax) {
+    public CustomFunction(String pName,
+                          String pHelp,
+                          String pSyntax) {
         super(pName, pHelp, pSyntax);
         try {
             if(pName.equals("")) {
                 Print.printe("Instantiating a CustomFunction without a function associated!");
                 cl = null;
-            } else{
+            } else {
                 cl = Class.forName("Math.Equation.CustomFunctions." + name);
                 if(cl == null)
                     throw new ClassNotFoundException();
@@ -90,7 +92,7 @@ public class CustomFunction extends Function implements MathObject {
      * @return A function object by the name <code>pFuncName</code>.
      */
     private Object getFunc(String pFuncName) {
-        try{
+        try {
             return cl.getDeclaredMethod(pFuncName).invoke(null);
         } catch (IllegalAccessException err) {
             Print.printe("A IllegalAccessException occured when attempting to get '" + pFuncName + "' " +
@@ -126,8 +128,11 @@ public class CustomFunction extends Function implements MathObject {
      */
     @Override
     @SuppressWarnings("unchecked") //stupid cl.getDeclaredMethod
-    public double exec(EquationSystem pEqSys, Node pNode) throws NotDefinedException, InvalidArgsException {
-        try{
+    public double exec(EquationSystem pEqSys,
+                       Node pNode) throws
+                           NotDefinedException,
+                           InvalidArgsException {
+        try {
             Class[] argType = {EquationSystem.class, Node.class};
             Method execMethod = cl.getDeclaredMethod("exec",argType);
             Object[] argListForInvokedExec = new Object[]{pEqSys, pNode};
