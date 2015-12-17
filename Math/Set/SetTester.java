@@ -6,6 +6,12 @@ import java.io.FileNotFoundException;
 
 import java.util.Scanner;
 
+/**
+ * This is just a hacked up thing I used to find the correlation values of data in <code>Math/Set/data.csv</code>.
+ * 
+ * @author Sam Westerman
+ * @version 0.9
+ */
 public class SetTester {
     public File file;
     public ArrayList<String[]> lines;

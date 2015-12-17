@@ -5,7 +5,7 @@ package Math.Exception;
  * {@link DoesntExistException} because this one is for handling Objects, and the other one is for accessing Objects.
  * 
  * @author Sam Westerman
- * @version 0.1
+ * @version 0.5
  */
 public class NotDefinedException extends MathException {
 

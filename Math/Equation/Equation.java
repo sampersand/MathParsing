@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * each other.
  * 
  * @author Sam Westerman
- * @version 0.1
+ * @version 0.5
  */
 public class Equation implements MathObject {
 

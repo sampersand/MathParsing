@@ -5,7 +5,7 @@ package Math;
  * {@link #toFancyString()}, and {@link #toFullString()} methods.
  * 
  * @author Sam Westerman
- * @version 0.1
+ * @version 0.5
  */
 public interface MathObject {
     /**

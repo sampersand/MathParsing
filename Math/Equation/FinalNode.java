@@ -10,7 +10,7 @@ import Math.Exception.NotDefinedException;
  * Note: This class doesn't interact with {@link Node#subNodes()}, and consequently, <code>this.size()</code> will
  * always yeild 0.
  * @author Sam Westerman
- * @version 0.1
+ * @version 0.5
  */
 public class FinalNode extends Node implements MathObject {
 

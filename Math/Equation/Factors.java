@@ -10,7 +10,7 @@
 // /**
 //  * A class that keeps track of variables and functions. Used when evaluating an {@link Node}.
 //  * @author Sam Westerman
-//  * @version 0.1
+//  * @version 0.5
 //  */
 // public class Factors {
 
