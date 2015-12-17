@@ -199,33 +199,35 @@ public class Set implements MathObject {
     }
 
     /**
-     * Calculates and returns the estimated value of the "yhat" using the the EquationSystem <code>pEq</code>. Passes
-     * <code>pVal</code>, <code>pEq</code>, and "yhat" to
-     * {@link #pred(double,EquationSystem,String) the main pred function}.
-     * @param pVal      The value to set "y" to when evaluating the EquationSystem <code>pEq</code>.
-     * @param pEq       The {@link EquationSystem} that will be evaluated with "yhat" being set to <code>pVal</code>.
-     * @return The result of the evaluated {@link EquationSystem}.
+     * Calculates and returns the estimated value of the "yhat" using the the EquationSystem <code>pEqSys</code>. Passes
+     * return pEqSys.eval(new EquationSystem().add(new Equation().add(toSolve, "" + pVal)), toSolve);
+     * Passes
+     * <code>pVal</code>, <code>pEqSys</code>, and "yhat" to
+     * @param pVal      The value to set "y" to when evaluating the EquationSystem <code>pEqSys</code>.
+     * @param pEqSys    The {@link EquationSystem} that will be used to evaluate "yhat".
+     * @return "yhat", evaluated by <code>pEqSys</code>.
      */
     public double pred(double pVal,
-                       EquationSystem pEq) {
-        return pred(pVal, pEq, "yhat");
+                       EquationSystem pEqSys) {
+        return pEqSys.eval()
+        return pEqSys.eval(new EquationSystem().add(new Equation().add(toSolve, "" + pVal)), toSolve);
+        return pred(pVal, pEqSys, "yhat");
     }
 
     /**
-     * Calculates and returns the estimated value of the "yhat" using the the {@link EquationSystem} <code>pEq</code>.
-     * Passes a ArrayList of {@link Equation Equations} of length 1 to
-     * {@link EquationSystem#eval(ArrayList,String) EquationSystem's eval function}, with the first element in the
-     * Arraylist being instantiated by the following code:
-     * <br><code>new ArrayList&#060;Equation&#062;() {{ add(new Equation(toSolve, pVal));}}</code>
-     * @param pVal      The value to set "y" to when evaluating the {@link EquationSystem} <code>pEq</code>.
-     * @param pEq       The {@link EquationSystem} that will be evaluated with "yhat" being set to <code>pVal</code>.
+     * Calculates and returns the estimated value of the <code>toSolve</code> using the the {@link EquationSystem}
+     * <code>pEqSys</code>. Passes a new {@link EquationSystem}, instantiated with the equation 
+     * <code>y = pVal</code>, and then returns
+     * {@link EquationSystem#eval(EquationSystem,String) a double representation of toSolve}.
+     * @param pVal      The value to set  to when evaluating the {@link EquationSystem} <code>pEqSys</code>.
+     * @param pEqSys    The {@link EquationSystem} that will be evaluated with "y" being set to <code>pVal</code>.
      * @param toSolve   The variable to solve for.
-     * @return The result of the evaluated {@link EquationSystem}.
+     * @return "yhat", evaluated by <code>pEqSys</code>.
      */
     public static double pred(double pVal,
-                              EquationSystem pEq,
+                              EquationSystem pEqSys,
                               String toSolve) {
-        return pEq.eval(new ArrayList<Equation>() {{ add(new Equation().add(toSolve, "" + pVal));}}, toSolve);
+        return pEqSys.eval(new EquationSystem().add(new Equation().add(toSolve, "" + pVal)), toSolve);
     }
 
     /**
@@ -342,7 +344,8 @@ public class Set implements MathObject {
         double sigZxZy = 0;
         for(int i = 0; i < pArr1.length; i++)
             sigZxZy += Z(pArr1[i], pArr1) * Z(pArr2[i], pArr2);
-        return sigZxZy /( n(pArr1) - 1 ); }
+        return sigZxZy /( n(pArr1) - 1 );
+    }
 
     /**
      * Calculates and returns the Coefficient of determination of {@link #arr1} and {@link #arr2}. Passes {@link #arr1}

@@ -8,7 +8,6 @@ package Math;
  * @version 0.1
  */
 public interface MathObject {
-
     /**
      * Returns the simple String representation of this class.
      * @return the simple string representation of this class.

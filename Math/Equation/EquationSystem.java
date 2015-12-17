@@ -61,8 +61,8 @@ public class EquationSystem implements MathObject, Iterable {
      * Adds <code>pEqSys</code>'s {@link #equations()} to this class's {@link #equations}. Used as a constructor
      * builder.
      * @param pEqSys    The EquationSystem, whose only {@link #equations() equations} will be added (not
-     *                  {@link #funcitons}).
-     * @return This class, but with <code>pEqSys</code>'s {@link #equation() equations} added.
+     *                  {@link #functions}).
+     * @return This class, but with <code>pEqSys</code>'s {@link #equations() equations} added.
      */
     public EquationSystem add(EquationSystem pEqSys) {
         equations.addAll(pEqSys.equations());
@@ -181,44 +181,55 @@ public class EquationSystem implements MathObject, Iterable {
         return this;
     }
 
+    
     /**
-     * Evaluates the variable <code>toSolve</code> using: <code>pEqSys</code> and <code>pEqSys2</code> (the list of 
-     * equations that will be checked first before <code>pEqSys</code>'s own equations. 
-     * @param pEqSys    The EquationSystem that will be evaluated.
-     * @param pEqSys2   Any additionall
-     * 
-     * @param Name
+     * Trys to isolate <code>toIso</code> on its own, and then returns an EquationSystem, with the first Equation in 
+     * {@link #equations()} is equal to <code>toIso</code>.
+     * @param toIso     The variable name to be isolated.
+     * @return An EquationSystem, where the first Equation is the isolated equation.
+     * @throws NotDefinedException  Thrown when there is no known way to isolate the variable
      */
-    public static double eval(EquationSystem pEqSys,
-                              EquationSystem pEqSys2,
-                              String toSolve) throws NotDefinedException{
-        EquationSystem eqsys = pEqSys.add(pExpr);
-        eqsys.setEquations(eqsys.solveFor(toSolve));
-        return 0;
-    }
-
-    public static ArrayList<Equation> solveFor(EquationSystem pEqSys,
-                                               String str) {
-        return pEqSys.solveFor(str);
-    }
-
-    public ArrayList<Equation> solveFor(String str) {
+    public EquationSystem isolate(String toIso) throws NotDefinedException {
         throw new NotDefinedException();
     }
 
-    public double eval(ArrayList<Equation> pExpr,
-                       String toSolve) throws NotDefinedException {
-        return eval(this, pExpr, toSolve);
+    /**
+     * Evaluates the variable <code>toEval</code> using <code>pEqSys</code> and <code>pEqSys2</code> (the list of 
+     * equations that will be checked first before <code>pEqSys</code>'s own equations). 
+     * @param pEqSys    The EquationSystem that will be evaluated.
+     * @param pEqSys2   All equations will be evaluated from here first, before evaluated from pEqSys.
+     * @param toEval    The variable to solve for.
+     * @return A double that represents the value of <code>toEval</code>.
+     */
+    public static double eval(EquationSystem pEqSys,
+                              EquationSystem pEqSys2,
+                              String toEval) throws NotDefinedException{
+        return pEqSys.add(pEqSys2).eval(toEval);
     }
+
+    /**
+     * Evaluates the variable <code>toEval</code> using <code>pEqSys</code>.
+     * @param pEqSys    The EquationSystem that will be evaluated.
+     * @param toEval    The variable to solve for.
+     * @return A double that represents the value of <code>toEval</code>.
+     */
+
+    public double eval(EquationSystem pEqSys,
+                       String toEval) throws NotDefinedException {
+        return eval(this, pEqSys, toEval);
+    }
+    
+    /*
     public double eval() throws NotDefinedException {
         return eval(null, null);
     }
-    public double eval(String toSolve) throws NotDefinedException {
-        return eval(null, toSolve);
+    public double eval(String toEval) throws NotDefinedException {
+        return eval(null, toEval);
     }
-    public double eval(ArrayList<Equation> pExpr) throws NotDefinedException{
-        return eval(pExpr, null);
+    public double eval(EquationSystem pEqSys) throws NotDefinedException{
+        return eval(pEqSys, null);
     }
+    */
 
     public static Equation genEq(Object... pObjs) { 
         Equation ret = new Equation();

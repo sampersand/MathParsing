@@ -108,7 +108,7 @@ public class DisplayComponent extends JLabel implements MathObject {
                 throw new NotDefinedException("Set '" + set + "' doesn't have the second Array! can't graph it.");
             } 
             set.verifySize();
-            for(int x = 0; x < set.arr2().length - 1; x++) {
+            for(int x = 0; x < set.arr2().length; x++) {
                 drawp(set.arr1()[x], set.arr2()[x]);
                 // drawl(set.arr1()[x], set.arr2()[x], set.arr1()[x+1], set.arr2()[x+1]);
             }

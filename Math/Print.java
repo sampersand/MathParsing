@@ -7,6 +7,7 @@ package Math;
  * @version 0.1
  */
 public class Print {
+ 
 
     /** Different levels for what should be printed out */
     public static enum Level {INFO, PRINT, WARNING, ERROR};

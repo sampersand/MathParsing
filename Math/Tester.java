@@ -65,7 +65,7 @@ public class Tester {
             eq = (Equation)eq;
             System.out.println(eq);
         }
-        Print.print(eqsys);
+        Print.print(eqsys.toFancyString());
         Print.printi("RESULT:", eqsys.eval("X"));
     }
 }
