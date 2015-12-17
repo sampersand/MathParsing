@@ -92,4 +92,9 @@ public class OperationFunction extends InBuiltFunction {
         throw new NotDefinedException();
     }
 
+    @Override
+    public OperationFunction copy(){
+        return new OperationFunction(name, help, syntax);
+    }
+
 }

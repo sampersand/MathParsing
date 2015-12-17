@@ -194,31 +194,25 @@ public class EquationSystem implements MathObject, Iterable {
     }
 
     /**
-     * Evaluates the variable <code>toEval</code> using <code>pEqSys</code> and <code>pEqSys2</code> (the list of 
-     * equations that will be checked first before <code>pEqSys</code>'s own equations). 
-     * @param pEqSys    The EquationSystem that will be evaluated.
-     * @param pEqSys2   All equations will be evaluated from here first, before evaluated from pEqSys.
+     * Evaluates the variable <code>toEval</code>, using {@link EquationSystem#equations() the equations of pEqSys}
+     * before checking {@link #equations this class's equations}.
      * @param toEval    The variable to solve for.
+     * @param pEqSys    The EquationSystem that will be evaluated.
      * @return A double that represents the value of <code>toEval</code>.
      */
-    public static double eval(EquationSystem pEqSys,
-                              EquationSystem pEqSys2,
-                              String toEval) throws NotDefinedException{
-        return pEqSys.add(pEqSys2).eval(toEval);
+    public double eval(String toEval,
+                       EquationSystem pEqSys) throws NotDefinedException {
+        return this.copy().add(pEqSys).eval(toEval);
     }
 
     /**
-     * Evaluates the variable <code>toEval</code> using <code>pEqSys</code>.
-     * @param pEqSys    The EquationSystem that will be evaluated.
+     * Evaluates the variable <code>toEval</code>.
      * @param toEval    The variable to solve for.
      * @return A double that represents the value of <code>toEval</code>.
      */
-
-    public double eval(EquationSystem pEqSys,
-                       String toEval) throws NotDefinedException {
-        return eval(this, pEqSys, toEval);
+    public double eval(String toEval) throws NotDefinedException {
+        throw new NotDefinedException();
     }
-    
     /*
     public double eval() throws NotDefinedException {
         return eval(null, null);
@@ -231,40 +225,27 @@ public class EquationSystem implements MathObject, Iterable {
     }
     */
 
-    public static Equation genEq(Object... pObjs) { 
-        Equation ret = new Equation();
-        int i = 0;
-        while(i < pObjs.length) {
-            i++;
-            if(pObjs[i] instanceof Expression) {
-                ret.add((Expression)pObjs[i]);
-                continue;
-            }
-            Expression expr1 = pObjs[i] instanceof Expression ? (Expression)pObjs[i] : new Expression(pObjs[i]);
-            Expression expr2 = pObjs[i + 1] instanceof Expression ? (Expression)pObjs[i + 1] : new Expression(pObjs[i + 1]);
-            ret.add(expr1, expr2);
-            i++;
-        }
-        return ret;
-    }
-
-
-
-
+    /**
+     * Graphs this class using {@link Math.Display.Grapher}.
+     */
     public void graph() {
         Print.printi("Currently, solve isn't very good. Oh well.");
         throw new NotDefinedException("Implement me!");
         // Grapher grapher = new Grapher(this);
         // grapher.graph();
     }
+
+    @Override
     public EquationSystem copy() {
         return new EquationSystem(equations, functions);
     }
+
+    /**
+     * Gets the amount of {@link Equations} (not {@link Expressions}) that are contained within {@link #equations}.
+     * @return size of this class's {@link #equations}.
+     */
     public int size() {
         return equations.size();
-    }
-    public String toStr() {
-        return toString();
     }
 
     @Override

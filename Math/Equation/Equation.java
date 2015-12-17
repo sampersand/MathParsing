@@ -106,4 +106,9 @@ public class Equation implements MathObject {
     public String toFullString() {
         throw new NotDefinedException();
     }
+
+    @Override
+    public Equation copy(){
+        return new Equation().add(expressions);
+    }
 }

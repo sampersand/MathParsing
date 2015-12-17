@@ -282,4 +282,9 @@ public class Expression implements MathObject {
     public String toFullString() {
         return "--Expression--\n--RawEq--\n" + expression + "\n--Nodes--\n" + node.toStringL(1);
     }
+
+    @Override
+    public Expression copy(){
+        return new Expression(expression, node);
+    }
 }

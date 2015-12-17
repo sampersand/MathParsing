@@ -189,4 +189,9 @@ public class InBuiltFunction extends Function {
         throw new NotDefinedException();
     }
 
+    @Override
+    public InBuiltFunction copy(){
+        return new InBuiltFunction(name, help, syntax);
+    }
+
 }

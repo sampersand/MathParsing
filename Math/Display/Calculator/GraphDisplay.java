@@ -88,7 +88,6 @@ public class GraphDisplay extends JComponent implements MathObject {
                         Color[] colors) throws ArrayIndexOutOfBoundsException {
         this.EQUATIONS = equations;
         this.COLORS = colors;
-
         if (eqBnd.length == 1) {
             this.EQUATION_BOUNDS = new double[] { -eqBnd[0], eqBnd[0], -eqBnd[0], eqBnd[0] };
         } else if (eqBnd.length == 2) {
@@ -229,6 +228,12 @@ public class GraphDisplay extends JComponent implements MathObject {
     @Override
     public String toFullString() {
         throw new NotDefinedException();
+    }
+
+    @Override
+    public GraphDisplay copy(){
+        return new GraphDisplay(EQUATIONS, EQUATION_BOUNDS, new double[]{0}, WINDOW_BOUNDS,
+                                DISPLAY_BOUNDS, false, COLORS);
     }
 
 }

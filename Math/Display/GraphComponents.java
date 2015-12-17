@@ -68,7 +68,7 @@ public class GraphComponents implements MathObject {
     @Override
     public String toString() {
         return "GraphingComponent: winBounds(" + winBounds[0] + ", " + winBounds[1] + "); dispBounds(" + 
-            dispBounds[0] + ", " + dispBounds[1] + ", " + dispBounds[2] + ", " + dispBounds[3] + "); STEP: " + step;
+            dispBounds[0] + ", " + dispBounds[1] + ", " + dispBounds[2] + ", " + dispBounds[3] + "); step: " + step;
     }
 
     @Override
@@ -81,4 +81,8 @@ public class GraphComponents implements MathObject {
         throw new NotDefinedException();
     }
 
+    @Override
+    public GraphComponents copy(){
+        return new GraphComponents(winBounds, dispBounds, step);
+    }
 }

@@ -26,4 +26,9 @@ public interface MathObject {
      */
     public String toFullString();
 
+    /**
+     * Copies this object.
+     * @return An exact copy of this object.
+     */
+    public Object copy();
 }

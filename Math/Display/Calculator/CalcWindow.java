@@ -283,7 +283,7 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
         rawEq = rawEq.replaceAll("%", "*100").replaceAll("\\*\\*", "^");
         String[] split = rawEq.trim().replaceAll(" ","").split(";");
         if(split.length == 1) {
-            return "" + new EquationSystem().add(split[0]).eval();
+            return "" + new EquationSystem().add(split[0]).eval("x");
         } else {
             HashMap<String,Double> vars = new HashMap<String,Double>() {{
                 if(!split[1].equals("")) {
@@ -390,4 +390,8 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
         throw new NotDefinedException();
     }
 
+    @Override
+    public CalcWindow copy(){
+        throw new NotDefinedException();
+    }
 }

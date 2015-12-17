@@ -118,6 +118,11 @@ public class FinalNode extends Node implements MathObject {
 
     }
 
+    @Override
+    public FinalNode copy(){
+        return new FinalNode(token);
+    }
+
     /**
      * Just returns the {@link #toString} of this object. Mainly used for indentations.
      * @param pos   The indentation level that would be used if this was just a {@link Node} and not a FinalNode. 

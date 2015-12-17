@@ -174,4 +174,9 @@ public class CustomFunction extends Function implements MathObject {
         throw new NotDefinedException();
     }
 
+    @Override
+    public CustomFunction copy(){
+        return new CustomFunction(name, help, syntax);
+    }
+
 }

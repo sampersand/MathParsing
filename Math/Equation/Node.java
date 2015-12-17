@@ -457,14 +457,6 @@ public class Node implements MathObject {
     }
 
     /**
-     * Gets an exact copy of this current node
-     * @return An exact duplicate of this node, except for its position in memory.
-     */
-    public Node copy() {
-        return new Node(token, subNodes);
-    }
-
-    /**
      * Effectively {@link #toString} but allows for indentations
      * @param pos    The amount of tabs out each line should be.
      * @return A simple String representation of this.
@@ -587,4 +579,8 @@ public class Node implements MathObject {
         throw new NotDefinedException();
     }
 
+    @Override
+    public Node copy(){
+        return new Node(token, subNodes);
+    }
 }

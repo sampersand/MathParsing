@@ -128,5 +128,9 @@ public class MainClass implements MathObject {
         throw new NotDefinedException();
     }
 
+    @Override
+    public GraphDisplay copy(){
+        throw new NotDefinedException();
+    }
 
 }

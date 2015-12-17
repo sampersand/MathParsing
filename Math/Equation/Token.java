@@ -101,28 +101,28 @@ public class Token implements MathObject {
     }
     /**
      * The main constructor.
-     * Just sets type to ptype, and val to PVL. If ptype is GROUP, val is insteaed set to "GRP".
+     * Just sets type to pType, and val to pVal. If pType is GROUP, val is insteaed set to "GRP".
      * @param pVal      The String that this token is based off of.
-     * @param ptype     The type of token that this token is.
+     * @param pType     The type of token that this token is.
      */
     public Token(String pVal,
-                 Type ptype) {
-        if(ptype == Type.GROUP) {
+                 Type pType) {
+        if(pType == Type.GROUP) {
             val = "GRP";
         } else {
             val = pVal;
         }
-        type = ptype;
+        type = pType;
     }
 
     /**
-     * An alternate constructor. This just passes pVal as a String and ptype to the main constructor.
+     * An alternate constructor. This just passes pVal as a String and pType to the main constructor.
      * @param pVal    The character that this tokenis based off of.
-     * @param ptype     The type of token that this token is.
+     * @param pType     The type of token that this token is.
      */
     public Token(char pVal,
-                 Type ptype) {
-        this("" + pVal, ptype);
+                 Type pType) {
+        this("" + pVal, pType);
     }
 
     /**
@@ -214,5 +214,10 @@ public class Token implements MathObject {
     @Override
     public String toFullString() {
         throw new NotDefinedException();
+    }
+
+    @Override
+    public Token copy(){
+        return new Token(val, type);
     }
 }

@@ -56,7 +56,7 @@ public class Tester {
                             Print.printw("Syntax: FUNCNAME:FUNC.val() (" + args[i] + ")");
                         }
                     } else if (type == 'e') {
-                        eqsys.add(EquationSystem.genEq(args[i]));
+                        eqsys.add(new Equation().add(args[i]));
                     }
                 }
             }

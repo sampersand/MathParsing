@@ -210,4 +210,10 @@ public class Grapher extends JPanel implements MathObject {
         throw new NotDefinedException();
     }
 
+
+    @Override
+    public Grapher copy(){
+        return new Grapher(components).addSets(sets).addEqSys(equations);
+    }
+
 }
