@@ -303,7 +303,13 @@ public class EquationSystem implements MathObject, Iterable {
 
     @Override
     public String toFullString() {
-        throw new NotDefinedException();
+        String ret = "EquationSystem:\n  Equations:\n";
+        for(Equation eq: equations)
+            ret += "\t"+eq.toFullString() + "\n";
+        ret += "  Functions:\n";
+        for(String funcN : functions.keySet())
+            ret += "\t'"+funcN + "': " + functions.get(funcN).toFullString() + "\n";
+        return ret.substring(0, ret.length() - (functions.size() > 0 ? 1 : 0));
     }
 
     /**
