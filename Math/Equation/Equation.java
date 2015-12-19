@@ -7,6 +7,7 @@ import Math.Exception.NotDefinedException;
 import Math.Exception.InvalidArgsException;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 /**
  * A class that represents an equation in Math. It really is just a collection of Expressions that are equal to
@@ -56,17 +57,44 @@ public class Equation implements MathObject {
      * @return This class, with <code>pStrs</code> added.
      */    
     public Equation add(String... pStrs) {
-        for(String str : pStrs) {
-            if(str.split("=").length != 1) {
-                for(String strSpl : str.split("=")) {
-                    expressions.add(new Expression(strSpl));
-                }
-            } else {
+        for(String pStr : pStrs) {
+            for(String str : splitInputString(pStr)){
+                System.out.println("\t" + str);
                 expressions.add(new Expression(str));
             }
         }
+        System.out.println("\n");
         return this;
     }
+
+    public ArrayList<String> splitInputString(String toSplit){
+        if(toSplit.indexOf("=") == -1)
+            return new ArrayList<String>(){{add(toSplit);}};
+        ArrayList<String> split = new ArrayList<String>();
+        int paren = 0, pos = -1;
+        String toAdd = "";
+        while(++pos < toSplit.length()){
+            char c = toSplit.charAt(pos);
+            if(c == '(' && paren++ == 0){
+                split.add(toAdd);
+                toAdd = "";
+            }
+            else if(c == ')' && --paren == 0){
+                split.add(toAdd);
+                toAdd = "";
+            }
+            else
+                toAdd += c;
+        }
+        if(!toAdd.equals(""))
+            split.add(toAdd);
+        System.out.println("--@--");
+        for(String s : split)
+            System.out.println(s);
+        System.out.println("--@--");
+        return split;
+    }
+
 
     /**
      * Returns the {@link #expressions} that this class defines.
