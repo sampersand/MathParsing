@@ -27,7 +27,11 @@ public class CustomFunction extends Function implements MathObject {
     public Class cl;
 
     /**
-     * Default constructor. Just passes <code>null</code> to
+     * Default constructor. Note that this _HAS_ to be overridden with the following code:
+     * <br><code>public [Class Name]{
+     *    super("[Class Name]");
+     * }</code>.
+     * <br>By default, just passes <code>null</code> to
      * {@link #CustomFunction(String) another CustomFunction constructor}.
      */
     public CustomFunction() {
@@ -136,7 +140,6 @@ public class CustomFunction extends Function implements MathObject {
             Class[] argType = {EquationSystem.class, Node.class};
             Method execMethod = cl.getDeclaredMethod("exec",argType);
             Object[] argListForInvokedExec = new Object[]{pEqSys, pNode};
-            System.out.println("CustomFunction.exec: Class = |" + cl + "| name = |" + name + "|");
             return (double)execMethod.invoke(cl.newInstance(), argListForInvokedExec);
         } catch (NoSuchMethodException err) {
             Print.printe("A NoSuchMethodException happened when attempting to execute a " +
@@ -172,7 +175,7 @@ public class CustomFunction extends Function implements MathObject {
     
     @Override
     public String toFullString(int idtLvl) {
-        throw new NotDefinedException();
+        return indent(idtLvl) + "CustomFunction: '" + name + "' (class: '" + cl + "'), function: " + this;
     }
 
     @Override

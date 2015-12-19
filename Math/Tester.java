@@ -19,7 +19,7 @@ public class Tester {
     public static void main(String[] args) throws NotDefinedException {
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
-            eqsys.add("y = graph('eq:sin(x)')");
+            eqsys.add("y = graph('eq:x','eq:cosx')");
             eqsys.add("graph", new CustomFunction("graph"));
             // eqsys.add("y = 1 + sin(x) + c");
             // eqsys.add("x = (9.45 + alpha ^ theta) / 2");

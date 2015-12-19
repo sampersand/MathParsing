@@ -19,9 +19,8 @@ import java.util.ArrayList;
 public class graph extends CustomFunction{
     public graph(){
         super("graph");
-        System.out.println("graph.<init>: instatiating a null graph");
     }
-    protected ArrayList<EquationSystem> equations;
+    protected EquationSystem equationsys;
     protected ArrayList<Set> sets;
     protected GraphComponents gcomp;
     protected Node node;
@@ -32,10 +31,10 @@ public class graph extends CustomFunction{
     public String syntax() {
         return "Any combination of 'set:','eq:', 'eqandset:' and 'eqtoset:'.\n" + 
                 "- set syntax is: \"set:(.val()1,.val()2,.val()3...)(valA,valB,ValC...)\". Just displays that set.\n" + 
-                "- eqandset syntax is: \"eqandset:EQUATION,[STEP],[MIN MAX]\". Displays a set based off the equations " +
-                    "and params as well as the equations itself.\n" +
-                "- eqtoset syntax is: \"eqandset:EQUATION,[STEP],[MIN, MAX]\". Displays a set based off the equations " +
-                    "and params, but not the equations itself.";
+                "- eqandset syntax is: \"eqandset:EQUATION,[STEP],[MIN MAX]\". Graphs a set based off the equationsys" +
+                    " and params as well as the equationsys itself.\n" +
+                "- eqtoset syntax is: \"eqandset:EQUATION,[STEP],[MIN, MAX]\". Graphs a set based off the equationsys" +
+                    " and params, but not the equationsys itself.";
     }
 
     @Override
@@ -51,9 +50,10 @@ public class graph extends CustomFunction{
                 throw new InvalidArgsException("All arguments of graph must be of Token.Type 'ARG'!");
             }
         }
-        equations = new ArrayList<EquationSystem>();
+        equationsys = new EquationSystem();
         sets = new ArrayList<Set>();
         gcomp = new GraphComponents();
+        gcomp = new GraphComponents(new int[]{1250, 750}, new double[]{-10, -10, 10, 10}, 1000);
         node = pNode;
 
         for(Node n : node.subNodes()) {
@@ -61,10 +61,11 @@ public class graph extends CustomFunction{
             String[] vals = n.token().val().replaceAll("^" + id + ":","").replaceAll(" ","").split(",");
             switch(id) {
                 case "eq": case "":
-                    equations.get(equations.size() - 1).add(new Equation().add(vals[0]));
+                    equationsys.add("y = " + vals[0]);
+                    System.out.println("eqsys: "+equationsys);
                     break;
                 case "eqandset": //make sure to put these in front l0l
-                    equations.get(equations.size() - 1).add(new Equation().add(vals[0]));
+                    equationsys.add(new Equation().add("y = " + vals[0]));
                 case "eqtoset":
                     sets.add(varsToSet(vals));
                     break;
@@ -72,7 +73,7 @@ public class graph extends CustomFunction{
                     sets.add(getSet(vals));
                     break;
                 case "eqandresid":
-                    equations.get(equations.size() - 1).add(new Equation().add(vals[0]));
+                    equationsys.add(new Equation().add("y = " + vals[0]));
                 case "eqtoresid":
                     sets.add(varsToSet(vals).resid());
                     break;
@@ -83,7 +84,8 @@ public class graph extends CustomFunction{
                     Print.printe("[ERROR] Unrecognized Argument: '" + id + "'!");
             } 
         } 
-        Grapher grapher = new Grapher(gcomp).addEqSys(equations).addSets(sets);
+        Grapher grapher = new Grapher(equationsys, sets, gcomp);
+
         grapher.graph();
         return 0;
 

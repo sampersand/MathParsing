@@ -2,6 +2,7 @@ package Math.Display;
 
 import Math.MathObject;
 import Math.Equation.Equation;
+import Math.Equation.EquationSystem;
 import Math.Set.Set;
 import Math.Exception.InvalidArgsException;
 import Math.Exception.MathException;
@@ -30,6 +31,7 @@ public class DisplayComponent extends JLabel implements MathObject {
 
     protected Grapher grapher;
     protected Equation equation;
+    protected EquationSystem equationsys;
     protected Set set;
     protected Color color;
 
@@ -44,7 +46,7 @@ public class DisplayComponent extends JLabel implements MathObject {
      * I draw the axis.
      */
     public DisplayComponent(Grapher pGrapher) {
-        this(pGrapher, null, null, Color.BLACK);
+        this(pGrapher, null, null, null, Color.BLACK);
     }
 
     /* 
@@ -54,23 +56,27 @@ public class DisplayComponent extends JLabel implements MathObject {
         this(pGrapher, pSet, Color.BLUE);
     }
     public DisplayComponent(Grapher pGrapher, Set pSet, Color pColor) {
-        this(pGrapher, null, pSet, pColor);
+        this(pGrapher, null, null, pSet, pColor);
     }
 
     /*
      * I draw an equation
      */
-    public DisplayComponent(Grapher pGrapher, Equation pEquation) {
-        this(pGrapher, pEquation, Color.BLUE);
+    public DisplayComponent(Grapher pGrapher, Equation pEquation, EquationSystem pEqSys) {
+        this(pGrapher, pEquation, pEqSys, Color.BLUE);
     }
-    public DisplayComponent(Object... pobj) { throw new NotDefinedException();}
-    public DisplayComponent(Grapher pGrapher, Equation pEquation, Color pColor) {
-        this(pGrapher, pEquation, null, pColor);
+    public DisplayComponent(Grapher pGrapher, Equation pEquation, EquationSystem pEqSys,  Color pColor) {
+        this(pGrapher, pEquation, pEqSys, null, pColor);
     }
 
-    private DisplayComponent(Grapher pGrapher, Equation pEquation, Set pSet, Color pColor) {
+    private DisplayComponent(Grapher pGrapher, Equation pEquation, EquationSystem pEqSys, Set pSet, Color pColor) {
         grapher = pGrapher;
         equation = pEquation;
+        equationsys = pEqSys;
+        if(equationsys!=null){
+            equationsys = equationsys.copy();
+            equationsys.equations().add(0,equation);
+        }
         set = pSet;
         color = pColor;
         this.createToolTip();
@@ -115,12 +121,9 @@ public class DisplayComponent extends JLabel implements MathObject {
         } else if(equation != null) {
             double cStep = grapher.components().cStep();
             for(double x = dispBounds[0]; x < dispBounds[2]; x += cStep) {
-                throw new NotDefinedException();
-                // try {
-                    // drawl(x, equation.eval(x, "x"), x + cStep, equation.eval(x + cStep, "x"));
-                // } catch (NotDefinedException err) {
-                    // drawl(x, equation.eval(x, "y"), x + cStep, equation.eval(x + cStep, "y"));
-                // }
+                drawl(x, equationsys.eval("y", new EquationSystem().add("x = " + (x < 0 ? "0 " + x : x))), 
+                      x + cStep, equationsys.eval("y", new EquationSystem().add("x = " +
+                                                        (x + cStep < 0 ? "0 " + (x + cStep) : x + cStep))));
             }
         }
         else {
@@ -164,12 +167,23 @@ public class DisplayComponent extends JLabel implements MathObject {
 
     @Override
     public String toFullString(int idtLvl) {
-        throw new NotDefinedException();
+        String ret = indent(idtLvl) + "DisplayComponent:";
+        ret += "\n" + indent(idtLvl + 1) + "EquationSystem for Graphign:\n";
+        ret += equationsys == null ? indent(idtLvl + 2) + "null\n" : equationsys.toFullString(idtLvl + 2);
+
+        ret += "\n" + indent(idtLvl + 1) + "Equation to Graph:\n";
+        ret += equation == null ? indent(idtLvl + 2) + "null\n" : equation.toFullString(idtLvl + 2);
+
+        ret += "\n" + indent(idtLvl + 1) + "Set to Graph:\n";
+        ret += set == null ? indent(idtLvl + 2) + "null\n" : set.toFullString(idtLvl + 2);
+
+        ret += "\n" + indent(idtLvl + 1) + "Color:\n" + indent(idtLvl + 2) + color;
+        return ret;
     }
 
     @Override
     public DisplayComponent copy(){
-        return new DisplayComponent(grapher, equation, set, color);
+        return new DisplayComponent(grapher, equation, equationsys, set, color);
     }
 }
  

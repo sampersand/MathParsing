@@ -54,8 +54,12 @@ public class EquationSystem implements MathObject, Iterable {
      */
     public EquationSystem(ArrayList<Equation> pEqs,
                           HashMap<String, CustomFunction> pFuncs) {
-        equations = pEqs;
-        functions = pFuncs;
+        equations = new ArrayList<Equation>();
+        if(pEqs != null && pEqs.size() != 0)
+            equations.addAll(pEqs);
+        functions = new HashMap<String, CustomFunction>();
+        if(pFuncs != null && pFuncs.size() != 0)
+            functions.putAll(pFuncs);
     }
 
     /**
@@ -191,7 +195,7 @@ public class EquationSystem implements MathObject, Iterable {
      */
     public double eval(String toEval,
                        EquationSystem pEqSys) throws NotDefinedException {
-        return this.copy().add(pEqSys).eval(toEval);
+        return copy().add(pEqSys).eval(toEval);
     }
 
     /**
@@ -272,7 +276,8 @@ public class EquationSystem implements MathObject, Iterable {
 
     @Override
     public EquationSystem copy() {
-        return new EquationSystem(equations, functions);
+        EquationSystem x = new EquationSystem(equations, functions);
+        return x;
     }
 
     /**
@@ -285,7 +290,7 @@ public class EquationSystem implements MathObject, Iterable {
 
     @Override
     public String toString() {
-        String ret = "EquationSystem: Equations: (";
+        String ret = "EquationSystem: Equations = (";
         if(equations == null) {
             ret += "null";
         } else {
@@ -294,7 +299,7 @@ public class EquationSystem implements MathObject, Iterable {
             }
         }
         ret = ret.substring(0, ret.length() - (equations.size() == 0 ? 0 : 2));
-        ret += "), Functions: (";
+        ret += "), Functions = (";
         if(functions == null) {
             ret += "null";
         } else {
@@ -337,9 +342,16 @@ public class EquationSystem implements MathObject, Iterable {
         String ret = indent(idtLvl) + "EquationSystem:\n" + indent(idtLvl + 1) +"Equations:";
         for(Equation eq: equations)
             ret += "\n" +eq.toFullString(idtLvl + 2);
+        if(equations.size() == 0)
+            ret += indent(idtLvl + 2) + "null\n";
+
         ret += "\n" + indent(idtLvl + 1) + "Functions:\n";
+
         for(String funcN : functions.keySet())
             ret += indent(idtLvl + 2) + funcN + "': " + functions.get(funcN).toFullString() + "\n";
+        if(functions.size() == 0)
+            ret += indent(idtLvl + 2) + "null\n";
+        
         return ret.substring(0, ret.length() - (functions.size() > 0 ? 1 : 0));
     }
 

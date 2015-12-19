@@ -256,6 +256,7 @@ public class Node implements MathObject {
      */
     public Node get(int i) {
         return subNodes.get(i);
+        // return this instanceof FinalNode ? this : subNodes.get(i);
     }
     /**
      * Sets the node at position i in {@link #subNodes} to n.
@@ -510,7 +511,6 @@ public class Node implements MathObject {
         if (this instanceof FinalNode) {
             throw new NotDefinedException("This is implemented in FinalNode... How was i triggered...?");
         } else if(token().type() == Token.Type.FUNC || token().type() == Token.Type.OPER) {
-            System.out.println(pEqSys.functions().get(token().val()));
             if(pEqSys.functions().get(token().val()) != null) // if it is a function
                 return pEqSys.functions().get(token().val()).exec(pEqSys, this);
             else {

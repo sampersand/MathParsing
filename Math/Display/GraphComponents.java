@@ -30,7 +30,7 @@ public class GraphComponents implements MathObject {
     protected double step;
 
     public GraphComponents() {
-        this(new int[]{1250, 750}, new double[]{-10, -10, 10, 10}, 1000);
+        this(new int[]{1250, 750}, new double[]{-10, -10, 10, 10}, 100);
     }
     public GraphComponents(int[] pWinBounds, double[] pDispBounds, double pStep) throws InvalidArgsException{
         if(pWinBounds.length != 2)

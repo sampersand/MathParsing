@@ -771,7 +771,7 @@ public class Set implements MathObject {
      * @see Math.Display
      */
     public void graph() {
-        Grapher grapher = new Grapher().add(this);
+        Grapher grapher = new Grapher(this);
         grapher.graph();
     }
 

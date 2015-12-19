@@ -41,7 +41,8 @@ public class FinalNode extends Node implements MathObject {
             try {
                 dVal = Double.parseDouble(token.val());
             } catch(NumberFormatException err) {
-                throw new TypeMisMatchException("pToken.type() is a NUM, but pToken.val() cant be parsed as a double!");
+                throw new TypeMisMatchException("pToken.type (" + token.type() + ") is a NUM, but pToken.val(" + 
+                    pToken.val() + ") cant be parsed as a double!");
             }
         else if (token.type() == Token.Type.VAR || token.type() == Token.Type.ARGS)
             sVal = token.val();
