@@ -6,7 +6,7 @@ import Math.Equation.Equation;
 import Math.Equation.EquationSystem;
 import static Math.Equation.Token.Type.*;
 import Math.Exception.TypeMisMatchException;
-import Math.Exception.DoesntExistException;
+import Math.Exception.InvalidArgsException;
 import Math.Exception.NotDefinedException;
 
 import java.util.ArrayList;
@@ -15,7 +15,8 @@ import java.util.ArrayList;
  * A class that represents either a {@link CustomFunction custom function}, an {@link InBuiltFunction inbuilt function}, 
  * an {@link OperationFunction operation}, or a group of tokens.
  * @author Sam Westerman
- * @version 0.5
+ * @version 0.6
+ * @since 0.1
  */
 public class Node implements MathObject {
 
@@ -397,9 +398,9 @@ public class Node implements MathObject {
             throw new TypeMisMatchException("Can't set subnodes of a FinalNode!");
         } else if(i == 0) {
             if(size() <= 0) {
-                throw new DoesntExistException("Can't set subnodes of a Node with no size!");
+                throw new InvalidArgsException("Can't set subnodes of a Node with no size!");
             } else if(size() <= p || (p < 0 && p != -1)) {
-                throw new DoesntExistException("p has to be between 0 and Node's length -1 (" + size() + "-1)");
+                throw new InvalidArgsException("p has to be between 0 and Node's length -1 (" + size() + "-1)");
             } else {
                 if(p == -1) {
                     set(size() - 1,n);
@@ -457,31 +458,6 @@ public class Node implements MathObject {
     }
 
     /**
-     * Effectively {@link #toString} but allows for indentations
-     * @param pos    The amount of tabs out each line should be.
-     * @return A simple String representation of this.
-     */
-    public String toStringL(int pos) {
-        String ret = '{' + token.val() + ':';
-        for(Node node : subNodes) {
-            ret += '\n';
-            for(int x = 0; x < pos; x++)
-                ret += '\t';
-            ret += node.toStringL(pos+1);
-        }
-        if(size() == 0) {
-            ret += '\n';
-            for(int x = 0; x < pos; x++)
-                ret += '\t';
-            ret += "null";
-        }
-        ret += '\n';
-        for(int x = 0; x < pos - 1; x++)
-                ret += '\t';
-        return ret + '}';
-
-    }
-    /**
      * Takes all the {@link #subNodes} and creates its best guess at what a function comprised of them would look like.
      * @return The best guess as to what a function comprised of the subnodes would look like.
      */
@@ -508,23 +484,23 @@ public class Node implements MathObject {
             return ret;
     }
 
-    /**
-     * Evaluates the Node <code>pNode</code> via the {@link EquationSystem pEqSys}.
-     * @param pEqSys    The {@link EquationSystem} that the Node <code>pNode</code> will be evaluated with.
-     * @param pNode     The Node to evaluate <code>pNode</code> with.
-     * @return A double representation of <code>pNode</code>, when evaluated using <code>pEqSys</code>.
-     * @throws NotDefinedException  Thrown when <code>pNode</code> is a {@link FinalNode}, or a {@link CustomFunction}
-     *                              defined in {@link EquationSystem#functions} isn't able to be evaluated.
-     */
-    public static double eval(EquationSystem pEqSys,
-                              Node pNode) throws NotDefinedException {
-        return pNode.eval(pEqSys);
-    }
+    // /**
+    //  * Evaluates the Node <code>pNode</code> via the {@link EquationSystem pEqSys}.
+    //  * @param pEqSys    The {@link EquationSystem} that the Node <code>pNode</code> will be evaluated with.
+    //  * @param pNode     The Node to evaluate <code>pNode</code> with.
+    //  * @return A double representation of <code>pNode</code>, when evaluated using <code>pEqSys</code>.
+    //  * @throws NotDefinedException  Thrown when <code>pNode</code> is a {@link FinalNode}, or a {@link CustomFunction}
+    //  *                              defined in {@link EquationSystem#functions} isn't able to be evaluated.
+    //  */
+    // public static double eval(EquationSystem pEqSys,
+    //                           Node pNode) throws NotDefinedException {
+    //     return pNode.eval(pEqSys);
+    // }
 
     /**
      * Evaluates <code>this</code> via the {@link EquationSystem EquationSystem pEqSys}.
      * TODO: Get a CustomFunction with {@link Token#val() token().val()} if it isn't defined elsewhere
-     * @param pEqSys    The {@link EquationSystem} that <code>this</code> will be evaluated with.
+     * @param pEqSys    An {@link EquationSystem#isolate isolated EquationSystem} that will be used to evaluate.
      * @return A double representation of this, when evaluated using <code>pEqSys</code>.
      * @throws NotDefinedException  Thrown when <code>this</code> is a {@link FinalNode}, or a {@link CustomFunction}
      *                              defined in {@link EquationSystem#functions() pEqSys.functions()} isn't able to be
@@ -544,13 +520,14 @@ public class Node implements MathObject {
                         // return new CustomFunction(this.token().val()).exec(this,this);
                     // } //this isn't working now because of the way instantiating works.
                     // catch(e)
+
                     throw new NotDefinedException("Function '" + this.token().val() + "' isn't defined in funcs " + 
                                                   "(and isn't inbuilt either), or one of the vars isn't defined!");
                 }
             }
         }
         else if(this.token().type() == Token.Type.GROUP || this instanceof FinalNode || this.token.isUni()) {
-                return eval(pEqSys, this.get(0));
+                return this.get(0).eval(pEqSys);
         } else {
             throw new NotDefinedException("Node: '" + this.token().val() + "' has no known way to evaluate it");
         }
@@ -567,16 +544,25 @@ public class Node implements MathObject {
     }
     
     @Override
-    public String toFullString() {
-        String ret = "{\"" + token.val() + "\" | " + token.type() + " | ";
+    public String toFullString(int idtLvl) {
+        String ret = indent(idtLvl) + "{\"" + token.val() + "\" | " + token.type() + " | ";
         for(Node node : subNodes)
-            ret += node.toFullString() + ", ";
-        return ret.substring(0,ret.length()-2) + "}";
+            ret += "\n" + node.toFullString(idtLvl + 1) + ", ";
+        return ret.substring(0,ret.length()-2) + "\n" + indent(idtLvl) + "}";
     }
 
     @Override
-    public String toFancyString() {
-        throw new NotDefinedException();
+    public String toFancyString(int idtLvl) {
+        String ret = indent(idtLvl) + "{" + token.val() + ":";
+        for(Node node : subNodes) 
+            ret += "\n" + node.toFancyString(idtLvl + 1);
+        if(size() == 0) 
+            ret += "\n" + indent(idtLvl + 1) + "null";
+        // ret += "\n";
+        // for(int x = 0; x < idtLvl - 1; x++)
+        //         ret += "\t";
+        return ret + "\n" + indent(idtLvl) + "}";
+
     }
 
     @Override

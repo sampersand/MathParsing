@@ -6,7 +6,8 @@ import Math.Equation.*;
 /**
  * A tester class for the whole equation
  * @author Sam Westerman
- * @version 0.5
+ * @version 0.6
+ * @since 0.1
  */
 public class Tester {
 
@@ -16,24 +17,14 @@ public class Tester {
      * @throws NotDefinedException Thrown when the first value isn't equal to "--e" of --f 
      */
     public static void main(String[] args) throws NotDefinedException {
-
-
-
-
-
-        //REMINDER: ONCE JAVADOC IS DONE UPDATE ALL VERSIONS TO 0.2, and put SINCE 0.1!
-
-
-
-
-
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
             eqsys.add("y = 1 + sin(x) + c");
-            eqsys.add("2 * x = 9.45 + alpha ^ theta");
+            eqsys.add("x = (9.45 + alpha ^ theta) / 2");
             eqsys.add("theta = 2 * c + alpha");
             eqsys.add("alpha = 4 + c");
             eqsys.add("c = 0 - 9");
+            1 + sin((9.45 + (4 - 9) ^ (2 * - 9 + 4 - 9))/2) - 9
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {
@@ -61,11 +52,7 @@ public class Tester {
                 }
             }
         }
-        for(Object eq : eqsys) {
-            eq = (Equation)eq;
-            System.out.println(eq);
-        }
-        Print.print(eqsys.toFancyString());
-        Print.printi("RESULT:", eqsys.eval("X"));
+        Print.print(eqsys.toFancyString(1));
+        Print.printi("RESULT:", eqsys.eval("y"));
     }
 }

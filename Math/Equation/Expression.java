@@ -17,13 +17,13 @@ import java.util.HashMap;
 public class Expression implements MathObject {
 
     /** The raw expression. */
-    public String expression;
+    protected String expression;
 
     /**
      * The Node representing the whole expression. 
      * @see   Node#generateNodes(ArrayList)
      */
-    public Node node;
+    protected Node node;
     /**
      * The default constructor for the Expression class. Just passes an empty String, and Node to the 
      * {@link #Expression(String,Node) main expression constructor}.
@@ -65,6 +65,22 @@ public class Expression implements MathObject {
         node = pNode;
     }
 
+
+    /**
+     * Returns {@link #node} - the {@link Node} that represents this class's {@link #expression}.
+     * @return {@link #node} - the {@link Node} that represents this class's {@link #expression}.
+     */
+    public Node node(){
+        return node;
+    }
+
+    /**
+     * Returns {@link #expression} - the String that this class is modeled after.
+     * @return {@link #expression} - the String that this class is modeled after.
+     */
+    public String expression(){
+        return expression;
+    }
 
     /**
      * Generates {@link #node} using {@link #expression}.
@@ -253,17 +269,6 @@ public class Expression implements MathObject {
         return true;
     } 
 
-
-    /**
-     * Generates a fancy string with indents.
-     * @return A "fancy" version of this string with indents.
-     */
-    public String toFancyStringN() { //for fancy string nodes
-        return expression == null ? "Null Expression" : 
-               expression.length() == 0 ? "Empty Expression" : 
-                "Expression: " + toString() + "; Nodes" + node.toStringL(1);
-    }
-
     @Override
     public String toString() {
         return expression == null ? "Null Expression" : 
@@ -272,15 +277,16 @@ public class Expression implements MathObject {
     }
 
     @Override
-    public String toFancyString() {
-        return expression == null ? "Null Expression" : 
+    public String toFancyString(int idtLvl) {
+        return indent(idtLvl) + expression == null ? "Null Expression" : 
                expression.length() == 0 ? "Empty Expression" : 
                toString();
     }
 
     @Override
-    public String toFullString() {
-        return "--Expression--\n--RawEq--\n" + expression + "\n--Nodes--\n" + node.toStringL(1);
+    public String toFullString(int idtLvl) {
+        return indent(idtLvl) + "Expression:\n" + indent(idtLvl + 1) + "RawEq\n" + indent(idtLvl + 2) 
+                            + expression + "\n" + indent(idtLvl + 1) + "Nodes\n" + node.toFullString(idtLvl + 2);
     }
 
     @Override

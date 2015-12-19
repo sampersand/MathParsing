@@ -201,12 +201,12 @@ public class Grapher extends JPanel implements MathObject {
     }
 
     @Override
-    public String toFancyString() {
+    public String toFancyString(int idtLvl) {
         throw new NotDefinedException();
     }
 
     @Override
-    public String toFullString() {
+    public String toFullString(int idtLvl) {
         throw new NotDefinedException();
     }
 

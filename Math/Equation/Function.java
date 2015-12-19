@@ -10,7 +10,8 @@ import Math.Exception.InvalidArgsException;
  * For example, in <code>f(x)</code>, this class would represent f.
  * 
  * @author Sam Westerman
- * @version 0.5
+ * @version 0.6
+ * @since 0.1
  */
 public abstract class Function implements MathObject {
 
@@ -114,4 +115,11 @@ public abstract class Function implements MathObject {
                                 Node pNode) throws
                                     NotDefinedException,
                                     InvalidArgsException;
+    // /**
+    //  * Gets the inverse of this function - that is, what function should be done to undo this one. <br>The inverse of 
+    //  * <code>+</code> is <code>-</code>, and the inverse of <code>cos</code> is <code>arccos</code>.
+    //  * @return The inverse of this function.
+    //  * @throws NotDefinedException  Thrown when the inverse hasn't been defined yet, or there is no known
+    //  */
+    // public abstract Function inverse() throws NotDefinedException;
 }

@@ -49,9 +49,14 @@ public class InBuiltFunction extends Function {
         put("fac", new InBuiltFunction("fac", null, "fac ( A )"));
     }};
 
+    ///** The name of the {@link #inverse()} of this funtion. The reason it's not an actual function is because of 
+    // * FUNCTIONS - you cannot "get" the inverse function if it hasn't been declared yet.
+    // */
+    // String inverse;
+
     /**
      * Default constructor. Just passes <code>null, null, null</code> to
-     * {@link #InBuiltFunction(String,String,String) another InBuiltFunction constructor}.
+     * {@link #InBuiltFunction(String,String,String) the main InBuiltFunction constructor}.
      */
     public InBuiltFunction() {
         this(null, null, null);
@@ -60,13 +65,16 @@ public class InBuiltFunction extends Function {
     /**
      * The main constructor for InBuiltFunction. Takes a name, a help string, and a syntax string.
      * @param pName     The name of this function.
+     * <!-- @param pInverse  The name of the function that is the inverse of this function.-->
      * @param pHelp     The "help" text that will be displayed when the {@link #help()} function is called.
      * @param pSyntax   The "syntax" text that will be displayed when the {@link #syntax()} function is called.
      */
     public InBuiltFunction(String pName,
+                           // String pInverse,
                            String pHelp,
                            String pSyntax) {
         super(pName, pHelp, pSyntax);
+        // inverse = pInverse;
     }
 
     /**
@@ -180,12 +188,12 @@ public class InBuiltFunction extends Function {
     }
 
     @Override
-    public String toFancyString() {
+    public String toFancyString(int idtLvl) {
         throw new NotDefinedException();
     }
 
     @Override
-    public String toFullString() {
+    public String toFullString(int idtLvl) {
         throw new NotDefinedException();
     }
 

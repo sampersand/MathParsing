@@ -10,7 +10,8 @@ import Math.Exception.NotDefinedException;
  * Note: This class doesn't interact with {@link Node#subNodes()}, and consequently, <code>this.size()</code> will
  * always yeild 0.
  * @author Sam Westerman
- * @version 0.5
+ * @version 0.6
+ * @since 0.1
  */
 public class FinalNode extends Node implements MathObject {
 
@@ -61,6 +62,7 @@ public class FinalNode extends Node implements MathObject {
     /**
      * Returns this class's {@link #sVal}. Should only ever be called if
      * {@link Token#type() This class's token's type} is {@link Token#Types#NUM a number}.
+     * @param pEqSys    An {@link EquationSystem#isolate isolated EquationSystem} that will be used to evaluate.
      * @return The name of the variable this class is modeled after.
      */
     public double dVal() {
@@ -69,32 +71,28 @@ public class FinalNode extends Node implements MathObject {
 
     @Override
     public double eval(EquationSystem pEqSys) throws NotDefinedException {
+        assert pEqSys.isolated();
         if (token().type() == Token.Type.NUM) {
-            return dVal();
+            return dVal;
         } else if (token().type() == Token.Type.VAR) {
-            if(false) { //fix me
-            // if(pEqSys.functions().get(sVal()) != null) {
-                // return (double)pEqSys.functions().get(sVal());
-            // } else if(!inVar(sVal())) {
-                throw new NotDefinedException();
-            } else if(true) {//fix me too;
-                switch(sVal().toLowerCase()) {
-                    case "e": return Math.E;
-                    case "pi": return Math.PI;
-                    case "rand": case "random": return Math.random();
-                    default:
-                        throw new NotDefinedException();
+            if(pEqSys.varExist(sVal)) {
+                for(Equation eq : pEqSys.equations()){
+                    if(eq.expressions().get(0).node().get(0).token().val().equals(sVal))
+                        return eq.expressions().get(1).node().eval(pEqSys);
                 }
-            } else {
-                throw new NotDefinedException("define me");
-                // return (double)getVar(sVal());
+            } switch(sVal.toLowerCase()) {
+                case "e": return Math.E;
+                case "pi": return Math.PI;
+                case "rand": case "random": return Math.random();
+                default:
+                    throw new NotDefinedException("Define a FinalNode eval for: " + sVal);
             }
         } else if(token().type() == Token.Type.ARGS) {
             Print.printw("Attempting to evaluate args! probably won't go well :P");
             throw new NotDefinedException("define me");
-            // return (double)getVar(dVal());
+            // return (double)getVar(dVal);
         } else {
-            throw new TypeMisMatchException("FinalNode '" +dVal() + "&" + dVal() +
+            throw new TypeMisMatchException("FinalNode '" +dVal + "&" + dVal +
                                             "' isn't a NUM, VAR, OR ARGS!");
         }
     }
@@ -105,16 +103,16 @@ public class FinalNode extends Node implements MathObject {
     }
     
     @Override
-    public String toFancyString() {
-        throw new NotDefinedException();
+    public String toFancyString(int idtLvl) {
+      return toString();
     }
 
     @Override
-    public String toFullString() {
-        String ret = "[";
+    public String toFullString(int idtLvl) {
+        String ret = indent(idtLvl) + "FinalNode: [";
         ret += token.type() == Token.Type.NUM ? dVal : "\"" + sVal + "\"";
-        ret += ": " + token.type();
-        return ret + "]";
+        ret += ": " + token.type() + "]";
+        return ret;
 
     }
 
@@ -122,16 +120,4 @@ public class FinalNode extends Node implements MathObject {
     public FinalNode copy(){
         return new FinalNode(token);
     }
-
-    /**
-     * Just returns the {@link #toString} of this object. Mainly used for indentations.
-     * @param pos   The indentation level that would be used if this was just a {@link Node} and not a FinalNode. 
-     *              It is unused in this function.
-     * @see   Node#toStringL
-     */
-    @Override
-    public String toStringL(int pos) {
-        return "" + this;
-    }
-
 }

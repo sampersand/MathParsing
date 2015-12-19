@@ -15,7 +15,8 @@ import java.util.Iterator;
  * {@link CustomFunction}s (and the corresponding classes for them).
  * 
  * @author Sam Westerman
- * @version 0.5
+ * @version 0.6
+ * @since 0.1
  */
 public class EquationSystem implements MathObject, Iterable {
 
@@ -181,18 +182,6 @@ public class EquationSystem implements MathObject, Iterable {
         return this;
     }
 
-    
-    /**
-     * Trys to isolate <code>toIso</code> on its own, and then returns an EquationSystem, with the first Equation in 
-     * {@link #equations()} is equal to <code>toIso</code>.
-     * @param toIso     The variable name to be isolated.
-     * @return An EquationSystem, where the first Equation is the isolated equation.
-     * @throws NotDefinedException  Thrown when there is no known way to isolate the variable
-     */
-    public EquationSystem isolate(String toIso) throws NotDefinedException {
-        throw new NotDefinedException();
-    }
-
     /**
      * Evaluates the variable <code>toEval</code>, using {@link EquationSystem#equations() the equations of pEqSys}
      * before checking {@link #equations this class's equations}.
@@ -211,8 +200,54 @@ public class EquationSystem implements MathObject, Iterable {
      * @return A double that represents the value of <code>toEval</code>.
      */
     public double eval(String toEval) throws NotDefinedException {
-        throw new NotDefinedException();
+        EquationSystem isod = copy().isolate(toEval);
+        return  isod.equations().get(0).expressions().get(0).node().eval(isod);
+
     }
+
+    
+    /**
+     * Trys to isolate <code>toIso</code> on its own, and then returns an EquationSystem, with the first Equation in 
+     * {@link #equations()} is equal to <code>toIso</code>.
+     * @param toIso     The variable name to be isolated.
+     * @return An EquationSystem, where the first Equation is the isolated equation.
+     * @throws NotDefinedException  Thrown when there is no known way to isolate the variable
+     */
+    public EquationSystem isolate(String toIso) throws NotDefinedException {
+        if(this.equations().get(0). //if the first equation's
+            expressions().get(0). // first expression's
+            node().get(0). // node's first subnode's
+            token().val(). // token's value
+            equals(toIso)) // is the string to isolate, return this.
+            return this;
+
+        return this;
+        // throw new NotDefinedException();
+    }
+
+    /**
+     * Checks to see if this is an isolate EquationSystem.
+     * @return true if this is an {@link #isolate() isolated EquationSystem}.
+     */
+    public boolean isolated(){
+        for(Equation eq: equations)
+            if(eq.expressions().get(0).node().size() != 1)
+                return false;
+        return true;
+    }
+
+    /**
+     * Sees if <code>pVar</code> is defined on the left - hand side of any equation.
+     */
+    public boolean varExist(String pVar){
+        for(Equation eq : equations)
+            for(Expression expr : eq.expressions())
+                if(expr.node().get(0).token().val().equals(pVar))
+                    return true;
+        return false;
+    }
+
+
     /*
     public double eval() throws NotDefinedException {
         return eval(null, null);
@@ -271,44 +306,41 @@ public class EquationSystem implements MathObject, Iterable {
     }
 
     @Override
-    public String toFancyString() {
-        String ret = "+-----=[EquationSystem]=------\n|";
+    public String toFancyString(int idtLvl) {
+        String idt = indent(idtLvl + 1);
+        String ret = indent(idtLvl) + "EquationSystem:";
         if(equations == null) {
-            ret += "\n| Null Equations";
+            ret += "\n" + idt + " Null Equations";
         } else if(equations.size() == 0) {
-            ret += "\n| Empty Equations";
+            ret += "\n" + idt + " Empty Equations";
         } else {
-            ret += "\n| Equations: ";
+            ret += "\n" + idt + "Equations: ";
             for(Equation eqs : equations) {
-                ret += "\n|\t" + eqs.toFancyString();
+                ret += "\n" + eqs.toFancyString(idtLvl + 2);
             }
         }
-        ret += "\n| ";
-
         if(functions == null) {
-            ret += "\n| Null Functions";
+            ret += "\n" + idt + " Null Functions";
         } else if(functions.size() == 0) {
-            ret += "\n| Empty Functions";
+            ret += "\n" + idt + " Empty Functions";
         } if(functions.size() > 0) {
-            ret += "\n| Functions: (stuff in [] are optional)";
+            ret += "\n" + idt + " Functions: (stuff in [] are optional)";
             String[] keys = (String[]) functions.keySet().toArray();
             for(String key : keys) {
-                ret += "\n|\t" + key + ": " + functions.get(key).toFancyString().replaceAll("\n","\n|\t\t\t") + ")";
+                ret += "\n" + idt + "\t" + key + ": " + functions.get(key).toFancyString(idtLvl + 3)+ ")";//.replaceAll("\n","\n\t\t\t") + ")";
             }
         }
-        ret += "\n|\n";
-        ret += "+-----------------------------\n";
         return ret;
     }
 
     @Override
-    public String toFullString() {
-        String ret = "EquationSystem:\n  Equations:\n";
+    public String toFullString(int idtLvl) {
+        String ret = indent(idtLvl) + "EquationSystem:\n" + indent(idtLvl + 1) +"Equations:";
         for(Equation eq: equations)
-            ret += "\t"+eq.toFullString() + "\n";
-        ret += "  Functions:\n";
+            ret += "\n" +eq.toFullString(idtLvl + 2);
+        ret += "\n" + indent(idtLvl + 1) + "Functions:\n";
         for(String funcN : functions.keySet())
-            ret += "\t'"+funcN + "': " + functions.get(funcN).toFullString() + "\n";
+            ret += indent(idtLvl + 2) + funcN + "': " + functions.get(funcN).toFullString(idtLvl * 0) + "\n";
         return ret.substring(0, ret.length() - (functions.size() > 0 ? 1 : 0));
     }
 

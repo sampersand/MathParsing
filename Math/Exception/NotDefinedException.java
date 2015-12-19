@@ -1,11 +1,12 @@
 package Math.Exception;
 
 /**
- * An error that is thrown when there is no known way to handle something (usually a parameter). Differs from 
- * {@link DoesntExistException} because this one is for handling Objects, and the other one is for accessing Objects.
+ * An error that is thrown when something hasn't been defined. An example is when there is no known way to handle
+ * a parameter. 
  * 
  * @author Sam Westerman
- * @version 0.5
+ * @version 0.6
+ * @since 0.1
  */
 public class NotDefinedException extends MathException {
 

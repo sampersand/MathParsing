@@ -17,7 +17,8 @@ import java.util.ArrayList;
  * in Statistics.
  * 
  * @author Sam Westerman
- * @version 0.5
+ * @version 0.6
+ * @since 0.1
  */
 public class Set implements MathObject {
 
@@ -800,12 +801,12 @@ public class Set implements MathObject {
     }
 
     @Override
-    public String toFancyString() {
+    public String toFancyString(int idtLvl) {
         throw new NotDefinedException();
     }
 
     @Override
-    public String toFullString() {
+    public String toFullString(int idtLvl) {
         throw new NotDefinedException();
     }
 

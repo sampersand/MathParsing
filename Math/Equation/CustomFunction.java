@@ -8,7 +8,6 @@ import Math.Equation.CustomFunction;
 import Math.Equation.CustomFunctions.*;
 import Math.Exception.NotDefinedException;
 import Math.Exception.InvalidArgsException;
-import Math.Exception.DoesntExistException;
 
 import java.lang.reflect.*;
 
@@ -16,7 +15,8 @@ import java.lang.reflect.*;
  * A class that all user-defined functions must impliment. 
  * 
  * @author Sam Westerman
- * @version 0.5
+ * @version 0.6
+ * @since 0.1
  */
 public class CustomFunction extends Function implements MathObject {
     
@@ -63,7 +63,7 @@ public class CustomFunction extends Function implements MathObject {
                     throw new ClassNotFoundException();
             }
         } catch (ClassNotFoundException err) {
-            throw new DoesntExistException("CustomFunction '" + name + 
+            throw new NotDefinedException("CustomFunction '" + name + 
                                             "' doesn't exist! in Math.Equation.CustomFunctions.*");
         }
     }
@@ -165,12 +165,12 @@ public class CustomFunction extends Function implements MathObject {
     }
 
     @Override
-    public String toFancyString() {
+    public String toFancyString(int idtLvl) {
         throw new NotDefinedException();
     }
     
     @Override
-    public String toFullString() {
+    public String toFullString(int idtLvl) {
         throw new NotDefinedException();
     }
 
@@ -178,5 +178,4 @@ public class CustomFunction extends Function implements MathObject {
     public CustomFunction copy(){
         return new CustomFunction(name, help, syntax);
     }
-
 }

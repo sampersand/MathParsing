@@ -13,8 +13,9 @@ import java.util.Random;
  * A class that represents an operation in mathametics. It acts very similar to an {@link InBuiltFunction}.
  * 
  * @author Sam Westerman
- * @version 0.5 
- * @see <a href="https://en.wikipedia.org/wiki/Operation_(mathematics)">Operation</a>
+ * @version 0.6
+ * @since 0.1
+  * @see <a href="https://en.wikipedia.org/wiki/Operation_(mathematics)">Operation</a>
  */
 public class OperationFunction extends InBuiltFunction {
 
@@ -83,12 +84,12 @@ public class OperationFunction extends InBuiltFunction {
     }
 
     @Override
-    public String toFancyString() {
+    public String toFancyString(int idtLvl) {
         throw new NotDefinedException();
     }
 
     @Override
-    public String toFullString() {
+    public String toFullString(int idtLvl) {
         throw new NotDefinedException();
     }
 

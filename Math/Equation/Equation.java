@@ -13,7 +13,8 @@ import java.util.ArrayList;
  * each other.
  * 
  * @author Sam Westerman
- * @version 0.5
+ * @version 0.6
+ * @since 0.1
  */
 public class Equation implements MathObject {
 
@@ -90,21 +91,27 @@ public class Equation implements MathObject {
     }
 
     @Override
-    public String toFancyString() {
+    public String toFancyString(int idtLvl) {
+        String ret = indent(idtLvl) + "Equation:";
+
         if(expressions == null)
-            return "Null Expressions";
-        if(expressions.size() == 0)
-            return "Empty Expressions";
-        String ret = "";
+            ret += "\n" + indent(idtLvl + 1) + "Null Expressions";
+        else if(expressions.size() == 0)
+            ret += "\n" + indent(idtLvl + 1) + "Empty Expressions";
+        else
+            ret += "\n" + indent(idtLvl + 1);
         for(Expression expr : expressions) {
             ret += "'" + expr.toFancyString() + "' = ";
         }
-        return ret.substring(0, ret.length() - 3);
+        return ret.substring(0, ret.length() - (expressions.size() > 0 ? 3 : 0));
     }
 
     @Override
-    public String toFullString() {
-        throw new NotDefinedException();
+    public String toFullString(int idtLvl) {
+        String ret = indent(idtLvl) + "Equation:";
+        for(Expression expr : expressions)
+            ret += "\n" + expr.toFullString(idtLvl + 1);
+        return ret;
     }
 
     @Override
