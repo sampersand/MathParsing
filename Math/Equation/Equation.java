@@ -70,30 +70,50 @@ public class Equation implements MathObject {
     public ArrayList<String> splitInputString(String toSplit){
         if(toSplit.indexOf("=") == -1)
             return new ArrayList<String>(){{add(toSplit);}};
-        ArrayList<String> split = new ArrayList<String>();
+        ArrayList<String> split = new ArrayList<String>(){{add("");}};
         int paren = 0, pos = -1;
-        String toAdd = "";
         while(++pos < toSplit.length()){
             char c = toSplit.charAt(pos);
             if(c == '(' && paren++ == 0){
-                split.add(toAdd);
-                toAdd = "";
+                split.add("");
+            } else if(c == ')' && --paren == 0){
+                split.add("");
+            } else{
+                split.set(split.size() - 1, split.get(split.size() - 1) + c);
             }
-            else if(c == ')' && --paren == 0){
-                split.add(toAdd);
-                toAdd = "";
-            }
-            else
-                toAdd += c;
         }
-        if(!toAdd.equals(""))
-            split.add(toAdd);
-        System.out.println("--@--");
-        for(String s : split)
-            System.out.println(s);
-        System.out.println("--@--");
-        return split;
+        ArrayList<String> ret = new ArrayList<String>(){{
+        add("");}};
+        return ret;
     }
+
+    // public ArrayList<String> splitInputString(String toSplit){
+    //     if(toSplit.indexOf("=") == -1)
+    //         return new ArrayList<String>(){{add(toSplit);}};
+    //     ArrayList<String> split = new ArrayList<String>();
+    //     int paren = 0, pos = -1;
+    //     String toAdd = "";
+    //     while(++pos < toSplit.length()){
+    //         char c = toSplit.charAt(pos);
+    //         if(c == '(' && paren++ == 0){
+    //             split.add(toAdd);
+    //             toAdd = "";
+    //         }
+    //         else if(c == ')' && --paren == 0){
+    //             split.add(toAdd);
+    //             toAdd = "";
+    //         }
+    //         else
+    //             toAdd += c;
+    //     }
+    //     if(!toAdd.equals(""))
+    //         split.add(toAdd);
+    //     System.out.println("--@--");
+    //     for(String s : split)
+    //         System.out.println(s);
+    //     System.out.println("--@--");
+    //     return split;
+    // }
 
 
     /**
