@@ -136,6 +136,7 @@ public class CustomFunction extends Function implements MathObject {
             Class[] argType = {EquationSystem.class, Node.class};
             Method execMethod = cl.getDeclaredMethod("exec",argType);
             Object[] argListForInvokedExec = new Object[]{pEqSys, pNode};
+            System.out.println("CustomFunction.exec: Class = |" + cl + "| name = |" + name + "|");
             return (double)execMethod.invoke(cl.newInstance(), argListForInvokedExec);
         } catch (NoSuchMethodException err) {
             Print.printe("A NoSuchMethodException happened when attempting to execute a " +
@@ -161,12 +162,12 @@ public class CustomFunction extends Function implements MathObject {
     }
     @Override
     public String toString() {
-        return "CustomFunction: '" + name + "'";
+        return "CustomFunction '" + name + "'";
     }
 
     @Override
     public String toFancyString(int idtLvl) {
-        throw new NotDefinedException();
+        return indent(idtLvl) + this;
     }
     
     @Override

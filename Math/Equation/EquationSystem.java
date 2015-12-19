@@ -325,9 +325,8 @@ public class EquationSystem implements MathObject, Iterable {
             ret += "\n" + idt + " Empty Functions";
         } if(functions.size() > 0) {
             ret += "\n" + idt + " Functions: (stuff in [] are optional)";
-            String[] keys = (String[]) functions.keySet().toArray();
-            for(String key : keys) {
-                ret += "\n" + idt + "\t" + key + ": " + functions.get(key).toFancyString(idtLvl + 3)+ ")";//.replaceAll("\n","\n\t\t\t") + ")";
+            for(Object key : functions.keySet().toArray()) {
+                ret += "\n" + indent(idtLvl + 2) + "'" + key + "' = " + functions.get("" + key).toFancyString();//.replaceAll("\n","\n\t\t\t") + ")";
             }
         }
         return ret;
@@ -340,7 +339,7 @@ public class EquationSystem implements MathObject, Iterable {
             ret += "\n" +eq.toFullString(idtLvl + 2);
         ret += "\n" + indent(idtLvl + 1) + "Functions:\n";
         for(String funcN : functions.keySet())
-            ret += indent(idtLvl + 2) + funcN + "': " + functions.get(funcN).toFullString(idtLvl * 0) + "\n";
+            ret += indent(idtLvl + 2) + funcN + "': " + functions.get(funcN).toFullString() + "\n";
         return ret.substring(0, ret.length() - (functions.size() > 0 ? 1 : 0));
     }
 

@@ -17,6 +17,10 @@ import java.util.ArrayList;
 
 
 public class graph extends CustomFunction{
+    public graph(){
+        super("graph");
+        System.out.println("graph.<init>: instatiating a null graph");
+    }
     protected ArrayList<EquationSystem> equations;
     protected ArrayList<Set> sets;
     protected GraphComponents gcomp;
@@ -39,6 +43,7 @@ public class graph extends CustomFunction{
                        Node pNode) throws
                            NotDefinedException,
                            InvalidArgsException {
+        System.out.println("graph.exec: im being run");
         if(pNode.size() == 0)
             throw new InvalidArgsException("The node size has to be greater than 1!");
         for(Node n : pNode.subNodes()) {

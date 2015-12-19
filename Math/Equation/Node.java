@@ -509,27 +509,28 @@ public class Node implements MathObject {
     public double eval(EquationSystem pEqSys) throws NotDefinedException {
         if (this instanceof FinalNode) {
             throw new NotDefinedException("This is implemented in FinalNode... How was i triggered...?");
-        } else if(this.token().type() == Token.Type.FUNC || this.token().type() == Token.Type.OPER) {
-            if(pEqSys.functions().get(this.token().val()) != null) // if it is a function
-                return pEqSys.functions().get(this.token().val()).exec(pEqSys, this);
+        } else if(token().type() == Token.Type.FUNC || token().type() == Token.Type.OPER) {
+            System.out.println(pEqSys.functions().get(token().val()));
+            if(pEqSys.functions().get(token().val()) != null) // if it is a function
+                return pEqSys.functions().get(token().val()).exec(pEqSys, this);
             else {
                 try { //if it is a built in
-                    return InBuiltFunction.exec(this.token().val(), pEqSys, this);
+                    return InBuiltFunction.exec(token().val(), pEqSys, this);
                 } catch (NotDefinedException err2) {
                     // try {
-                        // return new CustomFunction(this.token().val()).exec(this,this);
+                        // return new CustomFunction(token().val()).exec(this,this);
                     // } //this isn't working now because of the way instantiating works.
                     // catch(e)
 
-                    throw new NotDefinedException("Function '" + this.token().val() + "' isn't defined in funcs " + 
+                    throw new NotDefinedException("Function '" + token().val() + "' isn't defined in funcs " + 
                                                   "(and isn't inbuilt either), or one of the vars isn't defined!");
                 }
             }
         }
-        else if(this.token().type() == Token.Type.GROUP || this instanceof FinalNode || this.token.isUni()) {
-                return this.get(0).eval(pEqSys);
+        else if(token().type() == Token.Type.GROUP || this instanceof FinalNode || token.isUni()) {
+                return get(0).eval(pEqSys);
         } else {
-            throw new NotDefinedException("Node: '" + this.token().val() + "' has no known way to evaluate it");
+            throw new NotDefinedException("Node: '" + token().val() + "' has no known way to evaluate it");
         }
     }
 
