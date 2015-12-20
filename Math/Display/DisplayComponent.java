@@ -30,21 +30,33 @@ import javax.swing.JLabel;
  */
 public class DisplayComponent extends JLabel implements MathObject {  
 
+    /** TODO: JAVADOC */
     protected Grapher grapher;
+
+    /** TODO: JAVADOC */
     protected Equation equation;
+
+    /** TODO: JAVADOC */
     protected EquationSystem equationsys;
+
+    /** TODO: JAVADOC */
     protected Set set;
+
+    /** TODO: JAVADOC */
     protected Color color;
 
     /** The element that draws the lines. */
     public Graphics2D drawer;   
  
+    /** TODO: JAVADOC */
     public DisplayComponent() {
-        throw new InvalidArgsException("You need to have a grapher to base a DisplayComponent class of!");
+        throw new InvalidArgsException("Cannot instantiate an empty DisplayComponent!" +
+                                        "A Grapher is required to base a DisplayComponent off of!");
     }
 
     /* 
      * I draw the axis.
+     * TODO: JAVADOC
      */
     public DisplayComponent(Grapher pGrapher) {
         this(pGrapher, null, null, null, Color.BLACK);
@@ -52,11 +64,14 @@ public class DisplayComponent extends JLabel implements MathObject {
 
     /* 
      * I draw a set
+     * TODO: JAVADOC
      */
     public DisplayComponent(Grapher pGrapher,
                             Set pSet) {
         this(pGrapher, pSet, Color.BLUE);
     }
+
+    /** TODO: JAVADOC */
     public DisplayComponent(Grapher pGrapher,
                             Set pSet,
                             Color pColor) {
@@ -65,12 +80,15 @@ public class DisplayComponent extends JLabel implements MathObject {
 
     /*
      * I draw an equation
+     * TODO: JAVADOC
      */
     public DisplayComponent(Grapher pGrapher,
                             Equation pEquation,
                             final EquationSystem pEqSys) {
         this(pGrapher, pEquation, pEqSys, Color.BLUE);
     }
+
+    /** TODO: JAVADOC */
     public DisplayComponent(Grapher pGrapher,
                             Equation pEquation,
                             final EquationSystem pEqSys,
@@ -78,6 +96,7 @@ public class DisplayComponent extends JLabel implements MathObject {
         this(pGrapher, pEquation, pEqSys, null, pColor);
     }
 
+    /** TODO: JAVADOC */
     private DisplayComponent(Grapher pGrapher,
                             Equation pEquation,
                             final EquationSystem pEqSys,
@@ -113,8 +132,9 @@ public class DisplayComponent extends JLabel implements MathObject {
      * @param pGraphics          The graphics input that will be used to draw. Assumed to be Graphics2D.
      */
     public void paintComponent(Graphics pGraphics) throws MathException, NotDefinedException {
-        if(!(pGraphics instanceof Graphics2D))
-            throw new MathException("Uh, Idek how this happened, but g has to be a Graphics2D...");
+        assert pGraphics instanceof Graphics2D;
+        // if(!(pGraphics instanceof Graphics2D))
+        //     throw new MathException("Uh, Idek how this happened, but g has to be a Graphics2D...");
         drawer = (Graphics2D) pGraphics;
         drawer.setColor(color);
 
@@ -122,9 +142,9 @@ public class DisplayComponent extends JLabel implements MathObject {
 
         if(set != null) {
             if(set.arr2() == null) {
-                throw new NotDefinedException("Set '" + set + "' doesn't have the first Array! can't graph it.");
+                throw new NotDefinedException("Set '" + set + "' doesn't have the first Array! Can't graph it.");
             } else if(set.arr2() == null) {
-                throw new NotDefinedException("Set '" + set + "' doesn't have the second Array! can't graph it.");
+                throw new NotDefinedException("Set '" + set + "' doesn't have the second Array! Can't graph it.");
             } 
             set.verifySize();
             for(int x = 0; x < set.arr2().length; x++) {
@@ -160,12 +180,14 @@ public class DisplayComponent extends JLabel implements MathObject {
        drawer.drawOval((int)xy[0] - 5, (int) xy[1] - 5, 10, 10); // width, height
     }
  
+    /** TODO: JAVADOC */
     private void drawl(double x, double y, double X, double Y) {
        double[] xy=fix(x, y);
        double[] XY=fix(X, Y);
        drawer.drawLine((int) xy[0], (int)xy[1], (int)XY[0], (int)XY[1]); // width, height
     }
   
+    /** TODO: JAVADOC */
     private double[] fix(double x, double y) {
         return grapher.components().fix(x,y);
     }

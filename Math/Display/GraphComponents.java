@@ -13,6 +13,7 @@ import Math.Exception.NotDefinedException;
  */
 public class GraphComponents implements MathObject {
 
+    /** TODO: JAVADOC */
     public static final GraphComponents TRIG = new GraphComponents(new int[]{1250 ,750}, 
              new double[]{ -3 * Math.PI, -2, 3 * Math.PI, 2}, Math.PI/12);
 
@@ -36,35 +37,64 @@ public class GraphComponents implements MathObject {
      */
     protected double step;
 
+    /**
+     * TODO: JAVADOC
+     */
     public GraphComponents() {
+
+        //TODO: JAVADOC
+
         this(new int[]{1250, 750}, new double[]{-10, -10, 10, 10}, 100);
     }
+    /**
+     * TODO: JAVADOC
+     */
     public GraphComponents(int[] pWinBounds, double[] pDispBounds, double pStep) throws InvalidArgsException{
+
+        //TODO: JAVADOC
+
         if(pWinBounds.length != 2)
-            throw new InvalidArgsException("Window Bounds needs to be in format (X, Y)!");
+            throw new InvalidArgsException("Cannot instantiate GraphComponents! pWinBounds must be in format (X, Y)!");
         if(pWinBounds[0] <= 0  || pWinBounds[1] <= 0)
-            throw new InvalidArgsException("Both the X and Y components of Window Bounds needs to be positive!");
+            throw new InvalidArgsException("Cannot instatiate GraphComponents! Both the X and Y components of "+
+                                           "pWinBounds need to be positive!");
         if(pDispBounds.length != 4)
-            throw new InvalidArgsException("Display Bounds needs to be in format (min X, min Y, max X, max Y)!");
+            throw new InvalidArgsException("Cannot instatiate GraphComponents! pDispBounds needs to be in format "+
+                                           "(min X, min Y, max X, max Y)!");
         winBounds = pWinBounds;
         dispBounds = pDispBounds;
         step = pStep;
 
     }
+    /** TODO: JAVADOC */
     public void setWinBounds(int[] pBounds) { winBounds = pBounds; }
+
+    /** TODO: JAVADOC */
     public void setDispBounds(double[] pBounds) { dispBounds = pBounds; }
+
+    /** TODO: JAVADOC */
     public void setDispBounds(double mx, double my, double Mx, double My) { dispBounds = new double[]{mx, my, Mx, My};}
+    /** TODO: JAVADOC */
     public void setStep(double pStep) { step = pStep; }
 
+    /** TODO: JAVADOC */
     public int[] winBounds() { return winBounds; }
+
+    /** TODO: JAVADOC */
     public double[] dispBounds() { return dispBounds; }
+
+    /** TODO: JAVADOC */
     public double step() { return step; }
+
+    /** TODO: JAVADOC */
     public double cStep() { return (dispBounds[2] - dispBounds[0]) / step;}
+
+    /** TODO: JAVADOC */
     public double[] fix(double x, double y) {
         return fix(x, y, dispBounds[0],  dispBounds[1],  dispBounds[2], dispBounds[3],  winBounds[0],  winBounds[1]);
     }
 
-
+    /** TODO: JAVADOC */
     public static double[] fix(double x, double y, double minX, double minY, double maxX,
                                double maxY, double winX, double winY) {
             return new double[]{ (x - minX) / (maxX - minX) * winX,

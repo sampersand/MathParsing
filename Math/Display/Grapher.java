@@ -31,38 +31,62 @@ import java.util.ArrayList;
  * @since 0.2
  */
 public class Grapher extends JPanel implements MathObject {
+
+    /** TODO: JAVADOC */
     public static final Color[] COLORS = new Color[]{Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW};
+
+    /** TODO: JAVADOC */
     protected JLayeredPane layeredPane;
+
+    /** TODO: JAVADOC */
     protected ArrayList<Set> sets;
+
+    /** TODO: JAVADOC */
     protected EquationSystem equationsToGraph;
+
+    /** TODO: JAVADOC */
     protected EquationSystem equationsToUse;
+
+    /** TODO: JAVADOC */
     protected GraphComponents components;
+
+    /** TODO: JAVADOC */
     protected ArrayList<DisplayComponent> displays;
 
+    /** TODO: JAVADOC */
     public Grapher() {
         this(new GraphComponents());
     }
+
+    /** TODO: JAVADOC */
     public Grapher(Set pSet) {
         this(null, new ArrayList<Set>() {{add(pSet);}});
     }
 
+    /** TODO: JAVADOC */
     public Grapher(final EquationSystem pEqSys) {
         this(pEqSys, null);
     }
 
+    /** TODO: JAVADOC */
     public Grapher(GraphComponents pComponents) {
         this(null, null, pComponents);
     }
 
+    /** TODO: JAVADOC */
     public Grapher(final EquationSystem pEqSys,
                    ArrayList<Set> pSets) {
         this(pEqSys, pSets, new GraphComponents());
     }
+
+    /** TODO: JAVADOC */
     public Grapher(final EquationSystem pEqSys,
                    ArrayList<Set> pSets,
                    GraphComponents pGraph) {
         this(pEqSys, new EquationSystem(), pSets, pGraph);
     }
+
+    /** TODO: JAVADOC */
     public Grapher(final EquationSystem pEqSysToGraph,
                    final EquationSystem pEqSysToUse,
                    ArrayList<Set> pSets,
@@ -81,6 +105,7 @@ public class Grapher extends JPanel implements MathObject {
         graphSetup();
     }
 
+    /** TODO: JAVADOC */
     private void graphSetup() {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
  
@@ -100,6 +125,7 @@ public class Grapher extends JPanel implements MathObject {
         add(layeredPane);
     }
 
+    /** TODO: JAVADOC */
     private JLabel createDisplay(int i) {
         JLabel label = displays.get(i);
         label.setVerticalAlignment(JLabel.CENTER);
@@ -111,6 +137,8 @@ public class Grapher extends JPanel implements MathObject {
         // label.setBounds(5, 20, components.winBounds()[0], components.winBounds()[1] - 20);
         return label;
     }
+
+    /** TODO: JAVADOC */
     public void graph() {
         //Create and set up the window.
         String title = "Graph of ";
@@ -140,10 +168,13 @@ public class Grapher extends JPanel implements MathObject {
         frame.setVisible(true);
     }
 
-
-
+    /** TODO: JAVADOC */
     public ArrayList<Set> sets() { return sets; }
+
+    /** TODO: JAVADOC */
     public EquationSystem equationsToGraph() { return equationsToGraph; }
+
+    /** TODO: JAVADOC */
     public GraphComponents components() { return components; }
 
     @Override

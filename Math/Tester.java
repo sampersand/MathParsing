@@ -17,6 +17,16 @@ public class Tester {
      * @throws NotDefinedException Thrown when the first value isn't equal to "--e" of --f 
      */
     public static void main(String[] args) throws NotDefinedException {
+
+
+        /*
+         * --TODOS--
+         * NOTE: Set will not be supported fully until version 1.0 comes out
+         * correct all the Exception declarations to make them clearer. - v 0.68
+         * make sure copy, toString, toFullSring, and toFancyString are updated - v0.69
+         * Javadoc everything - v ??
+         * make isolate work - v ??
+         */
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
             eqsys.add("y = graph('eq:sin(alpha)','eq:cos(beta)')");

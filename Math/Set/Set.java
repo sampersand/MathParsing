@@ -270,8 +270,8 @@ public class Set implements MathObject {
         double b1 = r(pArr1, pArr2) * S(pArr2) / S(pArr1);
         double b0 = avg(pArr2) - b1 * avg(pArr1);
         return new EquationSystem().add(new Equation().add("yhat","b0 + b1 * y"),
-                                      new Equation().add("b0", "" + b0), 
-                                      new Equation().add("b1", "" + b1));
+                                        new Equation().add("b0", "" + b0), 
+                                        new Equation().add("b1", "" + b1));
 
     }
 
@@ -465,7 +465,7 @@ public class Set implements MathObject {
      */
     public static double avg(double[] pArr1) {
         if(pArr1.length == 0)
-            throw new InvalidArgsException("pArr1's length is 0! You can't take an average of an empty array!");
+            throw new InvalidArgsException("pArr1's length is 0! Unable to take an average of an empty array!");
         double sum = 0;
         for(double i : pArr1)
             sum += i;
