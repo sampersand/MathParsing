@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * A class that represents either a {@link CustomFunction custom function}, an {@link InBuiltFunction inbuilt function}, 
  * an {@link OperationFunction operation}, or a group of tokens.
  * @author Sam Westerman
- * @version 0.65
+ * @version 0.66
  * @since 0.1
  */
 public class Node implements MathObject {
@@ -198,11 +198,11 @@ public class Node implements MathObject {
         int i = 0;
         while(i < pNode.size()) {
             Node n = pNode.get(i);
-            if(n.token().type() == OPER && n.token.val().equals("-") && pNode.get(i - 1).token().type() == OPER &&
+            if(n.token.type() == OPER && n.token.val().equals("-") && pNode.get(i - 1).token.type() == OPER &&
                                    (pNode.get(i - 1).token.val().equals("/") ||
                                     pNode.get(i - 1).token.val().equals("*") ||
                                     pNode.get(i - 1).token.val().equals("^"))) {
-                Node n2 = new Node(new Token("doesnt matter what I put here", GROUP));
+                Node n2 = new Node(new Token("doesnt matter what I put here because it will become GRP", GROUP));
                 n2.add(new FinalNode(new Token("0", NUM)));
                 n2.add(n);
                 n2.add(pNode.get(i + 1));
@@ -315,7 +315,7 @@ public class Node implements MathObject {
                      boolean pOver) {
         if(this instanceof FinalNode)
             return this;
-        if(i <= 0 || (get(size() - 1).token().type() == GROUP &&! pOver)) {
+        if(i <= 0 || (get(size() - 1).token.type() == GROUP &&! pOver)) {
             return this;
         } else {
             return get(size() - 1).getD(i - 1, pOver);
@@ -347,10 +347,8 @@ public class Node implements MathObject {
     private void addD(int i,
                      Node n,
                      boolean pOver) {
-        if(this instanceof FinalNode) {
-            throw new TypeMisMatchException("Cannot addD to a FinalNode because FinalNodes don't have subnodes!");
-        }
-        else if(i <= 0 || size() <= 0 || (get(size() - 1).token().type() == GROUP &&! pOver)) {
+        assert !(this instanceof FinalNode);
+        if(i <= 0 || size() <= 0 || (get(size() - 1).token.type() == GROUP &&! pOver)) {
             add(n);
         } else {
             if(i == 2 && get(size() - 1) instanceof FinalNode) {
@@ -395,26 +393,20 @@ public class Node implements MathObject {
                      int p,
                      Node n,
                      boolean pOver) {
-
-        if(this instanceof FinalNode) {
-            throw new TypeMisMatchException("Cannot setD a FinalNode because FinalNodes don't have subnodes!");
-        } else if(i == 0) {
-            if(size() <= 0) {
-                throw new InvalidArgsException("Can't set subnodes of a Node with no size!");
-            } else if(size() <= p || (p < 0 && p != - 1)) {
-                throw new InvalidArgsException("p has to be between 0 and Node's length - 1 (" + size() + "- 1)");
+        assert !(this instanceof FinalNode);
+        if(i == 0) {
+            assert size() > 0;
+            assert size() > p && (p >= 0 || p == -1);
+            if(p == - 1) {
+                set(size() - 1,n);
             } else {
-                if(p == - 1) {
-                    set(size() - 1,n);
-                } else {
-                    set(p, n);
-                }
+                set(p, n);
             }
         } else {
             if(i == 2 && get(size() - 1) instanceof FinalNode ) {
                 Print.printi("Trying to setD to a FinalNode. Going one level up instead.");
                 set(size() - 1,n);
-            } else if(get(size() - 1).token().type() == GROUP &&! pOver) {
+            } else if(get(size() - 1).token.type() == GROUP &&! pOver) {
                 set(p, n);
             } else {
                 get(size() - 1).setD(i - 1, p, n, pOver);
@@ -451,8 +443,7 @@ public class Node implements MathObject {
     private void remD(int i,
                      int p,
                      boolean pOver) throws TypeMisMatchException {
-        if(this instanceof FinalNode)
-            throw new TypeMisMatchException("Can't delete subnodes from a FinalNode!");
+        assert !(this instanceof FinalNode);
         if(i <= 0)
             rem(p == - 1 ? size() - 1 : p);
         else
@@ -501,7 +492,7 @@ public class Node implements MathObject {
 
     /**
      * Evaluates <code>this</code> via the {@link EquationSystem EquationSystem pEqSys}.
-     * TODO: Get a CustomFunction with {@link Token#val() token().val()} if it isn't defined elsewhere
+     * TODO: Get a CustomFunction with {@link Token#val() token.val()} if it isn't defined elsewhere
      * @param pEqSys    An {@link EquationSystem#isolate isolated EquationSystem} that will be used to evaluate.
      * @return A double representation of this, when evaluated using <code>pEqSys</code>.
      * @throws NotDefinedException  Thrown when <code>this</code> is a {@link FinalNode}, or a {@link CustomFunction}
@@ -509,20 +500,17 @@ public class Node implements MathObject {
      *                              evaluated.
      */
     public double eval(final EquationSystem pEqSys) throws NotDefinedException {
-        if (this instanceof FinalNode) {
-            throw new NotDefinedException("This is implemented in FinalNode... How was i triggered...?");
-        } else if(token().type() == Token.Type.FUNC || token().type() == Token.Type.OPER) {
-            if(pEqSys.functions().get(token().val()) != null) // if it is a function
-                return pEqSys.functions().get(token().val()).exec(pEqSys, this);
+        assert !(this instanceof FinalNode) : "This is implemented in FinalNode... How was i triggered...?";
+        assert token.type() == Token.Type.FUNC || token.type() == Token.Type.OPER || token.type() == Token.Type.GROUP || 
+               token.isUni() || this instanceof FinalNode : "No known way to evaluate Node '" + token.val() + "'!";
+        if(token.type() == Token.Type.FUNC || token.type() == Token.Type.OPER) {
+            if(pEqSys.functions().get(token.val()) != null) // if it is a function
+                return pEqSys.functions().get(token.val()).exec(pEqSys, this);
             else {
-                return InBuiltFunction.exec(token().val(), pEqSys, this);
+                return InBuiltFunction.exec(token.val(), pEqSys, this);
             }
         }
-        else if(token().type() == Token.Type.GROUP || this instanceof FinalNode || token.isUni()) {
-                return get(0).eval(pEqSys);
-        } else {
-            throw new NotDefinedException("Node: '" + token().val() + "' has no known way to evaluate it");
-        }
+        return get(0).eval(pEqSys);
     }
 
     @Override

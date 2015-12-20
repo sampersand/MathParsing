@@ -8,7 +8,7 @@ import java.util.HashMap;
  * A single item from an equation String.
  * Example: "sin(x+2)" yields the tokens <code>{"sin":FUNC, "(":LPAR, "x":VAR, "+":OPER, "2":NUM, ")":RPAR}</code>.
  * @author Sam Westerman
- * @version 0.65
+ * @version 0.66
  * @since 0.1
  */
 public class Token implements MathObject {
@@ -180,25 +180,22 @@ public class Token implements MathObject {
     /**
      * Used to figure out which operations come before others in the "order of operations". Parentheses are handeled
      * seperately.
-     * if <code>isUni()</code>, priority is 4.
-     * <p> else if type is FUNC or GROUP, priority is 3.
-     * <p> else if type is OPER: <code>+,- == 0</code>, <code>*,/ == 1</code>,and  <code>^ == 2</code>.
+     * <p> if type is OPER: <code>+ &amp; - ==> 0</code>, <code>* &amp; / ==> 1</code>, and  <code>^ ==> 2</code>.
      * <p> else priority is - 1.
      * @return The priority.
      */
     public int priority() {
-        if(isUni())
-            return 4;
-        if(!isOper()) {
-            return - 1;
-        }
+        int ret = 0;
         switch(val) {
-            case "+": return 0;
-            case "-": return 0;
-            case "*": return 1;
-            case "/": return 1;
-            case "^": return 2;
-            default: throw new NotDefinedException("[ERROR] Operation '" + val + "' doesn't have a priority!");
+            case "^":
+                ret ++;
+            case "*": case "/":
+                ret ++;
+            case "+": case "-":
+                assert isOper();
+                return ret;
+            default : 
+                return -1;
         }
     }
 

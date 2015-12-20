@@ -13,7 +13,7 @@ import java.util.Random;
  * A class that represents an operation in mathametics. It acts very similar to an {@link InBuiltFunction}.
  * 
  * @author Sam Westerman
- * @version 0.65
+ * @version 0.66
  * @since 0.1
   * @see <a href="https://en.wikipedia.org/wiki/Operation_(mathematics)">Operation</a>
  */
@@ -44,9 +44,8 @@ public class OperationFunction extends InBuiltFunction {
                        Node pNode) throws 
                            NotDefinedException,
                            InvalidArgsException {
-        if(pNode.subNodes().size() == 0)
-            throw new InvalidArgsException("Node size cannot be 0!");
-
+        assert pNode.subNodes().size() != 0 : "Node size cannot be 0!";
+        assert name.equals("+") || name.equals("-") || name.equals("*") || name.equals("/") || name.equals("^");
         double ret = pNode.get(0).eval(pEqSys);
         switch(name) {
             case "+":
@@ -74,8 +73,6 @@ public class OperationFunction extends InBuiltFunction {
                     ret = Math.pow(ret, pNode.get(1).eval(pEqSys)); // not sure this works
                 }
                 break;
-            default:
-                throw new NotDefinedException("OperationFunction " + this + " doesnt have a defined way to compute it!");
         }
         return ret;
     }

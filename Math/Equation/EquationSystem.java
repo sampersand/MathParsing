@@ -15,7 +15,7 @@ import java.util.Iterator;
  * {@link CustomFunction}s (and the corresponding classes for them).
  * 
  * @author Sam Westerman
- * @version 0.65
+ * @version 0.66
  * @since 0.1
  */
 public class EquationSystem implements MathObject, Iterable {
@@ -371,8 +371,7 @@ public class EquationSystem implements MathObject, Iterable {
             return i < EquationSystem.this.equations.size();
         }
         public E next() {
-            if(!hasNext())
-                throw new NotDefinedException();
+            assert hasNext() : "there should be a next one.";
             return (E) EquationSystem.this.equations().get(i++);
         }
     }

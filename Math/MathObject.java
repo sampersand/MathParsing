@@ -5,7 +5,7 @@ package Math;
  * {@link #toFancyString()}, and {@link #toFullString(int idtLvl)} methods.
  * 
  * @author Sam Westerman
- * @version 0.65
+ * @version 0.66
  * @since 0.1
  */
 public interface MathObject {

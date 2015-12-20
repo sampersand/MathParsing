@@ -43,9 +43,8 @@ public class graph extends CustomFunction{
                            NotDefinedException,
                            InvalidArgsException {
         System.out.println("graph's exec's pEqSys: " + pEqSys.toFullString());
-        if(pNode.size() == 0)
-            throw new InvalidArgsException("Cannot evaluate the node '" + pNode.token().val() +
-                    "' when it's size isn't greater than 1");
+        assert pNode.size() > 0 : "Cannot evaluate the node '" + pNode.token().val() + "' when it's size isn't greater"+
+                                  " than 1";
         for(Node n : pNode.subNodes()) {
             if(n.token().type() != Type.ARGS) {
                 throw new InvalidArgsException("All arguments of graph must be of Token.Type 'ARG'!");

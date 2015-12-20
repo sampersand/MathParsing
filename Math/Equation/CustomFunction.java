@@ -15,7 +15,7 @@ import java.lang.reflect.*;
  * A class that all user-defined functions must impliment. 
  * 
  * @author Sam Westerman
- * @version 0.65
+ * @version 0.66
  * @since 0.1
  */
 public class CustomFunction extends Function implements MathObject {
