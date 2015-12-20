@@ -190,7 +190,7 @@ public class Node implements MathObject {
     }
 
     /**
-     * Fixes nodes to prevent horrible things like "1*-1" from crashing.
+     * Fixes nodes to prevent horrible things like "1*- 1" from crashing.
      * @param pNode         The node whose subnodes will be fixed.
      * @return A "fixed" version of the nodes.
      */
@@ -369,7 +369,7 @@ public class Node implements MathObject {
      */
     public void setD(int i,
                      Node n) {
-        setD(i, -1, n);
+        setD(i, - 1, n);
     }
 
     /**
@@ -400,10 +400,10 @@ public class Node implements MathObject {
         } else if(i == 0) {
             if(size() <= 0) {
                 throw new InvalidArgsException("Can't set subnodes of a Node with no size!");
-            } else if(size() <= p || (p < 0 && p != -1)) {
-                throw new InvalidArgsException("p has to be between 0 and Node's length -1 (" + size() + "-1)");
+            } else if(size() <= p || (p < 0 && p != - 1)) {
+                throw new InvalidArgsException("p has to be between 0 and Node's length - 1 (" + size() + "- 1)");
             } else {
-                if(p == -1) {
+                if(p == - 1) {
                     set(size() - 1,n);
                 } else {
                     set(p, n);
@@ -427,7 +427,7 @@ public class Node implements MathObject {
      * @throws TypeMisMatchException thrown when the last node at layer i is an instance of {@link FinalNode}.
      */
     public void remD(int i) throws TypeMisMatchException {
-        remD(i, -1);
+        remD(i, - 1);
     }
 
     /**
@@ -453,7 +453,7 @@ public class Node implements MathObject {
         if(this instanceof FinalNode)
             throw new TypeMisMatchException("Can't delete subnodes from a FinalNode!");
         if(i <= 0)
-            rem(p == -1 ? size() - 1 : p);
+            rem(p == - 1 ? size() - 1 : p);
         else
             get(size() - 1).remD(i - 1, p, pOver);
     }
@@ -514,17 +514,8 @@ public class Node implements MathObject {
             if(pEqSys.functions().get(token().val()) != null) // if it is a function
                 return pEqSys.functions().get(token().val()).exec(pEqSys, this);
             else {
-                try { //if it is a built in
-                    return InBuiltFunction.exec(token().val(), pEqSys, this);
-                } catch (NotDefinedException err2) {
-                    // try {
-                        // return new CustomFunction(token().val()).exec(this,this);
-                    // } //this isn't working now because of the way instantiating works.
-                    // catch(e)
-
-                    throw new NotDefinedException("Function '" + token().val() + "' isn't defined in funcs " + 
-                                                  "(and isn't inbuilt either), or one of the vars isn't defined!");
-                }
+                System.out.println("Node '" + this+"' eval's pEqSys: " + pEqSys.toFullString());
+                return InBuiltFunction.exec(token().val(), pEqSys, this);
             }
         }
         else if(token().type() == Token.Type.GROUP || this instanceof FinalNode || token.isUni()) {

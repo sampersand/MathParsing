@@ -42,7 +42,6 @@ public class graph extends CustomFunction{
                        Node pNode) throws
                            NotDefinedException,
                            InvalidArgsException {
-        System.out.println("graph.exec: im being run");
         if(pNode.size() == 0)
             throw new InvalidArgsException("Cannot evaluate the node '" + pNode.token().val() +
                     "' when it's size isn't greater than 1");
@@ -54,7 +53,7 @@ public class graph extends CustomFunction{
         equationsys = new EquationSystem();
         sets = new ArrayList<Set>();
         gcomp = new GraphComponents();
-        gcomp = new GraphComponents(new int[]{1250, 750}, new double[]{-10, -10, 10, 10}, 1000);
+        gcomp = new GraphComponents(new int[]{1250, 750}, new double[]{- 10, - 10, 10, 10}, 100);
         node = pNode;
 
         for(Node n : node.subNodes()) {
@@ -62,11 +61,10 @@ public class graph extends CustomFunction{
             String[] vals = n.token().val().replaceAll("^" + id + ":","").replaceAll(" ","").split(",");
             switch(id) {
                 case "eq": case "":
-                    equationsys.add("y = " + vals[0]);
-                    System.out.println("eqsys: "+equationsys);
+                    equationsys.add(vals[0]);
                     break;
                 case "eqandset": //make sure to put these in front l0l
-                    equationsys.add(new Equation().add("y = " + vals[0]));
+                    equationsys.add(new Equation().add(vals[0]));
                 case "eqtoset":
                     sets.add(varsToSet(vals));
                     break;
@@ -74,7 +72,7 @@ public class graph extends CustomFunction{
                     sets.add(getSet(vals));
                     break;
                 case "eqandresid":
-                    equationsys.add(new Equation().add("y = " + vals[0]));
+                    equationsys.add(new Equation().add(vals[0]));
                 case "eqtoresid":
                     sets.add(varsToSet(vals).resid());
                     break;

@@ -183,14 +183,14 @@ public class Token implements MathObject {
      * if <code>isUni()</code>, priority is 4.
      * <p> else if type is FUNC or GROUP, priority is 3.
      * <p> else if type is OPER: <code>+,- == 0</code>, <code>*,/ == 1</code>,and  <code>^ == 2</code>.
-     * <p> else priority is -1.
+     * <p> else priority is - 1.
      * @return The priority.
      */
     public int priority() {
         if(isUni())
             return 4;
         if(!isOper()) {
-            return -1;
+            return - 1;
         }
         switch(val) {
             case "+": return 0;

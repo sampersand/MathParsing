@@ -106,14 +106,12 @@ public class Expression implements MathObject {
     public static String fixExpression(String pEq) {
         if(pEq.charAt(0) == '@')
             return pEq.substring(1);
-        if(pEq.indexOf("=")!=-1)
-            pEq = pEq.split("=")[1];
         String[] trigf = new String[]{"sec", "csc", "cot", "sinh", "cosh", "tanh", "sin", "cos", "tan"};
         for(String trig : trigf) {
             pEq = pEq.replaceAll("()" + trig + "(?!h)([A-za-z]+)","$1" + trig + "($2)");
         }
 
-        pEq = pEq.replaceAll("\\-\\(", "-1*(");
+        pEq = pEq.replaceAll("\\-\\(", "- 1*(");
         pEq = pEq.replaceAll("([\\d.])+(\\(|(?:[A-Za-z]+))", "$1*$2");
         return pEq;
     }
@@ -135,7 +133,7 @@ public class Expression implements MathObject {
             if(prev.length() > 0 && prev.charAt(0) == '\'') {
                 prev += c;
                 if(c == '\'') {
-                    tokens.add(new Token(prev.substring(1, prev.length() -1), Token.Type.ARGS));
+                    tokens.add(new Token(prev.substring(1, prev.length() - 1), Token.Type.ARGS));
                     prev = "";
                 }
                 continue;

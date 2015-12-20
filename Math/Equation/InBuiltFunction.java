@@ -103,6 +103,8 @@ public class InBuiltFunction extends Function {
                        Node pNode) throws
                            NotDefinedException,
                            InvalidArgsException {
+        // System.out.println("InBuiltFunction '" + name + "' exec's pEqSys: "+ pEqSys.toFullString());
+        if(true)throw new NotDefinedException();
         double[] args = evalNode(pEqSys, pNode);
         switch(name) {
 
@@ -169,7 +171,7 @@ public class InBuiltFunction extends Function {
                 if(args.length == 2) return (new Random().nextDouble() + args[0]) * args[1];
                 if(args.length == 0) return Math.random();
                 if(args.length != 0)
-                    Print.printw(name + " takes 0, 1, or 2 params. Returning a random num from 0-1 instead.");
+                    Print.printw(name + " takes 0, 1, or 2 params. Returning a random num from 0- 1 instead.");
 
             case "fac":
                 double ret = 1;

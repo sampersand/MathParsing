@@ -65,13 +65,13 @@ public class Set implements MathObject {
     }
 
     /**
-     * Creates a Set based off the {@link EquationSystem} eq. Passes <code>-10, 10, 25</code> to 
+     * Creates a Set based off the {@link EquationSystem} eq. Passes <code>- 10, 10, 25</code> to 
      * {@link #Set(EquationSystem,double,double,double) another constructor} as the min, max, and cStep
      * (the cardinality of the Set).
      * @param pEqSys     The {@link EquationSystem} that the Set will be based off of.
      */
     public Set(EquationSystem pEqSys) {
-        this(pEqSys, -10, 10, 25);
+        this(pEqSys, - 10, 10, 25);
     }
 
     // &#060; is less than
@@ -630,7 +630,7 @@ public class Set implements MathObject {
                 temp = ret[x + 1];
                 ret[x + 1] = ret[x];
                 ret[x] = temp;
-                x = -1;
+                x = - 1;
             }
             x++;
         }

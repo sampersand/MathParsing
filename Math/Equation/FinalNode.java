@@ -78,8 +78,10 @@ public class FinalNode extends Node implements MathObject {
         } else if (token().type() == Token.Type.VAR) {
             if(pEqSys.varExist(sVal)) {
                 for(Equation eq : pEqSys.equations()){
-                    if(eq.expressions().get(0).node().get(0).token().val().equals(sVal))
+                    if(eq.expressions().get(0).node().get(0).token().val().equals(sVal)){
+                        // System.out.println(eq.expressions().get(1).toFullString());
                         return eq.expressions().get(1).node().eval(pEqSys);
+                    }
                 }
             } switch(sVal.toLowerCase()) {
                 case "e": return Math.E;

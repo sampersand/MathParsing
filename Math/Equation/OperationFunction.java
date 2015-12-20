@@ -40,37 +40,38 @@ public class OperationFunction extends InBuiltFunction {
     }
 
     @Override
-    public double exec(EquationSystem pEq,
+    public double exec(EquationSystem pEqSys,
                        Node pNode) throws 
                            NotDefinedException,
                            InvalidArgsException {
+        System.out.println("Node '" + this+"' eval's pEqSys: " + pEqSys.toFullString());
         if(pNode.subNodes().size() == 0)
             throw new InvalidArgsException("Node size cannot be 0!");
-        double ret = pNode.get(0).eval(pEq);
+        double ret = pNode.get(0).eval(pEqSys);
         switch(name) {
             case "+":
                 for(int i = 1; i < pNode.subNodes().size(); i++) {
-                    ret += pNode.get(i).eval(pEq);
+                    ret += pNode.get(i).eval(pEqSys);
                 }
                 break;
             case "-":
                 for(int i = 1; i < pNode.subNodes().size(); i++) {
-                    ret -= pNode.get(i).eval(pEq);
+                    ret -= pNode.get(i).eval(pEqSys);
                 }
                 break;
             case "*":
                 for(int i = 1; i < pNode.subNodes().size(); i++) {
-                    ret *= pNode.get(i).eval(pEq);
+                    ret *= pNode.get(i).eval(pEqSys);
                 }
                 break;
             case "/":
                 for(int i = 1; i < pNode.subNodes().size(); i++) {
-                    ret /= pNode.get(i).eval(pEq);
+                    ret /= pNode.get(i).eval(pEqSys);
                 }
                 break;
             case "^":
                 for(int i = 1; i < pNode.subNodes().size(); i++) {
-                    ret = Math.pow(ret, pNode.get(1).eval(pEq)); // not sure this works
+                    ret = Math.pow(ret, pNode.get(1).eval(pEqSys)); // not sure this works
                 }
                 break;
             default:

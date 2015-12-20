@@ -67,7 +67,7 @@ public class MainClass implements MathObject {
      * <code>LIMIT</code> as <code>limit</code>, and <code>STEP</code> as <code>0.1D</code>.
      * @param eq            The equation that will be passed along to graph.
      * @param limit         The x and y boundries for the graph. For example, if 
-     *                      <code>limit = 10</code>, the boundries would be (-10x, 10x, -10y, 10y).
+     *                      <code>limit = 10</code>, the boundries would be (- 10x, 10x, - 10y, 10y).
      */
     public void setUpAndDrawGraph(String eq, int limit) {
         setUpAndDrawGraph(eq, limit, 0.1D);

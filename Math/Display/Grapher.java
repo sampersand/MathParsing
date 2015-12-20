@@ -55,7 +55,6 @@ public class Grapher extends JPanel implements MathObject {
         equationsys = pEqSys;
         components = pGraph;
         displays = new ArrayList<DisplayComponent>();
-        System.out.println(equationsys+"@@@@@@@@@@@@@@@");
         displays.add(new DisplayComponent(this)); //adds axis
         for(int i = 0; i < equationsys.size(); i++)
             displays.add(new DisplayComponent(this, equationsys.equations().get(i), equationsys, 

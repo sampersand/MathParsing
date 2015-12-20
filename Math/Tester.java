@@ -19,13 +19,11 @@ public class Tester {
     public static void main(String[] args) throws NotDefinedException {
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
-            eqsys.add("y = graph('eq:y=x','eq:y=cosx','eq:y=tanx') + tan('q=z') + x + y + (z*4)");
-            eqsys.add("graph", new CustomFunction("graph"));
-            // eqsys.add("y = 1 + sin(x) + c");
-            // eqsys.add("x = (9.45 + alpha ^ theta) / 2");
-            // eqsys.add("theta = 2 * c + alpha");
-            // eqsys.add("alpha = 4 + c");
-            // eqsys.add("c = 0 - 9");
+            eqsys.add("y = graph('eq:1 + sin(alpha) + c')");
+            eqsys.add("alpha = (9.45 + x ^ theta) / 2");
+            eqsys.add("theta = 2 * c + x");
+            eqsys.add("c = 0 - 9");
+            eqsys.add(new CustomFunction("graph"));
             // 1 + sin((9.45 + (4 - 9) ^ (2 * - 9 + 4 - 9))/2) - 9
         } else {
             eqsys = new EquationSystem();
@@ -54,7 +52,7 @@ public class Tester {
                 }
             }
         }
-        Print.print(eqsys.toFancyString(1));
+        // Print.print(eqsys.toFullString());
         Print.printi("RESULT:", eqsys.eval("y"));
     }
 
