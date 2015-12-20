@@ -125,4 +125,5 @@ public abstract class Function implements MathObject {
     public Function inverse() throws NotDefinedException{
         throw new NotDefinedException();
     }
+
 }

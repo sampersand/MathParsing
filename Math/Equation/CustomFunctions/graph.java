@@ -42,7 +42,6 @@ public class graph extends CustomFunction{
                        Node pNode) throws
                            NotDefinedException,
                            InvalidArgsException {
-        System.out.println("graph's exec's pEqSys: " + pEqSys.toFullString());
         assert pNode.size() > 0 : "Cannot evaluate the node '" + pNode.token().val() + "' when it's size isn't greater"+
                                   " than 1";
         for(Node n : pNode.subNodes()) {

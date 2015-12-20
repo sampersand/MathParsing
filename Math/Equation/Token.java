@@ -201,17 +201,23 @@ public class Token implements MathObject {
 
     @Override
     public String toString() {
-        return "('" + val + "': " + type + ")";
+        return "Token: val = [" + val + "], type = [" + type + "]";
     }
 
     @Override
     public String toFancyString(int idtLvl) {
-        throw new NotDefinedException();
+        String ret = indent(idtLvl) + "Token:\n";
+        ret += indent(idtLvl + 1) + "Value = " + val + "\n";
+        ret += indent(idtLvl + 1) + "Type = " + type;
+        return ret;
     }
 
     @Override
     public String toFullString(int idtLvl) {
-        throw new NotDefinedException();
+        String ret = indent(idtLvl) + "Token:\n";
+        ret += indent(idtLvl + 1) + "Value:\n" + indent(idtLvl + 2) + val + "\n";
+        ret += indent(idtLvl + 1) + "Type:\n" + indent(idtLvl + 2) + type;
+        return ret;
     }
 
     @Override

@@ -37,6 +37,7 @@ public class FinalNode extends Node implements MathObject {
      */
     public FinalNode(Token pToken) throws TypeMisMatchException {
         super(pToken); // this sets token.
+        assert pToken.type() == Token.Type.NUM || pToken.type() == Token.Type.VAR || pToken.type() == Token.Type.ARGS;
         if (token.type() == Token.Type.NUM)
             try {
                 dVal = Double.parseDouble(token.val());
@@ -44,11 +45,8 @@ public class FinalNode extends Node implements MathObject {
                 throw new TypeMisMatchException("Cannot instatiate FinalNode because pToken.type (" + token.type() + ")"
                 + " is a NUM, but pToken.val(" + pToken.val() + ") cannot be parsed as a double!");
             }
-        else if (token.type() == Token.Type.VAR || token.type() == Token.Type.ARGS)
+        else 
             sVal = token.val();
-        else
-            throw new TypeMisMatchException("Cannot instatiate FinalNode because pToken.type() can only be of Types: " +
-                                            "NUM, VAR, or ARGS!");
         
     }
 
@@ -80,7 +78,6 @@ public class FinalNode extends Node implements MathObject {
             if(pEqSys.varExist(sVal)) {
                 for(Equation eq : pEqSys.equations()){
                     if(eq.expressions().get(0).node().get(0).token.val().equals(sVal)){
-                        // System.out.println(eq.expressions().get(1).toFullString());
                         return eq.expressions().get(1).node().eval(pEqSys);
                     }
                 }
@@ -104,23 +101,25 @@ public class FinalNode extends Node implements MathObject {
 
     @Override
     public String toString() {
-        return "[" + (token.type() == Token.Type.NUM ? dVal : sVal) + "]";
+        return "FinalNode: type = [" + token.type() + "], value = [" + 
+                (token.type() == Token.Type.NUM ? dVal : sVal) + "]";
     }
     
     @Override
     public String toFancyString(int idtLvl) {
-      return toString();
+        String ret = indent(idtLvl) + "FinalNode:\n";
+        ret += indent(idtLvl + 1) + "Type = " + token.type() + "\n";
+        ret += indent(idtLvl + 1) + "value = " + (token.type() == Token.Type.NUM ? dVal : sVal);
+        return ret;
     }
 
     @Override
     public String toFullString(int idtLvl) {
-        String ret = indent(idtLvl) + "FinalNode: [";
-        ret += token.type() == Token.Type.NUM ? dVal : "\"" + sVal + "\"";
-        ret += ": " + token.type() + "]";
+        String ret = indent(idtLvl) + "FinalNode:\n";
+        ret += indent(idtLvl + 1) + "Token:\n" + token.toFullString(idtLvl + 2) + "\n";
+        ret += indent(idtLvl + 1) + "Value:\n" + indent(idtLvl + 2) + (token.type() == Token.Type.NUM ? dVal : sVal);
         return ret;
-
     }
-
     @Override
     public FinalNode copy(){
         return new FinalNode(token);

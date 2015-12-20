@@ -267,24 +267,31 @@ public class Expression implements MathObject {
         return true;
     } 
 
+    /**
+     * Takes {@link #expession} and returns it formatted cleanly. <code>A+B</code> becomes <code>A + B</code>, etc.
+     * @return A cleanly formatted {@link #expression}.
+     */
+    public String formattedExpression(){
+        return expression.replaceAll("(\\+|\\-|\\*|/|\\^)", " $1 ").replaceAll(",", ", ");
+    }
+
     @Override
     public String toString() {
-        return expression == null ? "Null Expression" : 
-               expression.length() == 0 ? "Empty Expression" : 
-               expression.replaceAll("(\\+|\\-|\\*|/|\\^|,)", " $1 ");
+        return "Expression '" + formattedExpression() + "'";
     }
 
     @Override
     public String toFancyString(int idtLvl) {
-        return indent(idtLvl) + expression == null ? "Null Expression" : 
-               expression.length() == 0 ? "Empty Expression" : 
-               toString();
+        return indent(idtLvl) + "Expression:\n" + indent(idtLvl + 1 ) +
+                "Raw Expression = " + formattedExpression();
     }
 
     @Override
     public String toFullString(int idtLvl) {
-        return indent(idtLvl) + "Expression:\n" + indent(idtLvl + 1) + "RawEq\n" + indent(idtLvl + 2) 
-                            + expression + "\n" + indent(idtLvl + 1) + "Nodes\n" + node.toFullString(idtLvl + 2);
+        String ret = indent(idtLvl) + "Expression:\n";
+        ret += indent(idtLvl + 1) + "Raw Expression:\n" + indent(idtLvl + 2) + expression + "\n";
+        ret += indent(idtLvl + 1) + "Expression Node:\n" + node.toFullString(idtLvl + 2);
+        return ret;
     }
 
     @Override

@@ -76,48 +76,33 @@ public class Equation implements MathObject {
      * Gets a string representing the {@link Expression#expression} for each {@link Expression} in {@link #expressions}.
      * @return A string comprised of each expression, with <code> = </code> between each one.
      */
-    public String rawExpressions(){
+    public String formattedExpressions(){
         String ret = "";
         for(Expression expr : expressions)
-            ret += expr.expression + " = ";
+            ret += expr.formattedExpression() + " = ";
         return ret.substring(0, ret.length() - (expressions.size() > 0 ? 3 : 0));
     }
 
     @Override
     public String toString() {
-        if(expressions == null)
-            return "Null Expressions";
-        if(expressions.size() == 0)
-            return "Empty Expressions";
-
-        String ret = "";
-        for(Expression expr : expressions) {
-            ret += expr + " = ";
-        }
-        return ret.substring(0, ret.length() - 3);
+        return "Equation: expressions = " + expressions;
     }
 
     @Override
     public String toFancyString(int idtLvl) {
-        String ret = indent(idtLvl) + "Equation:";
-
-        if(expressions == null)
-            ret += "\n" + indent(idtLvl + 1) + "Null Expressions";
-        else if(expressions.size() == 0)
-            ret += "\n" + indent(idtLvl + 1) + "Empty Expressions";
-        else
-            ret += "\n" + indent(idtLvl + 1);
+        String ret = indent(idtLvl) + "Equation:\n";
+        ret += indent(idtLvl + 1) + "Expressions:";
         for(Expression expr : expressions) {
-            ret += "'" + expr.toFancyString() + "' = ";
+            //TODO: Update this "= " here to coincide with greater than or less than equations (when introduced).
+            ret += "\n" + indent(idtLvl + 2) + "= "+ expr.formattedExpression();
         }
-        return ret.substring(0, ret.length() - (expressions.size() > 0 ? 3 : 0));
+        return ret;
     }
 
     @Override
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "Equation:\n";
-        ret += indent(idtLvl + 1) + "Raw:\n" + indent(idtLvl + 2) + rawExpressions() + "\n";
-        ret += indent(idtLvl + 1) + "Expressions";
+        ret += indent(idtLvl + 1) + "Expressions:";
         for(Expression expr : expressions)
             ret += "\n" + expr.toFullString(idtLvl + 2);
         return ret;

@@ -198,8 +198,25 @@ public class Grapher extends JPanel implements MathObject {
 
     @Override
     public String toFancyString(int idtLvl) {
-        throw new NotDefinedException();
+        String ret = indent(idtLvl) + "Grapher:";
+
+        ret += "\n" + indent(idtLvl + 1) + "Sets:";
+        if(sets.size() == 0)
+            ret += "\n" + indent(idtLvl + 2) + "null";
+        for(Set s : sets)
+            ret += "\n" + s.toFullString(idtLvl + 2);
+
+        ret += "\n" + equationsToGraph.toFullString(idtLvl + 1);
+        ret += "\n" + components.toFullString(idtLvl + 1);
+
+        ret += "\n" + indent(idtLvl + 1) + "Displays:";
+        if(displays.size() == 0)
+            ret += "\n" + indent(idtLvl + 2) + "null";
+        for(DisplayComponent d : displays)
+            ret += "\n" + d.toFullString(idtLvl + 2);
+        return ret;
     }
+
 
     @Override
     public String toFullString(int idtLvl) {

@@ -78,17 +78,24 @@ public class OperationFunction extends InBuiltFunction {
     }
     @Override
     public String toString() {
-        return name;
+        return "OperationFunction '" + name + "'";
     }
 
     @Override
     public String toFancyString(int idtLvl) {
-        throw new NotDefinedException();
+        String ret = indent(idtLvl) + "OperationFunction '" + name + "':\n";
+        ret += indent(idtLvl + 1) + "Help = " + help + "\n";
+        ret += indent(idtLvl + 1) + "Syntax = " + syntax + "";
+        return ret;
     }
 
     @Override
     public String toFullString(int idtLvl) {
-        return "OperationFunction: '" + name + "'";
+        String ret = indent(idtLvl) + "OperationFunction:\n";
+        ret += indent(idtLvl + 1) + "Name:\n" + indent(idtLvl + 2) + name + "\n";
+        ret += indent(idtLvl + 1) + "Help:\n" + indent(idtLvl + 2) + help + "\n";
+        ret += indent(idtLvl + 1) + "Syntax:\n" + indent(idtLvl + 2) + syntax;
+        return ret;
     }
 
     @Override

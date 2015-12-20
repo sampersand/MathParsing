@@ -312,47 +312,34 @@ public class EquationSystem implements MathObject, Iterable {
 
     @Override
     public String toFancyString(int idtLvl) {
-        String idt = indent(idtLvl + 1);
         String ret = indent(idtLvl) + "EquationSystem:";
-        if(equations == null) {
-            ret += "\n" + idt + " Null Equations";
-        } else if(equations.size() == 0) {
-            ret += "\n" + idt + " Empty Equations";
-        } else {
-            ret += "\n" + idt + "Equations: ";
-            for(Equation eqs : equations) {
-                ret += "\n" + eqs.toFancyString(idtLvl + 2);
-            }
+        ret += "\n" + indent(idtLvl + 1) + "Equations:";
+
+        for(Equation eqs : equations) {
+            ret += "\n" + eqs.toFancyString(idtLvl + 2);
         }
-        if(functions == null) {
-            ret += "\n" + idt + " Null Functions";
-        } else if(functions.size() == 0) {
-            ret += "\n" + idt + " Empty Functions";
-        } if(functions.size() > 0) {
-            ret += "\n" + idt + " Functions: (stuff in [] are optional)";
-            for(Object key : functions.keySet().toArray()) {
-                ret += "\n" + indent(idtLvl + 2) + "'" + key + "' = " + functions.get("" + key).toFancyString();//.replaceAll("\n","\n\t\t\t") + ")";
-            }
+        ret += "\n" + indent(idtLvl + 1) + "Functions:";
+        for(Object key : functions.keySet().toArray()) {
+            ret += "\n" + indent(idtLvl + 2) + "'" + key + "' = " + functions.get("" + key).name;
         }
+
         return ret;
     }
 
     @Override
     public String toFullString(int idtLvl) {
-        String ret = indent(idtLvl) + "EquationSystem:\n" + indent(idtLvl + 1) +"Equations:";
-        for(Equation eq: equations)
-            ret += "\n" +eq.toFullString(idtLvl + 2);
-        if(equations.size() == 0)
-            ret += indent(idtLvl + 2) + "null\n";
+        String ret = indent(idtLvl) + "EquationSystem:";
+        ret += "\n" + indent(idtLvl + 1) + "Equations:";
 
-        ret += "\n" + indent(idtLvl + 1) + "Functions:\n";
+        for(Equation eqs : equations) {
+            ret += "\n" + eqs.toFullString(idtLvl + 2);
+        }
+        ret += "\n" + indent(idtLvl + 1) + "Functions:";
+        for(Object key : functions.keySet().toArray()) {
+            ret += "\n" + indent(idtLvl + 2) + "'" + key + "':\n" + functions.get("" + key).toFullString(idtLvl + 3);
+        }
 
-        for(String funcN : functions.keySet())
-            ret += indent(idtLvl + 2) + funcN + "': " + functions.get(funcN).toFullString() + "\n";
-        if(functions.size() == 0)
-            ret += indent(idtLvl + 2) + "null\n";
-        
-        return ret.substring(0, ret.length() - (functions.size() > 0 ? 1 : 0));
+        return ret;
     }
 
     /**

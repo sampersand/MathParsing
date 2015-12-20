@@ -10,14 +10,17 @@ package Math;
  */
 public interface MathObject {
     /**
-     * Returns the simple String representation of this class.
+     * Returns the simple String representation of this class. This should just give a simple overview, only stating
+     * key variables.
      * @return the simple string representation of this class.
      */
     public String toString();
 
     /**
-     * Returns the fancy String representation of this class, with a starting indentation level of 0.
+     * Returns the fancy String representation of this class, with a starting indentation level of 0. This should
+     * give a more complex overview than {@link toString()}, but less comprehensive than {@link #toFullString}.
      * @return the fancy string representation of this class, with a starting indentation level of 0.
+     * @see #toFancyString(int)
      */
     public default String toFancyString(){
         return toFancyString(0);
@@ -25,6 +28,8 @@ public interface MathObject {
 
     /**
      * Returns the fancy String representation of this class, with a starting indentation level of <code>idtLvl</code>.
+     * This should give a more complex overview than {@link toString()}, but less comprehensive than
+     * {@link #toFullString}.
      * @param idtLvl    The amount of tabs to put before each and every line. 
      * @return the fancy String representation of this class, with a starting indentation level of <code>idtLvl</code>.
      */
@@ -32,7 +37,8 @@ public interface MathObject {
 
 
     /**
-     * Returns the complete String representation of this class.
+     * Returns the complete String representation of this class. This should state all variables, in the format
+     * <code>varName:\n\tINFO</code>.
      * @return the complete string representation of this class.
      */
     public default String toFullString(){
@@ -41,7 +47,7 @@ public interface MathObject {
 
     /**
      * Returns the complete String representation of this class, with a starting indentation level of
-     * <code>idtLvl</code>.
+     * <code>idtLvl</code>. This should state all variables, in the format <code>varName:\n\tINFO</code>.
      * @param idtLvl    The amount of tabs to put before each and every line. 
      * @return the complete String representation of this class, with a starting indentation level of
      *          <code>idtLvl</code>.
@@ -54,10 +60,10 @@ public interface MathObject {
     public default String indent(int idtLvl){
         String ret = "";
         for(int i = 0; i < idtLvl; i++)
-            ret +="\t";
-        return ret;
+            ret += "|  ";
+        return ret + "|";
     }
-    
+
     /**
      * Copies this object.
      * @return An exact copy of this object.

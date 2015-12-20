@@ -515,35 +515,38 @@ public class Node implements MathObject {
 
     @Override
     public String toString() {
-        String ret = '{' + token.val() + ':';
+        String ret = "Node: token = [" + token + "], subNodes = [";
         for(Node node : subNodes) {
-            ret += node + ", ";
+            ret += "(" + node + "), ";
         }
-        return ret.substring(0, ret.length() - (size() > 0 ? 2 : 0)) + '}';
+        return ret.substring(0, ret.length() - (size() > 0 ? 2 : 0)) + "]";
 
     }
     
     @Override
-    public String toFullString(int idtLvl) {
-        String ret = indent(idtLvl) + "{\"" + token.val() + "\" | " + token.type() + " | ";
-        for(Node node : subNodes)
-            ret += "\n" + node.toFullString(idtLvl + 1) + ", ";
-        return ret.substring(0,ret.length()-2) + "\n" + indent(idtLvl) + "}";
+    public String toFancyString(int idtLvl) {
+        String ret = indent(idtLvl) + "Node '" + token.val() + "' (type = " + token.type() + "):\n";
+        ret += indent(idtLvl + 1) + "Sub Nodes:";
+        for(Node node : subNodes) 
+            ret += "\n" + node.toFancyString(idtLvl + 2);
+        if(size() == 0) 
+            ret += "\n" + indent(idtLvl + 2) + "null";
+        return ret;
     }
 
     @Override
-    public String toFancyString(int idtLvl) {
-        String ret = indent(idtLvl) + "{" + token.val() + ":";
+    public String toFullString(int idtLvl) {
+        String ret = indent(idtLvl) + "Node:\n";
+        ret += indent(idtLvl + 1) + "Token:\n";
+        ret += token.toFullString(idtLvl + 2) + "\n";
+        ret += indent(idtLvl + 1) + "Sub Nodes:";
         for(Node node : subNodes) 
-            ret += "\n" + node.toFancyString(idtLvl + 1);
+            ret += "\n" + node.toFullString(idtLvl + 2);
         if(size() == 0) 
-            ret += "\n" + indent(idtLvl + 1) + "null";
-        // ret += "\n";
-        // for(int x = 0; x < idtLvl - 1; x++)
-        //         ret += "\t";
-        return ret + "\n" + indent(idtLvl) + "}";
+            ret += "\n" + indent(idtLvl + 2) + "null";
+        return ret + "\n" + indent(idtLvl + 2);
+        }
 
-    }
 
     @Override
     public Node copy(){

@@ -363,8 +363,8 @@ public class Set implements MathObject {
     public static void verifySize(double[] pArr1,
                                   double[] pArr2) throws InvalidArgsException {
         if(pArr1.length != pArr2.length)
-            throw new InvalidArgsException("The Arrays (" + arrToString(pArr1) + " and (" + arrToString(pArr2) + ") " + 
-                "need to be of the same length!");
+            throw new InvalidArgsException("The Arrays (" + arrToString(pArr1) + ")[" + pArr1.length + "] and (" +
+                arrToString(pArr2) + ")[" + pArr2.length + "] need to be of the same length!");
     }
 
     /**
@@ -777,37 +777,65 @@ public class Set implements MathObject {
 
     /**
      * Returns a fancy String representation of <code>pArr1</code>.
+     * Depreciated as of ??? because this class will use ArrayLists.
+     * TODO: UPDATE THE DEPRECIATED THING
      * @param pArr1     The array that will be made into a fancy string.
      * @return A fancy String representation of <code>pArr1</code>.
+     * @deprecated 
      */
     public static String arrToString(double[] pArr1) {
-        String ret = "(";
+        String ret = "";
         for(double d : pArr1)
             ret += d + ", ";
-        return ret.substring(0, ret.length() - 2) + ")[" + pArr1.length + "]";
+        return ret.substring(0, ret.length() - 2);
     }
 
     @Override
     public String toString() {
-        if(arr1.length == 0 && arr2.length == 0 )
-            return "Empty Set";
-        String ret = "Set";
-        if(arr1.length != 0)
-            ret += " Arr1: " + arrToString(arr1) + (arr2.length != 0 ? ";" : "");
-
-        if(arr2.length != 0)
-            ret += " Arr2: " + arrToString(arr2);
-        return ret;
+        return "Set: arr1 = [" + arrToString(arr1) + "], arr2 = [" + arrToString(arr2) + "]";
     }
 
     @Override
     public String toFancyString(int idtLvl) {
-        throw new NotDefinedException();
+        if(arr1.length == 0 && arr2.length == 0 )
+            return indent(idtLvl) + "Empty Set";
+        return toFullString(idtLvl);
     }
 
     @Override
     public String toFullString(int idtLvl) {
-        throw new NotDefinedException();
+        String ret = indent(idtLvl) + "Set:\n";
+
+        int columns = 5; // amount of columns
+        int spacing = 10; // amount of spaces. Note that there will be an additional one between columns
+        String spaces = "";
+        for(int i = 0; i < spacing; i++) spaces += " ";
+
+        //TODO: Change this to ArrayList when this class is updated.
+        ret += indent(idtLvl + 1) + "Array 1:";
+        if(arr1 == null || arr1.length == 0){
+            ret += "\n" + indent(idtLvl + 2) + "empty";
+        } else {
+            for(int i = 0; i < arr1.length; i++){
+                if(i % columns == 0)
+                    ret += "\n" + indent(idtLvl + 2);
+                ret += (arr1[i] + spaces).substring(0, spacing) + " ";
+            }
+        }
+
+        //TODO: Change this to ArrayList when this class is updated.
+        ret += "\n" + indent(idtLvl + 1) + "Array 2:";
+        if(arr2 == null || arr2.length == 0){
+            ret += "\n" + indent(idtLvl + 2) + "empty";
+        } else {
+            for(int i = 0; i < arr2.length; i++){
+                if(i % columns == 0)
+                    ret += "\n" + indent(idtLvl + 2);
+                ret += (arr2[i] + spaces).substring(0, spacing) + " ";
+            }
+        }
+        return ret;
+
     }
 
     @Override

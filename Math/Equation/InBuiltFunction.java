@@ -17,36 +17,36 @@ public class InBuiltFunction extends Function {
      * names.
      */
     public static HashMap<String, InBuiltFunction> FUNCTIONS = new HashMap<String, InBuiltFunction>() {{
-        put("+", new OperationFunction("+", "Adds the first number to the second one.", "A + B"));
-        put("-", new OperationFunction("-", "Subtracts the first number to the second one.", "A - B"));
-        put("*", new OperationFunction("*", "Multiplies the first number to the second one.", "A * B"));
-        put("/", new OperationFunction("/", "Divides the first number to the second one.", "A / B"));
-        put("^", new OperationFunction("^", "Raises the first number to the second one.", "A ^ B"));
-        put("sin", new InBuiltFunction("sin", "Returns the sin of the argument.", "sin ( A )"));
-        put("cos", new InBuiltFunction("cos", "Returns the cos of the argument.", "cos ( A )"));
-        put("tan", new InBuiltFunction("tan", "Returns the tan of the argument.", "tan ( A )"));
-        put("csc", new InBuiltFunction("csc", "Returns the csc of the argument.", "csc ( A )"));
-        put("sec", new InBuiltFunction("sec", "Returns the sec of the argument.", "sec ( A )"));
-        put("cot", new InBuiltFunction("cot", "Returns the cot of the argument.", "cot ( A )"));
-        put("sinh", new InBuiltFunction("sinh", "Returns the sinh of the argument.", "sinh ( A )"));
-        put("cosh", new InBuiltFunction("cosh", "Returns the cosh of the argument.", "cosh ( A )"));
-        put("tanh", new InBuiltFunction("tanh", "Returns the tanh of the argument.", "tanh ( A )"));
-        put("asin", new InBuiltFunction("asin", "Returns the asin of the argument.", "asin ( A )"));
-        put("acos", new InBuiltFunction("acos", "Returns the acos of the argument.", "acos ( A )"));
-        put("atan", new InBuiltFunction("atan", "Returns the atan of the argument.", "atan ( A )"));
-        put("abs", new InBuiltFunction("abs", null, "abs ( A )"));
-        put("ceil", new InBuiltFunction("ceil", null, "ceil ( A )"));
-        put("floor", new InBuiltFunction("floor", null, "floor ( A )"));
-        put("hypot", new InBuiltFunction("hypot", null, "hypot ( A )"));
-        put("ln", new InBuiltFunction("ln", null, "ln ( A )"));
-        put("log", new InBuiltFunction("log", null, "log ( A )"));
-        put("round", new InBuiltFunction("round", null, "round ( A )"));
-        put("sqrt", new InBuiltFunction("sqrt", null, "sqrt ( A )"));
-        put("degr", new InBuiltFunction("degr", null, "degr ( A )"));
-        put("rad", new InBuiltFunction("radi", null, "radi ( A )"));
-        put("randi", new InBuiltFunction("randi", null, "randi ( A )"));
-        put("randd", new InBuiltFunction("randd", null, "randd ( A )"));
-        put("fac", new InBuiltFunction("fac", null, "fac ( A )"));
+        put("+", new OperationFunction("+", "Adds 'A' to 'B'", "A + B"));
+        put("-", new OperationFunction("-", "Subtracts 'A' to 'B'", "A - B"));
+        put("*", new OperationFunction("*", "Multiplies 'A' to 'B'", "A * B"));
+        put("/", new OperationFunction("/", "Divides 'A' to 'B'", "A / B"));
+        put("^", new OperationFunction("^", "Raises 'A' to 'B'", "A ^ B"));
+        put("sin", new InBuiltFunction("sin", "sin of 'A'", "sin(A)"));
+        put("cos", new InBuiltFunction("cos", "cos of 'A'", "cos(A)"));
+        put("tan", new InBuiltFunction("tan", "tan of 'A'", "tan(A)"));
+        put("csc", new InBuiltFunction("csc", "csc of 'A'", "csc(A)"));
+        put("sec", new InBuiltFunction("sec", "sec of 'A'", "sec(A)"));
+        put("cot", new InBuiltFunction("cot", "cot of 'A'", "cot(A)"));
+        put("sinh", new InBuiltFunction("sinh", "sinh of 'A'", "sinh(A)"));
+        put("cosh", new InBuiltFunction("cosh", "cosh of 'A'", "cosh(A)"));
+        put("tanh", new InBuiltFunction("tanh", "tanh of 'A'", "tanh(A)"));
+        put("asin", new InBuiltFunction("asin", "asin of 'A'", "asin(A)"));
+        put("acos", new InBuiltFunction("acos", "acos of 'A'", "acos(A)"));
+        put("atan", new InBuiltFunction("atan", "atan of 'A'", "atan(A)"));
+        put("abs", new InBuiltFunction("abs", "absolute value of 'A'", "abs(A)"));
+        put("ceil", new InBuiltFunction("ceil", "closest integer greater than 'A'", "ceil(A)"));
+        put("floor", new InBuiltFunction("floor", "closest integer less than 'A'", "floor(A)"));
+        put("hypot", new InBuiltFunction("hypot", "hypotenuse of 'A' and 'B' ( √[A² + B²] )", "hypot(A, B)"));
+        put("ln", new InBuiltFunction("ln", "natural log of 'A'", "ln(A)"));
+        put("log", new InBuiltFunction("log", "log base 10 of 'A'", "log(A)"));
+        put("round", new InBuiltFunction("round", "rounds 'A' to the nearest integer", "round(A)"));
+        put("sqrt", new InBuiltFunction("sqrt", "the square root (√) of 'A'", "sqrt(A)"));
+        put("degrees", new InBuiltFunction("degr", "turns 'A' into degrees (from radians)", "degrees(A)"));
+        put("radians", new InBuiltFunction("radi", "turns 'A' into radians (from degrees)", "radians(A)"));
+        put("ri", new InBuiltFunction("randi", "random integer from [0, 100], [0, 'A'], or ['A', 'B']", "ri(A, B)"));
+        put("rd", new InBuiltFunction("randd", "random double from [0, 1), [0, 'A'), or ['A', 'B')", "rd(A, B)"));
+        put("fac", new InBuiltFunction("fac", "factorial of 'A'", "fac(A)"));
     }};
 
     ///** The name of the {@link #inverse()} of this funtion. The reason it's not an actual function is because of 
@@ -186,17 +186,24 @@ public class InBuiltFunction extends Function {
 
     @Override
     public String toString() {
-        return name;
+        return "InBuiltFunction '" + name + "'";
     }
 
     @Override
     public String toFancyString(int idtLvl) {
-        return "InBuiltFunction: '" + name + "'";
+        String ret = indent(idtLvl) + "InBuiltFunction '" + name + "':\n";
+        ret += indent(idtLvl + 1) + "Help = " + help + "\n";
+        ret += indent(idtLvl + 1) + "Syntax = " + syntax + "";
+        return ret;
     }
 
     @Override
     public String toFullString(int idtLvl) {
-        throw new NotDefinedException();
+        String ret = indent(idtLvl) + "InBuiltFunction:\n";
+        ret += indent(idtLvl + 1) + "Name:\n" + indent(idtLvl + 2) + name + "\n";
+        ret += indent(idtLvl + 1) + "Help:\n" + indent(idtLvl + 2) + help + "\n";
+        ret += indent(idtLvl + 1) + "Syntax:\n" + indent(idtLvl + 2) + syntax;
+        return ret;
     }
 
     @Override
