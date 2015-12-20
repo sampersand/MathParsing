@@ -16,7 +16,8 @@ import javax.swing.JComponent;
  * The component that is used to draw the Axis and the names of the equations.
  *
  * @author Sam Westerman
- * @version 1 Sep 29, 2015.
+ * @version 0.65
+ * @since 0.3
  * @depreciated
  */
 public class GraphDisplay extends JComponent implements MathObject {  

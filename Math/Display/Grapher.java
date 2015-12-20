@@ -23,7 +23,13 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 
-
+/**
+ * Define
+ * 
+ * @author Sam Westerman
+ * @version 0.65
+ * @since 0.2
+ */
 public class Grapher extends JPanel implements MathObject {
     public static final Color[] COLORS = new Color[]{Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW};
     protected JLayeredPane layeredPane;

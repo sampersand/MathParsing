@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * in Statistics.
  * 
  * @author Sam Westerman
- * @version 0.6
+ * @version 0.65
  * @since 0.1
  */
 public class Set implements MathObject {

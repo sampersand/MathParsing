@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * A class that represents either a {@link CustomFunction custom function}, an {@link InBuiltFunction inbuilt function}, 
  * an {@link OperationFunction operation}, or a group of tokens.
  * @author Sam Westerman
- * @version 0.6
+ * @version 0.65
  * @since 0.1
  */
 public class Node implements MathObject {

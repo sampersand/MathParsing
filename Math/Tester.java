@@ -6,7 +6,7 @@ import Math.Equation.*;
 /**
  * A tester class for the whole equation
  * @author Sam Westerman
- * @version 0.6
+ * @version 0.65
  * @since 0.1
  */
 public class Tester {

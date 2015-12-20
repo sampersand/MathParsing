@@ -5,7 +5,7 @@
 //  * {@link NotDefinedException} because this one is for accessing Objects, and the other one is for handling Objects.
 //  * 
 //  * @author Sam Westerman
-//  * @version 0.6
+//  * @version 0.65
 //  * @since 0.1
 //  */
 // public class DoesntExistException extends MathException {

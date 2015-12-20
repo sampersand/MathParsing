@@ -16,7 +16,8 @@ import javax.swing.JComponent;
  * The component that is used to graph an equation. This is depreciated, and will be removed soon
  *
  * @author Sam Westerman
- * @version 1 Sep 29, 2015.
+ * @version 0.65
+ * @since 0.3
  * @depreciated
  */
 public class EquationDisplay extends JComponent implements MathObject {  

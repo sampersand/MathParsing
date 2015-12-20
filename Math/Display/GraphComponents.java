@@ -4,6 +4,13 @@ import Math.MathObject;
 import Math.Exception.InvalidArgsException;
 import Math.Exception.NotDefinedException;
 
+/**
+ * Keeps track of different thigns about graphing - like window sizes
+ * 
+ * @author Sam Westerman
+ * @version 0.65
+ * @since 0.2
+ */
 public class GraphComponents implements MathObject {
 
     public static final GraphComponents TRIG = new GraphComponents(new int[]{1250 ,750}, 
