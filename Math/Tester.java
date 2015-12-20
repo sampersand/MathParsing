@@ -22,7 +22,6 @@ public class Tester {
         /*
          * --TODOS--
          * NOTE: Set will not be supported fully until version 1.0 comes out
-         * correct all the Exception declarations to make them clearer. - v 0.68
              * make sure copy, toString, toFullSring, and toFancyString are updated - v0.69
          * Try and break the graphing code, among other things - v0.7
          * Javadoc everything - v ??
