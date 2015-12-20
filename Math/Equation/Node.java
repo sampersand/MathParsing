@@ -493,7 +493,7 @@ public class Node implements MathObject {
     //  * @throws NotDefinedException  Thrown when <code>pNode</code> is a {@link FinalNode}, or a {@link CustomFunction}
     //  *                              defined in {@link EquationSystem#functions} isn't able to be evaluated.
     //  */
-    // public static double eval(EquationSystem pEqSys,
+    // public static double eval(final EquationSystem pEqSys,
     //                           Node pNode) throws NotDefinedException {
     //     return pNode.eval(pEqSys);
     // }
@@ -507,7 +507,7 @@ public class Node implements MathObject {
      *                              defined in {@link EquationSystem#functions() pEqSys.functions()} isn't able to be
      *                              evaluated.
      */
-    public double eval(EquationSystem pEqSys) throws NotDefinedException {
+    public double eval(final EquationSystem pEqSys) throws NotDefinedException {
         if (this instanceof FinalNode) {
             throw new NotDefinedException("This is implemented in FinalNode... How was i triggered...?");
         } else if(token().type() == Token.Type.FUNC || token().type() == Token.Type.OPER) {

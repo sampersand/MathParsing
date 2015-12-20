@@ -89,7 +89,7 @@ public class InBuiltFunction extends Function {
      * @throws InvalidArgsException   Thrown when the function required parameters, and the ones passed aren't right.
      */
     public static double exec(String pName,
-                              EquationSystem pEqSys,
+                              final EquationSystem pEqSys,
                               Node pNode) throws
                                   NotDefinedException,
                                   InvalidArgsException {
@@ -99,7 +99,7 @@ public class InBuiltFunction extends Function {
     }
 
     @Override
-    public double exec(EquationSystem pEqSys,
+    public double exec(final EquationSystem pEqSys,
                        Node pNode) throws
                            NotDefinedException,
                            InvalidArgsException {

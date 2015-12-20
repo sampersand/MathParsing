@@ -70,7 +70,7 @@ public class Set implements MathObject {
      * (the cardinality of the Set).
      * @param pEqSys     The {@link EquationSystem} that the Set will be based off of.
      */
-    public Set(EquationSystem pEqSys) {
+    public Set(final EquationSystem pEqSys) {
         this(pEqSys, - 10, 10, 25);
     }
 
@@ -91,7 +91,7 @@ public class Set implements MathObject {
      * @param cStep     The step size for {@link #arr1}.
      * @see #pred(double,EquationSystem)
      */
-    public Set(EquationSystem pEqSys,
+    public Set(final EquationSystem pEqSys,
                double min,
                double max,
                double cStep) {
@@ -151,8 +151,8 @@ public class Set implements MathObject {
      * @return The result of the evaluated {@link EquationSystem}.
      */
     public double pred(double pVal,
-                      double[] pArr1,
-                      double[] pArr2) {
+                       double[] pArr1,
+                       double[] pArr2) {
         return pred(pVal, linReg(pArr1, pArr2));
     }
 
@@ -166,8 +166,8 @@ public class Set implements MathObject {
      * @return "yhat", evaluated by <code>pEqSys</code>.
      */
     public static double pred(double pVal,
-                       EquationSystem pEqSys) {
-        return pEqSys.eval("yhat",new EquationSystem().add("y", "" + pVal));
+                              final EquationSystem pEqSys) {
+        return pEqSys.eval("yhat", new EquationSystem().add("y", "" + pVal));
     }
 
     /**
@@ -181,9 +181,9 @@ public class Set implements MathObject {
      * @return "yhat", evaluated by <code>pEqSys</code>, using <code>pEqSys2</code>.
      */
     public static double pred(double pVal,
-                              EquationSystem pEqSys,
-                              EquationSystem pEqSys2) {
-        return pEqSys.eval("yhat",pEqSys2);
+                              final EquationSystem pEqSys,
+                              final EquationSystem pEqSys2) {
+        return pEqSys.eval("yhat", pEqSys2);
     }
 
     /**

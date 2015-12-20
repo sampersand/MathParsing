@@ -38,7 +38,7 @@ public class graph extends CustomFunction{
     }
 
     @Override
-    public double exec(EquationSystem pEqSys,
+    public double exec(final EquationSystem pEqSys,
                        Node pNode) throws
                            NotDefinedException,
                            InvalidArgsException {

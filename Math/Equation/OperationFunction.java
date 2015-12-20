@@ -40,7 +40,7 @@ public class OperationFunction extends InBuiltFunction {
     }
 
     @Override
-    public double exec(EquationSystem pEqSys,
+    public double exec(final EquationSystem pEqSys,
                        Node pNode) throws 
                            NotDefinedException,
                            InvalidArgsException {

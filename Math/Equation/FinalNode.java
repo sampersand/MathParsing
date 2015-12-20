@@ -71,7 +71,7 @@ public class FinalNode extends Node implements MathObject {
     }
 
     @Override
-    public double eval(EquationSystem pEqSys) throws NotDefinedException {
+    public double eval(final EquationSystem pEqSys) throws NotDefinedException {
         assert pEqSys.isolated();
         if (token().type() == Token.Type.NUM) {
             return dVal;

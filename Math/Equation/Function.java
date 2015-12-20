@@ -92,7 +92,7 @@ public abstract class Function implements MathObject {
      * @return An array of doubles, with each position corresponding to the value of each Node of that position in 
      *         {@link Node#subNodes() pNode's subNodes()}.
      */
-    protected double[] evalNode(EquationSystem pEqSys,
+    protected double[] evalNode(final EquationSystem pEqSys,
                                 Node pNode) {
         double[] ret = new double[pNode.size()];
         for(int i = 0; i < ret.length; i++) {
@@ -111,15 +111,18 @@ public abstract class Function implements MathObject {
      * @throws NotDefinedException    Thrown when the function is defined, but how to execute it isn't.
      * @throws InvalidArgsException   Thrown when the function required parameters, and the ones passed aren't right.
      */
-    public abstract double exec(EquationSystem pEqSys,
+    public abstract double exec(final EquationSystem pEqSys,
                                 Node pNode) throws
                                     NotDefinedException,
                                     InvalidArgsException;
-    // /**
-    //  * Gets the inverse of this function - that is, what function should be done to undo this one. <br>The inverse of 
-    //  * <code>+</code> is <code>-</code>, and the inverse of <code>cos</code> is <code>arccos</code>.
-    //  * @return The inverse of this function.
-    //  * @throws NotDefinedException  Thrown when the inverse hasn't been defined yet, or there is no known
-    //  */
-    // public abstract Function inverse() throws NotDefinedException;
+    /**
+     * Gets the inverse of this function - that is, what function should be done to undo this one. <br>The inverse of 
+     * <code>+</code> is <code>-</code>, and the inverse of <code>cos</code> is <code>arccos</code>.
+     * @return The inverse of this function.
+     * @throws NotDefinedException  Thrown when the inverse hasn't been defined yet, or there is no known
+     * @deprecated
+     */
+    public Function inverse() throws NotDefinedException{
+        throw new NotDefinedException();
+    }
 }
