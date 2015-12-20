@@ -47,6 +47,7 @@ public class OperationFunction extends InBuiltFunction {
         System.out.println("Node '" + this+"' eval's pEqSys: " + pEqSys.toFullString());
         if(pNode.subNodes().size() == 0)
             throw new InvalidArgsException("Node size cannot be 0!");
+        
         double ret = pNode.get(0).eval(pEqSys);
         switch(name) {
             case "+":
