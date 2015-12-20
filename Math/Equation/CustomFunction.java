@@ -132,7 +132,7 @@ public class CustomFunction extends Function implements MathObject {
      */
     @Override
     @SuppressWarnings("unchecked") //stupid cl.getDeclaredMethod
-    public double exec(EquationSystem pEqSys,
+    public double exec(final EquationSystem pEqSys,
                        Node pNode) throws
                            NotDefinedException,
                            InvalidArgsException {

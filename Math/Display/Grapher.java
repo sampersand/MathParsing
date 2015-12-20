@@ -46,7 +46,7 @@ public class Grapher extends JPanel implements MathObject {
         this(null, new ArrayList<Set>() {{add(pSet);}});
     }
 
-    public Grapher(EquationSystem pEqSys) {
+    public Grapher(final EquationSystem pEqSys) {
         this(pEqSys, null);
     }
 
@@ -54,17 +54,17 @@ public class Grapher extends JPanel implements MathObject {
         this(null, null, pComponents);
     }
 
-    public Grapher(EquationSystem pEqSys,
+    public Grapher(final EquationSystem pEqSys,
                    ArrayList<Set> pSets) {
         this(pEqSys, pSets, new GraphComponents());
     }
-    public Grapher(EquationSystem pEqSys,
+    public Grapher(final EquationSystem pEqSys,
                    ArrayList<Set> pSets,
                    GraphComponents pGraph) {
         this(pEqSys, new EquationSystem(), pSets, pGraph);
     }
-    public Grapher(EquationSystem pEqSysToGraph,
-                   EquationSystem pEqSysToUse,
+    public Grapher(final EquationSystem pEqSysToGraph,
+                   final EquationSystem pEqSysToUse,
                    ArrayList<Set> pSets,
                    GraphComponents pGraph) {
         sets = pSets;
@@ -80,35 +80,6 @@ public class Grapher extends JPanel implements MathObject {
             displays.add(new DisplayComponent(this, sets.get(i), COLORS[i % COLORS.length]));
         graphSetup();
     }
-
-    // public Grapher add(Set... pSets) {
-    //     if(pSets != null && pSets.length != 0)
-    //         for(Set set : pSets)
-    //             sets.add(set);
-    //     return this;
-    // }
-    // public Grapher addSets(ArrayList<Set> pSets) {
-    //     if(pSets != null && pSets.size() != 0)
-    //         sets.addAll(pSets);
-    //     return this;
-    // }
-
-    // public Grapher add(EquationSystem pEqSys) {
-    //     equationsToGraph.add(pEqSys);
-    //     return this;
-
-    // }
-
-    // public Grapher add(Equation... pEqs) {
-    //     if(equationsToGraph.size() == 0)
-    //         equationsToGraph.add(new EquationSystem());
-    //     if(pEqs != null && pEqs.length != 0)
-    //         for(Equation eq : pEqs)
-    //             equationsToGraph.equations().add(eq);
-    //     return this;
-
-    // }
-
 
     private void graphSetup() {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));

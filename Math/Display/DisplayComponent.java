@@ -53,24 +53,36 @@ public class DisplayComponent extends JLabel implements MathObject {
     /* 
      * I draw a set
      */
-    public DisplayComponent(Grapher pGrapher, Set pSet) {
+    public DisplayComponent(Grapher pGrapher,
+                            Set pSet) {
         this(pGrapher, pSet, Color.BLUE);
     }
-    public DisplayComponent(Grapher pGrapher, Set pSet, Color pColor) {
+    public DisplayComponent(Grapher pGrapher,
+                            Set pSet,
+                            Color pColor) {
         this(pGrapher, null, null, pSet, pColor);
     }
 
     /*
      * I draw an equation
      */
-    public DisplayComponent(Grapher pGrapher, Equation pEquation, EquationSystem pEqSys) {
+    public DisplayComponent(Grapher pGrapher,
+                            Equation pEquation,
+                            final EquationSystem pEqSys) {
         this(pGrapher, pEquation, pEqSys, Color.BLUE);
     }
-    public DisplayComponent(Grapher pGrapher, Equation pEquation, EquationSystem pEqSys,  Color pColor) {
+    public DisplayComponent(Grapher pGrapher,
+                            Equation pEquation,
+                            final EquationSystem pEqSys,
+                            Color pColor) {
         this(pGrapher, pEquation, pEqSys, null, pColor);
     }
 
-    private DisplayComponent(Grapher pGrapher, Equation pEquation, EquationSystem pEqSys, Set pSet, Color pColor) {
+    private DisplayComponent(Grapher pGrapher,
+                            Equation pEquation,
+                            final EquationSystem pEqSys,
+                            Set pSet,
+                            Color pColor) {
         grapher = pGrapher;
         equation = pEquation;
         equationsys = pEqSys;
