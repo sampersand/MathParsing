@@ -182,7 +182,7 @@ public class Node implements MathObject {
                 e.addD(e.depth(), completeNodes(n), false);
             }
             else {
-                throw new NotDefinedException("There is no known way to complete the node '" + n + "'.");
+                throw new NotDefinedException("Cannot complete the node '" + n + "' because there is no known way to!");
             }
             i++;
         }
@@ -229,7 +229,7 @@ public class Node implements MathObject {
      * Appends Node n to the end of {@link #subNodes}.
      * @param n             The node to append.
      */
-    public void add(Node n) {
+    private void add(Node n) {
         subNodes.add(n);
     }
 
@@ -237,7 +237,7 @@ public class Node implements MathObject {
      * Creates a {@link Node}(or {@link FinalNode}) for t, and then appends that to the end of {@link #subNodes}.
      * @param t             The token to create a new Node for, and then append.
      */    
-    public void add(Token t) {
+    private void add(Token t) {
         add(t.isConst() ? new FinalNode(t) : new Node(t));
     }
 
@@ -264,7 +264,7 @@ public class Node implements MathObject {
      * @param i         the position that n will be set to.
      * @param n         the node to replace the current one at position i.
      */    
-    public void set(int i,
+    private void set(int i,
                     Node n) {
         subNodes.set(i, n);
     }
@@ -274,7 +274,7 @@ public class Node implements MathObject {
      * Note: this doesn't check if i is out of bounds.
      * @param i         the position of the node to remove.
      */
-    public void rem(int i) {
+    private void rem(int i) {
         subNodes.remove(i);
     }
 
@@ -325,7 +325,7 @@ public class Node implements MathObject {
      * Adds the node n at the maximum depth, or until a group or function is hit.
      * @param n         The node to add at the deepest possible layer.
      */
-    public void addD(Node n) {
+    private void addD(Node n) {
         addD(depth(), n);
     }
     /**
@@ -333,7 +333,7 @@ public class Node implements MathObject {
      * @param i         The amount of layers to go down.
      * @param n         The node to add to the last position at layer i.
      */
-    public void addD(int i,
+    private void addD(int i,
                      Node n) {
         addD(i, n, false);
     }
@@ -344,11 +344,11 @@ public class Node implements MathObject {
      * @param n         The node to add to the last position at layer i.
      * @param pOver     Whether or not it will "override", and continue going down if a group is encountered.
      */
-    public void addD(int i,
+    private void addD(int i,
                      Node n,
                      boolean pOver) {
         if(this instanceof FinalNode) {
-            throw new TypeMisMatchException("Can't add subnodes to a FinalNode!");
+            throw new TypeMisMatchException("Cannot addD to a FinalNode because FinalNodes don't have subnodes!");
         }
         else if(i <= 0 || size() <= 0 || (get(size() - 1).token().type() == GROUP &&! pOver)) {
             add(n);
@@ -367,7 +367,7 @@ public class Node implements MathObject {
      * @param i         The amount of layers to go down.
      * @param n         The node to set the last node to.
      */
-    public void setD(int i,
+    private void setD(int i,
                      Node n) {
         setD(i, - 1, n);
     }
@@ -378,7 +378,7 @@ public class Node implements MathObject {
      * @param p         The position of the node that will be replaced by n.
      * @param n         The node that will replace the node at i layers down, at position p.
      */
-    public void setD(int i,
+    private void setD(int i,
                      int p,
                      Node n) {
         setD(i, p, n, false);
@@ -391,12 +391,13 @@ public class Node implements MathObject {
      * @param n         The node that will replace the node at i layers down, at position p.
      * @param pOver     Whether or not it will "override", and continue going down if a group is encountered.
      */   
-    public void setD(int i,
+    private void setD(int i,
                      int p,
                      Node n,
                      boolean pOver) {
+
         if(this instanceof FinalNode) {
-            throw new TypeMisMatchException("Can't set subnodes of a FinalNode!");
+            throw new TypeMisMatchException("Cannot setD a FinalNode because FinalNodes don't have subnodes!");
         } else if(i == 0) {
             if(size() <= 0) {
                 throw new InvalidArgsException("Can't set subnodes of a Node with no size!");
@@ -426,7 +427,7 @@ public class Node implements MathObject {
      * @param i         The amount of layers to go down.
      * @throws TypeMisMatchException thrown when the last node at layer i is an instance of {@link FinalNode}.
      */
-    public void remD(int i) throws TypeMisMatchException {
+    private void remD(int i) throws TypeMisMatchException {
         remD(i, - 1);
     }
 
@@ -436,7 +437,7 @@ public class Node implements MathObject {
      * @param p         The position of the node to remove at layer i.
      * @throws TypeMisMatchException thrown when the node at position p, layer i is an instance of {@link FinalNode}.
      */
-    public void remD(int i,
+    private void remD(int i,
                      int p) throws TypeMisMatchException {
         remD(i, p, false);
     }
@@ -447,7 +448,7 @@ public class Node implements MathObject {
      * @param pOver     Whether or not it will "override", and continue going down if a group is encountered.
      * @throws TypeMisMatchException thrown when the node at position p, layer i is an instance of {@link FinalNode}.
      */
-    public void remD(int i,
+    private void remD(int i,
                      int p,
                      boolean pOver) throws TypeMisMatchException {
         if(this instanceof FinalNode)

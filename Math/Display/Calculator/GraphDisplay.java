@@ -96,7 +96,8 @@ public class GraphDisplay extends JComponent implements MathObject {
         } else if (eqBnd.length == 4) {
             this.EQUATION_BOUNDS = eqBnd;
         } else { 
-            throw new ArrayIndexOutOfBoundsException("The length of 'eqBnd' needs to be 1, 2 or 4.");
+            throw new ArrayIndexOutOfBoundsException("Cannot instatiate GraphDisplay! The length of 'eqBnd' needs " +
+                                                     "to be 1, 2 or 4.");
         }
 
         if (winBnd.length == 1) {
@@ -106,7 +107,8 @@ public class GraphDisplay extends JComponent implements MathObject {
         } else if (winBnd.length == 4) {
             this.WINDOW_BOUNDS = winBnd;
         } else {
-            throw new ArrayIndexOutOfBoundsException("The length of winBnd needs to be 1, 2 or 4.");
+            throw new ArrayIndexOutOfBoundsException("Cannot instatiate GraphDisplay! The length of winBnd needs t" +
+                                                     "o be 1, 2 or 4.");
         }
 
         if (dispBnd.length == 1) {
@@ -116,7 +118,8 @@ public class GraphDisplay extends JComponent implements MathObject {
         } else if (dispBnd.length == 4) {
             this.DISPLAY_BOUNDS = dispBnd;
         } else {
-            throw new ArrayIndexOutOfBoundsException("The length of dispBnd needs to be 1, 2 or 4.");
+            throw new ArrayIndexOutOfBoundsException("Cannot instatiate GraphDisplay! The length of dispBnd needs " +
+                                                     "to be 1, 2 or 4.");
         }
 
     }

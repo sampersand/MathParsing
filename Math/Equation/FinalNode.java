@@ -41,13 +41,14 @@ public class FinalNode extends Node implements MathObject {
             try {
                 dVal = Double.parseDouble(token.val());
             } catch(NumberFormatException err) {
-                throw new TypeMisMatchException("pToken.type (" + token.type() + ") is a NUM, but pToken.val(" + 
-                    pToken.val() + ") cant be parsed as a double!");
+                throw new TypeMisMatchException("Cannot instatiate FinalNode because pToken.type (" + token.type() + ")"
+                + " is a NUM, but pToken.val(" + pToken.val() + ") cannot be parsed as a double!");
             }
         else if (token.type() == Token.Type.VAR || token.type() == Token.Type.ARGS)
             sVal = token.val();
         else
-            throw new TypeMisMatchException("pToken.type() isn't NUM, VAR, or ARGS!");
+            throw new TypeMisMatchException("Cannot instatiate FinalNode because pToken.type() can only be of Types: " +
+                                            "NUM, VAR, or ARGS!");
         
     }
 
@@ -73,12 +74,12 @@ public class FinalNode extends Node implements MathObject {
     @Override
     public double eval(final EquationSystem pEqSys) throws NotDefinedException {
         assert pEqSys.isolated();
-        if (token().type() == Token.Type.NUM) {
+        if (token.type() == Token.Type.NUM) {
             return dVal;
-        } else if (token().type() == Token.Type.VAR) {
+        } else if (token.type() == Token.Type.VAR) {
             if(pEqSys.varExist(sVal)) {
                 for(Equation eq : pEqSys.equations()){
-                    if(eq.expressions().get(0).node().get(0).token().val().equals(sVal)){
+                    if(eq.expressions().get(0).node().get(0).token.val().equals(sVal)){
                         // System.out.println(eq.expressions().get(1).toFullString());
                         return eq.expressions().get(1).node().eval(pEqSys);
                     }
@@ -88,15 +89,16 @@ public class FinalNode extends Node implements MathObject {
                 case "pi": return Math.PI;
                 case "rand": case "random": return Math.random();
                 default:
-                    throw new NotDefinedException("Define a FinalNode eval for: " + sVal);
+                    throw new NotDefinedException("Cannot evaluate the FinalNode '" + sVal + "' because there it " + 
+                        "defined as a variable, and isn't an in-built variable.");
             }
-        } else if(token().type() == Token.Type.ARGS) {
+        } else if(token.type() == Token.Type.ARGS) {
             Print.printw("Attempting to evaluate args! probably won't go well :P");
             throw new NotDefinedException("define me");
             // return (double)getVar(dVal);
         } else {
-            throw new TypeMisMatchException("FinalNode '" +dVal + "&" + dVal +
-                                            "' isn't a NUM, VAR, OR ARGS!");
+            throw new TypeMisMatchException("Cannot evaluate the FinalNode '" +sVal + "' / '" + dVal +
+                                            "' because it's type (" + token.type() + ") isn't a NUM, VAR, OR ARGS!");
         }
     }
 

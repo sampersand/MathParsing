@@ -292,12 +292,14 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
                     for(int i = 0; i < split1.length; i++) {
                         String[] spl = split1[i].split(":");
                         if(spl.length != 2) {
-                            throw new InvalidArgsException("When passing vars, format has to be 'Name:Val'");
+                            throw new InvalidArgsException("Cannot get the result of rawEq! When passing vars, the "
+                                + "format has to be 'Name:Val'");
                         } else {
                             try {
                                 put(spl[0], Double.parseDouble(spl[1]));
                             } catch (NumberFormatException err) {
-                                throw new InvalidArgsException("When passing vars, their values have to be doubles!");
+                                throw new InvalidArgsException("Cannot get the result of rawEq! When passing vars, " +
+                                "their values have to be doubles!");
                             }
                         }
                     }
@@ -313,8 +315,8 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
                         } else if (spl.length == 2) {
                             put(spl[0], new CustomFunction(spl[1]));
                         } else {
-                            throw new InvalidArgsException("When passing funcs, they have to be in format " + 
-                                "'Name:File', or 'Name'");
+                            throw new InvalidArgsException("Cannot get the result of rawEq! When passing funcs, they "+
+                                " have to be in format 'Name:File', or 'Name'");
                         }
                     }
                 }

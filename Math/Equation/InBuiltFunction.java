@@ -94,7 +94,8 @@ public class InBuiltFunction extends Function {
                                   NotDefinedException,
                                   InvalidArgsException {
         if(FUNCTIONS.get(pName) == null)
-            throw new NotDefinedException("There is no InBuiltFunction '" + pName + "' defined in FUNCTIONS!");
+            throw new NotDefinedException("Cannot execute the InBuiltFunction '" + pName +"' because it isn't defined "+
+                    "in FUNCTIONS.");
         return FUNCTIONS.get(pName).exec(pEqSys, pNode);
     }
 
@@ -178,18 +179,19 @@ public class InBuiltFunction extends Function {
                 return ret;
 
             default:
-                throw new NotDefinedException("InBuiltFunction " + this + " doesn't have a defined way to compute it!");
+                throw new NotDefinedException("Cannot evaluate the InBuiltFunction '" + name + "' because it doesn't " +
+                                               "have a defined way to compute it!");
         }
     }
 
     @Override
     public String toString() {
-        return "InBuiltFunction: '" + name + "'";
+        return name;
     }
 
     @Override
     public String toFancyString(int idtLvl) {
-        throw new NotDefinedException();
+        return "InBuiltFunction: '" + name + "'";
     }
 
     @Override

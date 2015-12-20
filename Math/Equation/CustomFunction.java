@@ -63,12 +63,10 @@ public class CustomFunction extends Function implements MathObject {
                 cl = null;
             } else {
                 cl = Class.forName("Math.Equation.CustomFunctions." + name);
-                if(cl == null)
-                    throw new ClassNotFoundException();
             }
         } catch (ClassNotFoundException err) {
-            throw new NotDefinedException("CustomFunction '" + name + 
-                                            "' doesn't exist! in Math.Equation.CustomFunctions.*");
+                throw new InvalidArgsException("Cannot instatiate CustomFunction '" + name + 
+                    "'! All custom class currently must be in Math/Equation/CustomFunctions/<CLASS>!");
         }
     }
 
@@ -103,8 +101,8 @@ public class CustomFunction extends Function implements MathObject {
                                "of a CustomFunction (File Name: " + name + "): " + err + " | " + err.getMessage() +
                                " | " + err.getCause());
         } catch (NullPointerException err) {
-            throw new NotDefinedException("Hey, the CustomFunction '" + name + "' doesn't have a '" + pFuncName + 
-                "' function and needs one!");
+            throw new NotDefinedException("Cannot get the function '" + pFuncName +"' from the CustomFunction '" + name 
+                + "'' because it doesnt exist, but should!");
         } catch (NoSuchMethodException err) {
             Print.printe("A NoSuchMethodException occured when attempting to get '" + pFuncName + "' " +
                                "of a CustomFunction (File Name: " + name + "): " + err + " | " + err.getMessage() +

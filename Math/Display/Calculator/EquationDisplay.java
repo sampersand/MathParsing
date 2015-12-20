@@ -119,7 +119,8 @@ public class EquationDisplay extends JComponent implements MathObject {
         } else if (eqBnd.length == 4) {
             this.EQUATION_BOUNDS = eqBnd;
         } else { 
-            throw new ArrayIndexOutOfBoundsException("The length of 'eqBnd' needs to be 1, 2 or 4.");
+            throw new ArrayIndexOutOfBoundsException("Cannot instantiate EquationDisplay! The length of 'eqBnd' needs" +
+                                                     " to be 1, 2 or 4.");
         }
 
         if (steps.length == 1) {
@@ -127,7 +128,8 @@ public class EquationDisplay extends JComponent implements MathObject {
         } else if (steps.length == 2) {
             this.STEPS = steps;
         } else {
-            throw new ArrayIndexOutOfBoundsException("The length of 'steps' needs to be 1 or 2.");
+            throw new ArrayIndexOutOfBoundsException("Cannot instantiate EquationDisplay! The length of 'steps' needs" +
+                                                     " to be 1 or 2.");
         }
 
         if (winBnd.length == 1) {
@@ -137,7 +139,8 @@ public class EquationDisplay extends JComponent implements MathObject {
         } else if (winBnd.length == 4) {
             this.WINDOW_BOUNDS = winBnd;
         } else {
-            throw new ArrayIndexOutOfBoundsException("The length of winBnd needs to be 1, 2 or 4.");
+            throw new ArrayIndexOutOfBoundsException("Cannot instantiate EquationDisplay! The length of winBnd needs " +
+                                                     "to be 1, 2 or 4.");
         }
 
         if (dispBnd.length == 1) {
@@ -147,7 +150,8 @@ public class EquationDisplay extends JComponent implements MathObject {
         } else if (dispBnd.length == 4) {
             this.DISPLAY_BOUNDS = dispBnd;
         } else {
-            throw new ArrayIndexOutOfBoundsException("The length of dispBnd needs to be 1, 2 or 4.");
+            throw new ArrayIndexOutOfBoundsException("Cannot instantiate EquationDisplay! The length of dispBnd needs" +
+                                                     " to be 1, 2 or 4.");
         }
     }
 

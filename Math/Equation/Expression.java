@@ -153,8 +153,8 @@ public class Expression implements MathObject {
             switch(c) {
                 case '(': // This should never be preceeded by a number.
                     if(!isAlpha(prev)) {
-                        throw new TypeMisMatchException("'" + prev + "'isn't alphabetical, but a group / function was" +
-                            " attempted to be made because it is succeeded by a '('");
+                        throw new TypeMisMatchException("Cannot parse the rEq (" + rEq + ") because '" + prev + "' " +
+                            "succeeded a '(', and therefor was thought to be a function or group.");
                     } if(prev.length() != 0) {
                         tokens.add(new Token(prev, Token.Type.FUNC));
                     } else {
