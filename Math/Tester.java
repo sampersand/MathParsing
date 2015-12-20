@@ -35,7 +35,7 @@ public class Tester {
         if(args.length == 0) {
             // eqsys.add("y = 1 + sin(alpha) + c");
             // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
-            eqsys.add("theta = 2 * c + x");
+            eqsys.add("y = graph('eq:y=sinx')");
             // eqsys.add("c = 0 - 9");
             // eqsys.add("x = pi - e");
             eqsys.add(new CustomFunction("graph"));

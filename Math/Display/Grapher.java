@@ -179,41 +179,41 @@ public class Grapher extends JPanel implements MathObject {
 
     @Override
     public String toString() {
-        String ret = "Graph of ";
-        if(sets == null && equationsToGraph == null || (sets.size() == 0 && equationsToGraph.size() == 0)) {
-            return "Empty Graph"; 
-        } else if(equationsToGraph.size() + sets.size() == 1) {
-            return ret + (equationsToGraph.size() == 1 ? equationsToGraph.equations().get(0) : sets.get(0));
-        } else {
-            for(int i = 0; i < equationsToGraph.size(); i++) { // for each loop will crash if equation's size is 0.
-                ret += equationsToGraph.equations().get(i) + ", ";
-            }
-            for(int i =0; i < sets.size(); i++) {
-                 ret += sets.get(i) + ", ";   
-            }
-            return ret.substring(0, ret.length() - 2);
+        // String ret = "Graph of ";
+        // if(sets == null && equationsToGraph == null || (sets.size() == 0 && equationsToGraph.size() == 0)) {
+        //     return "Empty Graph"; 
+        // } else if(equationsToGraph.size() + sets.size() == 1) {
+        //     return ret + (equationsToGraph.size() == 1 ? equationsToGraph.equations().get(0) : sets.get(0));
+        // } else {
+        //     for(int i = 0; i < equationsToGraph.size(); i++) { // for each loop will crash if equation's size is 0.
+        //         ret += equationsToGraph.equations().get(i) + ", ";
+        //     }
+        //     for(int i =0; i < sets.size(); i++) {
+        //          ret += sets.get(i) + ", ";   
+        //     }
+        //     return ret.substring(0, ret.length() - 2);
 
-        }
+        // }
+        return "";
     }
 
     @Override
     public String toFancyString(int idtLvl) {
         String ret = indent(idtLvl) + "Grapher:";
-
         ret += "\n" + indent(idtLvl + 1) + "Sets:";
+        for(Set s : sets)
+            ret += "\n" + s.toFancyString(idtLvl + 2);
         if(sets.size() == 0)
             ret += "\n" + indent(idtLvl + 2) + "null";
-        for(Set s : sets)
-            ret += "\n" + s.toFullString(idtLvl + 2);
 
-        ret += "\n" + equationsToGraph.toFullString(idtLvl + 1);
-        ret += "\n" + components.toFullString(idtLvl + 1);
+        ret += "\n" + indent(idtLvl + 1) + "Equations to Graph:\n" + equationsToGraph.toFancyString(idtLvl + 2);
+        ret += "\n" + indent(idtLvl + 1) +"Graphing Components:\n" + components.toFancyString(idtLvl + 2);
 
         ret += "\n" + indent(idtLvl + 1) + "Displays:";
         if(displays.size() == 0)
             ret += "\n" + indent(idtLvl + 2) + "null";
         for(DisplayComponent d : displays)
-            ret += "\n" + d.toFullString(idtLvl + 2);
+            ret += "\n" + d.toFancyString(idtLvl + 2);
         return ret;
     }
 
@@ -221,15 +221,16 @@ public class Grapher extends JPanel implements MathObject {
     @Override
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "Grapher:";
-
         ret += "\n" + indent(idtLvl + 1) + "Sets:";
-        if(sets.size() == 0)
-            ret += "\n" + indent(idtLvl + 2) + "null";
         for(Set s : sets)
             ret += "\n" + s.toFullString(idtLvl + 2);
+        if(sets.size() == 0)
+            ret += "\n" + indent(idtLvl + 2) + "null";
 
-        ret += "\n" + equationsToGraph.toFullString(idtLvl + 1);
-        ret += "\n" + components.toFullString(idtLvl + 1);
+        ret += "\n" + indent(idtLvl + 1) + "Equations to Graph:\n" + equationsToGraph.toFullString(idtLvl + 2);
+        ret += "\n" + indent(idtLvl + 1) + "Equations to Use:\n" + equationsToUse.toFullString(idtLvl + 2);
+
+        ret += "\n" + indent(idtLvl + 1) +"Graphing Components:\n" + components.toFullString(idtLvl + 2);
 
         ret += "\n" + indent(idtLvl + 1) + "Displays:";
         if(displays.size() == 0)

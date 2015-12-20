@@ -199,20 +199,30 @@ public class DisplayComponent extends JLabel implements MathObject {
  
     @Override
     public String toFancyString(int idtLvl) {
-        throw new NotDefinedException();
+        String ret = indent(idtLvl) + "DisplayComponent:";
+        ret += "\n" + indent(idtLvl + 1) + "EquationSystem for Graphing:\n";
+        ret += equationsys == null ? indent(idtLvl + 2) + "null" : equationsys.toFancyString(idtLvl + 2);
+        ret += "\n" + indent(idtLvl + 1) + "Equation to Graph:\n";
+        ret += equation == null ? indent(idtLvl + 2) + "null" : equation.toFancyString(idtLvl + 2);
+
+        ret += "\n" + indent(idtLvl + 1) + "Set to Graph:\n";
+        ret += set == null ? indent(idtLvl + 2) + "null" : set.toFancyString(idtLvl + 2);
+
+        ret += "\n" + indent(idtLvl + 1) + "Color:\n" + indent(idtLvl + 2) + color;
+        return ret;
     }
 
     @Override
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "DisplayComponent:";
-        ret += "\n" + indent(idtLvl + 1) + "EquationSystem for Graphign:\n";
-        ret += equationsys == null ? indent(idtLvl + 2) + "null\n" : equationsys.toFullString(idtLvl + 2);
+        ret += "\n" + indent(idtLvl + 1) + "EquationSystem for Graphing:\n";
+        ret += equationsys == null ? indent(idtLvl + 2) + "null" : equationsys.toFullString(idtLvl + 2);
 
         ret += "\n" + indent(idtLvl + 1) + "Equation to Graph:\n";
-        ret += equation == null ? indent(idtLvl + 2) + "null\n" : equation.toFullString(idtLvl + 2);
+        ret += equation == null ? indent(idtLvl + 2) + "null" : equation.toFullString(idtLvl + 2);
 
         ret += "\n" + indent(idtLvl + 1) + "Set to Graph:\n";
-        ret += set == null ? indent(idtLvl + 2) + "null\n" : set.toFullString(idtLvl + 2);
+        ret += set == null ? indent(idtLvl + 2) + "null" : set.toFullString(idtLvl + 2);
 
         ret += "\n" + indent(idtLvl + 1) + "Color:\n" + indent(idtLvl + 2) + color;
         return ret;

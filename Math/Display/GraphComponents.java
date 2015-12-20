@@ -104,13 +104,23 @@ public class GraphComponents implements MathObject {
 
     @Override
     public String toString() {
-        return "GraphingComponent: winBounds(" + winBounds[0] + ", " + winBounds[1] + "); dispBounds(" + 
-            dispBounds[0] + ", " + dispBounds[1] + ", " + dispBounds[2] + ", " + dispBounds[3] + "); step: " + step;
+        assert winBounds.length == 2;
+        assert dispBounds.length == 4;
+        return "GraphingComponent: winBounds = [" + winBounds[0] + ", " + winBounds[1] + "], dispBounds = [" + 
+            dispBounds[0] + ", " + dispBounds[1] + ", " + dispBounds[2] + ", " + dispBounds[3] + "], step = " + step +
+            " (cStep = " + cStep() + ")";
     }
 
     @Override
     public String toFancyString(int idtLvl) {
-        throw new NotDefinedException();
+        assert winBounds.length == 2;
+        assert dispBounds.length == 4;
+        String ret = indent(idtLvl) + "GraphComponents:\n";
+        ret += indent(idtLvl + 1) + "Window Bounds (X, Y) = [" + winBounds[0] + ", " + winBounds[1] +"]\n";
+        ret += indent(idtLvl + 1) + "Display Bounds (x, y, X, Y) = [" + dispBounds[0] + ", " + dispBounds[1] + ", " +
+               dispBounds[2] + ", " + dispBounds[3] + "]\n";
+        ret += indent(idtLvl + 1) + "Step = " + step + " (cStep = " + cStep() + ")";
+        return ret;
     }
 
     @Override

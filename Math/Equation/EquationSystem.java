@@ -338,7 +338,8 @@ public class EquationSystem implements MathObject, Iterable {
         for(Object key : functions.keySet().toArray()) {
             ret += "\n" + indent(idtLvl + 2) + "'" + key + "':\n" + functions.get("" + key).toFullString(idtLvl + 3);
         }
-
+        if(functions.size() == 0)
+            ret += "\n" + indent(idtLvl + 2) + "null";
         return ret;
     }
 
