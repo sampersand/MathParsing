@@ -20,8 +20,8 @@ public class graph extends CustomFunction{
     public graph(){
         super("graph");
     }
-    protected EquationSystem equationsys;
-    protected ArrayList<Set> sets;
+    protected EquationSystem equationsToGraph;
+    protected ArrayList<Set> setsToGraph;
     protected GraphComponents gcomp;
     protected Node node;
 
@@ -31,17 +31,18 @@ public class graph extends CustomFunction{
     public String syntax() {
         return "Any combination of 'set:','eq:', 'eqandset:' and 'eqtoset:'.\n" + 
                 "- set syntax is: \"set:(.val()1,.val()2,.val()3...)(valA,valB,ValC...)\". Just displays that set.\n" + 
-                "- eqandset syntax is: \"eqandset:EQUATION,[STEP],[MIN MAX]\". Graphs a set based off the equationsys" +
-                    " and params as well as the equationsys itself.\n" +
-                "- eqtoset syntax is: \"eqandset:EQUATION,[STEP],[MIN, MAX]\". Graphs a set based off the equationsys" +
-                    " and params, but not the equationsys itself.";
+                "- eqandset syntax is: \"eqandset:EQUATION,[STEP],[MIN MAX]\". " +
+                    "Graphs a set based off the equationsToGraph and params as well as the equationsToGraph itself.\n" +
+                "- eqtoset syntax is: \"eqandset:EQUATION,[STEP],[MIN, MAX]\". "+
+                    "Graphs a set based off the equationsToGraph and params, but not the equationsToGraph itself.";
     }
 
     @Override
-    public double exec(EquationSystem pEq,
+    public double exec(EquationSystem pEqSys,
                        Node pNode) throws
                            NotDefinedException,
                            InvalidArgsException {
+        System.out.println("graph's exec's pEqSys: " + pEqSys.toFullString());
         if(pNode.size() == 0)
             throw new InvalidArgsException("Cannot evaluate the node '" + pNode.token().val() +
                     "' when it's size isn't greater than 1");
@@ -50,10 +51,10 @@ public class graph extends CustomFunction{
                 throw new InvalidArgsException("All arguments of graph must be of Token.Type 'ARG'!");
             }
         }
-        equationsys = new EquationSystem();
-        sets = new ArrayList<Set>();
+        equationsToGraph = new EquationSystem();
+        setsToGraph = new ArrayList<Set>();
         gcomp = new GraphComponents();
-        gcomp = new GraphComponents(new int[]{1250, 750}, new double[]{- 10, - 10, 10, 10}, 100);
+        gcomp = new GraphComponents(new int[]{1250, 750}, new double[]{- 10, - 10, 10, 10}, 1000);
         node = pNode;
 
         for(Node n : node.subNodes()) {
@@ -61,29 +62,29 @@ public class graph extends CustomFunction{
             String[] vals = n.token().val().replaceAll("^" + id + ":","").replaceAll(" ","").split(",");
             switch(id) {
                 case "eq": case "":
-                    equationsys.add(vals[0]);
+                    equationsToGraph.add(vals[0]);
                     break;
                 case "eqandset": //make sure to put these in front l0l
-                    equationsys.add(new Equation().add(vals[0]));
+                    equationsToGraph.add(new Equation().add(vals[0]));
                 case "eqtoset":
-                    sets.add(varsToSet(vals));
+                    setsToGraph.add(varsToSet(vals));
                     break;
                 case "set":
-                    sets.add(getSet(vals));
+                    setsToGraph.add(getSet(vals));
                     break;
                 case "eqandresid":
-                    equationsys.add(new Equation().add(vals[0]));
+                    equationsToGraph.add(new Equation().add(vals[0]));
                 case "eqtoresid":
-                    sets.add(varsToSet(vals).resid());
+                    setsToGraph.add(varsToSet(vals).resid());
                     break;
                 case "resid": //residuals
-                    sets.add(getSet(vals).resid());
+                    setsToGraph.add(getSet(vals).resid());
                     break;
                 default:
                     Print.printe("[ERROR] Unrecognized Argument: '" + id + "'!");
             } 
-        } 
-        Grapher grapher = new Grapher(equationsys, sets, gcomp);
+        }
+        Grapher grapher = new Grapher(equationsToGraph, pEqSys, setsToGraph, gcomp);
 
         grapher.graph();
         return 0;

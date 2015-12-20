@@ -103,8 +103,6 @@ public class InBuiltFunction extends Function {
                        Node pNode) throws
                            NotDefinedException,
                            InvalidArgsException {
-        // System.out.println("InBuiltFunction '" + name + "' exec's pEqSys: "+ pEqSys.toFullString());
-        if(true)throw new NotDefinedException();
         double[] args = evalNode(pEqSys, pNode);
         switch(name) {
 

@@ -514,7 +514,6 @@ public class Node implements MathObject {
             if(pEqSys.functions().get(token().val()) != null) // if it is a function
                 return pEqSys.functions().get(token().val()).exec(pEqSys, this);
             else {
-                System.out.println("Node '" + this+"' eval's pEqSys: " + pEqSys.toFullString());
                 return InBuiltFunction.exec(token().val(), pEqSys, this);
             }
         }

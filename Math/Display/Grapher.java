@@ -28,7 +28,8 @@ public class Grapher extends JPanel implements MathObject {
     public static final Color[] COLORS = new Color[]{Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW};
     protected JLayeredPane layeredPane;
     protected ArrayList<Set> sets;
-    protected EquationSystem equationsys;
+    protected EquationSystem equationsToGraph;
+    protected EquationSystem equationsToUse;
     protected GraphComponents components;
     protected ArrayList<DisplayComponent> displays;
 
@@ -47,18 +48,28 @@ public class Grapher extends JPanel implements MathObject {
         this(null, null, pComponents);
     }
 
-    public Grapher(EquationSystem pEqSys, ArrayList<Set> pSets) {
+    public Grapher(EquationSystem pEqSys,
+                   ArrayList<Set> pSets) {
         this(pEqSys, pSets, new GraphComponents());
     }
-    public Grapher(EquationSystem pEqSys, ArrayList<Set> pSets, GraphComponents pGraph) {
+    public Grapher(EquationSystem pEqSys,
+                   ArrayList<Set> pSets,
+                   GraphComponents pGraph) {
+        this(pEqSys, new EquationSystem(), pSets, pGraph);
+    }
+    public Grapher(EquationSystem pEqSysToGraph,
+                   EquationSystem pEqSysToUse,
+                   ArrayList<Set> pSets,
+                   GraphComponents pGraph) {
         sets = pSets;
-        equationsys = pEqSys;
+        equationsToGraph = pEqSysToGraph;
+        equationsToUse = pEqSysToUse;
         components = pGraph;
         displays = new ArrayList<DisplayComponent>();
         displays.add(new DisplayComponent(this)); //adds axis
-        for(int i = 0; i < equationsys.size(); i++)
-            displays.add(new DisplayComponent(this, equationsys.equations().get(i), equationsys, 
-                                              COLORS[i % COLORS.length]));
+        for(int i = 0; i < equationsToGraph.size(); i++)
+            displays.add(new DisplayComponent(this, equationsToGraph.equations().get(i),
+                    equationsToGraph.copy().add(equationsToUse), COLORS[i % COLORS.length]));
         for(int i = 0; i < sets.size(); i++)
             displays.add(new DisplayComponent(this, sets.get(i), COLORS[i % COLORS.length]));
         graphSetup();
@@ -77,17 +88,17 @@ public class Grapher extends JPanel implements MathObject {
     // }
 
     // public Grapher add(EquationSystem pEqSys) {
-    //     equationsys.add(pEqSys);
+    //     equationsToGraph.add(pEqSys);
     //     return this;
 
     // }
 
     // public Grapher add(Equation... pEqs) {
-    //     if(equationsys.size() == 0)
-    //         equationsys.add(new EquationSystem());
+    //     if(equationsToGraph.size() == 0)
+    //         equationsToGraph.add(new EquationSystem());
     //     if(pEqs != null && pEqs.length != 0)
     //         for(Equation eq : pEqs)
-    //             equationsys.equations().add(eq);
+    //             equationsToGraph.equations().add(eq);
     //     return this;
 
     // }
@@ -126,15 +137,15 @@ public class Grapher extends JPanel implements MathObject {
     public void graph() {
         //Create and set up the window.
         String title = "Graph of ";
-        if(equationsys.size() + sets.size() > 3) {
+        if(equationsToGraph.size() + sets.size() > 3) {
             title += "A lot of stuff";
-        } else if(equationsys.size() + sets.size() == 0) {
+        } else if(equationsToGraph.size() + sets.size() == 0) {
             title += "Nothing...? Lol why graph that.";
-        } else if(equationsys.size() + sets.size() == 1) {
-            title += equationsys.size() == 1 ? equationsys.equations().get(0) : sets.get(0);
+        } else if(equationsToGraph.size() + sets.size() == 1) {
+            title += equationsToGraph.size() == 1 ? equationsToGraph.equations().get(0) : sets.get(0);
         } else {
-            for(int i = 0; i < equationsys.size(); i++) { // for each loop will crash if equation's size is 0.
-                title += equationsys.equations().get(i) + ", ";
+            for(int i = 0; i < equationsToGraph.size(); i++) { // for each loop will crash if equation's size is 0.
+                title += equationsToGraph.equations().get(i) + ", ";
             }
             for(int i =0; i < sets.size(); i++) {
                  title += sets.get(i) + ", ";   
@@ -155,19 +166,19 @@ public class Grapher extends JPanel implements MathObject {
 
 
     public ArrayList<Set> sets() { return sets; }
-    public EquationSystem equationsys() { return equationsys; }
+    public EquationSystem equationsToGraph() { return equationsToGraph; }
     public GraphComponents components() { return components; }
 
     @Override
     public String toString() {
         String ret = "Graph of ";
-        if(sets == null && equationsys == null || (sets.size() == 0 && equationsys.size() == 0)) {
+        if(sets == null && equationsToGraph == null || (sets.size() == 0 && equationsToGraph.size() == 0)) {
             return "Empty Graph"; 
-        } else if(equationsys.size() + sets.size() == 1) {
-            return ret + (equationsys.size() == 1 ? equationsys.equations().get(0) : sets.get(0));
+        } else if(equationsToGraph.size() + sets.size() == 1) {
+            return ret + (equationsToGraph.size() == 1 ? equationsToGraph.equations().get(0) : sets.get(0));
         } else {
-            for(int i = 0; i < equationsys.size(); i++) { // for each loop will crash if equation's size is 0.
-                ret += equationsys.equations().get(i) + ", ";
+            for(int i = 0; i < equationsToGraph.size(); i++) { // for each loop will crash if equation's size is 0.
+                ret += equationsToGraph.equations().get(i) + ", ";
             }
             for(int i =0; i < sets.size(); i++) {
                  ret += sets.get(i) + ", ";   
@@ -192,7 +203,7 @@ public class Grapher extends JPanel implements MathObject {
         for(Set s : sets)
             ret += "\n" + s.toFullString(idtLvl + 2);
 
-        ret += "\n" + equationsys.toFullString(idtLvl + 1);
+        ret += "\n" + equationsToGraph.toFullString(idtLvl + 1);
         ret += "\n" + components.toFullString(idtLvl + 1);
 
         ret += "\n" + indent(idtLvl + 1) + "Displays:";
@@ -206,7 +217,7 @@ public class Grapher extends JPanel implements MathObject {
 
     @Override
     public Grapher copy(){
-        return new Grapher(equationsys, sets, components);
+        return new Grapher(equationsToGraph, sets, components);
 
     }
 

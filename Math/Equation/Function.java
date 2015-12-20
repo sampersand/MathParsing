@@ -96,8 +96,6 @@ public abstract class Function implements MathObject {
                                 Node pNode) {
         double[] ret = new double[pNode.size()];
         for(int i = 0; i < ret.length; i++) {
-            System.out.println("i");
-            System.out.println(pEqSys.toFullString());
             ret[i] = pNode.subNodes().get(i).eval(pEqSys);
         }
         return ret;
