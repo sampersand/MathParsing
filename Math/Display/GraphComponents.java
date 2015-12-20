@@ -8,7 +8,7 @@ import Math.Exception.NotDefinedException;
  * Keeps track of different thigns about graphing - like window sizes
  * 
  * @author Sam Westerman
- * @version 0.66
+ * @version 0.67
  * @since 0.2
  */
 public class GraphComponents implements MathObject {
@@ -116,7 +116,7 @@ public class GraphComponents implements MathObject {
         assert winBounds.length == 2;
         assert dispBounds.length == 4;
         String ret = indent(idtLvl) + "GraphComponents:\n";
-        ret += indent(idtLvl + 1) + "Window Bounds (X, Y) = [" + winBounds[0] + ", " + winBounds[1] +"]\n";
+        ret += indent(idtLvl + 1) + "Window Bounds (X, Y) = [" + winBounds[0] + ", " + winBounds[1] + "]\n";
         ret += indent(idtLvl + 1) + "Display Bounds (x, y, X, Y) = [" + dispBounds[0] + ", " + dispBounds[1] + ", " +
                dispBounds[2] + ", " + dispBounds[3] + "]\n";
         ret += indent(idtLvl + 1) + "Step = " + step + " (cStep = " + cStep() + ")";
@@ -125,7 +125,16 @@ public class GraphComponents implements MathObject {
 
     @Override
     public String toFullString(int idtLvl) {
-        throw new NotDefinedException();
+        assert winBounds.length == 2;
+        assert dispBounds.length == 4;
+        String ret = indent(idtLvl) + "GraphComponents:\n";
+        ret += indent(idtLvl + 1) + "Window Bounds (X, Y):\n" + indent(idtLvl + 2) + "[" + winBounds[0] + ", " +
+               winBounds[1] + "]\n";
+        ret += indent(idtLvl + 1) + "Display Bounds (x, y, X, Y):\n" + indent(idtLvl + 2) + "[" + dispBounds[0] + ", " +
+               dispBounds[1] + ", " + dispBounds[2] + ", " + dispBounds[3] + "]\n";
+        ret += indent(idtLvl + 1) + "Step:\n" + indent(idtLvl + 2) + "\n";
+        ret += indent(idtLvl + 2) + "(cStep: " + cStep() + ")";
+        return ret;
     }
 
     @Override

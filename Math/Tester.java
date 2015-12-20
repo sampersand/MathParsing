@@ -7,7 +7,7 @@ import Math.Set.*;
 /**
  * A tester class for the whole equation
  * @author Sam Westerman
- * @version 0.66
+ * @version 0.67
  * @since 0.1
  */
 public class Tester {
@@ -35,9 +35,10 @@ public class Tester {
         if(args.length == 0) {
             // eqsys.add("y = 1 + sin(alpha) + c");
             // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
-            eqsys.add("y = graph('eq:y=sinx')");
             // eqsys.add("c = 0 - 9");
+            // eqsys.add("theta = 4 ^ x - ln(pi)");
             // eqsys.add("x = pi - e");
+            eqsys.add("y = graph('eq:y=x')");
             eqsys.add(new CustomFunction("graph"));
         } else {
             eqsys = new EquationSystem();

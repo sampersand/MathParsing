@@ -4,7 +4,7 @@ package Math.Exception;
  * Thrown when the arguments to a function are not correct for one reason or another
  * 
  * @author Sam Westerman
- * @version 0.66
+ * @version 0.67
  * @since 0.1
  */
 public class InvalidArgsException extends MathException {

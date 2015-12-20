@@ -83,7 +83,7 @@ public class graph extends CustomFunction{
             } 
         }
         Grapher grapher = new Grapher(equationsToGraph, pEqSys, setsToGraph, gcomp);
-        System.out.println(grapher.toFancyString());
+        System.out.println(grapher.toFullString());
         grapher.graph();
         return 0;
 

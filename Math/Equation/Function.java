@@ -10,7 +10,7 @@ import Math.Exception.InvalidArgsException;
  * For example, in <code>f(x)</code>, this class would represent f.
  * 
  * @author Sam Westerman
- * @version 0.66
+ * @version 0.67
  * @since 0.1
  */
 public abstract class Function implements MathObject {
