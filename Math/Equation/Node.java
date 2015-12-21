@@ -544,7 +544,7 @@ public class Node implements MathObject {
             ret += "\n" + node.toFullString(idtLvl + 2);
         if(size() == 0) 
             ret += "\n" + indent(idtLvl + 2) + "null";
-        return ret + "\n" + indent(idtLvl + 2);
+        return ret;
         }
 
 

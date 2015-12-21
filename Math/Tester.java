@@ -24,7 +24,6 @@ public class Tester {
          * --TODOS--
          * NOTE: Set will not be supported fully until version 1.0 comes out
          * Make sets use ArrayLists instead of arrays.
-         * make sure copy, toString, toFullString, and toFancyString are updated - v0.68
          * Try and break the graphing code, among other things - v0.7
          * go over and make sure all the things can handle null and empty lists.
          * Javadoc everything - v ??
@@ -33,12 +32,11 @@ public class Tester {
          */
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
-            // eqsys.add("y = 1 + sin(alpha) + c");
+            eqsys.add("y = 1 + sin(alpha) + c");
             // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
             // eqsys.add("c = 0 - 9");
             // eqsys.add("theta = 4 ^ x - ln(pi)");
             // eqsys.add("x = pi - e");
-            eqsys.add("y = graph('eq:y=x')");
             eqsys.add(new CustomFunction("graph"));
         } else {
             eqsys = new EquationSystem();
