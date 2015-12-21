@@ -109,17 +109,15 @@ public class Node implements MathObject {
      * @return The return type might seem odd, however, it always returns an updated pPos as arg 1, and the new node
      *         to add as argument 2.
      */
-    public static Object[] condeseNodes(int pPos,
-                                        Node pNode,
-                                        ArrayList<Token> pTokens) {
-        if(pNode == null)
-            throw new IllegalArgumentException("Cannot condeseNodes! pNode cannot be null!");
+    private Object[] condeseNodes(int pPos,
+                                  ArrayList<Token> pTokens) {
+        Node node = copy();
         while(pPos < pTokens.size()) {
             Token t = pTokens.get(pPos);
             if(t.isConst())
-                pNode.add(new FinalNode(t));
+                node.add(new FinalNode(t));
             if(t.isOper())
-                pNode.add(new Node(t));
+                node.add(new Node(t));
             if(t.isGroup()) {
                 int paren = 0;
                 int x = pPos + 1;
@@ -133,13 +131,13 @@ public class Node implements MathObject {
                 for(Token tk : pTokens.subList(pPos + 1, x ))
                      passTokens.add(tk);
 
-                Object[] temp = condeseNodes(0, new Node(t), passTokens);
+                Object[] temp = new Node(t).condeseNodes(0, passTokens);
                 pPos += (int)temp[0];
-                pNode.add(fixNodes((Node)temp[1]));
+                node.add(((Node)temp[1]).fixNodes());
             }
             pPos++;
         }
-        return new Object[]{pPos, pNode};
+        return new Object[]{pPos, node};
     }
 
 
@@ -147,16 +145,16 @@ public class Node implements MathObject {
      * Creates a master node using the pNode as a starting point by applying the Order of Operations.
      * Note: pNode should already have been condensed via {@link #condeseNodes(int,Node,ArrayList) condeseNodes}, and
      * fixed via {@link #fixNodes(Node) fixNodes}.
-     * @param pNode    The node that will be used to generate the new hierarchically-structured master node.
      * @return The "master" node - that is, the node to control all other nodes. HAH - LOTR reference.
      */
     private Node completeNodes() {
         if(this instanceof FinalNode)
-            return this;      
+            return this;
+        Node node = copy();
         Node e = new Node(token);
         int i = 0;
-        while(i < size()) {
-            Node n = get(i);
+        while(i < node.size()) {
+            Node n = node.get(i);
             if(n instanceof FinalNode) {
                 e.addD(n);
             }
@@ -198,31 +196,29 @@ public class Node implements MathObject {
 
     /**
      * Fixes nodes to prevent horrible things like "1*- 1" from crashing.
-     * @param pNode         The node whose subnodes will be fixed.
      * @return A "fixed" version of the nodes.
      */
-    public static Node fixNodes(Node pNode) {
-        if(pNode == null)
-            throw new IllegalArgumentException("Cannot fixNodes! pNode cannot be null!");
+    private Node fixNodes() {
         int i = 0;
-        while(i < pNode.size()) {
-            Node n = pNode.get(i);
-            if(n.token.type() == OPER && n.token.val().equals("-") && pNode.get(i - 1).token.type() == OPER &&
-                                   (pNode.get(i - 1).token.val().equals("/") ||
-                                    pNode.get(i - 1).token.val().equals("*") ||
-                                    pNode.get(i - 1).token.val().equals("^"))) {
+        Node node = copy();
+        while(i < node.size()) {
+            Node n = node.get(i);
+            if(n.token.type() == OPER && n.token.val().equals("-") && node.get(i - 1).token.type() == OPER &&
+                                   (node.get(i - 1).token.val().equals("/") ||
+                                    node.get(i - 1).token.val().equals("*") ||
+                                    node.get(i - 1).token.val().equals("^"))) {
                 Node n2 = new Node(new Token("doesnt matter what I put here because it will become GRP", GROUP));
                 n2.add(new FinalNode(new Token("0", NUM)));
                 n2.add(n);
-                n2.add(pNode.get(i + 1));
-                pNode.rem(i + 1);
-                pNode.set(i, n2);
+                n2.add(node.get(i + 1));
+                node.rem(i + 1);
+                node.set(i, n2);
                 i++;
             }
             i++;
         }
 
-        return pNode;
+        return node;
     }
     /**
      * Generates a "master node" from a list of tokens.
@@ -230,7 +226,7 @@ public class Node implements MathObject {
      * @return The new master node.
      */
     public static Node generateNodes(ArrayList<Token> pTokens) {
-        return fixNodes((Node)condeseNodes(0, new Node(Token.UNI), pTokens)[1]).completeNodes();
+        return ((Node)(new Node(Token.UNI).condeseNodes(0, pTokens))[1]).completeNodes().fixNodes();
     }
 
 
@@ -560,6 +556,6 @@ public class Node implements MathObject {
 
     @Override
     public Node copy(){
-        return new Node(token, subNodes);
+        return new Node(new Token(token.val(), token.type()), new ArrayList<Node>(){{addAll(subNodes);}});
     }
 }
