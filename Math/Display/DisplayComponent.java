@@ -231,5 +231,9 @@ public class DisplayComponent extends JLabel implements MathObject {
     public DisplayComponent copy(){
         return new DisplayComponent(grapher, equation, equationsys, set, color);
     }
+
+    @Override
+    public boolean equals(Object pObj){
+        throw new NotDefinedException();
+    }
 }
- 

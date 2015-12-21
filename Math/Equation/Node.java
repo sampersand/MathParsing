@@ -157,25 +157,22 @@ public class Node implements MathObject {
             Node n = node.get(i);
             if(n instanceof FinalNode) {
                 e.addD(n);
-            }
-            else if(n.token.isOper()) {
+            } else if(n.token.isOper()) {
                 for(int depth = 1; depth < e.depth(); depth++) {
                     Node nD = e.getD(depth, true);
                     if(nD instanceof FinalNode) {
                         n.add(nD);
                         e.setD(depth - 1, n); //depth is a final node.
                         break;
-                    }
-                    else if(n.token.priority() < nD.token.priority()) {
+                    } else if(n.token.priority() < nD.token.priority()) {
                         n.add(nD);
-                        n.add(get(i + 1).completeNodes());
+                        n.add(node.get(i + 1).completeNodes());
                         i++;
                         e.setD(depth - 1, n);
                         break;
-                    }
-                    else if (nD.token.isGroup()) {
+                    } else if (nD.token.isGroup()) {
                         n.add(nD);
-                        n.add(get(i + 1).completeNodes());
+                        n.add(node.get(i + 1).completeNodes());
                         i++;
                         e.setD(depth - 1, n);
                         break;
@@ -200,7 +197,15 @@ public class Node implements MathObject {
      */
     private Node fixNodes() {
         int i = 0;
+        Node th = copy();
         Node node = copy();
+        assert this.equals(node) : "this != node @ begin";
+        assert node.equals(this) : "node != this @ begin";
+        assert th.equals(node) : "th != node @ begin";
+        assert node.equals(th) : "node != th @ begin";
+        assert th.equals(this) : "th != this @ begin";
+        assert this.equals(th) : "this != th @ begin";
+
         while(i < node.size()) {
             Node n = node.get(i);
             if(n.token.type() == OPER && n.token.val().equals("-") && node.get(i - 1).token.type() == OPER &&
@@ -217,6 +222,12 @@ public class Node implements MathObject {
             }
             i++;
         }
+        // assert !this.equals(node) : "this == node @ end";
+        // assert !node.equals(this) : "node == this @ end";
+        // assert !th.equals(node) : "th == node @ end";
+        // assert !node.equals(th) : "node == th @ end";
+        assert th.equals(this) : "th != this @ end";
+        assert this.equals(th) : "this != th @ end";
 
         return node;
     }
@@ -553,6 +564,25 @@ public class Node implements MathObject {
         return ret + "\n" + indentE(idtLvl + 1);
         }
 
+    @Override
+    public boolean equals(Object pObj){
+        System.out.println("This:\n\t" + this + "pObj:\n\t" + pObj);
+        if(!(pObj instanceof Node))
+            return false;
+        if(this == pObj)
+            return true;
+        Node pnode = (Node)pObj;
+        if(!token.equals(pnode.token()))
+            return false;
+        if(size() != pnode.size())
+            return false;
+        for(int i = 0; i < size(); i++){
+            System.out.println("i: " + i + "\n\t this[i]: " + get(i) + "\n\tpnode[i]: " + pnode.get(i));
+            if(!get(i).equals(pnode.get(i)))
+                return false;
+        }
+        return true;
+    }
 
     @Override
     public Node copy(){

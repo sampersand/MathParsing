@@ -396,4 +396,9 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
     public CalcWindow copy(){
         throw new NotDefinedException();
     }
+    
+    @Override
+    public boolean equals(Object pObj){
+        throw new NotDefinedException();
+    }
 }

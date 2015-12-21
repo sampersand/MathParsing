@@ -239,6 +239,10 @@ public class GraphDisplay extends JComponent implements MathObject {
         return new GraphDisplay(EQUATIONS, EQUATION_BOUNDS, new double[]{0}, WINDOW_BOUNDS,
                                 DISPLAY_BOUNDS, false, COLORS);
     }
-
+    
+    @Override
+    public boolean equals(Object pObj){
+        throw new NotDefinedException();
+    }
 }
 

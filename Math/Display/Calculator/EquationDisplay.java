@@ -301,6 +301,10 @@ public class EquationDisplay extends JComponent implements MathObject {
     public EquationDisplay copy(){
         return new EquationDisplay(EQUATION, EQUATION_BOUNDS, STEPS, WINDOW_BOUNDS, DISPLAY_BOUNDS, ISEQIMAG, COLOR);
     }
-
+    
+    @Override
+    public boolean equals(Object pObj){
+        throw new NotDefinedException();
+    }
 }
 

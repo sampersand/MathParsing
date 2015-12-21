@@ -18,7 +18,7 @@ public class Tester {
      * @throws NotDefinedException Thrown when the first value isn't equal to "--e" of --f 
      */
     public static void main(String[] args) throws NotDefinedException {
-        String s = null;
+
 
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {

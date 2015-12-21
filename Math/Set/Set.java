@@ -842,4 +842,26 @@ public class Set implements MathObject {
         return new Set(arr1, arr2);
     }
 
+    @Override
+    public boolean equals(Object pObj){
+        if(!(pObj instanceof Set))
+            return false;
+        if(pObj == this)
+            return true;
+        double[] parr1 = ((Set)pObj).arr1();
+        if(arr1.length != parr1.length)
+            return false;
+        double[] parr2 = ((Set)pObj).arr2();
+        if(arr2.length != parr2.length)
+            return false;
+        for(int i = 0; i < arr1.length; i++)
+            if(arr1[i] != parr1[i])
+                return false;
+        for(int i = 0; i < arr2.length; i++)
+            if(arr2[i] != parr2[i])
+                return false;
+        return true;
+
+    }
+
 }

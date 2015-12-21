@@ -366,4 +366,9 @@ public class EquationSystem implements MathObject, Iterable {
             return (E) EquationSystem.this.equations().get(i++);
         }
     }
+
+    @Override
+    public boolean equals(Object pObj){
+        throw new NotDefinedException();
+    }
 }

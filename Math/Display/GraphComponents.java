@@ -140,4 +140,9 @@ public class GraphComponents implements MathObject {
     public GraphComponents copy(){
         return new GraphComponents(winBounds, dispBounds, step);
     }
+
+    @Override
+    public boolean equals(Object pObj){
+        throw new NotDefinedException();
+    }
 }

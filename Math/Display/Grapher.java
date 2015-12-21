@@ -247,4 +247,8 @@ public class Grapher extends JPanel implements MathObject {
 
     }
 
+    @Override
+    public boolean equals(Object pObj){
+        throw new NotDefinedException();
+    }
 }

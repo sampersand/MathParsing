@@ -112,4 +112,9 @@ public class Equation implements MathObject {
     public Equation copy(){
         return new Equation().add(expressions);
     }
+
+    @Override
+    public boolean equals(Object pObj){
+        throw new NotDefinedException();
+    }
 }

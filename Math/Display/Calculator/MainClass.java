@@ -134,4 +134,8 @@ public class MainClass implements MathObject {
         throw new NotDefinedException();
     }
 
+    @Override
+    public boolean equals(Object pObj){
+        throw new NotDefinedException();
+    }
 }

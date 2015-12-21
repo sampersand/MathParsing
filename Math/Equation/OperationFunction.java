@@ -101,5 +101,4 @@ public class OperationFunction extends InBuiltFunction {
     public OperationFunction copy(){
         return new OperationFunction(name, help, syntax);
     }
-
 }

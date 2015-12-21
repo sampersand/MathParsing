@@ -114,6 +114,18 @@ public abstract class Function implements MathObject {
                                 Node pNode) throws
                                     NotDefinedException,
                                     IllegalArgumentException;
+    
+    @Override
+    public boolean equals(Object pObj){
+        if(!(pObj instanceof Function))
+            return false;
+        if(this == (Function)pObj)
+            return true;
+        return name.equals(((Function)pObj).name()) &&
+               help.equals(((Function)pObj).help()) &&
+               syntax.equals(((Function)pObj).syntax());
+    }
+
     /**
      * Gets the inverse of this function - that is, what function should be done to undo this one. <br>The inverse of 
      * <code>+</code> is <code>-</code>, and the inverse of <code>cos</code> is <code>arccos</code>.
@@ -124,5 +136,6 @@ public abstract class Function implements MathObject {
     public Function inverse() throws NotDefinedException{
         throw new NotDefinedException();
     }
+
 
 }

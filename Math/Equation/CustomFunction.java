@@ -182,8 +182,9 @@ public class CustomFunction extends Function implements MathObject {
         ret += indent(idtLvl + 1) + "Class:\n" + indentE(idtLvl + 2) + cl;
         return ret + "\n" + indentE(idtLvl + 1);
     }
-   @Override
+    @Override
     public CustomFunction copy(){
         return new CustomFunction(name, help, syntax);
     }
+
 }

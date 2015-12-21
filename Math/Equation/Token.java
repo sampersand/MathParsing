@@ -232,4 +232,14 @@ public class Token implements MathObject {
     public Token copy(){
         return new Token(val, type);
     }
+
+    @Override
+    public boolean equals(Object pObj){
+        if(!(pObj instanceof Token))
+            return false;
+        pObj = (Token)pObj;
+        if(pObj == this)
+            return true;
+        return val.equals(((Token)pObj).val()) && type == ((Token)pObj).type();
+    }
 }

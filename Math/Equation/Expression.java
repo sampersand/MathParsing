@@ -298,4 +298,9 @@ public class Expression implements MathObject {
     public Expression copy(){
         return new Expression(expression, node);
     }
+
+    @Override
+    public boolean equals(Object pObj){
+        throw new NotDefinedException();
+    }
 }
