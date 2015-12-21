@@ -4,7 +4,6 @@ import Math.MathObject;
 import Math.Print;
 import Math.Equation.Token.Type;
 import Math.Exception.NotDefinedException;
-import Math.Exception.InvalidArgsException;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -86,13 +85,13 @@ public class InBuiltFunction extends Function {
      * @param pNode         The {@link Node} that will be passed to <code>pName</code>.
      * @return A double representing the value of <code>pNode</code>, when solved for with <code>pEqSys</code>.
      * @throws NotDefinedException    Thrown when the function is defined, but how to execute it isn't.
-     * @throws InvalidArgsException   Thrown when the function required parameters, and the ones passed aren't right.
+     * @throws IllegalArgumentException   Thrown when the function required parameters, and the ones passed aren't right.
      */
     public static double exec(String pName,
                               final EquationSystem pEqSys,
                               Node pNode) throws
                                   NotDefinedException,
-                                  InvalidArgsException {
+                                  IllegalArgumentException {
         if(FUNCTIONS.get(pName) == null)
             throw new NotDefinedException("Cannot execute the InBuiltFunction '" + pName +"' because it isn't defined "+
                     "in FUNCTIONS.");
@@ -103,7 +102,7 @@ public class InBuiltFunction extends Function {
     public double exec(final EquationSystem pEqSys,
                        Node pNode) throws
                            NotDefinedException,
-                           InvalidArgsException {
+                           IllegalArgumentException {
         double[] args = evalNode(pEqSys, pNode);
         switch(name) {
 

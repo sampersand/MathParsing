@@ -1,7 +1,6 @@
 package Math.Display;
 
 import Math.MathObject;
-import Math.Exception.InvalidArgsException;
 import Math.Exception.NotDefinedException;
 
 /**
@@ -49,17 +48,17 @@ public class GraphComponents implements MathObject {
     /**
      * TODO: JAVADOC
      */
-    public GraphComponents(int[] pWinBounds, double[] pDispBounds, double pStep) throws InvalidArgsException{
+    public GraphComponents(int[] pWinBounds, double[] pDispBounds, double pStep) throws IllegalArgumentException{
 
         //TODO: JAVADOC
 
         if(pWinBounds.length != 2)
-            throw new InvalidArgsException("Cannot instantiate GraphComponents! pWinBounds must be in format (X, Y)!");
+            throw new IllegalArgumentException("Cannot instantiate GraphComponents! pWinBounds must be in format (X, Y)!");
         if(pWinBounds[0] <= 0  || pWinBounds[1] <= 0)
-            throw new InvalidArgsException("Cannot instatiate GraphComponents! Both the X and Y components of "+
+            throw new IllegalArgumentException("Cannot instatiate GraphComponents! Both the X and Y components of "+
                                            "pWinBounds need to be positive!");
         if(pDispBounds.length != 4)
-            throw new InvalidArgsException("Cannot instatiate GraphComponents! pDispBounds needs to be in format "+
+            throw new IllegalArgumentException("Cannot instatiate GraphComponents! pDispBounds needs to be in format "+
                                            "(min X, min Y, max X, max Y)!");
         winBounds = pWinBounds;
         dispBounds = pDispBounds;

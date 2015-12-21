@@ -6,7 +6,6 @@ import Math.Equation.Node;
 import Math.Equation.CustomFunction;
 
 
-import Math.Exception.InvalidArgsException;
 import Math.Exception.NotDefinedException;
 
 public class summation extends CustomFunction{
@@ -30,10 +29,10 @@ public class summation extends CustomFunction{
     public double exec(EquationSystem pEq,
                        Node pNode) throws
                            NotDefinedException,
-                           InvalidArgsException {
+                           IllegalArgumentException {
         double[] vals = evalNode(pEq, pNode);
         if(vals.length == 0 || vals.length > 3)
-            throw new InvalidArgsException("ERROR when parsing summation. Syntax: " + syntax());
+            throw new IllegalArgumentException("ERROR when parsing summation. Syntax: " + syntax());
         if(vals.length == 1) { vals = new double[]{0,vals[0],1};}
         if(vals.length == 2) { vals = new double[]{vals[0],vals[1],1};}
         double ret = 0;

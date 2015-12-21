@@ -6,7 +6,9 @@ package Math.Exception;
  * @author Sam Westerman
  * @version 0.67
  * @since 0.1
+ * @deprecated didn't realize IllegalArgumentException existed
  */
+@Deprecated
 public class InvalidArgsException extends MathException {
 
     /**

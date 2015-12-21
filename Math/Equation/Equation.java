@@ -4,7 +4,6 @@ import Math.MathObject;
 import Math.Equation.CustomFunction;
 import Math.Equation.Expression;
 import Math.Exception.NotDefinedException;
-import Math.Exception.InvalidArgsException;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;

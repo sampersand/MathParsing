@@ -8,7 +8,6 @@ import Math.Equation.Node;
 import Math.Equation.CustomFunction;
 import Math.Equation.Token.Type;
 import Math.Exception.NotDefinedException;
-import Math.Exception.InvalidArgsException;
 import Math.Set.Set;
 import Math.Display.GraphComponents;
 import Math.Display.Grapher;
@@ -41,12 +40,12 @@ public class graph extends CustomFunction{
     public double exec(final EquationSystem pEqSys,
                        Node pNode) throws
                            NotDefinedException,
-                           InvalidArgsException {
+                           IllegalArgumentException {
         assert pNode.size() > 0 : "Cannot evaluate the node '" + pNode.token().val() + "' when it's size isn't greater"+
                                   " than 1";
         for(Node n : pNode.subNodes()) {
             if(n.token().type() != Type.ARGS) {
-                throw new InvalidArgsException("All arguments of graph must be of Token.Type 'ARG'!");
+                throw new IllegalArgumentException("All arguments of graph must be of Token.Type 'ARG'!");
             }
         }
         equationsToGraph = new EquationSystem();
@@ -101,11 +100,11 @@ public class graph extends CustomFunction{
                 max = Double.parseDouble(vals[3]);
                 cStep = Double.parseDouble(vals[1]);
             } else {
-                throw new InvalidArgsException("If using Identifier 'eqset', the only allowed arguments "+
+                throw new IllegalArgumentException("If using Identifier 'eqset', the only allowed arguments "+
                     "are: 'eq' OR 'eq, cstep' OR 'eq, cstep, min, max'!");
             }
         } catch (NumberFormatException err) {
-            throw new InvalidArgsException("One of the args for eqset (not the equation) isn't a double!");
+            throw new IllegalArgumentException("One of the args for eqset (not the equation) isn't a double!");
         }
         return new Set(new EquationSystem().add(vals[0]), min, max, cStep);
     }

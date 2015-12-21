@@ -6,7 +6,6 @@ import Math.Equation.Equation;
 import Math.Equation.EquationSystem;
 import static Math.Equation.Token.Type.*;
 import Math.Exception.TypeMisMatchException;
-import Math.Exception.InvalidArgsException;
 import Math.Exception.NotDefinedException;
 
 import java.util.ArrayList;
@@ -58,6 +57,8 @@ public class Node implements MathObject {
      */
     public Node(Token pToken,
                 ArrayList<Node> pSubNodes) {
+        assert pToken != null; // if no token, then pass an empty token
+        assert pSubNodes != null; // if no subnodes, then pass an empty arraylist.
         subNodes = pSubNodes;
         token = pToken;
     }
@@ -68,9 +69,13 @@ public class Node implements MathObject {
      * <code>Node n = new Node(Token, Node1, Node2, ... , NodeN</code>.
      * @param pToken        The token that will determine how this class interacts with its {@link #subNodes}.
      * @param pSubNodes     A of subNodes this class will have.
+     * @deprecated As of v0.68; Just pass an ArrayList to {@link #Node(Token,ArrayList)}.
      */
+    @Deprecated
     public Node(Token pToken,
                 Node... pSubNodes) {
+        assert pToken != null; // if no token, then pass an empty token
+        assert pSubNodes != null; // shouldnt be calling this if they are null
         subNodes = new ArrayList<Node>() {{
             for(Node n : pSubNodes)
                 add(n);
@@ -98,24 +103,26 @@ public class Node implements MathObject {
      * Condenses functions and groups together into a single node. Creates 1-length nodes for operations and vars / nums.
      * Note that this is only ever used with {@link #fixNodes(Node) fixNodes}, 
      * {@link #generateNodes(ArrayList) generateNodes} and {@link #completeNodes(Node) completeNodes}.
-     * @param pos       The position to start condensing nodes form.
-     * @param n         The "parent" node that any newly generated nodes will be put into.
+     * @param pPos      The position to start condensing nodes form.
+     * @param pNode     The "parent" node that any newly generated nodes will be put into.
      * @param pTokens   The list of tokens that will be put into nodes.
-     * @return The return type might seem odd, however, it always returns an updated pos as argument 1, and the new node
+     * @return The return type might seem odd, however, it always returns an updated pPos as arg 1, and the new node
      *         to add as argument 2.
      */
-    public static Object[] condeseNodes(int pos,
-                                        Node n,
+    public static Object[] condeseNodes(int pPos,
+                                        Node pNode,
                                         ArrayList<Token> pTokens) {
-        while(pos < pTokens.size()) {
-            Token t = pTokens.get(pos);
+        if(pNode == null)
+            throw new IllegalArgumentException("Cannot condeseNodes! pNode cannot be null!");
+        while(pPos < pTokens.size()) {
+            Token t = pTokens.get(pPos);
             if(t.isConst())
-                n.add(new FinalNode(t));
+                pNode.add(new FinalNode(t));
             if(t.isOper())
-                n.add(new Node(t));
+                pNode.add(new Node(t));
             if(t.isGroup()) {
                 int paren = 0;
-                int x = pos + 1;
+                int x = pPos + 1;
                 do{
                     if(pTokens.get(x).type() == LPAR) paren++;
                     if(pTokens.get(x).type() == RPAR) paren--;
@@ -123,16 +130,16 @@ public class Node implements MathObject {
                 } while(0 < paren && x < pTokens.size());
 
                 ArrayList<Token> passTokens = new ArrayList<Token>();
-                for(Token tk : pTokens.subList(pos + 1, x ))
+                for(Token tk : pTokens.subList(pPos + 1, x ))
                      passTokens.add(tk);
 
                 Object[] temp = condeseNodes(0, new Node(t), passTokens);
-                pos += (int)temp[0];
-                n.add(fixNodes((Node)temp[1]));
+                pPos += (int)temp[0];
+                pNode.add(fixNodes((Node)temp[1]));
             }
-            pos++;
+            pPos++;
         }
-        return new Object[]{pos,n};
+        return new Object[]{pPos, pNode};
     }
 
 
@@ -143,13 +150,13 @@ public class Node implements MathObject {
      * @param pNode    The node that will be used to generate the new hierarchically-structured master node.
      * @return The "master" node - that is, the node to control all other nodes. HAH - LOTR reference.
      */
-    public static Node completeNodes(Node pNode) {
-        if(pNode instanceof FinalNode)
-            return pNode;      
-        Node e = new Node(pNode.token);
+    private Node completeNodes() {
+        if(this instanceof FinalNode)
+            return this;      
+        Node e = new Node(token);
         int i = 0;
-        while(i < pNode.size()) {
-            Node n = pNode.get(i);
+        while(i < size()) {
+            Node n = get(i);
             if(n instanceof FinalNode) {
                 e.addD(n);
             }
@@ -163,14 +170,14 @@ public class Node implements MathObject {
                     }
                     else if(n.token.priority() < nD.token.priority()) {
                         n.add(nD);
-                        n.add(completeNodes(pNode.get(i + 1)));
+                        n.add(get(i + 1).completeNodes());
                         i++;
                         e.setD(depth - 1, n);
                         break;
                     }
                     else if (nD.token.isGroup()) {
                         n.add(nD);
-                        n.add(completeNodes(pNode.get(i + 1)));
+                        n.add(get(i + 1).completeNodes());
                         i++;
                         e.setD(depth - 1, n);
                         break;
@@ -179,7 +186,7 @@ public class Node implements MathObject {
 
             }
             else if(n.token.isGroup()) {
-                e.addD(e.depth(), completeNodes(n), false);
+                e.addD(e.depth(), n.completeNodes(), false);
             }
             else {
                 throw new NotDefinedException("Cannot complete the node '" + n + "' because there is no known way to!");
@@ -195,6 +202,8 @@ public class Node implements MathObject {
      * @return A "fixed" version of the nodes.
      */
     public static Node fixNodes(Node pNode) {
+        if(pNode == null)
+            throw new IllegalArgumentException("Cannot fixNodes! pNode cannot be null!");
         int i = 0;
         while(i < pNode.size()) {
             Node n = pNode.get(i);
@@ -221,7 +230,7 @@ public class Node implements MathObject {
      * @return The new master node.
      */
     public static Node generateNodes(ArrayList<Token> pTokens) {
-        return completeNodes(fixNodes((Node)condeseNodes(0, new Node(Token.UNI), pTokens)[1]));
+        return fixNodes((Node)condeseNodes(0, new Node(Token.UNI), pTokens)[1]).completeNodes();
     }
 
 

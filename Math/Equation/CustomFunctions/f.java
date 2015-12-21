@@ -7,7 +7,6 @@ import Math.Equation.Token;
 import Math.Equation.CustomFunction;
 
 import Math.Exception.NotDefinedException;
-import Math.Exception.InvalidArgsException;
 
 public class f extends CustomFunction{
     public String help() {
@@ -20,7 +19,7 @@ public class f extends CustomFunction{
     public double exec(EquationSystem pEq,
                        Node pNode) throws
                            NotDefinedException,
-                           InvalidArgsException {
+                           IllegalArgumentException {
         double[] vals = evalNode(pEq, pNode);
         double ret = 0;
         for(double val : vals)

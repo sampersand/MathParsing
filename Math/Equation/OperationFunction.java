@@ -4,7 +4,6 @@ import Math.MathObject;
 import Math.Print;
 import Math.Equation.Token.Type;
 import Math.Exception.NotDefinedException;
-import Math.Exception.InvalidArgsException;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -43,7 +42,7 @@ public class OperationFunction extends InBuiltFunction {
     public double exec(final EquationSystem pEqSys,
                        Node pNode) throws 
                            NotDefinedException,
-                           InvalidArgsException {
+                           IllegalArgumentException {
         assert pNode.subNodes().size() != 0 : "Node size cannot be 0!";
         assert name.equals("+") || name.equals("-") || name.equals("*") || name.equals("/") || name.equals("^");
         double ret = pNode.get(0).eval(pEqSys);

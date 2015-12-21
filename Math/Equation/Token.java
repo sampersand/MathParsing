@@ -101,8 +101,8 @@ public class Token implements MathObject {
         this("", Type.NULL);
     }
     /**
-     * The main constructor.
-     * Just sets type to pType, and val to pVal. If pType is GROUP, val is insteaed set to "GRP".
+     * The main constructor for Token. Just sets type to pType, and val to pVal. If pType is GROUP, val is insteaed set
+     * to "GRP".
      * @param pVal      The String that this token is based off of.
      * @param pType     The type of token that this token is.
      */
@@ -120,6 +120,7 @@ public class Token implements MathObject {
      * An alternate constructor. This just passes pVal as a String and pType to the main constructor.
      * @param pVal    The character that this tokenis based off of.
      * @param pType     The type of token that this token is.
+     * @deprecated 
      */
     public Token(char pVal,
                  Type pType) {
@@ -148,6 +149,7 @@ public class Token implements MathObject {
      * @return True if type is a NUM or VAR or ARGS.
      */
     public boolean isConst() {
+        assert type != null;
         return type == Type.NUM || type == Type.VAR || type == Type.ARGS;
     }
 
@@ -158,6 +160,7 @@ public class Token implements MathObject {
      * @return True if type is a GROUP or FUNC.
      */
     public boolean isGroup() {
+        assert type != null;        
         return type == Type.GROUP || type == Type.FUNC;
     }
 
@@ -167,13 +170,16 @@ public class Token implements MathObject {
      * @return True if type is a OPER.
      */    
     public boolean isOper() {
-        return  type == Type.OPER;
+        assert type != null;
+        return type == Type.OPER;
     }
     /**
      * Used to figure out if a {@link Node node} based off this is the "master node". 
      * @return True if type == NULL and val == "E".
      */
     public boolean isUni() {
+        assert type != null;
+        assert val != null;
         return type == Type.UNI && val.equals("E");
     }
 
@@ -185,6 +191,7 @@ public class Token implements MathObject {
      * @return The priority.
      */
     public int priority() {
+        assert val != null;
         int ret = 0;
         switch(val) {
             case "^":

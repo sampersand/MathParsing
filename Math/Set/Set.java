@@ -5,7 +5,6 @@ import Math.Print;
 import Math.Equation.EquationSystem;
 import Math.Equation.Equation;
 import Math.Equation.Expression;
-import Math.Exception.InvalidArgsException;
 import Math.Exception.NotDefinedException;
 import Math.Display.Grapher;
 
@@ -96,10 +95,10 @@ public class Set implements MathObject {
                double max,
                double cStep) {
         if(min >= max) {
-            throw new InvalidArgsException("When defining a Set with an EquationSystem, the min (" + min +
+            throw new IllegalArgumentException("When defining a Set with an EquationSystem, the min (" + min +
                                            ") has to be smaller than the max (" + max + ")!");
         } if(cStep == 0) {
-            throw new InvalidArgsException("When defining a Set with an EquationSystem, the cStep cannot be 0!");
+            throw new IllegalArgumentException("When defining a Set with an EquationSystem, the cStep cannot be 0!");
         }
 
         arr1 = new double[(int) Math.abs(Math.ceil(cStep))];
@@ -328,10 +327,10 @@ public class Set implements MathObject {
     /**
      * Verifies that the cardinality of {@link #arr1} and {@link #arr2} is the same. Passes <code>this</code> to
      * {@link #verifySize(Set) another verifySize function}.
-     * @throws InvalidArgsException Thrown if the cardinality of {@link #arr1} and {@link #arr2} aren't equal.
+     * @throws IllegalArgumentException Thrown if the cardinality of {@link #arr1} and {@link #arr2} aren't equal.
      * @see <a href="https://en.wikipedia.org/wiki/Cardinality">Cardinality</a>
      */
-    public void verifySize() throws InvalidArgsException {
+    public void verifySize() throws IllegalArgumentException {
         verifySize(this);
     }
 
@@ -341,11 +340,11 @@ public class Set implements MathObject {
      * {@link #verifySize(double[],double[]) another verifySize function}.
      * @param pSet      The Set whose {@link #arr1} and {@link #arr2} will be be verrified that their cardinality is the
      *                  same.
-     * @throws InvalidArgsException Thrown if the cardinality of {@link #arr1() pSet.arr1()} and
+     * @throws IllegalArgumentException Thrown if the cardinality of {@link #arr1() pSet.arr1()} and
      *                              {@link #arr2() pSet.arr2()} aren't equal.
      * @see <a href="https://en.wikipedia.org/wiki/Cardinality">Cardinality</a>
      */
-    public void verifySize(Set pSet) throws InvalidArgsException {
+    public void verifySize(Set pSet) throws IllegalArgumentException {
         verifySize(pSet.arr1(), pSet.arr2());
     }
 
@@ -357,13 +356,13 @@ public class Set implements MathObject {
      *                      <code>pArr2.length</code>.
      * @param pArr2         The second array; <code>pArr1.length</code> will be compared against
      *                      <code>pArr2.length</code>.
-     * @throws InvalidArgsException Thrown if the cardinality of <code>pArr1</code> and <code>pArr2</code> aren't equal.
+     * @throws IllegalArgumentException Thrown if the cardinality of <code>pArr1</code> and <code>pArr2</code> aren't equal.
      * @see <a href="https://en.wikipedia.org/wiki/Cardinality">Cardinality</a>
      */
     public static void verifySize(double[] pArr1,
-                                  double[] pArr2) throws InvalidArgsException {
+                                  double[] pArr2) throws IllegalArgumentException {
         if(pArr1.length != pArr2.length)
-            throw new InvalidArgsException("The Arrays (" + arrToString(pArr1) + ")[" + pArr1.length + "] and (" +
+            throw new IllegalArgumentException("The Arrays (" + arrToString(pArr1) + ")[" + pArr1.length + "] and (" +
                 arrToString(pArr2) + ")[" + pArr2.length + "] need to be of the same length!");
     }
 
@@ -461,11 +460,11 @@ public class Set implements MathObject {
      * Calculates and returns the average (mean) value of <code>pArr1</code>.
      * @param pArr1         The array whose average (mean) will be returned.
      * @return The average (mean) of <code>pArr1</code>.
-     * @throws InvalidArgsException Thrown if <code>pArr1.length == 0</code>.
+     * @throws IllegalArgumentException Thrown if <code>pArr1.length == 0</code>.
      */
     public static double avg(double[] pArr1) {
         if(pArr1.length == 0)
-            throw new InvalidArgsException("pArr1's length is 0! Unable to take an average of an empty array!");
+            throw new IllegalArgumentException("pArr1's length is 0! Unable to take an average of an empty array!");
         double sum = 0;
         for(double i : pArr1)
             sum += i;

@@ -172,20 +172,20 @@ public class Expression implements MathObject {
                     if(prev.length() != 0) {
                         tokens.add(new Token(prev, isNumP(prev) ? Token.Type.NUM : Token.Type.VAR));
                     }
-                    tokens.add(new Token(c, Token.Type.OPER));
+                    tokens.add(new Token("" + c, Token.Type.OPER));
                     break;
                 case ',':
                     if(prev.length() != 0) {
                         tokens.add(new Token(prev, isNumP(prev) ? Token.Type.NUM : Token.Type.VAR));
                     }
-                    tokens.add(new Token(c, Token.Type.DELIM));
+                    tokens.add(new Token("" + c, Token.Type.DELIM));
                     break;
 
                 default:
                     if(prev.length() != 0) {
                         tokens.add(new Token(prev, isNumP(prev) ? Token.Type.NUM : Token.Type.VAR));
                     }
-                    tokens.add(new Token(c, Token.Type.NULL));
+                    tokens.add(new Token("" + c, Token.Type.NULL));
                     break;
 
             }

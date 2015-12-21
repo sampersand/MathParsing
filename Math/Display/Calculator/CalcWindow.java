@@ -4,7 +4,6 @@ import Math.MathObject;
 import Math.Print;
 import Math.Equation.EquationSystem;
 import Math.Equation.CustomFunction;
-import Math.Exception.InvalidArgsException;
 import Math.Exception.NotDefinedException;
 
 import java.awt.BorderLayout;
@@ -274,13 +273,13 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
      * @param rawEq             The equation which will be run in JavaScript to get the answer.
      * @return                  A String representation of the resulting <code>double</code> answer.
      *
-     * @throws InvalidArgsException     Thrown when the arguments (like for functions, etc) arent valid.
+     * @throws IllegalArgumentException     Thrown when the arguments (like for functions, etc) arent valid.
      *                                  the equation (like <code>2++4</code>). General error.
      * @throws NumberFormatException    Thrown by <code>ScriptEngine</code> if there is a problem
      *                                  with the way the numbers are formatted
      *                                  (like <code>2+4.2.2</code>).
      */
-    public static String getResult(String rawEq) throws InvalidArgsException {
+    public static String getResult(String rawEq) throws IllegalArgumentException {
         rawEq = rawEq.replaceAll("%", "*100").replaceAll("\\*\\*", "^");
         String[] split = rawEq.trim().replaceAll(" ","").split(";");
         if(split.length == 1) {
@@ -292,13 +291,13 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
                     for(int i = 0; i < split1.length; i++) {
                         String[] spl = split1[i].split(":");
                         if(spl.length != 2) {
-                            throw new InvalidArgsException("Cannot get the result of rawEq! When passing vars, the "
+                            throw new IllegalArgumentException("Cannot get the result of rawEq! When passing vars, the "
                                 + "format has to be 'Name:Val'");
                         } else {
                             try {
                                 put(spl[0], Double.parseDouble(spl[1]));
                             } catch (NumberFormatException err) {
-                                throw new InvalidArgsException("Cannot get the result of rawEq! When passing vars, " +
+                                throw new IllegalArgumentException("Cannot get the result of rawEq! When passing vars, " +
                                 "their values have to be doubles!");
                             }
                         }
@@ -315,7 +314,7 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
                         } else if (spl.length == 2) {
                             put(spl[0], new CustomFunction(spl[1]));
                         } else {
-                            throw new InvalidArgsException("Cannot get the result of rawEq! When passing funcs, they "+
+                            throw new IllegalArgumentException("Cannot get the result of rawEq! When passing funcs, they "+
                                 " have to be in format 'Name:File', or 'Name'");
                         }
                     }

@@ -18,17 +18,15 @@ public class Tester {
      * @throws NotDefinedException Thrown when the first value isn't equal to "--e" of --f 
      */
     public static void main(String[] args) throws NotDefinedException {
-
-
+        String s = null;
 
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
-            eqsys.add("y = x = 4");
-            // eqsys.add("y = 1 + sin(alpha) + c");
-            // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
-            // eqsys.add("c = 0 - 9");
-            // eqsys.add("theta = 4 ^ x - ln(pi)");
-            // eqsys.add("x = pi - e");
+            eqsys.add("y = 1 + sin(alpha) + c");
+            eqsys.add("alpha = (9.45 + x ^ theta) / 2");
+            eqsys.add("c = 0 - 9");
+            eqsys.add("theta = 4 ^ x - ln(pi)");
+            eqsys.add("x = pi - e");
             eqsys.add(new CustomFunction("graph"));
         } else {
             eqsys = new EquationSystem();

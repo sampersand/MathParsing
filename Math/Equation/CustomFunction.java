@@ -7,7 +7,6 @@ import Math.Equation.Node;
 import Math.Equation.CustomFunction;
 import Math.Equation.CustomFunctions.*;
 import Math.Exception.NotDefinedException;
-import Math.Exception.InvalidArgsException;
 
 import java.lang.reflect.*;
 
@@ -65,7 +64,7 @@ public class CustomFunction extends Function implements MathObject {
                 cl = Class.forName("Math.Equation.CustomFunctions." + name);
             }
         } catch (ClassNotFoundException err) {
-                throw new InvalidArgsException("Cannot instatiate CustomFunction '" + name + 
+                throw new IllegalArgumentException("Cannot instatiate CustomFunction '" + name + 
                     "'! All custom class currently must be in Math/Equation/CustomFunctions/<CLASS>!");
         }
     }
@@ -126,14 +125,14 @@ public class CustomFunction extends Function implements MathObject {
      * @param pNode         The {@link Node} that is going to be solved.
      * @return A double representing the value of <code>pNode</code>pNode, when solved for with <code>pEqSys</code>.
      * @throws NotDefinedException    Thrown when the function is defined, but how to execute it isn't.
-     * @throws InvalidArgsException   Thrown when the function required parameters, and the ones passed aren't right.
+     * @throws IllegalArgumentException   Thrown when the function required parameters, and the ones passed aren't right.
      */
     @Override
     @SuppressWarnings("unchecked") //stupid cl.getDeclaredMethod
     public double exec(final EquationSystem pEqSys,
                        Node pNode) throws
                            NotDefinedException,
-                           InvalidArgsException {
+                           IllegalArgumentException {
         try {
             Class[] argType = {EquationSystem.class, Node.class};
             Method execMethod = cl.getDeclaredMethod("exec",argType);

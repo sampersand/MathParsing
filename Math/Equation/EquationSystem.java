@@ -4,7 +4,6 @@ import Math.MathObject;
 import Math.Print;
 import Math.Exception.TypeMisMatchException;
 import Math.Exception.NotDefinedException;
-import Math.Exception.InvalidArgsException;
 
 import java.util.ArrayList;
 import java.util.HashMap;

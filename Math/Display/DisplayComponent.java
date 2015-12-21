@@ -4,7 +4,6 @@ import Math.MathObject;
 import Math.Equation.Equation;
 import Math.Equation.EquationSystem;
 import Math.Set.Set;
-import Math.Exception.InvalidArgsException;
 import Math.Exception.MathException;
 import Math.Exception.NotDefinedException;
 
@@ -50,7 +49,7 @@ public class DisplayComponent extends JLabel implements MathObject {
  
     /** TODO: JAVADOC */
     public DisplayComponent() {
-        throw new InvalidArgsException("Cannot instantiate an empty DisplayComponent!" +
+        throw new IllegalArgumentException("Cannot instantiate an empty DisplayComponent!" +
                                         "A Grapher is required to base a DisplayComponent off of!");
     }
 
