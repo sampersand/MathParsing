@@ -20,16 +20,7 @@ public class Tester {
     public static void main(String[] args) throws NotDefinedException {
 
 
-        /*
-         * --TODOS--
-         * NOTE: Set will not be supported fully until version 1.0 comes out
-         * Make sets use ArrayLists instead of arrays.
-         * Try and break the graphing code, among other things - v0.7
-         * go over and make sure all the things can handle null and empty lists.
-         * Javadoc everything - v ??
-         * make isolate work - v ??
-         * make it so a node can have mroe than 1 subnode.
-         */
+
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
             eqsys.add("y = x = 4");
