@@ -542,9 +542,10 @@ public class Node implements MathObject {
         ret += indent(idtLvl + 1) + "Sub Nodes:";
         for(Node node : subNodes) 
             ret += "\n" + node.toFullString(idtLvl + 2);
+        ret += "\n" + indentE(idtLvl + 2);
         if(size() == 0) 
             ret += "\n" + indent(idtLvl + 2) + "null";
-        return ret;
+        return ret + "\n" + indentE(idtLvl + 1);
         }
 
 

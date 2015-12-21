@@ -177,12 +177,13 @@ public class CustomFunction extends Function implements MathObject {
     @Override
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "CustomFunction:\n";
-        ret += indent(idtLvl + 1) + "Name:\n" + indent(idtLvl + 2) + name + "\n";
-        ret += indent(idtLvl + 1) + "Help:\n" + indent(idtLvl + 2) + help + "\n";
-        ret += indent(idtLvl + 1) + "Syntax:\n" + indent(idtLvl + 2) + syntax + "\n";
-        ret += indent(idtLvl + 1) + "Class:\n" + indent(idtLvl + 2) + cl;
-        return ret;
-    }   @Override
+        ret += indent(idtLvl + 1) + "Name:\n" + indentE(idtLvl + 2) + name + "\n";
+        ret += indent(idtLvl + 1) + "Help:\n" + indentE(idtLvl + 2) + help + "\n";
+        ret += indent(idtLvl + 1) + "Syntax:\n" + indentE(idtLvl + 2) + syntax + "\n";
+        ret += indent(idtLvl + 1) + "Class:\n" + indentE(idtLvl + 2) + cl;
+        return ret + "\n" + indentE(idtLvl + 1);
+    }
+   @Override
     public CustomFunction copy(){
         return new CustomFunction(name, help, syntax);
     }

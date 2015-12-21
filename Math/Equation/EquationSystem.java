@@ -334,13 +334,17 @@ public class EquationSystem implements MathObject, Iterable {
         for(Equation eqs : equations) {
             ret += "\n" + eqs.toFullString(idtLvl + 2);
         }
+        ret += "\n" + indentE(idtLvl + 2);
         ret += "\n" + indent(idtLvl + 1) + "Functions:";
         for(Object key : functions.keySet().toArray()) {
-            ret += "\n" + indent(idtLvl + 2) + "'" + key + "':\n" + functions.get("" + key).toFullString(idtLvl + 3);
+            ret += "\n" + indent(idtLvl + 2) + "'" + key + "':\n";
+            ret += functions.get("" + key).toFullString(idtLvl + 3);
+            ret += "\n" + indentE(idtLvl + 3);
         }
         if(functions.size() == 0)
             ret += "\n" + indent(idtLvl + 2) + "null";
-        return ret;
+        ret += "\n" + indentE(idtLvl + 2);
+        return ret + "\n" + indentE(idtLvl + 1);
     }
 
     /**

@@ -200,10 +200,10 @@ public class InBuiltFunction extends Function {
     @Override
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "InBuiltFunction:\n";
-        ret += indent(idtLvl + 1) + "Name:\n" + indent(idtLvl + 2) + name + "\n";
-        ret += indent(idtLvl + 1) + "Help:\n" + indent(idtLvl + 2) + help + "\n";
-        ret += indent(idtLvl + 1) + "Syntax:\n" + indent(idtLvl + 2) + syntax;
-        return ret;
+        ret += indent(idtLvl + 1) + "Name:\n" + indentE(idtLvl + 2) + name + "\n";
+        ret += indent(idtLvl + 1) + "Help:\n" + indentE(idtLvl + 2) + help + "\n";
+        ret += indent(idtLvl + 1) + "Syntax:\n" + indentE(idtLvl + 2) + syntax;
+        return ret + "\n" + indentE(idtLvl + 1);
     }
 
     @Override

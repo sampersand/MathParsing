@@ -116,9 +116,9 @@ public class FinalNode extends Node implements MathObject {
     @Override
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "FinalNode:\n";
-        ret += indent(idtLvl + 1) + "Token:\n" + token.toFullString(idtLvl + 2) + "\n";
-        ret += indent(idtLvl + 1) + "Value:\n" + indent(idtLvl + 2) + (token.type() == Token.Type.NUM ? dVal : sVal);
-        return ret;
+        ret += indent(idtLvl + 1) + "FinalNode's Token:\n" + token.toFullString(idtLvl + 2) + "\n";
+        ret += indent(idtLvl + 1) + "Value:\n" + indentE(idtLvl + 2) + (token.type() == Token.Type.NUM ? dVal : sVal);
+        return ret + "\n" + indentE(idtLvl + 1);
     }
     @Override
     public FinalNode copy(){

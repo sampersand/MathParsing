@@ -214,9 +214,10 @@ public class Token implements MathObject {
 
     @Override
     public String toFullString(int idtLvl) {
-        String ret = indent(idtLvl) + "Token:\n";
-        ret += indent(idtLvl + 1) + "Value:\n" + indent(idtLvl + 2) + val + "\n";
-        ret += indent(idtLvl + 1) + "Type:\n" + indent(idtLvl + 2) + type;
+        String ret = indent(idtLvl) + "Token\n";
+        ret += indent(idtLvl + 1) + "Value\n" + indentE(idtLvl + 2) + val + "\n";
+        ret += indent(idtLvl + 1) + "Type\n" + indentE(idtLvl + 2) + type + "\n" + indentE(idtLvl + 1) + "\n";
+        ret += indentE(idtLvl);
         return ret;
     }
 

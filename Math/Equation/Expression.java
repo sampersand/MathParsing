@@ -289,9 +289,9 @@ public class Expression implements MathObject {
     @Override
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "Expression:\n";
-        ret += indent(idtLvl + 1) + "Raw Expression:\n" + indent(idtLvl + 2) + expression + "\n";
+        ret += indent(idtLvl + 1) + "Raw Expression:\n" + indentE(idtLvl + 2) + expression + "\n";
         ret += indent(idtLvl + 1) + "Expression Node:\n" + node.toFullString(idtLvl + 2);
-        return ret;
+        return ret + "\n" + indentE(idtLvl + 2) + "\n" + indentE(idtLvl + 1);
     }
 
     @Override

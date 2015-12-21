@@ -57,13 +57,29 @@ public interface MathObject {
     /**
      * Gets an indentation level, used for {@link #toFancyString} and {@link #toFullString}.
      */
-    public default String indent(int idtLvl){
+
+    public default String indentU(int idtLvl){
         String ret = "";
         for(int i = 0; i < idtLvl; i++)
-            ret += "|  ";
-        return ret + "|";
+            ret += (i % 2 == 0 ? "│" : "║") + "  ";
+        return ret;
+        //┌
+        //│─
+        //├
+        //└
     }
-
+    public default String indent(int idtLvl){
+        return idtLvl == 0 ? indentS(idtLvl) : indentM(idtLvl);
+    }
+    public default String indentS(int idtLvl){
+        return indentU(idtLvl) + (idtLvl % 2 == 0 ? "┌─ " : "╔═ ");
+    }
+    public default String indentE(int idtLvl){
+        return indentU(idtLvl) + (idtLvl % 2 == 0 ? "└─ " : "╚═ ");
+    }
+    public default String indentM(int idtLvl){
+        return indentU(idtLvl) + (idtLvl % 2 == 0 ? "├─ ": "╠═ ");
+    }
     /**
      * Copies this object.
      * @return An exact copy of this object.

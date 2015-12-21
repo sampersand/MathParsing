@@ -102,10 +102,11 @@ public class Equation implements MathObject {
     @Override
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "Equation:\n";
+        ret += indent(idtLvl + 1) + "Raw Equation:\n" + indentE(idtLvl + 2) + formattedExpressions() + "\n";
         ret += indent(idtLvl + 1) + "Expressions:";
         for(Expression expr : expressions)
             ret += "\n" + expr.toFullString(idtLvl + 2);
-        return ret;
+        return ret + "\n" + indentE(idtLvl + 2) + "\n" + indentE(idtLvl + 1);
     }
 
     @Override
