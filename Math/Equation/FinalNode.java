@@ -1,5 +1,5 @@
 package Math.Equation;
-
+import static Math.Declare.*;
 import Math.MathObject;
 import Math.Print;
 import Math.Exception.TypeMisMatchException;
