@@ -54,11 +54,12 @@ public class InBuiltFunction extends Function {
     // String inverse;
 
     /**
-     * Default constructor. Just passes <code>null, null, null</code> to
-     * {@link #InBuiltFunction(String,String,String) the main InBuiltFunction constructor}.
+     * Default constructor. Instatiates {@link #name}, {@link #help}, and {@link #syntax} as empty strings.
+     * @throws IllegalArgumentException When either name, help, and / or syntax is null, should never happen as these
+     *                                  are pre-defined, and therefor shouldnt have null.
      */
-    public InBuiltFunction() {
-        this(null, null, null);
+    public InBuiltFunction() throws IllegalArgumentException{
+        this("", "", "");
     }
 
     /**
@@ -67,6 +68,7 @@ public class InBuiltFunction extends Function {
      * <!-- @param pInverse  The name of the function that is the inverse of this function.-->
      * @param pHelp     The "help" text that will be displayed when the {@link #help()} function is called.
      * @param pSyntax   The "syntax" text that will be displayed when the {@link #syntax()} function is called.
+     * @throws IllegalArgumentException When either name, help, and / or syntax is null.
      */
     public InBuiltFunction(String pName,
                            // String pInverse,

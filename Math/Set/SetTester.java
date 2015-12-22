@@ -1,6 +1,6 @@
 package Math.Set;
 import java.util.ArrayList;
-
+import static Math.Declare.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 

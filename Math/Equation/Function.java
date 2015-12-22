@@ -1,6 +1,7 @@
 package Math.Equation;
 
 import Math.MathObject;
+import static Math.Declare.*;
 import Math.Exception.NotDefinedException;
 
 /**
@@ -30,10 +31,38 @@ public abstract class Function implements MathObject {
     protected String syntax;
 
     /**
-     * The default constructor for the Function class. Passes null for the pName to the other Constructor.
+     * The default constructor for the Function class. Instatiates {@link #name}, {@link #help}, and {@link #syntax} as
+     * empty strings.
      */
     public Function() {
-        this(null);
+        this("");
+    }
+
+    /**
+     * Instantiates the Function with the name of <code>pName</code>, and <code>""</code> for help and syntax.
+     * @param pName         The name of this function.
+     */
+    public Function(String pName) {
+        this(pName, "", "");
+    }
+    
+    /**
+     * The main cosntructor for the Function class. All it does is instantiates name, help, and syntax.
+     * @param pName         The name of the function - serves as an identifier for {@link InBuiltFunction}s, and as the
+     *                      filename for {@link CustomFunction}s. Cannot be null.
+     * @param pHelp         The help string for the function. Cannot be null.
+     * @param pSyntax       The syntax string for the function. Cannot be null.
+     * @throws IllegalArgumentException When either name, help, and / or syntax is null.
+     */
+    public Function(String pName,
+                    String pHelp,
+                    String pSyntax) throws IllegalArgumentException{
+        declP(pName != null, "Cannot instantiate a function with a null name! Try an empty name String instead.");
+        declP(pHelp != null, "Cannot instantiate a function with a null help! Try an empty help String instead.");
+        declP(pSyntax != null, "Cannot instantiate a function with a null syntax! Try an empty syntax String instead.");
+        name = pName;
+        help = pHelp;
+        syntax = pSyntax;
     }
 
     /**
@@ -43,33 +72,10 @@ public abstract class Function implements MathObject {
     public final String name() {
         return name;
     }
-    /**
-     * Instantiates the Function with the name of <code>pName</code>, and <code>null</code> for help and syntax. Just 
-     * passes <code>pName, null, null</code> to {@link #Function(String,String,String) the main Function constructor}.
-     * @param pName         The name of this function.
-     */
-    public Function(String pName) {
-        this(pName, null, null);
-    }
-    
-    /**
-     * The main cosntructor for the Function class. All it does is instantiates name.
-     * @param pName         The name of the function - serves as an identifier for {@link InBuiltFunction}s, and as the
-     *                      filename for {@link CustomFunction}s.
-     * @param pHelp         The help string for the function.
-     * @param pSyntax       The syntax string for the function.
-     */
-    public Function(String pName,
-                    String pHelp,
-                    String pSyntax) {
-        name = pName;
-        help = pHelp;
-        syntax = pSyntax;
-    }
 
     /**
      * Returns the "help" value for this function.
-     * @return A String representing the "help" value, or <code>null</code> not defined.
+     * @return A String representing the "help" value.
      */
     public String help() {
         return help;
@@ -77,7 +83,7 @@ public abstract class Function implements MathObject {
 
     /**
      * Returns the "help" value for this function.
-     * @return A String representing the "syntax" value, or <code>null</code> not defined.
+     * @return A String representing the "syntax" value.
      */
     public String syntax() {
         return syntax;
@@ -100,6 +106,7 @@ public abstract class Function implements MathObject {
         return ret;
 
     }
+
     /**
      * Takes the parameter {@link Node} (and {@link EquationSystem}, performs whatever this function is defined to do,
      * and returns the result.
@@ -114,7 +121,7 @@ public abstract class Function implements MathObject {
                                 Node pNode) throws
                                     NotDefinedException,
                                     IllegalArgumentException;
-    
+
     @Override
     public boolean equals(Object pObj){
         if(pObj == null || !(pObj instanceof  Function))
@@ -131,7 +138,7 @@ public abstract class Function implements MathObject {
      * <code>+</code> is <code>-</code>, and the inverse of <code>cos</code> is <code>arccos</code>.
      * @return The inverse of this function.
      * @throws NotDefinedException  Thrown when the inverse hasn't been defined yet, or there is no known
-     * @deprecated
+     * @deprecated Not defined yet, will be in the future.
      */
     public Function inverse() throws NotDefinedException{
         throw new NotDefinedException();

@@ -1,12 +1,11 @@
 package Math.Equation;
 
 import Math.MathObject;
-import static Math.Declare.decl;
+import static Math.Declare.*;
 import Math.Print;
 import Math.Equation.Equation;
 import Math.Equation.EquationSystem;
 import static Math.Equation.Token.Type.*;
-import Math.Exception.TypeMisMatchException;
 import Math.Exception.NotDefinedException;
 
 import java.util.ArrayList;
@@ -64,8 +63,8 @@ public class Node implements MathObject {
      */
     public Node(Token pToken,
                 ArrayList<Node> pSubNodes) throws IllegalArgumentException{
-        decl(pToken != null, "Cannot instatiate a Node with a null token! Pass an empty Token instead.");
-        decl(pSubNodes != null, "Cannot instatiate a Node with null subNodes! Pass an empty ArrayList instead.");
+        declP(pToken != null, "Cannot instatiate a Node with a null token! Pass an empty Token instead.");
+        declP(pSubNodes != null, "Cannot instatiate a Node with null subNodes! Pass an empty ArrayList instead.");
         subNodes = pSubNodes;
         token = pToken;
     }
@@ -118,9 +117,9 @@ public class Node implements MathObject {
      */
     private Object[] condeseNodes(int pPos,
                                   ArrayList<Token> pTokens) {
-        decl(pTokens != null, "Cannot condense a null ArrayList of Tokens! Try an empty ArrayList instead.");
-        decl(!(this instanceof FinalNode), "Cannot condense a FinalNode, as it has no subNodes!");
-        decl(checkForNullTokens(pTokens), "Cannot condeseNodes with null Tokens in pTokens!");
+        declP(pTokens != null, "Cannot condense a null ArrayList of Tokens! Try an empty ArrayList instead.");
+        declND(!(this instanceof FinalNode), "Cannot condense a FinalNode, as it has no subNodes!");
+        declP(checkForNullTokens(pTokens), "Cannot condeseNodes with null Tokens in pTokens!");
         Node node = copy();
         while(pPos < pTokens.size()) {
             Token t = pTokens.get(pPos);
@@ -132,15 +131,18 @@ public class Node implements MathObject {
             } else if(t.isGroup()) {
                 int paren = 0;
                 int x = pPos + 1;
+
                 do{
                     if(pTokens.get(x).type() == LPAR) paren++;
-                    if(pTokens.get(x).type() == RPAR) paren--;
+                    else if(pTokens.get(x).type() == RPAR) paren--;
                     x++;
                 } while(0 < paren && x < pTokens.size());
 
                 ArrayList<Token> passTokens = new ArrayList<Token>();
-                for(Token tk : pTokens.subList(pPos + 1, x ))
+
+                for(Token tk : pTokens.subList(pPos + 1, x )){
                      passTokens.add(tk);
+                 }
 
                 Object[] temp = new Node(t).condeseNodes(0, passTokens);
                 pPos += (int)temp[0];
@@ -153,7 +155,8 @@ public class Node implements MathObject {
 
 
     /**
-     * Creates a master node using the pNode as a starting point by applying the Order of Operations.
+     * Creates a master node using the pNode as a starting point by applying the Order of Operations. If
+     * <code>this instanceof FinalNode</code>, it will return this.
      * Note: pNode should already have been condensed via {@link #condeseNodes(int,Node,ArrayList) condeseNodes}, and
      * fixed via {@link #fixNodes(Node) fixNodes}.
      * @return The "master" node - that is, the node to control all other nodes. HAH - LOTR reference.
@@ -161,19 +164,19 @@ public class Node implements MathObject {
     private Node completeNodes() {
         if(this instanceof FinalNode)
             return this;
-        decl(subNodes != null, "Cannot complete nodes when subNodes is null!");
+        assert subNodes != null : "Cannot complete nodes when subNodes is null!"; //should never happen
         Node node = copy();
         Node e = new Node(token);
         int i = 0;
         while(i < node.size()) {
             Node n = node.get(i);
-            assert n != null : "no sub node can be null!";
+            assert n != null : "no subNode can be null!";
             if(n instanceof FinalNode) {
                 e.addD(n);
             } else if(n.token.isOper()) {
                 for(int depth = 1; depth < e.depth(); depth++) {
                     Node nD = e.getD(depth, true);
-                    assert nD != null : "sub nodes cannot be null!";
+                    assert nD != null : "subNodes cannot be null!";
                     if(nD instanceof FinalNode) {
                         n.add(nD);
                         e.setD(depth - 1, n); //depth is a final node.
@@ -193,11 +196,9 @@ public class Node implements MathObject {
                     }
                 }
 
-            }
-            else if(n.token.isGroup()) {
+            } else if(n.token.isGroup()) {
                 e.addD(e.depth(), n.completeNodes(), false);
-            }
-            else {
+            } else {
                 throw new NotDefinedException("Cannot complete the node '" + n + "' because there is no known way to!");
             }
             i++;
@@ -206,17 +207,18 @@ public class Node implements MathObject {
     }
 
     /**
-     * Fixes nodes to prevent horrible things like "1*- 1" from crashing.
+     * Fixes nodes to prevent horrible things like "1*- 1" from crashing. Cannot be used on a FinalNode.
      * @return A "fixed" version of the nodes.
+     * @throws NotDefinedException Thrown when fixNodes is attempted on a FinalNode
      */
     private Node fixNodes() {
-        assert subNodes != null : "subNodes cannot be null!";
-        assert !(this instanceof FinalNode) : "cannot fixNodes of a FinalNode!";
+        declND(!(this instanceof FinalNode), "Cannot fixNodes of a FinalNode!");
+        assert subNodes != null : "Cannot fixNodes if subNodes is null!"; //should never happen
         int i = 1;
         Node node = copy();
         while(i < node.size()){
             Node n = node.get(i);
-            assert n != null  : "no sub node can be null!";
+            assert n != null  : "no subNode can be null!"; // this should have been caught beforehand.
             if(n.token.type() == OPER && n.token.val().equals("-") && node.get(i - 1).token.type() == OPER &&
                                    (node.get(i - 1).token.val().equals("/") ||
                                     node.get(i - 1).token.val().equals("*") ||
@@ -257,60 +259,89 @@ public class Node implements MathObject {
     }
 
     /**
-     * Appends Node n to the end of {@link #subNodes}.
-     * @param n             The node to append.
+     * Appends n to the end of {@link #subNodes}.
+     * <br>Note: <code>this</code> cannot be an instance of {@link FinalNode}.
+     * @param n             The node to append. Cannot be null.
+     * @throws NotDefinedException Thrown if this function is attempted to be executed on a {@link FinalNode}.
+     * @throws IllegalArgumentException Thrown if n is null.
      */
-    private void add(Node n) {
+    private void add(Node n) throws
+                         NotDefinedException,
+                         IllegalArgumentException {
+        declP(n != null, "Cannot add a null Node!");
+        declND(!(this instanceof FinalNode), "Cannot add subNodes to a FinalNode!");
+        assert subNodes != null; // should have been checked already.
         subNodes.add(n);
     }
 
     /**
      * Creates a {@link Node}(or {@link FinalNode}) for t, and then appends that to the end of {@link #subNodes}.
-     * @param t             The token to create a new Node for, and then append.
+     * @param t             The token to create a new Node for, and then append. 
+     * @throws NotDefinedException Thrown if this function is attempted to be executed on a {@link FinalNode}.
+     * @deprecated Unused
      */    
+    @Deprecated
     private void add(Token t) {
         add(t.isConst() ? new FinalNode(t) : new Node(t));
     }
 
     /**
-     * Returns the size of {@link #subNodes}.
+     * Returns the size of {@link #subNodes}. Note there is no restriction on this for FinalNodes, because there is no
+     * need for it as of yet.
      * @return The size of {@link #subNodes}.
      */
     public int size() {
+        assert subNodes != null; // should have been checked already.
         return subNodes.size();
     }
 
     /**
-     * Returns the node at position i in {@link #subNodes}.
-     * @param i         the position of the node to get.
+     * Returns the node at position i in {@link #subNodes}. Note there are no safeguards for this;
+     * this means that i can be beyond {@link #size()}.
+     * <br>Note: <code>this</code> cannot be an instance of {@link FinalNode}.
+     * @param i         The position of the node to get.
      * @return The node at position i in {@link #subNodes}.
+     * @throws NotDefinedException Thrown if this function is attempted to be executed on a {@link FinalNode}.
      */
-    public Node get(int i) {
+    public Node get(int i) throws NotDefinedException{
+        declND(!(this instanceof FinalNode), "Cannot get subNodes of a FinalNode!");
+        assert subNodes != null; // should have been checked already.
         return subNodes.get(i);
-        // return this instanceof FinalNode ? this : subNodes.get(i);
     }
     /**
      * Sets the node at position i in {@link #subNodes} to n.
-     * Note: this doesn't check if i is out of bounds.
-     * @param i         the position that n will be set to.
-     * @param n         the node to replace the current one at position i.
+     * Note: <code>this</code> cannot be an instance of {@link FinalNode}.
+     * <br>Note: this doesn't check if i is out of bounds.
+     * @param i         The position that n will be set to.
+     * @param n         The node to replace the current one at position i. Cannot be null.
+     * @throws NotDefinedException Thrown if this function is attempted to be executed on a {@link FinalNode}.
+     * @throws IllegalArgumentException Thrown if n is null.
      */    
-    private void set(int i,
-                    Node n) {
+    public void set(int i,
+                    Node n) throws
+                        NotDefinedException, 
+                        IllegalArgumentException {
+        declND(!(this instanceof FinalNode), "Cannot set subNodes of a FinalNode!");
+        declP(n != null, "Cannot set a subNode to a null Node!");
+        assert subNodes != null; // should have been checked already.
         subNodes.set(i, n);
     }
 
     /**
-     * Removes the node at position i.
-     * Note: this doesn't check if i is out of bounds.
-     * @param i         the position of the node to remove.
+     * Removes the node at position i. Note: this doesn't check if i is out of bounds.
+     * <br>Note: <code>this</code> cannot be an instance of {@link FinalNode}.
+     * @param i         The position of the node to remove.
+     * @throws NotDefinedException Thrown if this function is attempted to be executed on a {@link FinalNode}.
      */
-    private void rem(int i) {
+    public void rem(int i) throws NotDefinedException{
+        declND(!(this instanceof FinalNode), "Cannot remove subNodes from a FinalNode!");
+        assert subNodes != null; // should have been checked already.
         subNodes.remove(i);
     }
 
     /**
-     * Returns how many layers are in this node.
+     * Returns how many layers are in this node. <br>Note: if <code>this</code> is an instance of {@link FinalNode},
+     * the depth is 1. <br>Note: if {@link #size()} is 0, the depth is also 1.
      * See {@link #addD(Node) addD} for more information on what depth is.
      * @return The "depth" of this node.
      */
@@ -321,23 +352,23 @@ public class Node implements MathObject {
     }
 
     /**
-     * Goes down i layers, or until a group / function is hit 
-     * to get the last node in the subNode list. Note: if the current node is a FinalNode, and getD is called, it will
-     * just return itself.
-     * <br>For example, getting the very last node in {@link #subNodes} (<code>subNode.get(subNode.size() - 1))</code>) is
-     * "going down one layer". Don't know how to explain much better.
+     * Goes down i layers, or until a group / function is hit to get the last node in the subNode list. Note: if the
+     * current node is a FinalNode, and getD is called, it will just return itself. 
+     * <br>For example, getting the very last node in {@link #subNodes} (<code>subNode.get(subNode.size() - 1))</code>)
+     * is "going down one layer". Don't know how to explain much better.
      * @param i         The amount of layers to go down.
      * @return The final node at layer i. Doesn't check to see if i is a valid layer.
      */
     public Node getD(int i) {
         return getD(i, false);
     }
+
     /**
      * Goes down i layers, or until a group / function is hit if pOver is false.
      * to get the last node in the subNode list. Note: if the current node is a FinalNode, and getD is called, it will
      * just return itself.
-     * <br>For example, getting the very last node in {@link #subNodes} (<code>subNode.get(subNode.size() - 1))</code>) is
-     * "going down one layer". Don't know how to explain much better.
+     * <br>For example, getting the very last node in {@link #subNodes} (<code>subNode.get(subNode.size() - 1))</code>)
+     * is "going down one layer". Don't know how to explain much better.
      * @param i         The amount of layers to go down.
      * @param pOver     Whether or not it will "override", and continue going down if a group is encountered.
      * @return The final node at layer i. Doesn't check to see if i is a valid layer.
@@ -352,33 +383,52 @@ public class Node implements MathObject {
             return get(size() - 1).getD(i - 1, pOver);
         }
     }
+
     /**
      * Adds the node n at the maximum depth, or until a group or function is hit.
-     * @param n         The node to add at the deepest possible layer.
+     * <br>Note: <code>this</code> cannot be an instance of {@link FinalNode}.
+     * @param n         The node to add at the deepest possible layer. Cannot be null.
+     * @throws NotDefinedException Thrown if this function is attempted to be executed on a {@link FinalNode}.
+     * @throws IllegalArgumentException Thrown if n is null.
      */
-    private void addD(Node n) {
+    public void addD(Node n) throws
+                         NotDefinedException, 
+                         IllegalArgumentException {
         addD(depth(), n);
     }
+
     /**
      * Adds the node n to end of the layer i, or until a group / function is hit.
+     * <br>Note: <code>this</code> cannot be an instance of {@link FinalNode}.
      * @param i         The amount of layers to go down.
-     * @param n         The node to add to the last position at layer i.
+     * @param n         The node to add to the last position at layer i. Cannot be null.
+     * @throws NotDefinedException Thrown if this function is attempted to be executed on a {@link FinalNode}.
+     * @throws IllegalArgumentException Thrown if n is null.
      */
-    private void addD(int i,
-                     Node n) {
+    public void addD(int i,
+                     Node n) throws
+                         NotDefinedException, 
+                         IllegalArgumentException {
         addD(i, n, false);
     }
+
     /**
      * Adds the node n to end of the layer i. If  <code>i &#060;=2</code>, it will just add n to the end. Additionally,
      * if pOver isn't true, it will stop when it encounters a group or function.
+     * <br>Note: <code>this</code> cannot be an instance of {@link FinalNode}.
      * @param i         The amount of layers to go down.
-     * @param n         The node to add to the last position at layer i.
+     * @param n         The node to add to the last position at layer i. Cannot be null.
      * @param pOver     Whether or not it will "override", and continue going down if a group is encountered.
+     * @throws NotDefinedException Thrown if this function is attempted to be executed on a {@link FinalNode}.
+     * @throws IllegalArgumentException Thrown if n is null.
      */
-    private void addD(int i,
+    public void addD(int i,
                      Node n,
-                     boolean pOver) {
-        assert !(this instanceof FinalNode);
+                     boolean pOver) throws 
+                         NotDefinedException, 
+                         IllegalArgumentException {
+        declND(!(this instanceof FinalNode), "Cannot addDepth subNodes to a FinalNode!");
+        declP(n != null, "Cannot addDepth null Nodes!");
         if(i <= 0 || size() <= 0 || (get(size() - 1).token.type() == GROUP &&! pOver)) {
             add(n);
         } else {
@@ -392,39 +442,55 @@ public class Node implements MathObject {
     }
 
     /**
-     * Sets the last node at layer i to node n, or until a group / functionis hit.
+     * Sets the last node at layer i to node n, or until a group / function is hit.
+     * <br>Note: <code>this</code> cannot be an instance of {@link FinalNode}.
      * @param i         The amount of layers to go down.
-     * @param n         The node to set the last node to.
+     * @param n         The node to set the last node to. Cannot be null.
+     * @throws NotDefinedException Thrown if this function is attempted to be executed on a {@link FinalNode}.
+     * @throws IllegalArgumentException Thrown if n is null.
      */
-    private void setD(int i,
-                     Node n) {
+    public void setD(int i,
+                      Node n) throws 
+                          NotDefinedException, 
+                          IllegalArgumentException {
         setD(i, - 1, n);
     }
 
     /**
      * Sets the node at position p at layer i to node n, or until a group / function is hit
+     * <br>Note: <code>this</code> cannot be an instance of {@link FinalNode}.
      * @param i         The amount of layers to go down.
      * @param p         The position of the node that will be replaced by n.
-     * @param n         The node that will replace the node at i layers down, at position p.
+     * @param n         The node that will replace the node at i layers down, at position p. Cannot be null.
+     * @throws NotDefinedException Thrown if this function is attempted to be executed on a {@link FinalNode}.
+     * @throws IllegalArgumentException Thrown if n is null.
      */
-    private void setD(int i,
+    public void setD(int i,
                      int p,
-                     Node n) {
+                     Node n) throws
+                         NotDefinedException, 
+                         IllegalArgumentException {
         setD(i, p, n, false);
     }
 
     /**
      * Sets the node at position p at layer i to node n, or until a group / function is hit (except if pOver is true).
+     * <br>Note: <code>this</code> cannot be an instance of {@link FinalNode}.
      * @param i         The amount of layers to go down.
-     * @param p         The position of the node that will be replaced by n.
+     * @param p         The position of the node that will be replaced by n. Cannot be null.
      * @param n         The node that will replace the node at i layers down, at position p.
      * @param pOver     Whether or not it will "override", and continue going down if a group is encountered.
+     * @throws NotDefinedException Thrown if this function is attempted to be executed on a {@link FinalNode}.
+     * @throws IllegalArgumentException Thrown if n is null.
      */   
-    private void setD(int i,
+    public void setD(int i,
                      int p,
                      Node n,
-                     boolean pOver) {
-        assert !(this instanceof FinalNode);
+                     boolean pOver) throws
+                         NotDefinedException, 
+                         IllegalArgumentException {
+        declND(!(this instanceof FinalNode), "Cannot setDepth subNodes of a FinalNode!");
+        declP(n != null, "Cannot setDepth null Nodes!");
         if(i == 0) {
             assert size() > 0;
             assert size() > p && (p >= 0 || p == -1);
@@ -434,6 +500,7 @@ public class Node implements MathObject {
                 set(p, n);
             }
         } else {
+            assert !(get(size() - 1) instanceof FinalNode); //shouldnt happen, methinks.
             if(i == 2 && get(size() - 1) instanceof FinalNode ) {
                 Print.printi("Trying to setD to a FinalNode. Going one level up instead.");
                 set(size() - 1,n);
@@ -447,38 +514,43 @@ public class Node implements MathObject {
 
     /**
      * Removes the last node at layer i, or until a group / function is hit.
+     * <br>Note: <code>this</code> cannot be an instance of {@link FinalNode}.
      * @param i         The amount of layers to go down.
-     * @throws TypeMisMatchException thrown when the last node at layer i is an instance of {@link FinalNode}.
+     * @throws NotDefinedException Thrown if this function is attempted to be executed on a {@link FinalNode}.
      */
-    private void remD(int i) throws TypeMisMatchException {
+    public void remD(int i) throws
+                         NotDefinedException {
         remD(i, - 1);
     }
 
     /**
      * Removes the last node at layer i, or until a group / function is hit.
+     * <br>Note: <code>this</code> cannot be an instance of {@link FinalNode}.
      * @param i         The amount of layers to go down.
      * @param p         The position of the node to remove at layer i.
-     * @throws TypeMisMatchException thrown when the node at position p, layer i is an instance of {@link FinalNode}.
+     * @throws NotDefinedException Thrown if this function is attempted to be executed on a {@link FinalNode}.
      */
-    private void remD(int i,
-                     int p) throws TypeMisMatchException {
+    public void remD(int i,
+                     int p) throws NotDefinedException {
         remD(i, p, false);
     }
     /**
      * Removes the last node at layer i, or until a group / function is hit (except if pOver is true).
+     * <br>Note: <code>this</code> cannot be an instance of {@link FinalNode}.
      * @param i         The amount of layers to go down.
      * @param p         The position of the node to remove at layer i.
      * @param pOver     Whether or not it will "override", and continue going down if a group is encountered.
-     * @throws TypeMisMatchException thrown when the node at position p, layer i is an instance of {@link FinalNode}.
+     * @throws NotDefinedException Thrown if this function is attempted to be executed on a {@link FinalNode}.
      */
-    private void remD(int i,
+    public void remD(int i,
                      int p,
-                     boolean pOver) throws TypeMisMatchException {
-        assert !(this instanceof FinalNode);
-        if(i <= 0)
+                     boolean pOver) throws NotDefinedException {
+        declND(!(this instanceof FinalNode), "Cannot remove subNodes to a FinalNode!");
+        if(i <= 0){
             rem(p == - 1 ? size() - 1 : p);
-        else
+        } else{
             get(size() - 1).remD(i - 1, p, pOver);
+        }
     }
 
     /**
@@ -488,24 +560,33 @@ public class Node implements MathObject {
     public String genEqString() {
         String ret = "";
         switch(token.type()) {
-            case FUNC: ret += token.val();
-            case GROUP: ret += "("; break;
-            case ARGS: return "'" + token.val() + "'";
-            case NUM: case VAR: return token.val();
+            case FUNC:
+                ret += token.val(); //fall thru
+            case GROUP:
+                ret += "(";
+                break;
+            case ARGS:
+                return "'" + token.val() + "'";
+            case NUM: case VAR:
+                return token.val();
         }
         for(Node n : subNodes) {
             ret += n.genEqString();
             switch(token.type()) {
-                case FUNC: case GROUP: ret += ", "; break;
-                case OPER: ret += " " + token.val() + " ";
+                case FUNC: case GROUP:
+                    ret += ", ";
+                    break;
+                case OPER:
+                    ret += " " + token.val() + " ";
             }
         }
         if(token.type() == FUNC || token.type() == GROUP) {
             return ret.substring(0, ret.length() - (size() > 0 ? 2 : 0)) + ")";
         } else if(token.type() == OPER) {
             return ret.substring(0, ret.length() - (size() > 0 ? 3 : 0));
-        } else
+        } else {
             return ret;
+        }
     }
 
     // /**
@@ -532,11 +613,12 @@ public class Node implements MathObject {
      */
     public double eval(final EquationSystem pEqSys) throws NotDefinedException {
         assert !(this instanceof FinalNode) : "This is implemented in FinalNode... How was i triggered...?";
-        assert token != null : "Node's token cannot be null";
+        assert token != null;
+        declP(pEqSys != null, "Cannot evaluate a null EquationSystem!");
         if(token.type() == FUNC || token.type() == OPER) {
-            if(pEqSys.functions().get(token.val()) != null) // if it is a function
+            if(pEqSys.functions().get(token.val()) != null){ // if it is a function
                 return pEqSys.functions().get(token.val()).exec(pEqSys, this);
-            else {
+            } else {
                 return InBuiltFunction.exec(token.val(), pEqSys, this);
             }
         } else if (token.type() == GROUP || token.isUni() || this instanceof FinalNode){

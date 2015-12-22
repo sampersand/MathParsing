@@ -19,22 +19,23 @@ import java.util.Random;
 public class OperationFunction extends InBuiltFunction {
 
     /**
-     * Default constructor. Just passes <code>null, null, null</code> to
-     * {@link #OperationFunction(String,String,String) another OperationFunction constructor}.
+     * Default constructor. Instatiated {@link #name}, {@link #help}, and {@link #syntax} as empty strings.
+     * @throws IllegalArgumentException When either name, help, and / or syntax is null.
      */
-    public OperationFunction() {
-        this(null, null, null);
+    public OperationFunction() throws NotDefinedException{
+        this("", "", "");
     }
 
     /**
-     * The main constructor for OperationFunction. Takes a name, a help string, and a syntax string.
+     * Main constructor. Takes a name, a help string, and a syntax string.
      * @param pOper     The symbol of the operator, like <code>+, -, *, /, ^</code>.
      * @param pHelp     The "help" text that will be displayed when the {@link #help()} function is called.
      * @param pSyntax   The "syntax" text that will be displayed when the {@link #syntax()} function is called.
+     * @throws IllegalArgumentException When either name, help, and / or syntax is null.
      */
     public OperationFunction(String pOper,
                              String pHelp,
-                             String pSyntax) {
+                             String pSyntax) throws IllegalArgumentException{
         super(pOper, pHelp, pSyntax);
     }
 
@@ -75,6 +76,7 @@ public class OperationFunction extends InBuiltFunction {
         }
         return ret;
     }
+
     @Override
     public String toString() {
         return "OperationFunction '" + name + "'";

@@ -1,7 +1,7 @@
 package Math.Equation;
 
 import Math.MathObject;
-import static Math.Declare.decl;
+import static Math.Declare.*;
 import Math.Exception.NotDefinedException;
 
 import java.util.HashMap;
@@ -109,8 +109,8 @@ public class Token implements MathObject {
      */
     public Token(String pVal,
                  Type pType) {
-        decl(pVal != null, "Cannot instatiate a Token with a null pVal!");
-        decl(pType != null, "Cannot instatiate a Token with a null pType!");
+        declP(pVal != null, "Cannot instatiate a Token with a null pVal!");
+        declP(pType != null, "Cannot instatiate a Token with a null pType!");
         if(pType == Type.GROUP) {
             val = "GRP";
         } else {
@@ -194,7 +194,7 @@ public class Token implements MathObject {
      * @return The priority.
      */
     public int priority() {
-        assert val != null;
+        assert val != null : "val cannot be null! It was declared in the constructor, and has no way to be changed!";
         int ret = 0;
         switch(val) {
             case "^":

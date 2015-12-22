@@ -32,18 +32,20 @@ public class CustomFunction extends Function implements MathObject {
      * }</code>.
      * <br>By default, just passes <code>null</code> to
      * {@link #CustomFunction(String) another CustomFunction constructor}.
+     * @throws IllegalArgumentException When either name, help, and / or syntax is null.
      */
-    public CustomFunction() {
-        this(null, null, null);
+    public CustomFunction() throws IllegalArgumentException{
+        this("");
     }
 
     /**
      * A constructor that just takes the name of the function. Passes <code>pName, null, null</code> (null help and null
      * syntax) to {@link #CustomFunction(String,String,String) the main CustomFunction constructor}.
      * @param pName     The name of the file. pName shouldn't be "foo.class", but just "foo".
+     * @throws IllegalArgumentException When either name, help, and / or syntax is null.
      */
-    public CustomFunction(String pName) {
-        this(pName, null, null);
+    public CustomFunction(String pName) throws IllegalArgumentException{
+        this(pName, "", "");
     }
 
     /**
@@ -51,10 +53,11 @@ public class CustomFunction extends Function implements MathObject {
      * @param pName     The name of the file. pName shouldn't be "foo.class", but just "foo".
      * @param pHelp     The "help" text that will be displayed when the {@link #help()} function is called.
      * @param pSyntax   The "syntax" text that will be displayed when the {@link #syntax()} function is called.
+     * @throws IllegalArgumentException When either name, help, and / or syntax is null.
      */
     public CustomFunction(String pName,
                           String pHelp,
-                          String pSyntax) {
+                          String pSyntax) throws IllegalArgumentException{
         super(pName, pHelp, pSyntax);
         try {
             if(pName.equals("")) {
