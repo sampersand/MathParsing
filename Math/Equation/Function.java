@@ -117,7 +117,7 @@ public abstract class Function implements MathObject {
     
     @Override
     public boolean equals(Object pObj){
-        if(!(pObj instanceof Function))
+        if(pObj == null || !(pObj instanceof  Function))
             return false;
         if(this == (Function)pObj)
             return true;

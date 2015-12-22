@@ -127,11 +127,13 @@ public class FinalNode extends Node implements MathObject {
 
     @Override
     public boolean equals(Object pObj){
-        if(!(pObj instanceof FinalNode))
+        if(pObj == null || !(pObj instanceof  FinalNode))
             return false;
         if(this == pObj)
             return true;
         FinalNode pfnode = (FinalNode)pObj;
-        return token.equals(pfnode.token()) && dVal == pfnode.dVal() && sVal.equals(pfnode.sVal());
+        if(!token.equals(pfnode.token()))
+            return false;
+        return token.type() == Token.Type.NUM ? dVal == pfnode.dVal() : sVal.equals(pfnode.sVal());
     }
 }

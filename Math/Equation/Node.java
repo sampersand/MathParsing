@@ -1,6 +1,7 @@
 package Math.Equation;
 
 import Math.MathObject;
+import static Math.Declare.decl;
 import Math.Print;
 import Math.Equation.Equation;
 import Math.Equation.EquationSystem;
@@ -34,31 +35,37 @@ public class Node implements MathObject {
 
     /**
      * A constructor for Node, which only takes a Node as an input. Just passes pNode's token and an empty list to the
-     * {@link #Node(Token,ArrayList) main} constructor.
+     * {@link #Node(Token,ArrayList) main constructor} constructor.
      * @param pNode        The Node whose token will determine how this class interacts with its {@link #subNodes}.
+     *                     Cannot be null.
+     * @throws IllegalArgumentException Thrown when pNode is null.
      */
-    public Node(Node pNode) {
+    public Node(Node pNode) throws IllegalArgumentException {
         this(pNode.token, new ArrayList<Node>());
     }
 
     /**
      * A constructor for Node, which only takes a token as an input. Just passes an empty list and pToken to
      * {@link #Node(Token,ArrayList) main} constructor.
-     * @param pToken        The token that will determine how this class interacts with its {@link #subNodes}.
+     * @param pToken        The token that will determine how this class interacts with its {@link #subNodes}. Cannot be
+     *                      null.
+     * @throws IllegalArgumentException Thrown when pToken is null.
      */
-    public Node(Token pToken) {
+    public Node(Token pToken) throws IllegalArgumentException{
         this(pToken, new ArrayList<Node>());
     }
 
     /**
      * The main constructor for Node. 
-     * @param pToken        The token that will determine how this class interacts with its {@link #subNodes}.
-     * @param pSubNodes     The list of subNodes this class will have.
+     * @param pToken        The token that will determine how this class interacts with its {@link #subNodes}. Cannot be
+     *                      null.
+     * @param pSubNodes     The list of subNodes this class will have. Cannot be null.
+     * @throws IllegalArgumentException Thrown when pToken or pSubNodes is null.
      */
     public Node(Token pToken,
-                ArrayList<Node> pSubNodes) {
-        assert pToken != null; // if no token, then pass an empty token
-        assert pSubNodes != null; // if no subnodes, then pass an empty arraylist.
+                ArrayList<Node> pSubNodes) throws IllegalArgumentException{
+        decl(pToken != null, "Cannot instatiate a Node with a null token! Pass an empty Token instead.");
+        decl(pSubNodes != null, "Cannot instatiate a Node with null subNodes! Pass an empty ArrayList instead.");
         subNodes = pSubNodes;
         token = pToken;
     }
@@ -105,20 +112,24 @@ public class Node implements MathObject {
      * {@link #generateNodes(ArrayList) generateNodes} and {@link #completeNodes(Node) completeNodes}.
      * @param pPos      The position to start condensing nodes form.
      * @param pNode     The "parent" node that any newly generated nodes will be put into.
-     * @param pTokens   The list of tokens that will be put into nodes.
+     * @param pTokens   The list of tokens that will be put into nodes. Cannot be null.
      * @return The return type might seem odd, however, it always returns an updated pPos as arg 1, and the new node
      *         to add as argument 2.
      */
     private Object[] condeseNodes(int pPos,
                                   ArrayList<Token> pTokens) {
+        decl(pTokens != null, "Cannot condense a null ArrayList of Tokens! Try an empty ArrayList instead.");
+        decl(!(this instanceof FinalNode), "Cannot condense a FinalNode, as it has no subNodes!");
+        decl(checkForNullTokens(pTokens), "Cannot condeseNodes with null Tokens in pTokens!");
         Node node = copy();
         while(pPos < pTokens.size()) {
             Token t = pTokens.get(pPos);
-            if(t.isConst())
+            assert t != null : "this should have been caught earlier.";
+            if(t.isConst()){
                 node.add(new FinalNode(t));
-            if(t.isOper())
+            } else if(t.isOper()){
                 node.add(new Node(t));
-            if(t.isGroup()) {
+            } else if(t.isGroup()) {
                 int paren = 0;
                 int x = pPos + 1;
                 do{
@@ -134,7 +145,7 @@ public class Node implements MathObject {
                 Object[] temp = new Node(t).condeseNodes(0, passTokens);
                 pPos += (int)temp[0];
                 node.add(((Node)temp[1]).fixNodes());
-            }
+            } 
             pPos++;
         }
         return new Object[]{pPos, node};
@@ -150,16 +161,19 @@ public class Node implements MathObject {
     private Node completeNodes() {
         if(this instanceof FinalNode)
             return this;
+        decl(subNodes != null, "Cannot complete nodes when subNodes is null!");
         Node node = copy();
         Node e = new Node(token);
         int i = 0;
         while(i < node.size()) {
             Node n = node.get(i);
+            assert n != null : "no sub node can be null!";
             if(n instanceof FinalNode) {
                 e.addD(n);
             } else if(n.token.isOper()) {
                 for(int depth = 1; depth < e.depth(); depth++) {
                     Node nD = e.getD(depth, true);
+                    assert nD != null : "sub nodes cannot be null!";
                     if(nD instanceof FinalNode) {
                         n.add(nD);
                         e.setD(depth - 1, n); //depth is a final node.
@@ -196,18 +210,13 @@ public class Node implements MathObject {
      * @return A "fixed" version of the nodes.
      */
     private Node fixNodes() {
-        int i = 0;
-        Node th = copy();
+        assert subNodes != null : "subNodes cannot be null!";
+        assert !(this instanceof FinalNode) : "cannot fixNodes of a FinalNode!";
+        int i = 1;
         Node node = copy();
-        assert this.equals(node) : "this != node @ begin";
-        assert node.equals(this) : "node != this @ begin";
-        assert th.equals(node) : "th != node @ begin";
-        assert node.equals(th) : "node != th @ begin";
-        assert th.equals(this) : "th != this @ begin";
-        assert this.equals(th) : "this != th @ begin";
-
-        while(i < node.size()) {
+        while(i < node.size()){
             Node n = node.get(i);
+            assert n != null  : "no sub node can be null!";
             if(n.token.type() == OPER && n.token.val().equals("-") && node.get(i - 1).token.type() == OPER &&
                                    (node.get(i - 1).token.val().equals("/") ||
                                     node.get(i - 1).token.val().equals("*") ||
@@ -222,24 +231,30 @@ public class Node implements MathObject {
             }
             i++;
         }
-        // assert !this.equals(node) : "this == node @ end";
-        // assert !node.equals(this) : "node == this @ end";
-        // assert !th.equals(node) : "th == node @ end";
-        // assert !node.equals(th) : "node == th @ end";
-        assert th.equals(this) : "th != this @ end";
-        assert this.equals(th) : "this != th @ end";
-
         return node;
     }
     /**
      * Generates a "master node" from a list of tokens.
-     * @param pTokens   The list of tokens that the master node will be based off of.
+     * @param pTokens   The list of tokens that the master node will be based off of. Cannot be null.
      * @return The new master node.
+     * @throws IllegalArgumentException Thrown when <code>pTokens == null</code>.
      */
     public static Node generateNodes(ArrayList<Token> pTokens) {
+        decl(pTokens != null, "Cannot generate nodes from a null ArrayList of Tokens!");
+        decl(checkForNullTokens(pTokens), "Cannot generate nodes with null Tokens in pTokens!");
         return ((Node)(new Node(Token.UNI).condeseNodes(0, pTokens))[1]).completeNodes().fixNodes();
     }
 
+
+    /**
+     * Looks for null tokens, returns false if there are null tokens.
+     */
+    private static boolean checkForNullTokens(ArrayList<Token> pTokens){
+        for(Token t : pTokens)
+            if(t == null)
+                return false;
+        return true;
+    }
 
     /**
      * Appends Node n to the end of {@link #subNodes}.
@@ -468,7 +483,7 @@ public class Node implements MathObject {
 
     /**
      * Takes all the {@link #subNodes} and creates its best guess at what a function comprised of them would look like.
-     * @return The best guess as to what a function comprised of the subnodes would look like.
+     * @return The best guess as to what a function comprised of the subNodes would look like.
      */
     public String genEqString() {
         String ret = "";
@@ -517,16 +532,18 @@ public class Node implements MathObject {
      */
     public double eval(final EquationSystem pEqSys) throws NotDefinedException {
         assert !(this instanceof FinalNode) : "This is implemented in FinalNode... How was i triggered...?";
-        assert token.type() == Token.Type.FUNC || token.type() == Token.Type.OPER || token.type() == Token.Type.GROUP || 
-               token.isUni() || this instanceof FinalNode : "No known way to evaluate Node '" + token.val() + "'!";
-        if(token.type() == Token.Type.FUNC || token.type() == Token.Type.OPER) {
+        assert token != null : "Node's token cannot be null";
+        if(token.type() == FUNC || token.type() == OPER) {
             if(pEqSys.functions().get(token.val()) != null) // if it is a function
                 return pEqSys.functions().get(token.val()).exec(pEqSys, this);
             else {
                 return InBuiltFunction.exec(token.val(), pEqSys, this);
             }
+        } else if (token.type() == GROUP || token.isUni() || this instanceof FinalNode){
+            return get(0).eval(pEqSys);
+        } else {
+            throw new NotDefinedException("This shouldn't happen! There is no way to evaluate node: " + token.val());
         }
-        return get(0).eval(pEqSys);
     }
 
     @Override
@@ -562,12 +579,11 @@ public class Node implements MathObject {
         if(size() == 0) 
             ret += "\n" + indent(idtLvl + 2) + "null";
         return ret + "\n" + indentE(idtLvl + 1);
-        }
+    }
 
     @Override
     public boolean equals(Object pObj){
-        System.out.println("This:\n\t" + this + "pObj:\n\t" + pObj);
-        if(!(pObj instanceof Node))
+        if(pObj == null || !(pObj instanceof  Node))
             return false;
         if(this == pObj)
             return true;
@@ -577,7 +593,6 @@ public class Node implements MathObject {
         if(size() != pnode.size())
             return false;
         for(int i = 0; i < size(); i++){
-            System.out.println("i: " + i + "\n\t this[i]: " + get(i) + "\n\tpnode[i]: " + pnode.get(i));
             if(!get(i).equals(pnode.get(i)))
                 return false;
         }

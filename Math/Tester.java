@@ -19,7 +19,6 @@ public class Tester {
      */
     public static void main(String[] args) throws NotDefinedException {
 
-
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
             eqsys.add("y = 1 + sin(alpha) + c");

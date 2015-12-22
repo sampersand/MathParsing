@@ -844,7 +844,7 @@ public class Set implements MathObject {
 
     @Override
     public boolean equals(Object pObj){
-        if(!(pObj instanceof Set))
+        if(pObj == null || !(pObj instanceof  Set))
             return false;
         if(pObj == this)
             return true;

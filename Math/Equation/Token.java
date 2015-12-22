@@ -1,6 +1,7 @@
 package Math.Equation;
 
 import Math.MathObject;
+import static Math.Declare.decl;
 import Math.Exception.NotDefinedException;
 
 import java.util.HashMap;
@@ -67,8 +68,7 @@ public class Token implements MathObject {
         OPER
         ,
         /**
-         * A null value. Duh? Only ever used when a token doesn't fit into one of the previous catagories, or is the
-         * "master {@link Node node}".
+         * A null value. Duh? Only ever used when a token doesn't fit into one of the previous catagories.
          */
         NULL
         ,
@@ -103,11 +103,14 @@ public class Token implements MathObject {
     /**
      * The main constructor for Token. Just sets type to pType, and val to pVal. If pType is GROUP, val is insteaed set
      * to "GRP".
-     * @param pVal      The String that this token is based off of.
-     * @param pType     The type of token that this token is.
+     * @param pVal      The String that this token is based off of. Cannot be null.
+     * @param pType     The type of token that this token is. Cannot be null, but can be {@link #Type.NULL}.
+     * @throws IllegalArgumentException Thrown when either pVal or pType is null.
      */
     public Token(String pVal,
                  Type pType) {
+        decl(pVal != null, "Cannot instatiate a Token with a null pVal!");
+        decl(pType != null, "Cannot instatiate a Token with a null pType!");
         if(pType == Type.GROUP) {
             val = "GRP";
         } else {
@@ -120,7 +123,7 @@ public class Token implements MathObject {
      * An alternate constructor. This just passes pVal as a String and pType to the main constructor.
      * @param pVal    The character that this tokenis based off of.
      * @param pType     The type of token that this token is.
-     * @deprecated 
+     * @deprecated As of 0.67 because it can be replaced by <code>new Token("" + char, type)</code>.
      */
     public Token(char pVal,
                  Type pType) {
@@ -149,7 +152,7 @@ public class Token implements MathObject {
      * @return True if type is a NUM or VAR or ARGS.
      */
     public boolean isConst() {
-        assert type != null;
+        assert type != null : "type cannot be null, as it is immutable and the constructor doesn't allow null types!";
         return type == Type.NUM || type == Type.VAR || type == Type.ARGS;
     }
 
@@ -160,7 +163,7 @@ public class Token implements MathObject {
      * @return True if type is a GROUP or FUNC.
      */
     public boolean isGroup() {
-        assert type != null;        
+        assert type != null : "type cannot be null, as it is immutable and the constructor doesn't allow null types!";
         return type == Type.GROUP || type == Type.FUNC;
     }
 
@@ -170,7 +173,7 @@ public class Token implements MathObject {
      * @return True if type is a OPER.
      */    
     public boolean isOper() {
-        assert type != null;
+        assert type != null : "type cannot be null, as it is immutable and the constructor doesn't allow null types!";
         return type == Type.OPER;
     }
     /**
@@ -178,8 +181,8 @@ public class Token implements MathObject {
      * @return True if type == NULL and val == "E".
      */
     public boolean isUni() {
-        assert type != null;
-        assert val != null;
+        assert type != null : "type cannot be null, as it is immutable and the constructor doesn't allow null types!";
+        assert val != null : "val cannot be null, as it is immutable and the constructor doesn't allow null types!";
         return type == Type.UNI && val.equals("E");
     }
 
@@ -235,9 +238,8 @@ public class Token implements MathObject {
 
     @Override
     public boolean equals(Object pObj){
-        if(!(pObj instanceof Token))
+        if(pObj == null || !(pObj instanceof Token))
             return false;
-        pObj = (Token)pObj;
         if(pObj == this)
             return true;
         return val.equals(((Token)pObj).val()) && type == ((Token)pObj).type();
