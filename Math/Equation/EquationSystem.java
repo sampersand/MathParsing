@@ -320,8 +320,7 @@ public class EquationSystem implements MathObject, Iterable {
 
     @Override
     public EquationSystem copy() {
-        EquationSystem x = new EquationSystem(equations, functions);
-        return x;
+        return new EquationSystem(equations, functions);
     }
 
     /**
@@ -412,8 +411,22 @@ public class EquationSystem implements MathObject, Iterable {
         }
     }
 
+    /**
+     * note that this only takes into account equations, and not functions.
+     * TODO: JAVADOC
+     */
     @Override
     public boolean equals(Object pObj){
-        throw new NotDefinedException();
+        if(pObj == null || !(pObj instanceof EquationSystem))
+            return false;
+        if(this == pObj)
+            return true;
+        EquationSystem peqsys = (EquationSystem)pObj;
+        if(peqsys.size() != size())
+            return false;
+        for(int i = 0; i < size(); i++)
+            if(!equations.get(i).equals(peqsys.equations().get(i)))
+                return false;
+        return true;
     }
 }
