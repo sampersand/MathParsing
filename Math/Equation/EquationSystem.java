@@ -2,6 +2,7 @@ package Math.Equation;
 
 import Math.MathObject;
 import Math.Print;
+import static Math.Declare.*;
 import Math.Exception.TypeMisMatchException;
 import Math.Exception.NotDefinedException;
 
@@ -24,6 +25,7 @@ public class EquationSystem implements MathObject, Iterable {
      * list. All others should be related to them. 
      * <br> Note: This is also where variables are defined. To define <code>x = 4 * 3</code>, you would do
      * <code>add(new Equation().add("x","4 * 3"))</code>.
+     * no items in here should ever be null.
      */
     protected ArrayList<Equation> equations;
 
@@ -33,6 +35,7 @@ public class EquationSystem implements MathObject, Iterable {
      * <br> Note: that a user-defined name could be the name of the file that defines
      * the CustomFunction, or another name. For example, a CustomFunction with a {@link Function#name name} of "graphEq"
      * might have a key of "displayEq" instead.
+     * no items in here should ever be null.
      */
     protected HashMap<String, CustomFunction> functions;
 
@@ -69,6 +72,10 @@ public class EquationSystem implements MathObject, Iterable {
      * @return This class, but with <code>pEqSys</code>'s {@link #equations() equations} added.
      */
     public EquationSystem add(EquationSystem pEqSys) {
+        if(pEqSys == null){
+            Print.printi("pEqSys is null; not adding it to 'equations'.");
+            return this;
+        }
         equations.addAll(pEqSys.equations());
         return this;
     }
@@ -81,6 +88,10 @@ public class EquationSystem implements MathObject, Iterable {
      */
     public EquationSystem add(Equation... pEqs) {
         for(Equation eq : pEqs) {
+            if(eq == null){
+                Print.printi("A passed Equation is null; not adding it to 'equations'.");
+                continue;
+            }
             equations.add(eq);
         }
         return this;
@@ -96,6 +107,10 @@ public class EquationSystem implements MathObject, Iterable {
      */
     public EquationSystem add(String... pEqStrings) {
         for(String eq : pEqStrings) {
+            if(eq == null){
+                Print.printi("A passed String is null; not adding it to 'equations'.");
+                continue;
+            }
             equations.add(new Equation().add(eq));
         }
         return this;
@@ -108,6 +123,10 @@ public class EquationSystem implements MathObject, Iterable {
      * @return This class, but with <code>pEqs</code> added to {@link #equations}.
      */
     public EquationSystem add(ArrayList<Equation> pEqs) {
+        if(pEqs == null){
+            Print.printi("pEqs is null; not adding it to 'equations'.");
+            return this;
+        }
         equations.addAll(pEqs);
         return this;
     }
@@ -120,10 +139,21 @@ public class EquationSystem implements MathObject, Iterable {
      * @return This class, but with <code>pFuncs</code> added to {@link #functions}.
      */
     public EquationSystem add(CustomFunction... pFuncs) {
-        if(pFuncs != null && pFuncs.length != 0)
-            for(CustomFunction func : pFuncs) {
-                functions.put(func.name, func);
+        if(pFuncs == null){
+            Print.printi("pFuncs is null; not adding it to 'functions'.");
+            return this;
+        } else if(pFuncs.length == 0){
+            Print.printi("pFuncs was empty; not adding it to 'functions'.");
+            return this;
+        }
+        for(CustomFunction func : pFuncs) {
+            if(func == null){
+                Print.printi("A passed CustomFunction is null; not adding it to 'functions'.");
+                continue;
             }
+            assert func.name != null; //this shoulda been taken care of in the constructor.
+            functions.put(func.name, func);
+        }
         return this;
     }
 
@@ -134,8 +164,11 @@ public class EquationSystem implements MathObject, Iterable {
      * @return This class, but with <code>pFuncs</code> added to {@link #equations}.
      */
     public EquationSystem add(HashMap<String, CustomFunction> pFuncs) {
-        if(pFuncs != null && pFuncs.size() != 0)
-            functions.putAll(pFuncs);
+        if(pFuncs == null){
+            Print.printi("pFuncs is null; not adding it to 'functions'.");
+            return this;
+        }
+        functions.putAll(pFuncs);
         return this;
     }
 
@@ -148,8 +181,14 @@ public class EquationSystem implements MathObject, Iterable {
      */
     public EquationSystem add(String pName,
                               CustomFunction pFunc) {
-        if(pName != null && pFunc != null)
-            functions.put(pName, pFunc);
+        if(pName == null){
+            Print.printi("pName is null; not adding pFunc to 'functions'.");
+            return this;
+        } else if(pFunc == null){
+            Print.printi("pFunc is null; not adding it to 'functions'.");
+            return this;
+        }
+        functions.put(pName, pFunc);
         return this;
     }
 
@@ -162,6 +201,7 @@ public class EquationSystem implements MathObject, Iterable {
      * @return This class's {@link #functions}.
      */
     public HashMap<String, CustomFunction> functions() {
+        assert functions != null; // it should always be instatiated by the constructor.
         return functions;
     }
 
@@ -172,16 +212,36 @@ public class EquationSystem implements MathObject, Iterable {
      * @return This class's {@link #equations}.
      */
     public ArrayList<Equation> equations() {
+        assert functions != null; // it should always be instatiated by the constructor.
         return equations;
     }
 
     /**
      * Sets {@link #equations} to <code>pEqs</code>, and then returns this class.
-     * @param pEqs      The ArrayList of equations to set {@link #equations} too.
+     * @param pEqs      The ArrayList of {@link Equation}s to set {@link #equations} to.
      * @return This class after {@link #equations} is set to <code>pEqs</code>.
      */
     public EquationSystem setEquations(ArrayList<Equation> pEqs) {
+        if(pEqs == null){
+            Print.printi("pEqs is null; not setting 'equations' to it.");
+            return this;
+        }
         equations = pEqs;
+        return this;
+    }
+
+
+    /**
+     * Sets {@link #functions} to <code>pFuncs</code>, and then returns this class.
+     * @param pFuncs      The ArrayList of {@link Function}s to set {@link #functions} to.
+     * @return This class after {@link #functions} is set to <code>pFuncs</code>.
+     */
+    public EquationSystem setFunctions(HashMap<String, CustomFunction> pFuncs) {
+        if(pFuncs == null){
+            Print.printi("pFuncs is null; not setting 'equations' to it.");
+            return this;
+        }
+        functions = pFuncs;
         return this;
     }
 
@@ -217,15 +277,13 @@ public class EquationSystem implements MathObject, Iterable {
      * @throws NotDefinedException  Thrown when there is no known way to isolate the variable
      */
     public EquationSystem isolate(String toIso) throws NotDefinedException {
-        if(this.equations().get(0). //if the first equation's
-            expressions().get(0). // first expression's
-            node().get(0). // node's first subnode's
-            token().val(). // token's value
-            equals(toIso)) // is the string to isolate, return this.
-            return this;
-
+        // if(this.equations().get(0). //if the first equation's
+        //     expressions().get(0). // first expression's
+        //     node().get(0). // node's first subnode's
+        //     token().val(). // token's value
+        //     equals(toIso)) // is the string to isolate, return this.
+        //     return this;
         return this;
-        // throw new NotDefinedException();
     }
 
     /**
@@ -240,7 +298,7 @@ public class EquationSystem implements MathObject, Iterable {
     }
 
     /**
-     * Sees if <code>pVar</code> is defined on the left - hand side of any equation.
+     * Sees if <code>pVar</code> is defined on the left-hand side of any equation.
      */
     public boolean varExist(String pVar){
         for(Equation eq : equations)
@@ -249,19 +307,6 @@ public class EquationSystem implements MathObject, Iterable {
                     return true;
         return false;
     }
-
-
-    /*
-    public double eval() throws NotDefinedException {
-        return eval(null, null);
-    }
-    public double eval(String toEval) throws NotDefinedException {
-        return eval(null, toEval);
-    }
-    public double eval(EquationSystem pEqSys) throws NotDefinedException{
-        return eval(pEqSys, null);
-    }
-    */
 
     /**
      * Graphs this class using {@link Math.Display.Grapher}.
