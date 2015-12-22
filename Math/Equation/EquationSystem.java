@@ -3,6 +3,7 @@ package Math.Equation;
 import Math.MathObject;
 import Math.Print;
 import static Math.Declare.*;
+import Math.Display.Grapher;
 import Math.Exception.TypeMisMatchException;
 import Math.Exception.NotDefinedException;
 
@@ -309,13 +310,11 @@ public class EquationSystem implements MathObject, Iterable {
     }
 
     /**
-     * Graphs this class using {@link Math.Display.Grapher}.
+     * Graphs the first equation in {@link #equations} using {@link Math.Display.Grapher}.
      */
     public void graph() {
         Print.printi("Currently, solve isn't very good. Oh well.");
-        throw new NotDefinedException("Implement me!");
-        // Grapher grapher = new Grapher(this);
-        // grapher.graph();
+        new Grapher(this).graph();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package Math.Display;
 
 import Math.MathObject;
+import Math.Print;
 import Math.Equation.Equation;
 import Math.Equation.EquationSystem;
 import Math.Set.Set;
@@ -107,7 +108,7 @@ public class DisplayComponent extends JLabel implements MathObject {
         if(equationsys!=null){
             equationsys = equationsys.copy();
             equationsys.equations().add(0,equation);
-        }
+        } 
         set = pSet;
         color = pColor;
         this.createToolTip();
@@ -191,11 +192,37 @@ public class DisplayComponent extends JLabel implements MathObject {
         return grapher.components().fix(x,y);
     }
 
+    /** TODO: JAVADOC */
+    public Grapher grapher(){
+        return grapher;
+    }
+
+    /** TODO: JAVADOC */
+    public Equation equation(){
+        return equation;
+    }
+
+    /** TODO: JAVADOC */
+    public EquationSystem equationsys(){
+        return equationsys;
+    }
+
+    /** TODO: JAVADOC */
+    public Set set(){
+        return set;
+    }
+
+    /** TODO: JAVADOC */
+    public Color color(){
+        return color;
+    }
+
+
     @Override
     public String toString() {
         return "Display of " + (set == null ? equation == null ? "Axis" : equation : set);
-    }
- 
+    } 
+
     @Override
     public String toFancyString(int idtLvl) {
         String ret = indent(idtLvl) + "DisplayComponent:";
@@ -232,8 +259,29 @@ public class DisplayComponent extends JLabel implements MathObject {
         return new DisplayComponent(grapher, equation, equationsys, set, color);
     }
 
+    /**
+     * Note that this doesnt consider drawer.
+     * TODO: JAVADOC
+     */
     @Override
     public boolean equals(Object pObj){
-        throw new NotDefinedException();
+        if(pObj == null || !(pObj instanceof DisplayComponent))
+            return false;
+        if(this == pObj)
+            return true;
+        DisplayComponent pdisp = (DisplayComponent)pObj;
+        if(!grapher.equals(pdisp.grapher()))
+            return false;
+
+if((equation == null) != (pdisp.equation() == null) || !equation.equals(pdisp.equation()))
+    return false;
+if((equationsys == null) != (pdisp.equationsys() == null) || !equationsys.equals(pdisp.equationsys()))
+    return false;
+if((set == null) != (pdisp.set() == null) || !set.equals(pdisp.set()))
+    return false;
+if((color == null) != (pdisp.color() == null) || !color.equals(pdisp.color()))
+    return false;
+return true;
+ 
     }
 }

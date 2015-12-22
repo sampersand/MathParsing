@@ -21,12 +21,13 @@ public class Tester {
 
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
-            eqsys.add("y = 1 + sin(alpha) + c");
-            eqsys.add("alpha = (9.45 + x ^ theta) / 2");
-            eqsys.add("c = 0 - 9");
-            eqsys.add("theta = 4 ^ x - ln(pi)");
-            eqsys.add("x = pi - e");
-            eqsys.add(new CustomFunction("graph"));
+            eqsys.add("y = sin(x)");
+            // eqsys.add("y = 1 + sin(alpha) + c");
+            // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
+            // eqsys.add("c = 0 - 9");
+            // eqsys.add("theta = 4 ^ x - ln(pi)");
+            // eqsys.add("x = pi - e");
+            eqsys.add(new CustomFunction("f"));
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {
@@ -55,14 +56,9 @@ public class Tester {
             }
         }
 
-        // Set set = new Set(new double[]{14,7,3,5,3,1,7,1,5,15,1.5,25,2,5,1,5},
-                          // new double[]{14,5,7,4,6,2,7.5,5,4,4,0.5,14,9,11,2,13});
-        // Print.print(set);
-        // Print.print();
-        // Print.print(set.toFancyString());
 
-        // Print.print(eqsys.equations().get(0).expressions().get(1).node().toFancyString());
-        System.out.println(eqsys.toFullString());
+        System.out.println(eqsys.toFancyString());
+        eqsys.graph();
         Print.printi("RESULT:", eqsys.eval("y"));
     }
 

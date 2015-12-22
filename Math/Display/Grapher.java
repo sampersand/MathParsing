@@ -65,7 +65,7 @@ public class Grapher extends JPanel implements MathObject {
 
     /** TODO: JAVADOC */
     public Grapher(final EquationSystem pEqSys) {
-        this(pEqSys, null);
+        this(new EquationSystem().add(pEqSys.equations().get(0)),pEqSys, null, new GraphComponents());
     }
 
     /** TODO: JAVADOC */
@@ -94,6 +94,13 @@ public class Grapher extends JPanel implements MathObject {
         sets = pSets;
         equationsToGraph = pEqSysToGraph;
         equationsToUse = pEqSysToUse;
+        if(pEqSysToGraph == null)
+            equationsToGraph = new EquationSystem();
+        if(pEqSysToUse == null)
+            equationsToUse = pEqSysToGraph;
+        if(pSets == null)
+            sets = new ArrayList<Set>();
+
         components = pGraph;
         displays = new ArrayList<DisplayComponent>();
         displays.add(new DisplayComponent(this)); //adds axis
@@ -175,6 +182,8 @@ public class Grapher extends JPanel implements MathObject {
     public EquationSystem equationsToGraph() { return equationsToGraph; }
 
     /** TODO: JAVADOC */
+    public EquationSystem equationsToUse() { return equationsToUse; }
+    /** TODO: JAVADOC */
     public GraphComponents components() { return components; }
 
     @Override
@@ -247,8 +256,25 @@ public class Grapher extends JPanel implements MathObject {
 
     }
 
+    /**
+    * Note that this doesnt consider displays.
+     * TODO: JAVADOC
+     */
     @Override
     public boolean equals(Object pObj){
-        throw new NotDefinedException();
+        if(pObj == null || !(pObj instanceof Grapher))
+            return false;
+        if(this == pObj)
+            return true;
+        Grapher pgrapher = (Grapher)pObj;
+        if(!sets.equals(pgrapher.sets))
+            return false;
+        if(!equationsToGraph.equals(pgrapher.equationsToGraph()))
+            return false;
+        if(!equationsToUse.equals(pgrapher.equationsToUse()))
+            return false;
+        if(!components.equals(pgrapher.components()))
+            return false;
+        return true;
     }
 }

@@ -1,11 +1,11 @@
-package Math.Equation.CustomFunctions;
+package Math.Equation;
 
 import Math.Print;
 import Math.Equation.EquationSystem;
 import Math.Equation.Equation;
 import Math.Equation.Function;
 import Math.Equation.Node;
-import Math.Equation.CustomFunction;
+import Math.Equation.InBuiltFunction;
 import Math.Equation.Token.Type;
 import Math.Exception.NotDefinedException;
 import Math.Set.Set;
@@ -15,9 +15,9 @@ import Math.Display.Grapher;
 import java.util.ArrayList;
 
 
-public class graph extends CustomFunction{
+public class graph extends InBuiltFunction{
     public graph(){
-        super("graph");
+        super("graph","","");
     }
     protected EquationSystem equationsToGraph;
     protected ArrayList<Set> setsToGraph;

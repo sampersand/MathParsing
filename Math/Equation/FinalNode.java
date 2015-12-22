@@ -91,7 +91,7 @@ public class FinalNode extends Node implements MathObject {
             }
         } else if(token.type() == Token.Type.ARGS) {
             Print.printw("Attempting to evaluate args! probably won't go well :P");
-            throw new NotDefinedException("define me");
+            throw new NotDefinedException();
             // return (double)getVar(dVal);
         } else {
             throw new TypeMisMatchException("Cannot evaluate the FinalNode '" +sVal + "' / '" + dVal +
