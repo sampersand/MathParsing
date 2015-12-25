@@ -28,7 +28,7 @@ Math/Exception/MathException.java
 Math/Exception/NotDefinedException.java
 Math/Exception/TypeMisMatchException.java
 Math/Set/Collection.java
-Math/Set/Comperator.java
+Math/Set/CompareCollection.java
 Math/Set/MathSet.java
 Math/Set/NumberCollection.java
 Math/Set/SetTester.java
