@@ -27,7 +27,7 @@ import javax.swing.JOptionPane;
  * The frame that holds all the buttons and displays for the calculator.
  * 
  * @author Sam Westerman
- * @version 0.71
+ * @version 0.72
  * @since 0.3
  */
 public class CalcWindow extends JFrame implements ActionListener, MathObject {

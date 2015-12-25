@@ -9,7 +9,7 @@ import java.util.HashMap;
  * A single item from an equation String.
  * Example: "sin(x+2)" yields the tokens <code>{"sin":FUNC, "(":LPAR, "x":VAR, "+":OPER, "2":NUM, ")":RPAR}</code>.
  * @author Sam Westerman
- * @version 0.71
+ * @version 0.72
  * @since 0.1
  */
 public class Token implements MathObject {

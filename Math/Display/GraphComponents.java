@@ -7,7 +7,7 @@ import Math.Exception.NotDefinedException;
  * Keeps track of different thigns about graphing - like window sizes
  * 
  * @author Sam Westerman
- * @version 0.71
+ * @version 0.72
  * @since 0.2
  */
 public class GraphComponents implements MathObject {

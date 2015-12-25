@@ -30,7 +30,7 @@ import java.util.Iterator;
  * <ul>graph</ul>
  *
  * @author Sam Westerman
- * @version 0.71
+ * @version 0.72
  * @since 0.7
  */
 public class Group<E extends Double> extends java.util.AbstractList<E> implements MathObject {

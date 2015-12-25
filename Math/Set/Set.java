@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * in Statistics.
  * 
  * @author Sam Westerman
- * @version 0.71
+ * @version 0.72
  * @since 0.1
  * @deprecated Overridden by {@link Group} and {@link Set};
  */

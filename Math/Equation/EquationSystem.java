@@ -16,7 +16,7 @@ import java.util.Iterator;
  * {@link CustomFunction}s (and the corresponding classes for them).
  * 
  * @author Sam Westerman
- * @version 0.71
+ * @version 0.72
  * @since 0.1
  */
 public class EquationSystem implements MathObject, Iterable {

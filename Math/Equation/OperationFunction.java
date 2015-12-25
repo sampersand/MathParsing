@@ -12,7 +12,7 @@ import java.util.Random;
  * A class that represents an operation in mathametics. It acts very similar to an {@link InBuiltFunction}.
  * 
  * @author Sam Westerman
- * @version 0.71
+ * @version 0.72
  * @since 0.1
   * @see <a href="https://en.wikipedia.org/wiki/Operation_(mathematics)">Operation</a>
  */

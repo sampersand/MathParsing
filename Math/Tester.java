@@ -7,7 +7,7 @@ import Math.Set.*;
 /**
  * A tester class for the whole equation
  * @author Sam Westerman
- * @version 0.71
+ * @version 0.72
  * @since 0.1
  */
 public class Tester {

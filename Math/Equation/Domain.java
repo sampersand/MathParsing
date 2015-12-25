@@ -6,7 +6,7 @@ import java.util.HashMap;
  * TODO: JAVADOC
  * 
  * @author Sam Westerman
- * @version 0.71
+ * @version 0.72
  * @since 0.71
  */
 public class Domain implements MathObject{
