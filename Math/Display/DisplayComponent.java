@@ -4,7 +4,7 @@ import Math.MathObject;
 import Math.Print;
 import Math.Equation.Equation;
 import Math.Equation.EquationSystem;
-import Math.Set.Set;
+import Math.Set.NumberCollection;
 import Math.Exception.MathException;
 import Math.Exception.NotDefinedException;
 
@@ -23,7 +23,7 @@ import java.awt.geom.Line2D;
 import javax.swing.JLabel;
 /**
  * The component that is used to graph an equation.
- *
+ * TODO: MAKE SURE THIS WORKS WITH SETS AND EQUATIONS, AND ANY COMBINATION
  * @author Sam Westerman
  * @version 0.72
  * @since 0.2
@@ -40,7 +40,7 @@ public class DisplayComponent extends JLabel implements MathObject {
     protected EquationSystem equationsys;
 
     /** TODO: JAVADOC */
-    protected Set set;
+    protected NumberCollection<Double> numc;
 
     /** TODO: JAVADOC */
     protected Color color;
@@ -66,50 +66,39 @@ public class DisplayComponent extends JLabel implements MathObject {
      * I draw a set
      * TODO: JAVADOC
      */
-    public DisplayComponent(Grapher pGrapher,
-                            Set pSet) {
-        this(pGrapher, pSet, Color.BLUE);
+    public DisplayComponent(Grapher pGrapher, NumberCollection<Double> pNC) {
+        this(pGrapher, pNC, Color.BLUE);
     }
 
     /** TODO: JAVADOC */
-    public DisplayComponent(Grapher pGrapher,
-                            Set pSet,
-                            Color pColor) {
-        this(pGrapher, null, null, pSet, pColor);
+    public DisplayComponent(Grapher pGrapher, NumberCollection<Double> pNC, Color pColor) {
+        this(pGrapher, null, null, pNC, pColor);
     }
 
     /*
      * I draw an equation
      * TODO: JAVADOC
      */
-    public DisplayComponent(Grapher pGrapher,
-                            Equation pEquation,
-                            final EquationSystem pEqSys) {
+    public DisplayComponent(Grapher pGrapher, Equation pEquation, final EquationSystem pEqSys) {
         this(pGrapher, pEquation, pEqSys, Color.BLUE);
     }
 
     /** TODO: JAVADOC */
-    public DisplayComponent(Grapher pGrapher,
-                            Equation pEquation,
-                            final EquationSystem pEqSys,
-                            Color pColor) {
+    public DisplayComponent(Grapher pGrapher, Equation pEquation, final EquationSystem pEqSys, Color pColor) {
         this(pGrapher, pEquation, pEqSys, null, pColor);
     }
 
     /** TODO: JAVADOC */
-    private DisplayComponent(Grapher pGrapher,
-                            Equation pEquation,
-                            final EquationSystem pEqSys,
-                            Set pSet,
-                            Color pColor) {
+    private DisplayComponent(Grapher pGrapher, Equation pEquation, final EquationSystem pEqSys,
+                             NumberCollection<Double> pNC, Color pColor) {
         grapher = pGrapher;
         equation = pEquation;
         equationsys = pEqSys;
-        if(equationsys!=null){
+        if(equationsys != null){
             equationsys = equationsys.copy();
-            equationsys.equations().add(0,equation);
+            equationsys.equations().add(0, equation);
         } 
-        set = pSet;
+        numc = pNC;
         color = pColor;
         this.createToolTip();
         // setPreferredSize(new Dimension(grapher.components().winBounds()[0], grapher.components().winBounds()[1]));
@@ -140,16 +129,11 @@ public class DisplayComponent extends JLabel implements MathObject {
 
         double[] dispBounds = grapher.components().dispBounds();
 
-        if(set != null) {
-            if(set.arr2() == null) {
-                throw new NotDefinedException("Set '" + set + "' doesn't have the first Array! Can't graph it.");
-            } else if(set.arr2() == null) {
-                throw new NotDefinedException("Set '" + set + "' doesn't have the second Array! Can't graph it.");
-            } 
-            set.verifySize();
-            for(int x = 0; x < set.arr2().length; x++) {
-                drawp(set.arr1()[x], set.arr2()[x]);
-                // drawl(set.arr1()[x], set.arr2()[x], set.arr1()[x+1], set.arr2()[x+1]);
+        if(numc != null) {
+            assert numc.elements() != null;
+            NumberCollection<Double> enumer = numc.enumeration();
+            for(int x = 0; x < numc.size(); x++) {
+                drawp(numc.get(x), enumer.get(x));
             }
         } else if(equation != null) {
             double cStep = grapher.components().cStep();
@@ -208,8 +192,8 @@ public class DisplayComponent extends JLabel implements MathObject {
     }
 
     /** TODO: JAVADOC */
-    public Set set(){
-        return set;
+    public NumberCollection<Double> numc(){
+        return numc;
     }
 
     /** TODO: JAVADOC */
@@ -220,7 +204,8 @@ public class DisplayComponent extends JLabel implements MathObject {
 
     @Override
     public String toString() {
-        return "Display of " + (set == null ? equation == null ? "Axis" : equation : set);
+        return "Display of " + (numc == null ? equation == null ? "Axis" : equation : numc +
+            (equation != null ? " && " + equation : ""));
     } 
 
     @Override
@@ -231,8 +216,8 @@ public class DisplayComponent extends JLabel implements MathObject {
         ret += "\n" + indent(idtLvl + 1) + "Equation to Graph:\n";
         ret += equation == null ? indent(idtLvl + 2) + "null" : equation.toFancyString(idtLvl + 2);
 
-        ret += "\n" + indent(idtLvl + 1) + "Set to Graph:\n";
-        ret += set == null ? indent(idtLvl + 2) + "null" : set.toFancyString(idtLvl + 2);
+        ret += "\n" + indent(idtLvl + 1) + "NumberCollection to Graph:\n";
+        ret += numc == null ? indent(idtLvl + 2) + "null" : numc.toFancyString(idtLvl + 2);
 
         ret += "\n" + indent(idtLvl + 1) + "Color:\n" + indent(idtLvl + 2) + color;
         return ret;
@@ -247,8 +232,8 @@ public class DisplayComponent extends JLabel implements MathObject {
         ret += "\n" + indent(idtLvl + 1) + "Equation to Graph:\n";
         ret += equation == null ? indent(idtLvl + 2) + "null" : equation.toFullString(idtLvl + 2);
 
-        ret += "\n" + indent(idtLvl + 1) + "Set to Graph:\n";
-        ret += set == null ? indent(idtLvl + 2) + "null" : set.toFullString(idtLvl + 2);
+        ret += "\n" + indent(idtLvl + 1) + "NumberCollection to Graph:\n";
+        ret += numc == null ? indent(idtLvl + 2) + "null" : numc.toFullString(idtLvl + 2);
 
         ret += "\n" + indent(idtLvl + 1) + "Color:\n" + indent(idtLvl + 2) + color;
         return ret;
@@ -256,7 +241,7 @@ public class DisplayComponent extends JLabel implements MathObject {
 
     @Override
     public DisplayComponent copy(){
-        return new DisplayComponent(grapher, equation, equationsys, set, color);
+        return new DisplayComponent(grapher, equation, equationsys, numc, color);
     }
 
     /**
@@ -273,15 +258,15 @@ public class DisplayComponent extends JLabel implements MathObject {
         if(!grapher.equals(pdisp.grapher()))
             return false;
 
-if((equation == null) != (pdisp.equation() == null) || !equation.equals(pdisp.equation()))
-    return false;
-if((equationsys == null) != (pdisp.equationsys() == null) || !equationsys.equals(pdisp.equationsys()))
-    return false;
-if((set == null) != (pdisp.set() == null) || !set.equals(pdisp.set()))
-    return false;
-if((color == null) != (pdisp.color() == null) || !color.equals(pdisp.color()))
-    return false;
-return true;
+        if((equation == null) != (pdisp.equation() == null) || !equation.equals(pdisp.equation()))
+            return false;
+        if((equationsys == null) != (pdisp.equationsys() == null) || !equationsys.equals(pdisp.equationsys()))
+            return false;
+        if((numc == null) != (pdisp.numc() == null) || !numc.equals(pdisp.numc()))
+            return false;
+        if((color == null) != (pdisp.color() == null) || !color.equals(pdisp.color()))
+            return false;
+        return true;
  
     }
 }

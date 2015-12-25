@@ -7,7 +7,7 @@ import Math.Equation.Node;
 import Math.Equation.Function.InBuiltFunction;
 import Math.Equation.Token.Type;
 import Math.Exception.NotDefinedException;
-import Math.Set.Set;
+import Math.Set.NumberCollection;
 import Math.Display.GraphComponents;
 import Math.Display.Grapher;
 
@@ -19,7 +19,7 @@ public class GraphFunction extends InBuiltFunction{
         super("graph", "graph the arguments", "graph(A, B, ... )");
     }
     protected EquationSystem equationsToGraph;
-    protected ArrayList<Set> setsToGraph;
+    protected ArrayList<NumberCollection<Double>> setsToGraph;
     protected GraphComponents gcomp;
     protected Node node;
 
@@ -48,7 +48,7 @@ public class GraphFunction extends InBuiltFunction{
             }
         }
         equationsToGraph = new EquationSystem();
-        setsToGraph = new ArrayList<Set>();
+        setsToGraph = new ArrayList<NumberCollection>();
         gcomp = new GraphComponents();
         gcomp = new GraphComponents(new int[]{1250, 750}, new double[]{- 10, - 10, 10, 10}, 1000);
         node = pNode;
@@ -63,18 +63,18 @@ public class GraphFunction extends InBuiltFunction{
                 case "eqandset": //make sure to put these in front l0l
                     equationsToGraph.add(new Equation().add(vals[0]));
                 case "eqtoset":
-                    setsToGraph.add(varsToSet(vals));
+                    setsToGraph.add(varsToNumberCollection(vals));
                     break;
                 case "set":
-                    setsToGraph.add(getSet(vals));
+                    setsToGraph.add(getNumberCollection(vals));
                     break;
                 case "eqandresid":
                     equationsToGraph.add(new Equation().add(vals[0]));
                 case "eqtoresid":
-                    setsToGraph.add(varsToSet(vals).resid());
+                    setsToGraph.add(varsToNumberCollection(vals).resid());
                     break;
                 case "resid": //residuals
-                    setsToGraph.add(getSet(vals).resid());
+                    setsToGraph.add(getNumberCollection(vals).resid());
                     break;
                 default:
                     Print.printe("[ERROR] Unrecognized Argument: '" + id + "'!");
@@ -87,7 +87,7 @@ public class GraphFunction extends InBuiltFunction{
 
     }
 
-    private Set varsToSet(String[] vals) {
+    private NumberCollection varsToNumberCollection(String[] vals) {
         double min, max, cStep;
         try {
             if(vals.length == 1 || vals.length == 2) {
@@ -105,9 +105,9 @@ public class GraphFunction extends InBuiltFunction{
         } catch (NumberFormatException err) {
             throw new IllegalArgumentException("One of the args for eqset (not the equation) isn't a double!");
         }
-        return new Set(new EquationSystem().add(vals[0]), min, max, cStep);
+        return new NumberCollection(new EquationSystem().add(vals[0]), min, max, cStep);
     }
-    private Set getSet(String[] vals) {
+    private NumberCollection getNumberCollection(String[] vals) {
         double[] arr1, arr2;
         String arrs[];
         //array 1
@@ -122,7 +122,7 @@ public class GraphFunction extends InBuiltFunction{
         for(int i = 0; i < arrs.length; i++) {
             arr2[i] = Double.parseDouble(arrs[i]);
         }
-        return new Set(arr1, arr2);
+        return new NumberCollection(arr1, arr2);
 
     }
 }

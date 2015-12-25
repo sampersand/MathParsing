@@ -4,7 +4,7 @@ import Math.MathObject;
 import Math.Equation.EquationSystem;
 import Math.Equation.Equation;
 import Math.Exception.NotDefinedException;
-import Math.Set.Set;
+import Math.Set.NumberCollection;
 import Math.Display.GraphComponents;
  
 import javax.swing.*;
@@ -39,7 +39,7 @@ public class Grapher extends JPanel implements MathObject {
     protected JLayeredPane layeredPane;
 
     /** TODO: JAVADOC */
-    protected ArrayList<Set> sets;
+    protected ArrayList<NumberCollection<Double>> numcols;
 
     /** TODO: JAVADOC */
     protected EquationSystem equationsToGraph;
@@ -59,8 +59,8 @@ public class Grapher extends JPanel implements MathObject {
     }
 
     /** TODO: JAVADOC */
-    public Grapher(Set pSet) {
-        this(null, new ArrayList<Set>() {{add(pSet);}});
+    public Grapher(NumberCollection<Double> pNumberCollection) {
+        this(null, new ArrayList<NumberCollection<Double>>() {{add(pNumberCollection);}});
     }
 
     /** TODO: JAVADOC */
@@ -75,31 +75,31 @@ public class Grapher extends JPanel implements MathObject {
 
     /** TODO: JAVADOC */
     public Grapher(final EquationSystem pEqSys,
-                   ArrayList<Set> pSets) {
-        this(pEqSys, pSets, new GraphComponents());
+                   ArrayList<NumberCollection<Double>> pNumberCollections) {
+        this(pEqSys, pNumberCollections, new GraphComponents());
     }
 
     /** TODO: JAVADOC */
     public Grapher(final EquationSystem pEqSys,
-                   ArrayList<Set> pSets,
+                   ArrayList<NumberCollection<Double>> pNumberCollections,
                    GraphComponents pGraph) {
-        this(pEqSys, new EquationSystem(), pSets, pGraph);
+        this(pEqSys, new EquationSystem(), pNumberCollections, pGraph);
     }
 
     /** TODO: JAVADOC */
     public Grapher(final EquationSystem pEqSysToGraph,
                    final EquationSystem pEqSysToUse,
-                   ArrayList<Set> pSets,
+                   ArrayList<NumberCollection<Double>> pNumberCollections,
                    GraphComponents pGraph) {
-        sets = pSets;
+        numcols = pNumberCollections;
         equationsToGraph = pEqSysToGraph;
         equationsToUse = pEqSysToUse;
         if(pEqSysToGraph == null)
             equationsToGraph = new EquationSystem();
         if(pEqSysToUse == null)
             equationsToUse = pEqSysToGraph;
-        if(pSets == null)
-            sets = new ArrayList<Set>();
+        if(pNumberCollections == null)
+            numcols = new ArrayList<NumberCollection<Double>>();
 
         components = pGraph;
         displays = new ArrayList<DisplayComponent>();
@@ -107,8 +107,8 @@ public class Grapher extends JPanel implements MathObject {
         for(int i = 0; i < equationsToGraph.size(); i++)
             displays.add(new DisplayComponent(this, equationsToGraph.equations().get(i),
                     equationsToGraph.copy().add(equationsToUse), COLORS[i % COLORS.length]));
-        for(int i = 0; i < sets.size(); i++)
-            displays.add(new DisplayComponent(this, sets.get(i), COLORS[i % COLORS.length]));
+        for(int i = 0; i < numcols.size(); i++)
+            displays.add(new DisplayComponent(this, numcols.get(i), COLORS[i % COLORS.length]));
         graphSetup();
     }
 
@@ -149,18 +149,18 @@ public class Grapher extends JPanel implements MathObject {
     public void graph() {
         //Create and set up the window.
         String title = "Graph of ";
-        if(equationsToGraph.size() + sets.size() > 3) {
+        if(equationsToGraph.size() + numcols.size() > 3) {
             title += "A lot of stuff";
-        } else if(equationsToGraph.size() + sets.size() == 0) {
+        } else if(equationsToGraph.size() + numcols.size() == 0) {
             title += "Nothing...? Lol why graph that.";
-        } else if(equationsToGraph.size() + sets.size() == 1) {
-            title += equationsToGraph.size() == 1 ? equationsToGraph.equations().get(0) : sets.get(0);
+        } else if(equationsToGraph.size() + numcols.size() == 1) {
+            title += equationsToGraph.size() == 1 ? equationsToGraph.equations().get(0) : numcols.get(0);
         } else {
             for(int i = 0; i < equationsToGraph.size(); i++) { // for each loop will crash if equation's size is 0.
                 title += equationsToGraph.equations().get(i) + ", ";
             }
-            for(int i =0; i < sets.size(); i++) {
-                 title += sets.get(i) + ", ";   
+            for(int i =0; i < numcols.size(); i++) {
+                 title += numcols.get(i) + ", ";   
             }
             title = title.substring(0, title.length() - 2);
 
@@ -176,7 +176,7 @@ public class Grapher extends JPanel implements MathObject {
     }
 
     /** TODO: JAVADOC */
-    public ArrayList<Set> sets() { return sets; }
+    public ArrayList<NumberCollection<Double>> numcols() { return numcols; }
 
     /** TODO: JAVADOC */
     public EquationSystem equationsToGraph() { return equationsToGraph; }
@@ -189,16 +189,16 @@ public class Grapher extends JPanel implements MathObject {
     @Override
     public String toString() {
         // String ret = "Graph of ";
-        // if(sets == null && equationsToGraph == null || (sets.size() == 0 && equationsToGraph.size() == 0)) {
+        // if(numcols == null && equationsToGraph == null || (numcols.size() == 0 && equationsToGraph.size() == 0)) {
         //     return "Empty Graph"; 
-        // } else if(equationsToGraph.size() + sets.size() == 1) {
-        //     return ret + (equationsToGraph.size() == 1 ? equationsToGraph.equations().get(0) : sets.get(0));
+        // } else if(equationsToGraph.size() + numcols.size() == 1) {
+        //     return ret + (equationsToGraph.size() == 1 ? equationsToGraph.equations().get(0) : numcols.get(0));
         // } else {
         //     for(int i = 0; i < equationsToGraph.size(); i++) { // for each loop will crash if equation's size is 0.
         //         ret += equationsToGraph.equations().get(i) + ", ";
         //     }
-        //     for(int i =0; i < sets.size(); i++) {
-        //          ret += sets.get(i) + ", ";   
+        //     for(int i =0; i < numcols.size(); i++) {
+        //          ret += numcols.get(i) + ", ";   
         //     }
         //     return ret.substring(0, ret.length() - 2);
 
@@ -209,10 +209,10 @@ public class Grapher extends JPanel implements MathObject {
     @Override
     public String toFancyString(int idtLvl) {
         String ret = indent(idtLvl) + "Grapher:";
-        ret += "\n" + indent(idtLvl + 1) + "Sets:";
-        for(Set s : sets)
+        ret += "\n" + indent(idtLvl + 1) + "NumberCollections:";
+        for(NumberCollection<Double> s : numcols)
             ret += "\n" + s.toFancyString(idtLvl + 2);
-        if(sets.size() == 0)
+        if(numcols.size() == 0)
             ret += "\n" + indent(idtLvl + 2) + "null";
 
         ret += "\n" + indent(idtLvl + 1) + "Equations to Graph:\n" + equationsToGraph.toFancyString(idtLvl + 2);
@@ -230,10 +230,10 @@ public class Grapher extends JPanel implements MathObject {
     @Override
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "Grapher:";
-        ret += "\n" + indent(idtLvl + 1) + "Sets:";
-        for(Set s : sets)
-            ret += "\n" + s.toFullString(idtLvl + 2);
-        if(sets.size() == 0)
+        ret += "\n" + indent(idtLvl + 1) + "NumberCollections:";
+        for(NumberCollection<Double> nc : numcols)
+            ret += "\n" + nc.toFullString(idtLvl + 2);
+        if(numcols.size() == 0)
             ret += "\n" + indent(idtLvl + 2) + "null";
 
         ret += "\n" + indent(idtLvl + 1) + "Equations to Graph:\n" + equationsToGraph.toFullString(idtLvl + 2);
@@ -252,7 +252,7 @@ public class Grapher extends JPanel implements MathObject {
 
     @Override
     public Grapher copy(){
-        return new Grapher(equationsToGraph, sets, components);
+        return new Grapher(equationsToGraph, numcols, components);
 
     }
 
@@ -267,7 +267,7 @@ public class Grapher extends JPanel implements MathObject {
         if(this == pObj)
             return true;
         Grapher pgrapher = (Grapher)pObj;
-        if(!sets.equals(pgrapher.sets))
+        if(!numcols.equals(pgrapher.numcols))
             return false;
         if(!equationsToGraph.equals(pgrapher.equationsToGraph()))
             return false;
