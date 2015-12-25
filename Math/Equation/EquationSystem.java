@@ -42,6 +42,7 @@ public class EquationSystem implements MathObject, Iterable {
 
     /** TODO: JAVADOC */
     protected Domain domain;
+
     /**
      * The default constructor for this class. Just passes an empty ArrayList and HashMap to 
      * {@link #EquationSystem(ArrayList,HashMap) the main EquationSystem constructor}.
@@ -55,6 +56,7 @@ public class EquationSystem implements MathObject, Iterable {
      * <code>pEqs</code> and <code>pFuncs</code>, respectively.
      * @param pEqs      An ArrayList of {@link Equation}s, used to instiate {@link #equations}.
      * @param pFuncs    An ArrayList of {@link CustomFunction}s, used to instatiate {@link #functions}.
+     * @param pDomain   TODO: JAVADOC
      */
     public EquationSystem(ArrayList<Equation> pEqs,
                           HashMap<String, CustomFunction> pFuncs,
@@ -194,6 +196,14 @@ public class EquationSystem implements MathObject, Iterable {
             return this;
         }
         functions.put(pName, pFunc);
+        return this;
+    }
+
+    /**
+     * TODO: JAVADOC
+     */
+    public EquationSystem setDomain(Domain pDomain){
+        domain = pDomain;
         return this;
     }
 
@@ -372,7 +382,7 @@ public class EquationSystem implements MathObject, Iterable {
             ret += "\n" + indent(idtLvl + 2) + "'" + key + "' = " + functions.get("" + key).name;
         }
 
-        ret += indent(idtLvl + 1) + "Domain:\n";
+        ret += "\n" + indent(idtLvl + 1) + "Domain:\n";
         ret += domain.toFancyString(idtLvl + 2);
 
         return ret;
@@ -393,7 +403,7 @@ public class EquationSystem implements MathObject, Iterable {
             ret += functions.get("" + key).toFullString(idtLvl + 3);
             ret += "\n" + indentE(idtLvl + 3);
         }
-        ret += indent(idtLvl + 1) + "Domain:\n";
+        ret += "\n" + indent(idtLvl + 1) + "Domain:\n";
         ret += domain.toFullString(idtLvl + 2);
         ret += "\n" + indentE(idtLvl + 2);
         return ret + "\n" + indentE(idtLvl + 1);

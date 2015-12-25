@@ -2,7 +2,9 @@ package Math.Set;
 
 import Math.MathObject;
 import Math.Print;
+import Math.Equation.Domain;
 import Math.Exception.NotDefinedException;
+import Math.Equation.EquationSystem;
 import java.util.ArrayList;
 /**
  * The class that represents Sets in mathematics - that is, each element in them has to be unique.
@@ -26,10 +28,16 @@ public class MathSet<E extends Double> extends Group<E> {
     }
 
     public MathSet(String setBuilderNotation){
-        throw new NotDefinedException();
-        // return new Group(new EquationSystebuildSet()
+        this(generateEquationFromSetBuilderNotation(setBuilderNotation));
     }
+
+    public MathSet(EquationSystem pEqSys){
+        // super(pEqSys);
+        System.err.println(pEqSys.toFancyString());
+    }
+
     /**
+     * TODO: JAVADOC
      * returns false if the thing cannot add it
      */
     public boolean add(E pEle){ 
@@ -46,4 +54,31 @@ public class MathSet<E extends Double> extends Group<E> {
         return new MathSet(elements);
     }
 
+    /**
+     * currently doesnt work with funtions that use commas, lol.
+     * TODO: JAVADOC
+     */
+    static EquationSystem generateEquationFromSetBuilderNotation(String pSetNotation){
+        if(pSetNotation.charAt(0) == '{' && pSetNotation.charAt(pSetNotation.length() - 1) == '}')
+            pSetNotation = pSetNotation.substring(1, pSetNotation.length() - 1);
+
+        pSetNotation = pSetNotation.replaceAll("\\|", ":"); // {x : ...} OR {x | ...}, not both.
+        assert pSetNotation.replaceAll("[^:]","").length() == 1; // only can be 1 ":"
+        String vars = pSetNotation.split(":")[0];
+        pSetNotation = pSetNotation.split(":")[1];
+        pSetNotation = pSetNotation.replaceAll(",", "∧");
+        String[] equations = pSetNotation.split("∧");
+        return new EquationSystem().add(equations).setDomain(new Domain(vars));
+    }
+
 }
+
+
+
+
+
+
+
+
+
+

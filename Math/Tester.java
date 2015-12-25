@@ -59,8 +59,9 @@ public class Tester {
         // Print.printi("RESULT:", eqsys.eval("y"));
         Group<Double> g = new Group<Double>(new Double[]{0D,1D,1D,2D,3D,5D,8D,13D,21D});
         Group<Double> g2 = new Group<Double>(new Double[]{2D,3D,5D,7D,11D,13D,17D});
-        // MathSet<Double> u = new MathSet<Double>("{x∈ℕ|x∧");
-        System.out.println(g.intersect(g2));
+        MathSet<Double> g3 = new MathSet<Double>("{x∈ℕ|x^2<4}");
+        System.err.println(g3);
+        // System.out.println(g.intersect(g2));
 
     }
 

@@ -93,7 +93,7 @@ public class Equation implements MathObject {
         ret += indent(idtLvl + 1) + "Expressions:";
         for(Expression expr : expressions) {
             //TODO: Update this "= " here to coincide with greater than or less than equations (when introduced).
-            ret += "\n" + indent(idtLvl + 2) + "= "+ expr.formattedExpression();
+            ret += "\n" + expr.toFancyString(idtLvl + 2);
         }
         return ret;
     }

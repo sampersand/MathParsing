@@ -1,6 +1,7 @@
 package Math.Equation;
 import Math.MathObject;
 import Math.Exception.NotDefinedException;
+import java.util.HashMap;
 /**
  * TODO: JAVADOC
  * 
@@ -9,9 +10,16 @@ import Math.Exception.NotDefinedException;
  * @since 0.71
  */
 public class Domain implements MathObject{
-
+    private HashMap<String, Inequality> domains;
+    private double step;
+    private String args;
     public Domain(){
-
+        //TODO: DEFINE DOMAIN
+    }
+    public Domain(Object... pObj){
+        //TODO: DEFINE DOMAIN
+        for(Object o : pObj)
+            args += o;
     }
 
     @Override
@@ -21,12 +29,15 @@ public class Domain implements MathObject{
     
     @Override
     public String toFancyString(int idtLvl) {
-        throw new NotDefinedException();
+        return args;
+        
+        // throw new NotDefinedException();
     }
 
     @Override
     public String toFullString(int idtLvl) {
-        throw new NotDefinedException();
+        return args;
+        // throw new NotDefinedException();
     }
 
     @Override
@@ -37,5 +48,9 @@ public class Domain implements MathObject{
     @Override
     public boolean equals(Object pObj){
         throw new NotDefinedException();
+    }
+    class Inequality{
+
+        public Inequality(){}
     }
 }

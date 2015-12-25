@@ -54,9 +54,12 @@ public class Group<E extends Double> extends java.util.AbstractList<E> implement
                 add(n);
         }};
     }
+
     public Group(EquationSystem pEqSys){
+        // TODO: DEFINE
         throw new NotDefinedException();
     }
+
     public ArrayList<E> elements(){ return elements; }
     public int size(){ return elements.size();}
     public E get(int pPos){ return elements.get(pPos);}

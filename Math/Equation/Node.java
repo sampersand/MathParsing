@@ -612,6 +612,7 @@ public class Node implements MathObject {
      *                              evaluated.
      */
     public double eval(final EquationSystem pEqSys) throws NotDefinedException {
+        //TODO: IMPLEMENT DOMAIN
         assert !(this instanceof FinalNode) : "This is implemented in FinalNode... How was i triggered...?";
         assert token != null;
         declP(pEqSys != null, "Cannot evaluate a null EquationSystem!");

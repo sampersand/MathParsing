@@ -283,7 +283,9 @@ public class Expression implements MathObject {
     @Override
     public String toFancyString(int idtLvl) {
         return indent(idtLvl) + "Expression:\n" + indent(idtLvl + 1 ) +
-                "Raw Expression = " + formattedExpression();
+                "Raw Expression = " + formattedExpression() + "\n" + indentE(idtLvl + 1) + "Generated Expression = " +
+                node.genEqString().replaceAll("(\\+|\\-|\\*|/|\\^)", " $1 ").replaceAll(",", ", ") + "\n";
+
     }
 
     @Override
