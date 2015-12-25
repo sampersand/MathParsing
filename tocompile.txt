@@ -9,13 +9,13 @@ Math/Display/Calculator/CalcWindow.java
 Math/Display/Calculator/EquationDisplay.java
 Math/Display/Calculator/GraphDisplay.java
 Math/Display/Calculator/MainClass.java
+Math/Equation/Collection.java
 Math/Equation/Domain.java
 Math/Equation/Equation.java
 Math/Equation/EquationSystem.java
 Math/Equation/Expression.java
 Math/Equation/FinalNode.java
 Math/Equation/Node.java
-Math/Equation/NodeSystem.java
 Math/Equation/Token.java
 Math/Equation/Function/CustomFunction.java
 Math/Equation/Function/Function.java

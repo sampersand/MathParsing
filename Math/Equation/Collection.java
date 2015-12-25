@@ -1,7 +1,8 @@
 package Math.Equation;
 import Math.Exception.NotDefinedException;
+import java.util.ArrayList;
 public class Collection {
-    public static final enum SIGN = {
+    public static enum Comparator {
         LT("<"),
         GT(">"),
         EQ("="),
@@ -10,14 +11,45 @@ public class Collection {
         GTE("≥");
         public String val;
 
-        private equalities(String pVal){
+        private Comparator(String pVal){
             val = pVal;
         }
-        public SIGN from(String str){
+        public Comparator from(String str){
             //DEFINE
             throw new NotDefinedException();
         }
 
     }
-    //TODO: THIS CLASS
+    protected ArrayList<Object> elements; // Reason it's not ArrayList<E> is because other collections can be here.
+    protected Object comparison; // its an object so functions can also use this
+
+    public Collection(Object... pNode) { //no subnodes, comparison is FIN
+        comparison = Comparator.EQ;
+        add(elements);
+    }
+
+    public Collection(Object pComp, Object... pElements){
+        comparison = pComp;
+        add(pElements);
+    }
+
+    public Collection add(Object[] pObjs){
+        if(elements == null)
+            elements = new ArrayList<Object>();
+        for(Object obj : pObjs)
+            elements.add(obj);
+        return this;
+    }
+    public Collection add(ArrayList<Object> pObjs){
+        if(elements == null)
+            elements = new ArrayList<Object>();
+        for(Object obj : pObjs)
+            elements.add(obj);
+        return this;
+    }
+
+
+    public boolean isFinal(){
+        return elements.size() <= 1;
+    }
 }
