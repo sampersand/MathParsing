@@ -18,15 +18,13 @@ public class Tester {
      * @throws NotDefinedException Thrown when the first value isn't equal to "--e" of --f 
      */
     public static void main(String[] args) throws NotDefinedException {
-
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
-            eqsys.add("y = sin(x)");
-            // eqsys.add("y = 1 + sin(alpha) + c");
-            // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
-            // eqsys.add("c = 0 - 9");
-            // eqsys.add("theta = 4 ^ x - ln(pi)");
-            // eqsys.add("x = pi - e");
+            eqsys.add("y = 1 + sin(alpha) + c");
+            eqsys.add("alpha = (9.45 + x ^ theta) / 2");
+            eqsys.add("c = 0 - 9");
+            eqsys.add("theta = 4 ^ x - ln(pi)");
+            eqsys.add("x = pi - e");
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {
@@ -56,10 +54,26 @@ public class Tester {
         }
 
 
-        System.out.println(eqsys.toFancyString());
-        eqsys.graph();
-        Print.printi("RESULT:", eqsys.eval("y"));
+        // System.out.println(eqsys.toFancyString());
+        // eqsys.graph();
+        // Print.printi("RESULT:", eqsys.eval("y"));
+        Group<Double> g = new Group(new double[]{0,1,1,2,3,5,8,13,21});
+        Group<Double> g2 = new Group(new double[]{2,3,5,7,11,13,17});
+        System.out.println(g.union(g2));
+
     }
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
