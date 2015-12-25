@@ -56,10 +56,14 @@ public class Equation implements MathObject {
      * @return This class, with <code>pStrs</code> added.
      */    
     public Equation add(String... pStrs) {
+        //TODO: FIX THIS UP
+        String[] equalities = {"<=", ">=", "<", ">", "=", "≤", "≥", "≠"};
         for(String pStr : pStrs)
-            for(String str : pStr.split("=",2)){
-                expressions.add(new Expression(str));
-            }
+            for(String equal : equalities)
+                if(pStr.split(equal).length > 1)
+                    for(String str : pStr.split(equal, 2)){
+                        expressions.add(new Expression(str));
+                    }
         return this;
     }
 
