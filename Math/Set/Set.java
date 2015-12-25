@@ -18,6 +18,7 @@ import java.util.ArrayList;
  * @author Sam Westerman
  * @version 0.67
  * @since 0.1
+ * @deprecated Overridden by {@link Group} and {@link Set};
  */
 public class Set implements MathObject {
 
