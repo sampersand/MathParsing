@@ -27,7 +27,7 @@ import java.util.ArrayList;
  * Define
  * 
  * @author Sam Westerman
- * @version 0.67
+ * @version 0.7
  * @since 0.2
  */
 public class Grapher extends JPanel implements MathObject {

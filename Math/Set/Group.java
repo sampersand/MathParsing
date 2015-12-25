@@ -5,6 +5,13 @@ import Math.Print;
 import static Math.Declare.*;
 import java.util.ArrayList;
 
+/**
+ * TODO: JAVADOC
+ * 
+ * @author Sam Westerman
+ * @version 0.1
+ * @since 0.7
+ */
 public class Group {
     protected ArrayList<Number> array;
     public Group(){

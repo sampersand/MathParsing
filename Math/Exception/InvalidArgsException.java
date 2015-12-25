@@ -4,7 +4,7 @@ package Math.Exception;
  * Thrown when the arguments to a function are not correct for one reason or another
  * 
  * @author Sam Westerman
- * @version 0.67
+ * @version 0.7
  * @since 0.1
  * @deprecated didn't realize IllegalArgumentException existed
  */

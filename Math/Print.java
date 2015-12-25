@@ -4,7 +4,7 @@ package Math;
  * A class that handles all printing to the console done by the Math package.
  * 
  * @author Sam Westerman
- * @version 0.67
+ * @version 0.7
  * @since 0.1
  */
 public class Print {
