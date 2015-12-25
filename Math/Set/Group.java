@@ -4,6 +4,7 @@ import Math.MathObject;
 import Math.Print;
 import static Math.Declare.*;
 import Math.Exception.NotDefinedException;
+import Math.Equation.EquationSystem;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -53,6 +54,9 @@ public class Group<E extends Double> extends java.util.AbstractList<E> implement
                 add(n);
         }};
     }
+    public Group(EquationSystem pEqSys){
+        throw new NotDefinedException();
+    }
     public ArrayList<E> elements(){ return elements; }
     public int size(){ return elements.size();}
     public E get(int pPos){ return elements.get(pPos);}
@@ -65,6 +69,13 @@ public class Group<E extends Double> extends java.util.AbstractList<E> implement
         elements.add(pEle);
         return true; // for some bizarre reason, ArrayList does this too.
     }
+    public <T extends E> Group<E> add(Group<T> pGroup){
+        Group<E> ret = copy();
+        for(T e : pGroup) //allows for overriding it in MathSet.
+            ret.add(e);
+        return ret;
+    }
+
     public E pop(){return pop(size() - 1);}
     public E pop(int pPos){
         E ret = elements.get(pPos);
@@ -72,15 +83,36 @@ public class Group<E extends Double> extends java.util.AbstractList<E> implement
         return ret;
     }
     public E mean(){
-        double sum = 0;
-        for(E d : elements)
-            sum = sum + d;
+        double sum = 0D;
+        for(E e : elements)
+            sum = sum + e;
         return (E)new Double(sum / size());
     }
+    public boolean contains(Object pObj){
+        return elements.contains(pObj);
+    }
 
-    public Group union(Group pGroup){
-        Group ret = new Group();
-        for(E d : this);
+    // THIS ∪ PRGROUP
+    public <T extends E> Group<E> union(Group<T> pGroup){
+        return copy().add(pGroup);
+    }
+
+    // THIS ∩ PGROUP
+    public <T extends E> Group<E> intersect(Group<T> pGroup){
+        Group<E> ret = new Group<E>();
+        for(E d : this)
+            if(pGroup.contains(d))
+                ret.add(d);
+        return ret;
+    }
+
+
+    public boolean isUnique(){
+        Group<E> ms = copy();
+        while(ms.size() > 0)
+            if(ms.elements().contains(ms.pop()))
+                return false;
+        return true;
     }
 
     @Override
@@ -111,76 +143,9 @@ public class Group<E extends Double> extends java.util.AbstractList<E> implement
 
 
 
-    public Iterator<Double> iterator() {
-        return (Iterator<Double>) new GroupIter();
+    public Iterator<E> iterator() {
+        return (Iterator<E>) new GroupIter();
     }
-    // private class Itr implements Iterator<E> {
-    //     int cursor;       // index of next element to return
-    //     int lastRet = -1; // index of last element returned; -1 if no such
-    //     int expectedModCount = modCount;
-
-    //     public boolean hasNext() {
-    //         return cursor != size;
-    //     }
-
-    //     @SuppressWarnings("unchecked")
-    //     public E next() {
-    //         checkForComodification();
-    //         int i = cursor;
-    //         if (i >= size)
-    //             throw new NoSuchElementException();
-    //         Object[] elementData = ArrayList.this.elementData;
-    //         if (i >= elementData.length)
-    //             throw new ConcurrentModificationException();
-    //         cursor = i + 1;
-    //         return (E) elementData[lastRet = i];
-    //     }
-
-    //     public void remove() {
-    //         if (lastRet < 0)
-    //             throw new IllegalStateException();
-    //         checkForComodification();
-
-    //         try {
-    //             ArrayList.this.remove(lastRet);
-    //             cursor = lastRet;
-    //             lastRet = -1;
-    //             expectedModCount = modCount;
-    //         } catch (IndexOutOfBoundsException ex) {
-    //             throw new ConcurrentModificationException();
-    //         }
-    //     }
-
-    //     @Override
-    //     @SuppressWarnings("unchecked")
-    //     public void forEachRemaining(Consumer<? super E> consumer) {
-    //         Objects.requireNonNull(consumer);
-    //         final int size = ArrayList.this.size;
-    //         int i = cursor;
-    //         if (i >= size) {
-    //             return;
-    //         }
-    //         final Object[] elementData = ArrayList.this.elementData;
-    //         if (i >= elementData.length) {
-    //             throw new ConcurrentModificationException();
-    //         }
-    //         while (i != size && modCount == expectedModCount) {
-    //             consumer.accept((E) elementData[i++]);
-    //         }
-    //         // update once at end of iteration to reduce heap write traffic
-    //         cursor = i;
-    //         lastRet = i - 1;
-    //         checkForComodification();
-    //     }
-
-    //     final void checkForComodification() {
-    //         if (modCount != expectedModCount)
-    //             throw new ConcurrentModificationException();
-    //     }
-    // }
-
-    // /**
-
     public class GroupIter implements Iterator<E> {
         private int i = 0;
 
