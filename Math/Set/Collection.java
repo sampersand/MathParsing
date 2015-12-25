@@ -25,6 +25,12 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
         add(pCollection);
     }
     
+    public Collection<E> from(E[] pEle){
+        return new Collection<E>(){{
+            for(E e : pEle)
+                add(e);
+        }};
+    }
     public Collection<E> add(E... pElements){
         assert elements != null : "elements cannot be null!";
         assert pElements != null : "pElements cannot be null!";
@@ -76,6 +82,14 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
         return ret;
     }
 
+    public <T extends E> Collection<E> not(Collection<T> universe){
+        return new Collection<E>(){{
+            for(T e : universe)
+                if(!contains(e))
+                    add(e);
+        }};
+    }
+    
     public boolean isUnique(){
         Collection<E> ms = copy();
         while(ms.size() > 0)

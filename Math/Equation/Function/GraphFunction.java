@@ -19,20 +19,20 @@ public class GraphFunction extends InBuiltFunction{
         super("graph", "graph the arguments", "graph(A, B, ... )");
     }
     protected EquationSystem equationsToGraph;
-    protected ArrayList<NumberCollection<Double>> setsToGraph;
+    protected ArrayList<NumberCollection<Double>> numcToGraph;
     protected GraphComponents gcomp;
     protected Node node;
 
     public String help() {
-        return "Graphs any combination of sets and / or functions";
+        return "Graphs any combination of numcs and / or functions";
     }
     public String syntax() {
-        return "Any combination of 'set:','eq:', 'eqandset:' and 'eqtoset:'.\n" + 
-                "- set syntax is: \"set:(.val()1,.val()2,.val()3...)(valA,valB,ValC...)\". Just displays that set.\n" + 
-                "- eqandset syntax is: \"eqandset:EQUATION,[STEP],[MIN MAX]\". " +
-                    "Graphs a set based off the equationsToGraph and params as well as the equationsToGraph itself.\n" +
-                "- eqtoset syntax is: \"eqandset:EQUATION,[STEP],[MIN, MAX]\". "+
-                    "Graphs a set based off the equationsToGraph and params, but not the equationsToGraph itself.";
+        return "Any combination of 'numc:','eq:', 'eqandnumc:' and 'eqtonumc:'.\n" + 
+                "- numc syntax is: \"numc:(.val()1,.val()2,.val()3...)(valA,valB,ValC...)\". Just displays that numc.\n" + 
+                "- eqandnumc syntax is: \"eqandnumc:EQUATION,[STEP],[MIN MAX]\". " +
+                    "Graphs a numc based off the equationsToGraph and params as well as the equationsToGraph itself.\n" +
+                "- eqtonumc syntax is: \"eqandnumc:EQUATION,[STEP],[MIN, MAX]\". "+
+                    "Graphs a numc based off the equationsToGraph and params, but not the equationsToGraph itself.";
     }
 
     @Override
@@ -48,7 +48,7 @@ public class GraphFunction extends InBuiltFunction{
             }
         }
         equationsToGraph = new EquationSystem();
-        setsToGraph = new ArrayList<NumberCollection>();
+        numcToGraph = new ArrayList<NumberCollection<Double>>();
         gcomp = new GraphComponents();
         gcomp = new GraphComponents(new int[]{1250, 750}, new double[]{- 10, - 10, 10, 10}, 1000);
         node = pNode;
@@ -60,34 +60,34 @@ public class GraphFunction extends InBuiltFunction{
                 case "eq": case "":
                     equationsToGraph.add(vals[0]);
                     break;
-                case "eqandset": //make sure to put these in front l0l
+                case "eqandnumc": //make sure to put these in front l0l
                     equationsToGraph.add(new Equation().add(vals[0]));
                 case "eqtoset":
-                    setsToGraph.add(varsToNumberCollection(vals));
+                    numcToGraph.add(varsToNumC(vals));
                     break;
                 case "set":
-                    setsToGraph.add(getNumberCollection(vals));
+                    numcToGraph.add(getNumC(vals[0].split(",")));
                     break;
                 case "eqandresid":
                     equationsToGraph.add(new Equation().add(vals[0]));
                 case "eqtoresid":
-                    setsToGraph.add(varsToNumberCollection(vals).resid());
+                    numcToGraph.add(varsToNumC(vals).resid());
                     break;
                 case "resid": //residuals
-                    setsToGraph.add(getNumberCollection(vals).resid());
+                    numcToGraph.add(getNumC(vals[0].split(",")).resid());
                     break;
                 default:
                     Print.printe("[ERROR] Unrecognized Argument: '" + id + "'!");
             } 
         }
-        Grapher grapher = new Grapher(equationsToGraph, pEqSys, setsToGraph, gcomp);
+        Grapher grapher = new Grapher(equationsToGraph, pEqSys, numcToGraph, gcomp);
         System.out.println(grapher.toFullString());
         grapher.graph();
         return 0;
 
     }
 
-    private NumberCollection varsToNumberCollection(String[] vals) {
+    private NumberCollection<Double> varsToNumC(String[] vals) {
         double min, max, cStep;
         try {
             if(vals.length == 1 || vals.length == 2) {
@@ -105,24 +105,13 @@ public class GraphFunction extends InBuiltFunction{
         } catch (NumberFormatException err) {
             throw new IllegalArgumentException("One of the args for eqset (not the equation) isn't a double!");
         }
-        return new NumberCollection(new EquationSystem().add(vals[0]), min, max, cStep);
+        return new NumberCollection<Double>(new EquationSystem().add(vals[0]), min, max, cStep);
     }
-    private NumberCollection getNumberCollection(String[] vals) {
-        double[] arr1, arr2;
-        String arrs[];
-        //array 1
-        arrs = vals[0].split(",");
-        arr1 = new double[arrs.length];
-        for(int i = 0; i < arrs.length; i++) {
-            arr1[i] = Double.parseDouble(arrs[i]);
-        }
-        //array 2
-        arrs = vals[1].split(",");
-        arr2 = new double[arrs.length];
-        for(int i = 0; i < arrs.length; i++) {
-            arr2[i] = Double.parseDouble(arrs[i]);
-        }
-        return new NumberCollection(arr1, arr2);
+    private NumberCollection<Double> getNumC(String[] vals) {
+        return new NumberCollection<Double>(){{
+            for(String val : vals)
+                add(Double.parseDouble(val));
+        }};
 
     }
 }

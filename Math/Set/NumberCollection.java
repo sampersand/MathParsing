@@ -37,10 +37,10 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
     }
 
     public NumberCollection(final EquationSystem pEqSys) {
-        this(pEqSys, (E) new Double(-10D), (E) new Double(10D), (E) new Double(25D));
+        this(pEqSys, -10, 10, 25);
     }
 
-    public NumberCollection(final EquationSystem pEqSys, E min, E max, E cStep) {
+    public NumberCollection(final EquationSystem pEqSys, Number min, Number max, Number cStep) {
         // if(min >= max) {
         //     throw new IllegalArgumentException("When defining a NumberCollection with an EquationSystem, the min (" + min +
         //                                    ") has to be smaller than the max (" + max + ")!");
@@ -60,8 +60,15 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
 
     }
 
+    public NumberCollection<E> from(E[] pEle){
+        return new NumberCollection<E>(){{
+            for(E e : pEle)
+                add(e);
+        }};
+    }
+
     public double pred(double pVal) {
-        return pred(pVal, linReg(enumeration()));
+        return pred(pVal, linReg());
     }
 
     public static double pred(Number pVal, final EquationSystem pEqSys) {
@@ -73,11 +80,14 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
     }
 
     public NumberCollection<E> es() {
-        return resid(enumeration());
+        return resid();
     }
 
     public <T extends E> NumberCollection<E> resid(NumberCollection<T> pNC) {
         return resid(pNC, linReg(pNC));
+    }
+    public NumberCollection<E> resid() {
+        return resid(enumeration());
     }
 
     public <T extends E> NumberCollection<E> resid(NumberCollection<T> pNC, EquationSystem pEq) {
@@ -90,6 +100,10 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
         return ret;
     }
 
+
+    public EquationSystem polyReg() {
+        return polyReg(enumeration());
+    }    
     public <T extends E> EquationSystem polyReg(NumberCollection<T> pNC) {
         return polyReg(10, pNC);
     }
@@ -107,11 +121,14 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
         */
         return polyReg(1, enumeration());
     }
+    public EquationSystem linReg(){
+        return polyReg(1, enumeration());
+    }
+
 
 
     public <T extends E> E r(NumberCollection<T> pNC){
         assert size() == pNC.size();
-        if(true)
         throw new NotDefinedException();
         // E sigZxZy = 0D; //TODO: FIX "R"
         // for(int i = 0; i < size(); i++)
@@ -292,8 +309,10 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
 
     //TODO: MAKE IT SO YOU CAN GRAPH WITH NO PARAMETER, AND INSTEAD USE THE INDEX OF DIFFERENT ELEMENTS.
     public <T extends E> void graph(NumberCollection<T> pNC) { //the number line on the bottom can be different.
-        Grapher grapher = new Grapher(this);
-        grapher.graph();
+        // Grapher grapher = new Grapher(this);
+        // grapher.graph();
+        throw new NotDefinedException();
+        //TODO: FIX THIS
     }
 
     @Override

@@ -3,9 +3,9 @@ import java.util.ArrayList;
 import static Math.Declare.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-
+import Math.Set.NumberCollection;
 import java.util.Scanner;
-
+import Math.Exception.NotDefinedException;
 /**
  * This is just a hacked up thing I used to find the correlation values of data in <code>Math/Set/data.csv</code>.
  * 
@@ -61,11 +61,12 @@ public class SetTester {
                     }
                 }
                 x++;
-                bestfit[x] = Set.R2(ar1, ar2);
-                System.out.println(Set.R2(ar1, ar2) * 100 + "= R2 for " + header.get(h1) + " vs " + header.get(h2));
+                // bestfit[x] = NumberCollection.from(ar1).R2(NumberCollection.from(ar2);
+                // System.out.println(NumberCollection.from(ar1).R2(NumberCollection.from(ar2) * 100 + "= R2 for " + header.get(h1) + " vs " + header.get(h2));
             }
         }
-        bestfit = Set.sort(bestfit);
+        if(true)throw new NotDefinedException();
+        // bestfit = NumberCollection.from(bestfit).sort().elements().toArray();
         for(double d : bestfit)
             System.out.println(d*100);
 
