@@ -9,7 +9,6 @@ Math/Display/Calculator/CalcWindow.java
 Math/Display/Calculator/EquationDisplay.java
 Math/Display/Calculator/GraphDisplay.java
 Math/Display/Calculator/MainClass.java
-Math/Equation/Collection.java
 Math/Equation/Domain.java
 Math/Equation/Equation.java
 Math/Equation/EquationSystem.java
@@ -28,6 +27,8 @@ Math/Equation/Function/CustomFunctions/summation.java
 Math/Exception/MathException.java
 Math/Exception/NotDefinedException.java
 Math/Exception/TypeMisMatchException.java
+Math/Set/Collection.java
+Math/Set/Comperator.java
 Math/Set/Group.java
 Math/Set/MathSet.java
 Math/Set/Set.java
