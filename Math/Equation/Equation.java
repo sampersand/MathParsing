@@ -1,7 +1,7 @@
 package Math.Equation;
 
 import Math.MathObject;
-import Math.Equation.CustomFunction;
+import Math.Equation.Function.CustomFunction;
 import Math.Equation.Expression;
 import Math.Exception.NotDefinedException;
 

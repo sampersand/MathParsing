@@ -5,6 +5,7 @@ import static Math.Declare.*;
 import Math.Print;
 import Math.Equation.Equation;
 import Math.Equation.EquationSystem;
+import Math.Equation.Function.InBuiltFunction;
 import static Math.Equation.Token.Type.*;
 import Math.Exception.NotDefinedException;
 

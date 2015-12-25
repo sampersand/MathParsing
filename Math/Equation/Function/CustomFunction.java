@@ -1,11 +1,11 @@
-package Math.Equation;
+package Math.Equation.Function;
 
 import Math.MathObject;
 import Math.Print;
-import Math.Equation.Function;
+import Math.Equation.Function.Function;
 import Math.Equation.Node;
-import Math.Equation.CustomFunction;
-import Math.Equation.CustomFunctions.*;
+import Math.Equation.EquationSystem;
+import Math.Equation.Function.CustomFunctions.*;
 import Math.Exception.NotDefinedException;
 
 import java.lang.reflect.*;

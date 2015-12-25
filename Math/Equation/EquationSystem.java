@@ -6,7 +6,7 @@ import static Math.Declare.*;
 import Math.Display.Grapher;
 import Math.Exception.TypeMisMatchException;
 import Math.Exception.NotDefinedException;
-
+import Math.Equation.Function.CustomFunction;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -158,8 +158,8 @@ public class EquationSystem implements MathObject, Iterable {
                 Print.printi("A passed CustomFunction is null; not adding it to 'functions'.");
                 continue;
             }
-            assert func.name != null; //this shoulda been taken care of in the constructor.
-            functions.put(func.name, func);
+            assert func.name() != null; //this shoulda been taken care of in the constructor.
+            functions.put(func.name(), func);
         }
         return this;
     }
@@ -379,7 +379,7 @@ public class EquationSystem implements MathObject, Iterable {
 
         ret += "\n" + indent(idtLvl + 1) + "Functions:";
         for(Object key : functions.keySet().toArray()) {
-            ret += "\n" + indent(idtLvl + 2) + "'" + key + "' = " + functions.get("" + key).name;
+            ret += "\n" + indent(idtLvl + 2) + "'" + key + "' = " + functions.get("" + key).name();
         }
 
         ret += "\n" + indent(idtLvl + 1) + "Domain:\n";

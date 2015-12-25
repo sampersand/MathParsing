@@ -1,7 +1,9 @@
-package Math.Equation;
+package Math.Equation.Function;
 
 import Math.MathObject;
 import Math.Print;
+import Math.Equation.EquationSystem;
+import Math.Equation.Node;
 import Math.Equation.Token.Type;
 import Math.Exception.NotDefinedException;
 

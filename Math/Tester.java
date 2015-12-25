@@ -2,6 +2,7 @@ package Math;
 
 import Math.Exception.*;
 import Math.Equation.*;
+import Math.Equation.Function.*;
 import Math.Set.*;
 
 /**

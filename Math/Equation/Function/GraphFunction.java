@@ -1,11 +1,10 @@
-package Math.Equation;
+package Math.Equation.Function;
 
 import Math.Print;
 import Math.Equation.EquationSystem;
 import Math.Equation.Equation;
-import Math.Equation.Function;
 import Math.Equation.Node;
-import Math.Equation.InBuiltFunction;
+import Math.Equation.Function.InBuiltFunction;
 import Math.Equation.Token.Type;
 import Math.Exception.NotDefinedException;
 import Math.Set.Set;
@@ -15,9 +14,9 @@ import Math.Display.Grapher;
 import java.util.ArrayList;
 
 
-public class graphbackup extends InBuiltFunction{
-    public graphbackup(){
-        super("graph","","");
+public class GraphFunction extends InBuiltFunction{
+    public GraphFunction(){
+        super("graph", "graph the arguments", "graph(A, B, ... )");
     }
     protected EquationSystem equationsToGraph;
     protected ArrayList<Set> setsToGraph;

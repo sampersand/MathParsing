@@ -1,6 +1,8 @@
-package Math.Equation;
+package Math.Equation.Function;
 
 import Math.MathObject;
+import Math.Equation.EquationSystem;
+import Math.Equation.Node;
 import static Math.Declare.*;
 import Math.Exception.NotDefinedException;
 

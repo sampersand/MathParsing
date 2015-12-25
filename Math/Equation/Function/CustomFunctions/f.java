@@ -1,10 +1,8 @@
-package Math.Equation.CustomFunctions;
+package Math.Equation.Function.CustomFunctions;
 
-import Math.Equation.Function;
 import Math.Equation.EquationSystem;
 import Math.Equation.Node;
-import Math.Equation.Token;
-import Math.Equation.CustomFunction;
+import Math.Equation.Function.CustomFunction;
 
 import Math.Exception.NotDefinedException;
 

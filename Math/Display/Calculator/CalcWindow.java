@@ -3,7 +3,7 @@ package Math.Display.Calculator;
 import Math.MathObject;
 import Math.Print;
 import Math.Equation.EquationSystem;
-import Math.Equation.CustomFunction;
+import Math.Equation.Function.CustomFunction;
 import Math.Exception.NotDefinedException;
 
 import java.awt.BorderLayout;
