@@ -7,7 +7,7 @@ import Math.Set.*;
 /**
  * A tester class for the whole equation
  * @author Sam Westerman
- * @version 0.7
+ * @version 0.71
  * @since 0.1
  */
 public class Tester {
@@ -59,7 +59,7 @@ public class Tester {
         // Print.printi("RESULT:", eqsys.eval("y"));
         Group<Double> g = new Group<Double>(new Double[]{0D,1D,1D,2D,3D,5D,8D,13D,21D});
         Group<Double> g2 = new Group<Double>(new Double[]{2D,3D,5D,7D,11D,13D,17D});
-        MathSet<Double> u = new MathSet<Double>("{x∈ℕ|x∧");
+        // MathSet<Double> u = new MathSet<Double>("{x∈ℕ|x∧");
         System.out.println(g.intersect(g2));
 
     }

@@ -16,7 +16,7 @@ import javax.swing.JComponent;
  * The component that is used to draw the Axis and the names of the equations.
  *
  * @author Sam Westerman
- * @version 0.7
+ * @version 0.71
  * @since 0.3
  * @depreciated
  */

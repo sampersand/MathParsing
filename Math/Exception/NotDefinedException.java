@@ -5,7 +5,7 @@ package Math.Exception;
  * a parameter. 
  * 
  * @author Sam Westerman
- * @version 0.7
+ * @version 0.71
  * @since 0.1
  */
 public class NotDefinedException extends MathException {

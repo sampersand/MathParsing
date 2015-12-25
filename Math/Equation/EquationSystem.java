@@ -16,7 +16,7 @@ import java.util.Iterator;
  * {@link CustomFunction}s (and the corresponding classes for them).
  * 
  * @author Sam Westerman
- * @version 0.7
+ * @version 0.71
  * @since 0.1
  */
 public class EquationSystem implements MathObject, Iterable {
@@ -40,13 +40,14 @@ public class EquationSystem implements MathObject, Iterable {
      */
     protected HashMap<String, CustomFunction> functions;
 
-
+    /** TODO: JAVADOC */
+    protected Domain domain;
     /**
      * The default constructor for this class. Just passes an empty ArrayList and HashMap to 
      * {@link #EquationSystem(ArrayList,HashMap) the main EquationSystem constructor}.
      */
     public EquationSystem() {
-        this(new ArrayList<Equation>(), new HashMap<String, CustomFunction>());
+        this(new ArrayList<Equation>(), new HashMap<String, CustomFunction>(), new Domain());
     }
 
     /**
@@ -56,13 +57,16 @@ public class EquationSystem implements MathObject, Iterable {
      * @param pFuncs    An ArrayList of {@link CustomFunction}s, used to instatiate {@link #functions}.
      */
     public EquationSystem(ArrayList<Equation> pEqs,
-                          HashMap<String, CustomFunction> pFuncs) {
+                          HashMap<String, CustomFunction> pFuncs,
+                          Domain pDomain) {
         equations = new ArrayList<Equation>();
         if(pEqs != null && pEqs.size() != 0)
             equations.addAll(pEqs);
         functions = new HashMap<String, CustomFunction>();
         if(pFuncs != null && pFuncs.size() != 0)
             functions.putAll(pFuncs);
+        if(pDomain != null)
+            domain = pDomain;
     }
 
     /**
@@ -218,6 +222,13 @@ public class EquationSystem implements MathObject, Iterable {
     }
 
     /**
+     * TODO: JAVADOC
+     */
+    public Domain domain(){
+        throw new NotDefinedException();
+    }
+
+    /**
      * Sets {@link #equations} to <code>pEqs</code>, and then returns this class.
      * @param pEqs      The ArrayList of {@link Equation}s to set {@link #equations} to.
      * @return This class after {@link #equations} is set to <code>pEqs</code>.
@@ -317,11 +328,6 @@ public class EquationSystem implements MathObject, Iterable {
         new Grapher(this).graph();
     }
 
-    @Override
-    public EquationSystem copy() {
-        return new EquationSystem(equations, functions);
-    }
-
     /**
      * Gets the amount of {@link Equations} (not {@link Expressions}) that are contained within {@link #equations}.
      * @return size of this class's {@link #equations}.
@@ -360,10 +366,14 @@ public class EquationSystem implements MathObject, Iterable {
         for(Equation eqs : equations) {
             ret += "\n" + eqs.toFancyString(idtLvl + 2);
         }
+
         ret += "\n" + indent(idtLvl + 1) + "Functions:";
         for(Object key : functions.keySet().toArray()) {
             ret += "\n" + indent(idtLvl + 2) + "'" + key + "' = " + functions.get("" + key).name;
         }
+
+        ret += indent(idtLvl + 1) + "Domain:\n";
+        ret += domain.toFancyString(idtLvl + 2);
 
         return ret;
     }
@@ -383,8 +393,8 @@ public class EquationSystem implements MathObject, Iterable {
             ret += functions.get("" + key).toFullString(idtLvl + 3);
             ret += "\n" + indentE(idtLvl + 3);
         }
-        if(functions.size() == 0)
-            ret += "\n" + indent(idtLvl + 2) + "null";
+        ret += indent(idtLvl + 1) + "Domain:\n";
+        ret += domain.toFullString(idtLvl + 2);
         ret += "\n" + indentE(idtLvl + 2);
         return ret + "\n" + indentE(idtLvl + 1);
     }
@@ -408,6 +418,11 @@ public class EquationSystem implements MathObject, Iterable {
             assert hasNext() : "there should be a next one.";
             return (E) EquationSystem.this.equations().get(i++);
         }
+    }
+
+    @Override
+    public EquationSystem copy() {
+        return new EquationSystem(equations, functions, domain);
     }
 
     /**

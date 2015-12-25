@@ -25,7 +25,7 @@ import javax.swing.JLabel;
  * The component that is used to graph an equation.
  *
  * @author Sam Westerman
- * @version 0.7
+ * @version 0.71
  * @since 0.2
  */
 public class DisplayComponent extends JLabel implements MathObject {  
