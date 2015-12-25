@@ -15,9 +15,9 @@ import Math.Display.Grapher;
 import java.util.ArrayList;
 
 
-public class graph extends InBuiltFunction{
-    public graph(){
-        super("graph","","");
+public class GraphFunction extends InBuiltFunction{
+    public GraphFunction(){
+        super("graph", "graph the arguments", "graph(A, B, ... )");
     }
     protected EquationSystem equationsToGraph;
     protected ArrayList<Set> setsToGraph;

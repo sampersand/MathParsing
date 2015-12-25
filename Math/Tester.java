@@ -27,7 +27,6 @@ public class Tester {
             // eqsys.add("c = 0 - 9");
             // eqsys.add("theta = 4 ^ x - ln(pi)");
             // eqsys.add("x = pi - e");
-            eqsys.add(new CustomFunction("f"));
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {

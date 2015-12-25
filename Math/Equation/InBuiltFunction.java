@@ -46,6 +46,7 @@ public class InBuiltFunction extends Function {
         put("ri", new InBuiltFunction("randi", "random integer from [0, 100], [0, 'A'], or ['A', 'B']", "ri(A, B)"));
         put("rd", new InBuiltFunction("randd", "random double from [0, 1), [0, 'A'), or ['A', 'B')", "rd(A, B)"));
         put("fac", new InBuiltFunction("fac", "factorial of 'A'", "fac(A)"));
+        put("graph", new GraphFunction());
     }};
 
     ///** The name of the {@link #inverse()} of this funtion. The reason it's not an actual function is because of 
