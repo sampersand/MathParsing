@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @version 0.72
  * @since 0.7
  */
-public class MathSet<E extends Double> extends Group<E> {
+public class MathSet<E extends Double> extends NumberCollection<E> {
 
     public MathSet(){
         super();
@@ -22,8 +22,8 @@ public class MathSet<E extends Double> extends Group<E> {
         super(pEle);
         assert isUnique();
     }
-    public MathSet(Group pGroup){
-        super(pGroup);
+    public MathSet(NumberCollection pNumberCollection){
+        super(pNumberCollection);
         assert isUnique() : "cannot instatiate a non-unique MathSet.";
     }
 

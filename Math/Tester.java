@@ -58,10 +58,12 @@ public class Tester {
         // System.out.println(eqsys.toFancyString());
         // eqsys.graph();
         // Print.printi("RESULT:", eqsys.eval("y"));
-        Group<Double> g = new Group<Double>(new Double[]{0D,1D,1D,2D,3D,5D,8D,13D,21D});
-        Group<Double> g2 = new Group<Double>(new Double[]{2D,3D,5D,7D,11D,13D,17D});
-        MathSet<Double> g3 = new MathSet<Double>("{x<10 & x > 10|x^2<4,theta = 4 ^ x - ln(pi)}");
-        System.err.println(g3);
+        Collection<Double> g1 = new Collection<Double>(new Double[]{0D,1D,1D,2D,3D,5D,8D,13D,21D});
+        Collection<Double> g2 = new Collection<Double>(new Double[]{2D,3D,5D,7D,11D,13D,17D});
+        MathSet<Double> g3 = new MathSet<Double>("{x<10 & x >|x^2<4,theta = 4 ^ x - ln(pi)}");
+        System.out.println(g3);
+        System.out.println(g2);
+        System.out.println(g1);
         // System.out.println(g.intersect(g2));
 
     }

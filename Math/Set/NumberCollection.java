@@ -9,7 +9,7 @@ import Math.Equation.EquationSystem;
 import java.util.ArrayList;
 
 /**
- * The class that represents Groups of numbers in general.
+ * The class that represents collections of numbers in general.
  * 
  * TODO: IMPLEMENT:
  * <ul>pred</ul>
@@ -32,24 +32,24 @@ import java.util.ArrayList;
  * @version 0.72
  * @since 0.7
  */
-public class Group<E extends Double> extends Collection<E> implements MathObject {
+public class NumberCollection<E extends Double> extends Collection<E> implements MathObject {
 
-    protected ArrayList<E> elements;
 
-    public Group(){
+    //TODO: FIGURE OUT THIS AND MATHSET, and how they relate
+    public NumberCollection(){
         super();
     }
-    public Group(ArrayList<E> pEle){
+    public NumberCollection(ArrayList<E> pEle){
         super(pEle);
     }
-    public Group(Group pGroup){
-        super(pGroup);
+    public NumberCollection(NumberCollection pNumberCollection){
+        super(pNumberCollection);
     }
-    public Group(E[] pEle){
+    public NumberCollection(E... pEle){
         super(pEle);
     }
 
-    public Group(EquationSystem pEqSys){
+    public NumberCollection(EquationSystem pEqSys){
         // TODO: DEFINE
         throw new NotDefinedException();
     }
