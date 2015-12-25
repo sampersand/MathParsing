@@ -1,7 +1,8 @@
 package Math.Equation;
 import Math.Exception.NotDefinedException;
 import java.util.ArrayList;
-public class Collection {
+
+public class Collection<E> extends java.util.AbstractList<E> {
     public static enum Comparator {
         LT("<"),
         GT(">"),
@@ -23,6 +24,12 @@ public class Collection {
     protected ArrayList<Object> elements; // Reason it's not ArrayList<E> is because other collections can be here.
     protected Object comparison; // its an object so functions can also use this
 
+    public Collection(){
+        this(Comparator.EQ);
+    }
+    public Collection(Object pComp){
+        comparison = Comparator.EQ;
+    }
     public Collection(Object... pNode) { //no subnodes, comparison is FIN
         comparison = Comparator.EQ;
         add(elements);

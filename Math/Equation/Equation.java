@@ -19,13 +19,13 @@ import java.util.regex.Pattern;
 public class Equation implements MathObject {
 
     /** This classe's list of expressions that are equal to eachother. */
-    protected ArrayList<Expression> expressions;
+    protected Collection<Expression> expressions;
 
     /**
      * The default constructor. This just instantiates {@link #expressions} as an empty ArrayList.
      */
     public Equation() {
-        expressions = new ArrayList<Expression>();
+        expressions = new Collection<Expression>();
     }
 
 
@@ -34,7 +34,7 @@ public class Equation implements MathObject {
      * @param pExprs    An Arraylist of {@link Expression}s that will be added to {@link #expressions}.
      * @return This class, with <code>pExprs</code> added.
      */
-    public Equation add(ArrayList<Expression> pExprs) {
+    public Equation add(Equation<Expression> pExprs) {
         expressions.addAll(pExprs);
         return this;
     }
@@ -71,7 +71,7 @@ public class Equation implements MathObject {
      * Returns the {@link #expressions} that this class defines.
      * @return {@link #expressions}
      */
-    public ArrayList<Expression> expressions() {
+    public Collection<Expression> expressions() {
         return expressions;
     }
 
