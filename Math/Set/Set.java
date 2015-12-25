@@ -22,6 +22,7 @@ import java.util.ArrayList;
  */
 public class Set implements MathObject {
 
+
     /**
      * The first, and primary, list for this class. Whenever a function is called without parameters, this array will
      * be the one passed. When graphing, this is the "X" axis.
