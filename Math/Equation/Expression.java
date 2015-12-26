@@ -134,21 +134,38 @@ public class Expression implements MathObject {
         char c;
         for(int x = 0; x < rEq.length(); x++) {
             c = rEq.charAt(x); // the character that will be used
+            if(prev.length() > 0 && prev.charAt(0) == '\'') { //if prev starts with ' (and therefor length > 0)
+                prev += c;
+                if(c == '\'') { // if the current token is ', then make a new ARGS token, and set prev to 0.
+                    tokens.add(new Token(prev.substring(1, prev.length() - 1), Token.Type.ARGS));
+                    prev = "";
+                }
+                continue;
+            }
+            if(prev.length() > 0 && prev.charAt(0) == '\'' && c == '\'') { //used to generate variables...?
+                prev = prev.substring(1);
+                tokens.add(new Token(prev, Token.Type.VAR));
+                prev = "";
+                continue;
+            }
             if(!isControlChar(c, prev)) {
                 prev += c;
                 if(x == rEq.length() - 1)
                     tokens.add(new Token(prev, isNumber(prev) ? Token.Type.NUM : Token.Type.VAR));                    
                 continue;
-            } else if(c == '\''){
-                prev += c;
-                if(prev.length() == 1)
-                    continue;
-                if(prev.)
-                assert prev.charAt(0) == '\'';
-                    // if(prev.charAt(0) == '\'') { //if prev starts with ' (and therefor length > 0)
-                tokens.add(new Token(prev.substring(1, prev.length() - 1), Token.Type.ARGS));
-                // }
-            } else if(c == '(') { // This should never be preceeded by a number.
+            }
+
+            // if(c == '\''){
+            //     prev += c;
+            //     if(prev.length() == 1)
+            //         continue;
+            //     if(prev.charAt(0) != '\'')
+            //     assert prev.charAt(0) == '\'';
+            //         // if(prev.charAt(0) == '\'') { //if prev starts with ' (and therefor length > 0)
+            //     tokens.add(new Token(prev.substring(1, prev.length() - 1), Token.Type.ARGS));
+
+            //     // }
+            if(c == '(') { // This should never be preceeded by a number.
 
                 if(prev.length() == 0 || isNumber(prev)) // if there is no preceeding function, it becomes a group
                     tokens.add(new Token(prev, Token.Type.GROUP));
@@ -196,7 +213,7 @@ public class Expression implements MathObject {
         if(OperationFunction.OPERATOR.fromString("" + c) != null)
             return prev.length() == 0 || prev.charAt(prev.length() - 1) != 'E' ;
         switch(c){
-            case '\'':
+            // case '\'':
             case '(':
             case ')':
             case ',':

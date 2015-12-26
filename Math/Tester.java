@@ -26,7 +26,7 @@ public class Tester {
             // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
             // eqsys.add("c = pi - e");
             // eqsys.add("theta = ln(pi) - c ^ x ");
-            eqsys.add("y = @graph('eq:x * (x-4) * (x - 2) * (x + 4) * (x + 2)', 'bounds:-20,-20,20,20')");
+            eqsys.add("y = @graph('eq:x * (x-4) * (x - 2) * (x + 4) * (x + 2)')");//, 'bounds:-20,-20,20,20')");
 
         } else {
             eqsys = new EquationSystem();
