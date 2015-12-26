@@ -130,7 +130,7 @@ public class Expression implements MathObject {
         char c;
         for(int x = 0; x < rEq.length(); x++) {
             c = rEq.charAt(x);
-            if(prev.length() > 0 && prev.charAt(0) == '\'') {
+            if(prev.length() > 0 && prev.charAt(0) == '\'') { // used to generate arguments
                 prev += c;
                 if(c == '\'') {
                     tokens.add(new Token(prev.substring(1, prev.length() - 1), Token.Type.ARGS));
@@ -138,7 +138,7 @@ public class Expression implements MathObject {
                 }
                 continue;
             }
-            if(prev.length() > 0 && prev.charAt(0) == '\'' && c == '\'') {
+            if(prev.length() > 0 && prev.charAt(0) == '\'' && c == '\'') { //used to generate variables...?
                 prev = prev.substring(1);
                 tokens.add(new Token(prev, Token.Type.VAR));
                 prev = "";
@@ -150,6 +150,7 @@ public class Expression implements MathObject {
                     tokens.add(new Token(prev, isNumP(prev) ? Token.Type.NUM : Token.Type.VAR));                    
                 continue;
             }
+            System.out.println(prev);
             switch(c) {
                 case '(': // This should never be preceeded by a number.
                     if(!isAlpha(prev)) {

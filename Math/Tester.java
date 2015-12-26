@@ -59,6 +59,7 @@ public class Tester {
         }
 
 
+        System.out.println(eqsys.toFullString());
         eqsys.graph();
         Print.printi("RESULT:", eqsys.eval("y"));
         // MathSet<Double> g3 = new MathSet<Double>("{y : y = x^2}");
