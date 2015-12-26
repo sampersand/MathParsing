@@ -49,7 +49,6 @@ public class GraphFunction extends InBuiltFunction{
         }
         equationsToGraph = new EquationSystem();
         numcToGraph = new ArrayList<ArrayList<NumberCollection<Double>>>();
-        gcomp = new GraphComponents();
         gcomp = new GraphComponents(new int[]{1250, 750}, new double[]{- 10, - 10, 10, 10}, 1000);
         node = pNode;
 
@@ -86,6 +85,15 @@ public class GraphFunction extends InBuiltFunction{
                         add(temp.get(0).resid(temp.get(1)));
                         add(temp.get(1));
                     }});
+                    break;
+                case "bounds":
+                    assert vals.length == 4 : "cannot do bounds with a vals length of 4"; //make this not assert
+                    double x, y, X, Y;
+                    x = Double.parseDouble(vals[0]);
+                    y = Double.parseDouble(vals[0]);
+                    X = Double.parseDouble(vals[0]);
+                    Y = Double.parseDouble(vals[0]);
+                    gcomp.setDispBounds(x, y, X, Y);
                     break;
                 default:
                     Print.printe("[ERROR] Unrecognized Argument: '" + id + "'!");

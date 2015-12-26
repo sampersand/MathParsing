@@ -22,12 +22,12 @@ public class Tester {
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
             // eqsys.add("y=@-2.0539125955565396E-15");
-            eqsys.add("y = x");
             // eqsys.add("y = 1 + sin(alpha) + c");
             // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
             // eqsys.add("c = pi - e");
             // eqsys.add("theta = ln(pi) - c ^ x ");
-            // eqsys.add("x = pi - e");
+            eqsys.add("y = @graph('eq:x * (x-4) * (x - 2) * (x + 4) * (x + 2)', 'bounds:-20,-20,20,20')");
+
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {
@@ -58,7 +58,7 @@ public class Tester {
 
 
         // System.out.println(eqsys.toFullString());
-        eqsys.graph();
+        // eqsys.graph();
         Print.printi("RESULT:", eqsys.eval("y"));
         // MathSet<Double> g3 = new MathSet<Double>("{y : y = x^2}");
             // "{y : y = 1 + sin(alpha) + c ∧ alpha = (9.45 + x ^ theta) / 2 ∧ c = 0 - 7 ∧ theta = 4 ^ x - ln(pi)}");

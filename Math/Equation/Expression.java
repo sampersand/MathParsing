@@ -141,11 +141,13 @@ public class Expression implements MathObject {
                 continue;
             } else if(c == '\''){
                 prev += c;
-                if(prev.length() == 0)
+                if(prev.length() == 1)
                     continue;
+                if(prev.)
                 assert prev.charAt(0) == '\'';
-                //if(prev.charAt(0) == '\'') { //if prev starts with ' (and therefor length > 0)
+                    // if(prev.charAt(0) == '\'') { //if prev starts with ' (and therefor length > 0)
                 tokens.add(new Token(prev.substring(1, prev.length() - 1), Token.Type.ARGS));
+                // }
             } else if(c == '(') { // This should never be preceeded by a number.
 
                 if(prev.length() == 0 || isNumber(prev)) // if there is no preceeding function, it becomes a group

@@ -140,11 +140,10 @@ public class Expression implements MathObject {
                 continue;
             }
             if(prev.length() > 0 && prev.charAt(0) == '\'' && c == '\'') { //used to generate variables...?
-                throw new NotDefinedException(); //pretty sure this will never occur, but not sure....
-                // prev = prev.substring(1);
-                // tokens.add(new Token(prev, Token.Type.VAR));
-                // prev = "";
-                // continue;
+                prev = prev.substring(1);
+                tokens.add(new Token(prev, Token.Type.VAR));
+                prev = "";
+                continue;
             }
             if(isAlphaNumPQ(c)) {
                 prev += c;

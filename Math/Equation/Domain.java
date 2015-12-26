@@ -10,7 +10,7 @@ import java.util.HashMap;
  * @since 0.71
  */
 public class Domain implements MathObject{
-    private HashMap<String, Inequality> domains;
+    private HashMap<String, CompareCollection> domains;
     private double step;
     private String args;
     public Domain(){
@@ -49,8 +49,5 @@ public class Domain implements MathObject{
     public boolean equals(Object pObj){
         throw new NotDefinedException();
     }
-    class Inequality{
 
-        public Inequality(){}
-    }
 }
