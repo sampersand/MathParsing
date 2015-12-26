@@ -201,10 +201,10 @@ public class EquationSystem implements MathObject, Iterable {
 
     /**
      * TODO: JAVADOC
-     */
+     */ 
 
     public EquationSystem setConstraints(EquationSystem pConstraints){
-        constraints = pConstraints
+        constraints = pConstraints;
         return this;
     }
 
@@ -287,7 +287,11 @@ public class EquationSystem implements MathObject, Iterable {
      */
     public double eval(String toEval) throws NotDefinedException {
         EquationSystem isod = copy().isolate(toEval);
-        return  isod.equations().get(0).expressions().get(0).node().eval(isod);
+        if(isod.equations().size() == 0){
+            Print.printw("Trying to evaluated an EquationSystem with no equations! returning 0");
+            return 0;
+        }
+        return isod.equations().get(0).expressions().get(0).node().eval(isod);
 
     }
 
@@ -404,8 +408,9 @@ public class EquationSystem implements MathObject, Iterable {
             ret += functions.get("" + key).toFullString(idtLvl + 3);
             ret += "\n" + indentE(idtLvl + 3);
         }
-        ret += "\n" + indent(idtLvl + 1) + "Domain:\n";
-        ret += constraints.toFullString(idtLvl + 2);
+        ret += "\n" + indent(idtLvl + 1) + "Constraints:";
+        if(constraints != null)
+            ret += "\n" + constraints.toFullString(idtLvl + 2);
         ret += "\n" + indentE(idtLvl + 2);
         return ret + "\n" + indentE(idtLvl + 1);
     }

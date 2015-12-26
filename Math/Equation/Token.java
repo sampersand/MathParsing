@@ -85,11 +85,6 @@ public class Token implements MathObject {
          */
         GROUP
         ,
-        /**
-         * A raw String. Used only to keep track of what is between a pair of single quotes (').
-         */
-        ARGS
-        ,
         /** This type given to the master node. */
         UNI
     }
@@ -150,11 +145,11 @@ public class Token implements MathObject {
     /**
      * Used to determine if a {@link Node} based on a token should be a {@link FinalNode} or a {@link Node}
      * (in this case, it's the former).
-     * @return True if type is a NUM or VAR or ARGS.
+     * @return True if type is a NUM or VAR.
      */
     public boolean isConst() {
         assert type != null : "type cannot be null, as it is immutable and the constructor doesn't allow null types!";
-        return type == Type.NUM || type == Type.VAR || type == Type.ARGS;
+        return type == Type.NUM || type == Type.VAR;
     }
 
     /**

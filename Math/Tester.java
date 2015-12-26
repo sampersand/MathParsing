@@ -26,7 +26,7 @@ public class Tester {
             // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
             // eqsys.add("c = pi - e");
             // eqsys.add("theta = ln(pi) - c ^ x ");
-            eqsys.add("y = @graph('eq:x * (x-4) * (x - 2) * (x + 4) * (x + 2)')");//, 'bounds:-20,-20,20,20')");
+            // eqsys.add("y = @graph('eq:x * (x-4) * (x - 2) * (x + 4) * (x + 2)')");//, 'bounds:-20,-20,20,20')");
 
         } else {
             eqsys = new EquationSystem();
@@ -59,18 +59,12 @@ public class Tester {
 
         // System.out.println(eqsys.toFullString());
         // eqsys.graph();
-        Print.printi("RESULT:", eqsys.eval("y"));
-        // MathSet<Double> g3 = new MathSet<Double>("{y : y = x^2}");
-            // "{y : y = 1 + sin(alpha) + c ∧ alpha = (9.45 + x ^ theta) / 2 ∧ c = 0 - 7 ∧ theta = 4 ^ x - ln(pi)}");
-        // System.out.println(g3.linReg().toFancyString());
-        // g3.graph();
+        // Print.printi("RESULT:", eqsys.eval("y"));
         // NumberCollection<Double> g1 = new NumberCollection<Double>(new Double[]{0D,1D,1D,2D,3D,5D,8D,13D,21D});
-
         // NumberCollection<Double> g2 = new NumberCollection<Double>(new Double[]{2D,3D,5D,7D,11D,13D,17D});
-        // System.out.println(g1);
-        // System.out.println(g1.mean());
-        // System.out.println(g2);
-        // System.out.println(g1.intersect(g2));
+        MathSet<Double> g3 = new MathSet<Double>("{y∈ℝ : y = x^2}");
+            // "{y : y = 1 + sin(alpha) + c ∧ alpha = (9.45 + x ^ theta) / 2 ∧ c = 0 - 7 ∧ theta = 4 ^ x - ln(pi)}");
+        System.out.println(g3.linReg().toFancyString());
     }
 
 

@@ -566,8 +566,6 @@ public class Node implements MathObject {
             case GROUP:
                 ret += "(";
                 break;
-            case ARGS:
-                return "'" + token.val() + "'";
             case NUM: case VAR:
                 return token.val();
         }

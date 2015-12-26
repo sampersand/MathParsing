@@ -37,7 +37,7 @@ public class FinalNode extends Node implements MathObject {
      */
     public FinalNode(Token pToken) throws TypeMisMatchException {
         super(pToken); // this sets token.
-        assert pToken.type() == Token.Type.NUM || pToken.type() == Token.Type.VAR || pToken.type() == Token.Type.ARGS;
+        assert pToken.type() == Token.Type.NUM || pToken.type() == Token.Type.VAR;
         if (token.type() == Token.Type.NUM)
             try {
                 dVal = Double.parseDouble(token.val());
@@ -89,10 +89,6 @@ public class FinalNode extends Node implements MathObject {
                     throw new NotDefinedException("Cannot evaluate the FinalNode '" + sVal + "' because there it " + 
                         "defined as a variable, and isn't an in-built variable.");
             }
-        } else if(token.type() == Token.Type.ARGS) {
-            Print.printw("Attempting to evaluate args! probably won't go well :P");
-            throw new NotDefinedException();
-            // return (double)getVar(dVal);
         } else {
             throw new TypeMisMatchException("Cannot evaluate the FinalNode '" +sVal + "' / '" + dVal +
                                             "' because it's type (" + token.type() + ") isn't a NUM, VAR, OR ARGS!");

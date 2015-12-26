@@ -42,11 +42,6 @@ public class GraphFunction extends InBuiltFunction{
                            IllegalArgumentException {
         assert pNode.size() > 0 : "Cannot evaluate the node '" + pNode.token().val() + "' when it's size isn't greater"+
                                   " than 1";
-        for(Node n : pNode.subNodes()) {
-            if(n.token().type() != Type.ARGS) {
-                throw new IllegalArgumentException("All arguments of graph must be of Token.Type 'ARG'!");
-            }
-        }
         equationsToGraph = new EquationSystem();
         numcToGraph = new ArrayList<ArrayList<NumberCollection<Double>>>();
         gcomp = new GraphComponents(new int[]{1250, 750}, new double[]{- 10, - 10, 10, 10}, 1000);
