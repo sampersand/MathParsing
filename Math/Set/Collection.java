@@ -99,7 +99,7 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
     }
 
     public boolean isUnique(){
-        Collection<E> ms = copy();
+        Collection<E> ms = new Collection<E>(this);
         while(ms.size() > 0)
             if(ms.elements().contains(ms.pop()))
                 return false;

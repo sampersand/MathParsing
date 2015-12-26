@@ -59,8 +59,11 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
             firstVar = "y";
         NumberCollection<E> numc2 = new NumberCollection<E>();
         for(double i = min; i < max; i += (max - min) / cStep) {
-            add((E) new Double(pEqSys.eval(firstVar, new EquationSystem().add("x = " + i))));
-            numc2.add((E) new Double(i));
+            Double temp = new Double(pEqSys.eval(firstVar, new EquationSystem().add("x = " + i)));
+            if(!Double.isNaN(temp)){
+                add((E)temp);
+                numc2.add((E) new Double(i));
+            }
         }
         assert size() == numc2.size() : "this (" + size() + ") ≠ numc2 (" + numc2.size() + ")";
         graph(numc2);
@@ -73,11 +76,11 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
     }
 
     public static double pred(Number pVal, final EquationSystem pEqSys) {
-        return pEqSys.eval("yhat", new EquationSystem().add("y", "" + pVal));
+        return pEqSys.eval("y", new EquationSystem().add("x", "" + pVal));
     }
 
     public static double pred(Number pVal, final EquationSystem pEqSys, final EquationSystem pEqSys2) {
-        return pEqSys.eval("yhat", pEqSys2);
+        return pEqSys.eval("y", pEqSys2);
     }
 
     public NumberCollection<E> es() {
@@ -110,22 +113,20 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
         throw new NotDefinedException();
     }
     public <T extends E> EquationSystem linReg(NumberCollection<T> pNC){
-        /*
-                double b1 = r(pArr1, pArr2) * stdev(pArr2) / stdev(pArr1);
-                double b0 = mean(pArr2) - b1 * mean(pArr1);
-                return new EquationSystem().add(new Equation().add("yhat","b0 + b1 * y"),
-                                                new Equation().add("b0", "" + b0), 
-                                                new Equation().add("b1", "" + b1));
 
-        */
-        return polyReg(1, pNC);
+        double b1 = r(pNC) * pNC.stdev() / stdev();
+        double b0 = pNC.mean() - b1 * mean();
+        return new EquationSystem().add(new Equation().add("y = b0 + b1 * x"))
+                                   .add(new Equation().add("b0 = " + b0)) 
+                                   .add(new Equation().add("b1 = " + b1));
+        // return polyReg(1, pNC);
     }
     public EquationSystem linReg(){
-        return polyReg(1, enumeration());
+        return linReg(enumeration());
     }
 
     public <T extends E> double r(NumberCollection<T> pNC){
-        assert size() == pNC.size();
+        assert size() == pNC.size() : size() + " ≠ " + pNC.size();
         double sigZxZy = 0;
         for(int i = 0; i < size(); i++)
             sigZxZy += Z(get(i)) * pNC.Z(pNC.get(i));
@@ -294,8 +295,9 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
     }
 
     public NumberCollection<E> enumeration(){ //should be integer, but its this so it works with other things.
+        int size = size();
         return new NumberCollection<E>(){{
-            for(int i = 0; i < size(); i++)
+            for(int i = 0; i < size; i++)
                 add((E) new Double(i));
         }};
     }
@@ -314,7 +316,18 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
     }
 
     public <T extends E> void graph() {
-        Grapher grapher = new Grapher((NumberCollection<Double>)this, (NumberCollection<Double>)enumeration());
+        Grapher grapher = new Grapher((NumberCollection<Double>)enumeration(),(NumberCollection<Double>)this);
+        grapher.graph();
+        //TODO: FIX THIS
+    }
+    public <T extends E> void graphWLinReg() {
+        Grapher grapher = new Grapher(linReg(),
+            new ArrayList<ArrayList<NumberCollection<Double>>>(){{
+                add(new ArrayList<NumberCollection<Double>>(){{
+                    add((NumberCollection<Double>)copy());
+                    add((NumberCollection<Double>)enumeration());
+                }});
+            }});
         grapher.graph();
         //TODO: FIX THIS
     }

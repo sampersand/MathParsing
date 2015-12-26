@@ -21,11 +21,15 @@ public class Tester {
     public static void main(String[] args) throws NotDefinedException {
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
-            eqsys.add("y = 1 + sin(alpha) + c");
-            eqsys.add("alpha = (9.45 + x ^ theta) / 2");
-            eqsys.add("c = 0 - 9");
-            eqsys.add("theta = 4 ^ x - ln(pi)");
-            eqsys.add("x = pi - e");
+            eqsys.add("y=x");
+
+            eqsys.add("x=-2.0539125955565396E-15");
+
+            // eqsys.add("y = 1 + sin(alpha) + c");
+            // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
+            // eqsys.add("c = pi - e");
+            // eqsys.add("theta = ln(pi) - c ^ x ");
+            // eqsys.add("x = pi - e");
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {
@@ -55,11 +59,12 @@ public class Tester {
         }
 
 
-        // System.out.println(eqsys.toFancyString());
-        // eqsys.graph();
-        // Print.printi("RESULT:", eqsys.eval("y"));
-        MathSet<Double> g3 = new MathSet<Double>("{qwrty | qwrty = (x - 2) * (x + 2)}");
-
+        eqsys.graph();
+        Print.printi("RESULT:", eqsys.eval("y"));
+        // MathSet<Double> g3 = new MathSet<Double>("{y : y = x^2}");
+            // "{y : y = 1 + sin(alpha) + c ∧ alpha = (9.45 + x ^ theta) / 2 ∧ c = 0 - 7 ∧ theta = 4 ^ x - ln(pi)}");
+        // System.out.println(g3.linReg().toFancyString());
+        // g3.graph();
         // NumberCollection<Double> g1 = new NumberCollection<Double>(new Double[]{0D,1D,1D,2D,3D,5D,8D,13D,21D});
 
         // NumberCollection<Double> g2 = new NumberCollection<Double>(new Double[]{2D,3D,5D,7D,11D,13D,17D});
