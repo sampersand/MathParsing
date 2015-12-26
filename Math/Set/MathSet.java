@@ -70,7 +70,7 @@ public class MathSet<E extends Double> extends NumberCollection<E> {
         pSetNotation = pSetNotation.split(":")[1];
         pSetNotation = pSetNotation.replaceAll(",", "∧");
         String[] equations = pSetNotation.split("∧");
-        return new EquationSystem().add(firstVar + " = firstVar ").add(equations).setDomain(new Domain(vars));
+        return new EquationSystem().add(firstVar + " = firstVar ").add(equations).setConstraints(new Domain(vars));
     }
 
 }

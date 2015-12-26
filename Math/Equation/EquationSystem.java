@@ -41,14 +41,14 @@ public class EquationSystem implements MathObject, Iterable {
     protected HashMap<String, CustomFunction> functions;
 
     /** TODO: JAVADOC */
-    protected Domain domain;
+    protected EquationSystem constraints;
 
     /**
      * The default constructor for this class. Just passes an empty ArrayList and HashMap to 
      * {@link #EquationSystem(ArrayList,HashMap) the main EquationSystem constructor}.
      */
     public EquationSystem() {
-        this(new ArrayList<Equation>(), new HashMap<String, CustomFunction>(), new Domain());
+        this(new ArrayList<Equation>(), new HashMap<String, CustomFunction>(), null);
     }
 
     /**
@@ -56,19 +56,19 @@ public class EquationSystem implements MathObject, Iterable {
      * <code>pEqs</code> and <code>pFuncs</code>, respectively.
      * @param pEqs      An ArrayList of {@link Equation}s, used to instiate {@link #equations}.
      * @param pFuncs    An ArrayList of {@link CustomFunction}s, used to instatiate {@link #functions}.
-     * @param pDomain   TODO: JAVADOC
+     * @param pConstraints   TODO: JAVADOC
      */
     public EquationSystem(ArrayList<Equation> pEqs,
                           HashMap<String, CustomFunction> pFuncs,
-                          Domain pDomain) {
+                          EquationSystem pConstraints) {
         equations = new ArrayList<Equation>();
         if(pEqs != null && pEqs.size() != 0)
             equations.addAll(pEqs);
         functions = new HashMap<String, CustomFunction>();
         if(pFuncs != null && pFuncs.size() != 0)
             functions.putAll(pFuncs);
-        if(pDomain != null)
-            domain = pDomain;
+        if(pConstraints != null)
+            constraints = pConstraints;
     }
 
     /**
@@ -202,9 +202,17 @@ public class EquationSystem implements MathObject, Iterable {
     /**
      * TODO: JAVADOC
      */
-    public EquationSystem setDomain(Domain pDomain){
-        domain = pDomain;
+
+    public EquationSystem setConstraints(EquationSystem pConstraints){
+        constraints = pConstraints
         return this;
+    }
+
+    /**
+     * TODO: JAVADOC
+     */
+    public EquationSystem constraints(){
+        return constraints;
     }
 
     /**
@@ -229,13 +237,6 @@ public class EquationSystem implements MathObject, Iterable {
     public ArrayList<Equation> equations() {
         assert functions != null; // it should always be instatiated by the constructor.
         return equations;
-    }
-
-    /**
-     * TODO: JAVADOC
-     */
-    public Domain domain(){
-        throw new NotDefinedException();
     }
 
     /**
@@ -383,7 +384,7 @@ public class EquationSystem implements MathObject, Iterable {
         }
 
         ret += "\n" + indent(idtLvl + 1) + "Domain:\n";
-        ret += domain.toFancyString(idtLvl + 2);
+        ret += constraints.toFancyString(idtLvl + 2);
 
         return ret;
     }
@@ -404,7 +405,7 @@ public class EquationSystem implements MathObject, Iterable {
             ret += "\n" + indentE(idtLvl + 3);
         }
         ret += "\n" + indent(idtLvl + 1) + "Domain:\n";
-        ret += domain.toFullString(idtLvl + 2);
+        ret += constraints.toFullString(idtLvl + 2);
         ret += "\n" + indentE(idtLvl + 2);
         return ret + "\n" + indentE(idtLvl + 1);
     }
@@ -432,7 +433,7 @@ public class EquationSystem implements MathObject, Iterable {
 
     @Override
     public EquationSystem copy() {
-        return new EquationSystem(equations, functions, domain);
+        return new EquationSystem(equations, functions, constraints);
     }
 
     /**
