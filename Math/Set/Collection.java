@@ -106,6 +106,14 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
         return true;
     }
 
+    public Collection<Integer> enumeration(){ //should be integer, but its this so it works with other things.
+        int size = size();
+        return new Collection<Integer>(){{
+            for(int i = 0; i < size; i++)
+                add(i);
+        }};
+    }
+
     public Iterator<E> iterator() {
         return (Iterator<E>) new Iter();
     }

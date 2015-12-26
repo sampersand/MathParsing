@@ -62,7 +62,7 @@ public class Tester {
         // Print.printi("RESULT:", eqsys.eval("y"));
         // NumberCollection<Double> g1 = new NumberCollection<Double>(new Double[]{0D,1D,1D,2D,3D,5D,8D,13D,21D});
         // NumberCollection<Double> g2 = new NumberCollection<Double>(new Double[]{2D,3D,5D,7D,11D,13D,17D});
-        MathSet<Double> g3 = new MathSet<Double>("{y∈ℝ : y = x^2}");
+        MathSet<Double> g3 = MathSet.fromSetNotation("{y ∈ ℝ : y = x^2}");
             // "{y : y = 1 + sin(alpha) + c ∧ alpha = (9.45 + x ^ theta) / 2 ∧ c = 0 - 7 ∧ theta = 4 ^ x - ln(pi)}");
         System.out.println(g3.linReg().toFancyString());
     }

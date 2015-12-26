@@ -51,22 +51,15 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
         String firstVar;
         if( pEqSys.equations().size() > 0 &&
             pEqSys.equations().get(0).expressions().size() == 2 && 
-            pEqSys.equations().get(0).expressions().get(1).expression().equals("firstVar")){
-            firstVar = pEqSys.equations().get(0).expressions().get(0).expression();
+            pEqSys.equations().get(0).expressions().get(1).expression().equals("firstVar")){ //used for what value to
+            firstVar = pEqSys.equations().get(0).expressions().get(0).expression();          //evaluate for.
             pEqSys.equations().remove(0);
         }
         else
             firstVar = "y";
-        NumberCollection<E> numc2 = new NumberCollection<E>();
         for(double i = min; i < max; i += (max - min) / cStep) {
-            Double temp = new Double(pEqSys.eval(firstVar, new EquationSystem().add("x = " + i)));
-            if(!Double.isNaN(temp)){
-                add((E)temp);
-                numc2.add((E) new Double(i));
-            }
+            add((E)new Double(pEqSys.eval(firstVar, new EquationSystem().add("x = " + i))));//will add a NaN to the list
         }
-        assert size() == numc2.size() : "this (" + size() + ") ≠ numc2 (" + numc2.size() + ")";
-        graph(numc2);
 
 
     }
@@ -87,7 +80,7 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
         return resid();
     }
 
-    public <T extends E> NumberCollection<E> resid(NumberCollection<T> pNC) {
+    public <T extends Number> NumberCollection<E> resid(NumberCollection<T> pNC) {
         return resid(pNC, linReg(pNC));
     }
     public NumberCollection<E> resid() {
@@ -106,13 +99,13 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
     public EquationSystem polyReg() {
         return polyReg(enumeration());
     }    
-    public <T extends E> EquationSystem polyReg(NumberCollection<T> pNC) {
+    public <T extends Number> EquationSystem polyReg(NumberCollection<T> pNC) {
         return polyReg(10, pNC);
     }
-    public <T extends E> EquationSystem polyReg(int maxPower, NumberCollection<T> pNC) {
+    public <T extends Number> EquationSystem polyReg(int maxPower, NumberCollection<T> pNC) {
         throw new NotDefinedException();
     }
-    public <T extends E> EquationSystem linReg(NumberCollection<T> pNC){
+    public <T extends Number> EquationSystem linReg(NumberCollection<T> pNC){
 
         double b1 = r(pNC) * pNC.stdev() / stdev();
         double b0 = pNC.mean() - b1 * mean();
@@ -294,11 +287,16 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
             fns.get(0), fns.get(1), fns.get(2), fns.get(3), fns.get(4), mean(), stdev());
     }
 
-    public NumberCollection<E> enumeration(){ //should be integer, but its this so it works with other things.
-        int size = size();
+    public NumberCollection<Double> enumeration(){ //should be integer, but its this so it works with other things.
         return new NumberCollection<E>(){{
-            for(int i = 0; i < size; i++)
+            for(double i = start; i < end; i+=step)
                 add((E) new Double(i));
+        }};
+    }
+    public static <cl extends Double> NumberCollection<cl> enumeration(Class<?> cl, double start, double end, double step){
+        return new NumberCollection<cl>(){{
+            for(double i = start; i < end; i+=step)
+                add((cl) new Double(i));
         }};
     }
 

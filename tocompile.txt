@@ -9,7 +9,6 @@ Math/Display/Calculator/CalcWindow.java
 Math/Display/Calculator/EquationDisplay.java
 Math/Display/Calculator/GraphDisplay.java
 Math/Display/Calculator/MainClass.java
-Math/Equation/Domain.java
 Math/Equation/Equation.java
 Math/Equation/EquationSystem.java
 Math/Equation/Expression.java
