@@ -58,8 +58,7 @@ public class Tester {
         // System.out.println(eqsys.toFancyString());
         // eqsys.graph();
         // Print.printi("RESULT:", eqsys.eval("y"));
-        MathSet<Double> g3 = new MathSet<Double>("{qwrty | qwrty = x * (x - 2) * (x + 2)}");
-        System.out.println(g3);
+        MathSet<Double> g3 = new MathSet<Double>("{qwrty | qwrty = (x - 2) * (x + 2)}");
 
         // NumberCollection<Double> g1 = new NumberCollection<Double>(new Double[]{0D,1D,1D,2D,3D,5D,8D,13D,21D});
 

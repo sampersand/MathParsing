@@ -48,7 +48,6 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
         //     throw new IllegalArgumentException("When defining a NumberCollection with an EquationSystem, the cStep cannot be 0!");
         // }
         super();
-        int pos = 0;
         String firstVar;
         if( pEqSys.equations().size() > 0 &&
             pEqSys.equations().get(0).expressions().size() == 2 && 
@@ -59,11 +58,11 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
         else
             firstVar = "y";
         NumberCollection<E> numc2 = new NumberCollection<E>();
-        for(double i = min; i < max; i += (max - min) / cStep, pos++) {
-            //TODO: FIGURE OUT A BETTER WAY instead of just "X";
+        for(double i = min; i < max; i += (max - min) / cStep) {
             add((E) new Double(pEqSys.eval(firstVar, new EquationSystem().add("x = " + i))));
             numc2.add((E) new Double(i));
         }
+        assert size() == numc2.size() : "this (" + size() + ") ≠ numc2 (" + numc2.size() + ")";
         graph(numc2);
 
 
@@ -309,7 +308,7 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
 
     //TODO: MAKE IT SO YOU CAN GRAPH WITH NO PARAMETER, AND INSTEAD USE THE INDEX OF DIFFERENT ELEMENTS.
     public <T extends E> void graph(NumberCollection<T> pNC) { //the number line on the bottom can be different.
-        Grapher grapher = new Grapher((NumberCollection<Double>)this, (NumberCollection<Double>)pNC);
+        Grapher grapher = new Grapher((NumberCollection<Double>)pNC, (NumberCollection<Double>)this);
         grapher.graph();
         //TODO: FIX THIS
     }

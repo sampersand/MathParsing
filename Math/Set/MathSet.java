@@ -41,11 +41,12 @@ public class MathSet<E extends Double> extends NumberCollection<E> {
      */
     public boolean add(E pEle){ 
         if(elements.contains(pEle)){
-            Print.printw("Trying to add a duplicate element (" + pEle +") to this. Doing nothing instead!");
+            Print.printw("Trying to add a duplicate element (" + pEle +") to a MathSet, but continuing instead.");
+            elements.add(pEle);
             return false;
         }
         elements.add(pEle);
-        return true; // for some bizarre reason, ArrayList does this too.
+        return true;
     }
 
     @Override

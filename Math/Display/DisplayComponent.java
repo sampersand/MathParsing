@@ -99,8 +99,10 @@ public class DisplayComponent extends JLabel implements MathObject {
             equationsys.equations().add(0, equation);
         } 
         numc = pNC;
-        assert numc == null || (numc.size() == 2 && numc.get(0).size() == numc.get(1).size());
-        // System.out.println(numc);
+        assert numc == null || numc.size() == 2;
+        assert numc == null || numc.get(0).size() == numc.get(1).size() : 
+                "\nnumc0 (" + numc.get(0).size() + "): \n\t" + numc.get(0) + 
+                "\nnumc1 (" + numc.get(1).size() + "): \n\t" + numc.get(1);
         color = pColor;
         this.createToolTip();
         // setPreferredSize(new Dimension(grapher.components().winBounds()[0], grapher.components().winBounds()[1]));
