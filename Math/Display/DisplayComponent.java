@@ -141,14 +141,11 @@ public class DisplayComponent extends JLabel implements MathObject {
             double cStep = grapher.components().cStep();
             for(double x = dispBounds[0]; x < dispBounds[2]; x += cStep) {
                 drawl(x,
-                      equationsys.eval("y",new EquationSystem().add("x = " + (x < 0 ? "0 " + x : x))), 
+                      equationsys.eval("y",new EquationSystem().add("x = @" + (x < 0 ? "0 " + x : x))), 
                       x + cStep,
-                      equationsys.eval("y", new EquationSystem().add("x = " +
+                      equationsys.eval("y", new EquationSystem().add("x = @" +
                             (x + cStep < 0 ? "0 " + (x + cStep) : x + cStep))));
             }
-            double x = -2.0539125955565396E-15;
-            drawl(x, equationsys.eval("y",new EquationSystem().add("x = " + (x < 0 ? "0 " + x : x))), 
-                  x + cStep, equationsys.eval("y", new EquationSystem().add("x = " + (x + cStep < 0 ? "0 " + (x + cStep) : x + cStep))));
         }
         else {
             drawl(0, dispBounds[1], 0, dispBounds[3]); //axis.
@@ -173,7 +170,6 @@ public class DisplayComponent extends JLabel implements MathObject {
     private void drawl(double x, double y, double X, double Y) {
        double[] xy=fix(x, y);
        double[] XY=fix(X, Y);
-       System.out.println("x: " + x + " | y: " + y + " | X: " + X + " | Y: " + Y);
        drawer.drawLine((int) xy[0], (int)xy[1], (int)XY[0], (int)XY[1]); // width, height
     }
   

@@ -19,6 +19,53 @@ import java.util.Random;
  */
 public class OperationFunction extends InBuiltFunction {
 
+
+    public static enum OPERATOR  {
+        ADDITION("+", 0),           // Algebra "addition"
+        SUBTRACTION("-", 0),        // Algebra "subtraction"
+        MULTIPLICATION("*", 0),     // Algebra "multiplication"
+        DIVISION("/", 0),           // Algebra "division"
+        POWER("^", 0),              // Algebra "power of"
+
+        ST_IN("∈"),                 // Set Theory "in"
+        ST_NIN("∉"),                // Set Theory "not in"
+        ST_PSUB("⊂"),               // Set Theory "proper subset"
+        ST_NPSUB("⊄"),              // Set Theory "not proper subset"
+        ST_SUB("⊆"),                // Set Theory "subset"
+        ST_NSUB("⊈"),               // Set Theory "not subset"
+        ST_PSUP("⊂"),               // Set Theory "proper supset"
+        ST_NPSUP("⊄"),              // Set Theory "not proper supset"
+        ST_SUP("⊆"),                // Set Theory "supset"
+        ST_NSUP("⊈"),               // Set Theory "not supset"
+        ST_NOT("¬");                // Set Theory "not"
+
+        private String notation;
+        private int priority;
+        private OPERATOR (String pNot){
+            this(pNot, -1);
+        }
+        private OPERATOR (String pNot, int pPriority){
+            notation = pNot;
+            priority = pPriority;
+        }
+
+        public String notation(){
+            return notation;
+        }
+        public int priority(){
+            return priority;
+        }
+        public String toString(){
+            return notation() + " | " + priority;
+        }
+        public static OPERATOR fromString(String pNot){
+            if (pNot != null)
+                for (OPERATOR o : OPERATOR.values())
+                    if (pNot.equalsIgnoreCase(o.notation()))
+                        return o;
+            return null;
+        }
+    }
     /**
      * Default constructor. Instatiated {@link #name}, {@link #help}, and {@link #syntax} as empty strings.
      * @throws IllegalArgumentException When either name, help, and / or syntax is null.

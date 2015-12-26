@@ -3,6 +3,7 @@ package Math.Equation;
 import Math.MathObject;
 import static Math.Declare.*;
 import Math.Exception.NotDefinedException;
+import Math.Equation.Function.OperationFunction;
 
 import java.util.HashMap;
 /**
@@ -195,20 +196,12 @@ public class Token implements MathObject {
      */
     public int priority() {
         assert val != null : "val cannot be null! It was declared in the constructor, and has no way to be changed!";
-        int ret = 0;
-        switch(val) {
-            case "^":
-                ret ++;
-            case "*": case "/":
-                ret ++;
-            case "+": case "-":
-                assert isOper();
-                return ret;
-            default : 
-                return -1;
+        if(OperationFunction.OPERATOR.fromString(val) != null){
+            assert isOper();
+            return OperationFunction.OPERATOR.fromString(val).priority();
         }
+        return -1;
     }
-
     @Override
     public String toString() {
         return "Token: val = [" + val + "], type = [" + type + "]";

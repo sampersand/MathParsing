@@ -71,9 +71,8 @@ public class Equation implements MathObject {
         for(String pStr : pStrs)
             for(String equal : equalities)
                 if(pStr.split(equal).length > 1)
-                    for(String str : pStr.split(equal, 2)){
+                    for(String str : pStr.split(equal, 2))
                         expressions.add(new Expression(str));
-                    }
         return this;
     }
 

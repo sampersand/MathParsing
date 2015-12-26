@@ -21,10 +21,8 @@ public class Tester {
     public static void main(String[] args) throws NotDefinedException {
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
-            eqsys.add("y=x");
-
-            eqsys.add("x=-2.0539125955565396E-15");
-
+            // eqsys.add("y=@-2.0539125955565396E-15");
+            eqsys.add("y = x");
             // eqsys.add("y = 1 + sin(alpha) + c");
             // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
             // eqsys.add("c = pi - e");
@@ -59,7 +57,7 @@ public class Tester {
         }
 
 
-        System.out.println(eqsys.toFullString());
+        // System.out.println(eqsys.toFullString());
         eqsys.graph();
         Print.printi("RESULT:", eqsys.eval("y"));
         // MathSet<Double> g3 = new MathSet<Double>("{y : y = x^2}");
