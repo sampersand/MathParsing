@@ -19,7 +19,7 @@ public class GraphFunction extends InBuiltFunction{
         super("graph", "graph the arguments", "graph(A, B, ... )");
     }
     protected EquationSystem equationsToGraph;
-    protected ArrayList<NumberCollection<Double>> numcToGraph;
+    protected ArrayList<ArrayList<NumberCollection<Double>>> numcToGraph;
     protected GraphComponents gcomp;
     protected Node node;
 
@@ -48,7 +48,7 @@ public class GraphFunction extends InBuiltFunction{
             }
         }
         equationsToGraph = new EquationSystem();
-        numcToGraph = new ArrayList<NumberCollection<Double>>();
+        numcToGraph = new ArrayList<ArrayList<NumberCollection<Double>>>();
         gcomp = new GraphComponents();
         gcomp = new GraphComponents(new int[]{1250, 750}, new double[]{- 10, - 10, 10, 10}, 1000);
         node = pNode;
@@ -56,6 +56,7 @@ public class GraphFunction extends InBuiltFunction{
         for(Node n : node.subNodes()) {
             String id = n.token().val().replaceAll("^(.*):.*","$1");
             String[] vals = n.token().val().replaceAll("^" + id + ":","").replaceAll(" ","").split(",");
+            ArrayList<NumberCollection<Double>> temp;
             switch(id) {
                 case "eq": case "":
                     equationsToGraph.add(vals[0]);
@@ -71,24 +72,37 @@ public class GraphFunction extends InBuiltFunction{
                 case "eqandresid":
                     equationsToGraph.add(new Equation().add(vals[0]));
                 case "eqtoresid":
-                    numcToGraph.add(varsToNumC(vals).resid());
+                    temp = varsToNumC(vals);
+                    assert temp.size() == 2;
+                    numcToGraph.add(new ArrayList<NumberCollection<Double>>(){{
+                        add(temp.get(0).resid(temp.get(1)));
+                        add(temp.get(1));
+                    }});
                     break;
                 case "resid": //residuals
-                    numcToGraph.add(getNumC(vals[0].split(",")).resid());
+                    temp = getNumC(vals[0].split(","));
+                    assert temp.size() == 2;
+                    numcToGraph.add(new ArrayList<NumberCollection<Double>>(){{
+                        add(temp.get(0).resid(temp.get(1)));
+                        add(temp.get(1));
+                    }});
                     break;
                 default:
                     Print.printe("[ERROR] Unrecognized Argument: '" + id + "'!");
             } 
         }
         Grapher grapher = new Grapher(equationsToGraph, pEqSys, numcToGraph, gcomp);
-        System.out.println(grapher.toFullString());
         grapher.graph();
         return 0;
 
     }
 
-    private NumberCollection<Double> varsToNumC(String[] vals) {
+    private ArrayList<NumberCollection<Double>> varsToNumC(String[] vals) {
         double min, max, cStep;
+        ArrayList<NumberCollection<Double>> ret = new ArrayList<NumberCollection<Double>>(){{
+            add(new NumberCollection<Double>());
+            add(new NumberCollection<Double>());
+        }};
         try {
             if(vals.length == 1 || vals.length == 2) {
                 min = gcomp.dispBounds()[0]; // this might bring up an error if eqsets are defined before 
@@ -105,13 +119,19 @@ public class GraphFunction extends InBuiltFunction{
         } catch (NumberFormatException err) {
             throw new IllegalArgumentException("One of the args for eqset (not the equation) isn't a double!");
         }
-        return new NumberCollection<Double>(new EquationSystem().add(vals[0]), min, max, cStep);
+        ret.add(new NumberCollection<Double>(new EquationSystem().add(vals[0]), min, max, cStep));
+        ret.add(new NumberCollection<Double>());
+        for(double i = min; i < max; i += (max - min) / cStep) {
+            ret.get(1).add(i);
+        }
+        return ret;
     }
-    private NumberCollection<Double> getNumC(String[] vals) {
-        return new NumberCollection<Double>(){{
-            for(String val : vals)
-                add(Double.parseDouble(val));
-        }};
+    private ArrayList<NumberCollection<Double>> getNumC(String[] vals) {
+        throw new NotDefinedException();
+        // return new NumberCollection<Double>(){{
+        //     for(String val : vals)
+        //         add(Double.parseDouble(val));
+        // }};
 
     }
 }

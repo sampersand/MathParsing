@@ -313,8 +313,8 @@ public class EquationSystem implements MathObject, Iterable {
      * @return true if this is an {@link #isolate() isolated EquationSystem}.
      */
     public boolean isolated(){
-        for(Equation eq: equations)
-            if(eq.expressions().get(0).node().size() != 1)
+        for(Equation eq : equations)
+            if(eq.expressions().size() > 0 && eq.expressions().get(0).node().size() != 1)
                 return false;
         return true;
     }

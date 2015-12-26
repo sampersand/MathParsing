@@ -7,15 +7,18 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
 
     protected ArrayList<E> elements;
 
+    //empty
     public Collection(){
         this(new ArrayList<E>());
     }
+
+
     public Collection(ArrayList<E> pElements){
         elements = new ArrayList<E>();
         add(pElements);
     }
 
-    public Collection(E... pElements) {
+    public Collection(E[] pElements) {
         elements = new ArrayList<E>();
         add(pElements);
     }
@@ -24,31 +27,35 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
         elements = new ArrayList<E>();
         add(pCollection);
     }
-    
-    public Collection<E> from(E[] pEle){
-        return new Collection<E>(){{
-            for(E e : pEle)
-                add(e);
-        }};
-    }
-    public Collection<E> add(E... pElements){
-        assert elements != null : "elements cannot be null!";
+
+    //add an array of elements
+    public Collection<E> add(E[] pElements){
         assert pElements != null : "pElements cannot be null!";
-        for(E ele : pElements)
-            elements.add(ele);
+        assert pElements.length != 0 : "pElements's length can't be 0";
+        for(E e : pElements)
+            elements.add(e);
         return this;
     }
-    public Collection<E> add(ArrayList<E> pElements){
-        assert elements != null : "elements cannot be null!";
+
+    //add an element
+    public boolean add(E pElement){
+        assert pElement != null : "pElement cannot be null!";
+        elements.add(pElement);
+        return true; //false of it cannot add. used for subsets.
+    }
+
+    public Collection<E> add(ArrayList<E> pElements){ //used so you can build elements
         assert pElements != null : "pElements cannot be null!";
         elements.addAll(pElements);
         return this;
     }
-    public <T extends E> Collection<E> add(Collection<T> pCollection){
+
+    public <T extends E> Collection<E> add(Collection<T> pCollection){ //used so you can build elements
         assert pCollection != null : "pCollection cannot be null!";
         elements.addAll(pCollection.elements());
         return this;
     }
+
     public ArrayList<E> elements(){ return elements; }
     public int size(){ return elements.size();}
     public E get(int pPos){ return elements.get(pPos);}
@@ -81,7 +88,8 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
                 ret.add(d);
         return ret;
     }
-
+    
+    // ¬ THIS
     public <T extends E> Collection<E> not(Collection<T> universe){
         return new Collection<E>(){{
             for(T e : universe)
@@ -89,7 +97,7 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
                     add(e);
         }};
     }
-    
+
     public boolean isUnique(){
         Collection<E> ms = copy();
         while(ms.size() > 0)
@@ -157,10 +165,10 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
         if(pObj == this)
             return true;
         ArrayList<E> pelements = ((Collection<E>)pObj).elements();
-        if(elements.size() != pelements.size())
+        if(size() != pelements.size())
             return false;
         for(int i = 0; i < elements.size(); i++)
-            if(elements.get(i) != pelements.get(i))
+            if(get(i) != pelements.get(i))
                 return false;
         return true;
 

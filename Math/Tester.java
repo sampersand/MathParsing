@@ -58,14 +58,16 @@ public class Tester {
         // System.out.println(eqsys.toFancyString());
         // eqsys.graph();
         // Print.printi("RESULT:", eqsys.eval("y"));
-        Collection<Double> g1 = new Collection<Double>(new Double[]{0D,1D,1D,2D,3D,5D,8D,13D,21D});
-        Collection<Double> g2 = new Collection<Double>(new Double[]{2D,3D,5D,7D,11D,13D,17D});
-        MathSet<Double> g3 = new MathSet<Double>("{x<10 & x >|x^2<4,theta = 4 ^ x - ln(pi)}");
+        MathSet<Double> g3 = new MathSet<Double>("{qwrty | qwrty = x * (x - 2) * (x + 2)}");
         System.out.println(g3);
-        System.out.println(g2);
-        System.out.println(g1);
-        // System.out.println(g.intersect(g2));
 
+        // NumberCollection<Double> g1 = new NumberCollection<Double>(new Double[]{0D,1D,1D,2D,3D,5D,8D,13D,21D});
+
+        // NumberCollection<Double> g2 = new NumberCollection<Double>(new Double[]{2D,3D,5D,7D,11D,13D,17D});
+        // System.out.println(g1);
+        // System.out.println(g1.mean());
+        // System.out.println(g2);
+        // System.out.println(g1.intersect(g2));
     }
 
 

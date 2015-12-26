@@ -86,6 +86,7 @@ public class FinalNode extends Node implements MathObject {
                 case "pi": return Math.PI;
                 case "rand": case "random": return Math.random();
                 default:
+                System.err.println(pEqSys.toFullString());
                     throw new NotDefinedException("Cannot evaluate the FinalNode '" + sVal + "' because there it " + 
                         "defined as a variable, and isn't an in-built variable.");
             }

@@ -28,7 +28,7 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
         super(pElements);
     }
 
-    public NumberCollection(E... pElements) {
+    public NumberCollection(E[] pElements) {
         super(pElements);
     }
 
@@ -40,31 +40,33 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
         this(pEqSys, -10, 10, 25);
     }
 
-    public NumberCollection(final EquationSystem pEqSys, Number min, Number max, Number cStep) {
+    public NumberCollection(final EquationSystem pEqSys, double min, double max, double cStep) {
         // if(min >= max) {
         //     throw new IllegalArgumentException("When defining a NumberCollection with an EquationSystem, the min (" + min +
         //                                    ") has to be smaller than the max (" + max + ")!");
         // } if(cStep == 0) {
         //     throw new IllegalArgumentException("When defining a NumberCollection with an EquationSystem, the cStep cannot be 0!");
         // }
-        throw new NotDefinedException(); //TODO
-        // arr1 = new double[(int) Math.abs(Math.ceil(cStep))];
-        // arr2 = new double[(int) Math.abs(Math.ceil(cStep))];
-        // int pos = 0;
-        // for(double i = min; i < max; i += (max - min) / cStep, pos++) {
-        //     if(pos >= arr1.length)
-        //         break;
-        //     arr1[pos] = i;
-        //     arr2[pos] = pred(i, pEqSys);
-        // }
+        super();
+        int pos = 0;
+        String firstVar;
+        if( pEqSys.equations().size() > 0 &&
+            pEqSys.equations().get(0).expressions().size() == 2 && 
+            pEqSys.equations().get(0).expressions().get(1).expression().equals("firstVar")){
+            firstVar = pEqSys.equations().get(0).expressions().get(0).expression();
+            pEqSys.equations().remove(0);
+        }
+        else
+            firstVar = "y";
+        NumberCollection<E> numc2 = new NumberCollection<E>();
+        for(double i = min; i < max; i += (max - min) / cStep, pos++) {
+            //TODO: FIGURE OUT A BETTER WAY instead of just "X";
+            add((E) new Double(pEqSys.eval(firstVar, new EquationSystem().add("x = " + i))));
+            numc2.add((E) new Double(i));
+        }
+        graph(numc2);
 
-    }
 
-    public NumberCollection<E> from(E[] pEle){
-        return new NumberCollection<E>(){{
-            for(E e : pEle)
-                add(e);
-        }};
     }
 
     public double pred(double pVal) {
@@ -94,9 +96,7 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
         assert size() == pNC.size();
         NumberCollection<E> ret = new NumberCollection<E>();
         for(int x = 0; x < size(); x++)
-            if(true)
-            throw new NotDefinedException();
-            // ret.add(pred(get(x), pEq) - pNC.get(x));
+            ret.add((E)new Double(pred(get(x), pEq) - pNC.get(x)));
         return ret;
     }
 
@@ -119,58 +119,50 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
                                                 new Equation().add("b1", "" + b1));
 
         */
-        return polyReg(1, enumeration());
+        return polyReg(1, pNC);
     }
     public EquationSystem linReg(){
         return polyReg(1, enumeration());
     }
 
-
-
-    public <T extends E> E r(NumberCollection<T> pNC){
+    public <T extends E> double r(NumberCollection<T> pNC){
         assert size() == pNC.size();
-        throw new NotDefinedException();
-        // E sigZxZy = 0D; //TODO: FIX "R"
-        // for(int i = 0; i < size(); i++)
-        //     sigZxZy += Z(get(i)) * pNC.Z(get(i));
-        // return sigZxZy / (size() -1);
+        double sigZxZy = 0;
+        for(int i = 0; i < size(); i++)
+            sigZxZy += Z(get(i)) * pNC.Z(pNC.get(i));
+        return sigZxZy / (size() -1);
     }
 
-    public <T extends E> E R2(NumberCollection<T> pNC){
-        throw new NotDefinedException();
-        //TODO: FIX THIS
-        // return Math.pow(r(pNC), 2);
+    public <T extends E> double R2(NumberCollection<T> pNC){
+        return Math.pow(r(pNC), 2);
     }
 
-    public <T extends E> E Z(E x) {
-        throw new NotDefinedException();
-        //TODO: FIX THIS
-        // return (x - mean()) / stdev();
+    public <T extends E> double Z(E x) {
+        return (x - mean()) / stdev();
     }
 
     public NumberCollection<E> Z() {
         NumberCollection<E> ret = new NumberCollection<E>();
         for(E ele : this)
-            ret.add(Z(ele));
+            ret.add((E)new Double(Z(ele)));
         return ret;
     }
 
-    public E avg() {
+    public double avg() {
         return mean();
     }
-    public E mean() {
+    public double mean() {
         assert size() != 0 : "cannot take the average of an empty array!";
-        // E sum = 0D;
-        // for(E e : this)
-        //     sum += e;
-        // return sum / size();
-        throw new NotDefinedException();
-        //TODO: FIX THIS
+        double sum = 0;
+        for(E e : this)
+            sum += e;
+        return sum / size();
+
     }
 
     public Collection<E> outliers() {
-        E std = stdev(); //so it wont have to be called very time.
-        E mean = mean(); //so it wont have to be called very time.
+        double std = stdev(); //so it wont have to be called very time.
+        double mean = mean(); //so it wont have to be called very time.
         NumberCollection<E> ret = new NumberCollection<E>();
         for(E e : this)
             if(e < mean - std * 3.0 || e > mean + std * 3.0) 
@@ -178,28 +170,39 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
         return ret;
     }
 
-    public E stdev() { 
-        // E sigYy_ = 0D;
-        // E y_  = mean();
-        // for(E y : this)
-        //     sigYy_  += Math.pow(y - y_, 2);
-        // return Math.sqrt(sigYy_  / (size() - 1));
-        throw new NotDefinedException();
-        //TODO: FIX THIS
+    public double stdev() { 
+        double sigYy_ = 0;
+        double y_  = mean();
+        for(E y : this)
+            sigYy_  += Math.pow(y - y_, 2);
+        return Math.sqrt(sigYy_  / (size() - 1));
     }
 
     public NumberCollection<E> fns() {
         assert size() > 0;
         NumberCollection<E> sorted = sort();
         int size = size(); //so it wont have to be called every time.
-        throw new NotDefinedException();
-        //TODO: FIX THIS
-        // return new NumberCollection<E>(){{
-        //     add(sorted.get(0));
-        //     add(size % 4 == 0 ? (sorted.get(size / 4 - 1) + sorted.get(size / 4)) / 2 :  sorted.get(size / 4));
-        //     add(size % 2 == 0 ? (sorted.get(size / 2 - 1) + sorted.get(size / 2)) / 2 : sorted.get(size / 2));
-        //     add(size % 4 == 0 ? (sorted.get(size * 3 / 4 - 1) + sorted.get(size * 3 / 4)) / 2 : sorted.get(size * 3 / 4));
-        // }};
+        return new NumberCollection<E>(){{
+            double q0, q1, q2, q3, q4;
+            q0 = sorted.get(0);
+
+            if(size % 4 == 0) q1 = (sorted.get(size / 4 - 1) + sorted.get(size / 4)) / 2;
+            else q1 = sorted.get(size / 4);
+
+            if(size % 2 == 0) q2 = (sorted.get(size / 2 - 1) + sorted.get(size / 2)) / 2;
+            else q2 = sorted.get(size / 2);
+
+            if(size % 4 == 0) q3 = (sorted.get(size * 3 / 4 - 1) + sorted.get(size * 3 / 4)) / 2;
+            else q3 = sorted.get(size * 3 / 4);
+
+            q4 = sorted.get(sorted.size() - 1);
+
+            add((E) new Double(q0));
+            add((E) new Double(q1));
+            add((E) new Double(q2));
+            add((E) new Double(q3));
+            add((E) new Double(q4));
+        }};
         
     }
 
@@ -215,18 +218,16 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
         // bubble sort b/c screw it
         // TODO: BETTER SORT METHOD
         int x = -1;
-        throw new NotDefinedException();
-        //TODO: FIX THIS
-        // E temp = 0;
-        // while(++x < ret.size() - 1) {
-        //     if(ret.get(x) > ret.get(x + 1)) {
-        //         temp = ret.get(x + 1);
-        //         ret.set(x + 1, ret.get(x));
-        //         ret.set(x, temp);
-        //         x = -1;
-        //     }
-        // }
-        // return ret;
+        E temp;
+        while(++x < ret.size() - 1) {
+            if(ret.get(x) > ret.get(x + 1)) {
+                temp = ret.get(x + 1);
+                ret.set(x + 1, ret.get(x));
+                ret.set(x, temp);
+                x = -1;
+            }
+        }
+        return ret;
     }
 
     public void printBoxPlot() {
@@ -294,11 +295,10 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
     }
 
     public NumberCollection<E> enumeration(){ //should be integer, but its this so it works with other things.
-        throw new NotDefinedException(); //TODO
-        // return new NumberCollection<E>(){{
-        //     for(int i = 0; i < size(); i++)
-        //         add(i);
-        // }};
+        return new NumberCollection<E>(){{
+            for(int i = 0; i < size(); i++)
+                add((E) new Double(i));
+        }};
     }
 
     public <T extends E> void graphe(NumberCollection<T> pNC) {
@@ -309,12 +309,16 @@ public class NumberCollection<E extends Double> extends Collection<E> implements
 
     //TODO: MAKE IT SO YOU CAN GRAPH WITH NO PARAMETER, AND INSTEAD USE THE INDEX OF DIFFERENT ELEMENTS.
     public <T extends E> void graph(NumberCollection<T> pNC) { //the number line on the bottom can be different.
-        // Grapher grapher = new Grapher(this);
-        // grapher.graph();
-        throw new NotDefinedException();
+        Grapher grapher = new Grapher((NumberCollection<Double>)this, (NumberCollection<Double>)pNC);
+        grapher.graph();
         //TODO: FIX THIS
     }
 
+    public <T extends E> void graph() {
+        Grapher grapher = new Grapher((NumberCollection<Double>)this, (NumberCollection<Double>)enumeration());
+        grapher.graph();
+        //TODO: FIX THIS
+    }
     @Override
     public String toString() {
         return "Number" + super.toString();

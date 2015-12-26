@@ -33,7 +33,7 @@ public class CompareCollection<E> extends Collection<E> {
         comparator = Comparators.EQ;
     }
 
-    public CompareCollection(E... pElements) {
+    public CompareCollection(E[] pElements) {
         super(pElements);
         comparator = Comparators.EQ;
     }
@@ -43,12 +43,6 @@ public class CompareCollection<E> extends Collection<E> {
         comparator = Comparators.EQ;
     }
     
-    public CompareCollection<E> from(E[] pEle){
-        return new CompareCollection<E>(){{
-            for(E e : pEle)
-                add(e);
-        }};
-    }
 
     public CompareCollection<E> setComparators(Object pObj){
         assert pObj != null;

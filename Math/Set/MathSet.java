@@ -32,8 +32,7 @@ public class MathSet<E extends Double> extends NumberCollection<E> {
     }
 
     public MathSet(EquationSystem pEqSys){
-        // super(pEqSys);
-        System.err.println(pEqSys.toFancyString());
+        super(pEqSys);
     }
 
     /**
@@ -59,16 +58,18 @@ public class MathSet<E extends Double> extends NumberCollection<E> {
      * TODO: JAVADOC
      */
     static EquationSystem generateEquationFromSetBuilderNotation(String pSetNotation){
+        pSetNotation = pSetNotation.replaceAll(" ","");
         if(pSetNotation.charAt(0) == '{' && pSetNotation.charAt(pSetNotation.length() - 1) == '}')
             pSetNotation = pSetNotation.substring(1, pSetNotation.length() - 1);
 
         pSetNotation = pSetNotation.replaceAll("\\|", ":"); // {x : ...} OR {x | ...}, not both.
         assert pSetNotation.replaceAll("[^:]","").length() == 1; // only can be 1 ":"
         String vars = pSetNotation.split(":")[0];
+        String firstVar = vars.replaceAll("^[^A-z]*([A-z]+).*$","$1");
         pSetNotation = pSetNotation.split(":")[1];
         pSetNotation = pSetNotation.replaceAll(",", "∧");
         String[] equations = pSetNotation.split("∧");
-        return new EquationSystem().add(equations).setDomain(new Domain(vars));
+        return new EquationSystem().add(firstVar + " = firstVar ").add(equations).setDomain(new Domain(vars));
     }
 
 }

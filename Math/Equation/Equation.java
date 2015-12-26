@@ -4,6 +4,7 @@ import Math.MathObject;
 import Math.Equation.Function.CustomFunction;
 import Math.Equation.Expression;
 import Math.Exception.NotDefinedException;
+import Math.Set.Collection;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -19,15 +20,25 @@ import java.util.regex.Pattern;
 public class Equation implements MathObject {
 
     /** This classe's list of expressions that are equal to eachother. */
-    protected ArrayList<Expression> expressions;
+    protected Collection<Expression> expressions;
 
     /**
      * The default constructor. This just instantiates {@link #expressions} as an empty ArrayList.
      */
     public Equation() {
-        expressions = new ArrayList<Expression>();
+        expressions = new Collection<Expression>();
     }
 
+
+    /**
+     * Adds all of the {@link Expression}s as defined in <code>pCol</code>.
+     * @param pCol    An Arraylist of {@link Expression}s that will be added to {@link #expressions}.
+     * @return This class, with <code>pCol</code> added.
+     */
+    public Equation add(Collection<Expression> pCol) {
+        expressions.add(pCol);
+        return this;
+    }
 
     /**
      * Adds all of the {@link Expression}s as defined in <code>pExprs</code>.
@@ -35,10 +46,9 @@ public class Equation implements MathObject {
      * @return This class, with <code>pExprs</code> added.
      */
     public Equation add(ArrayList<Expression> pExprs) {
-        expressions.addAll(pExprs);
+        expressions.add(pExprs);
         return this;
     }
-
     /**
      * Adds all of the {@link Expression}s in <code>pExprs</code> to {@link #expressions}.
      * @param pExprs    A variable amount of {@link Expression}s that will be added to {@link #expressions}.
@@ -71,7 +81,7 @@ public class Equation implements MathObject {
      * Returns the {@link #expressions} that this class defines.
      * @return {@link #expressions}
      */
-    public ArrayList<Expression> expressions() {
+    public Collection<Expression> expressions() {
         return expressions;
     }
 
@@ -99,7 +109,7 @@ public class Equation implements MathObject {
             //TODO: Update this "= " here to coincide with greater than or less than equations (when introduced).
             ret += "\n" + expr.toFancyString(idtLvl + 2);
         }
-        return ret;
+        return ret + "\n" + indentE(idtLvl + 2) + "\n" + indentE(idtLvl + 1);
     }
 
     @Override
