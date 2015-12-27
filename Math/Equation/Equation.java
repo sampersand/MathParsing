@@ -55,8 +55,7 @@ public class Equation implements MathObject {
      * @return This class, with <code>pExprs</code> added.
      */
     public Equation add(Expression... pExprs) {
-        for(Expression expr : pExprs)
-            expressions.add(expr);
+        expressions.add(pExprs);
         return this;
     }
 

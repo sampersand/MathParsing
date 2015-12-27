@@ -36,9 +36,11 @@ public class MathSet<E extends Double> extends NumberCollection<E> {
     public static MathSet<Double> fromSetNotation(String pSetNot){
         MathSet<Double> ret = new MathSet<Double>(eqFromSetNotation(pSetNot));
         ret.setNotation(pSetNot);
+        return ret;
     }
     public static MathSet<Double> enumerateSetNotation(String pSetNot){
         MathSet<Double> ret = new MathSet<Double>(eqFromSetNotation(pSetNot));
+        return ret;
     }
 
     /**
@@ -63,7 +65,7 @@ public class MathSet<E extends Double> extends NumberCollection<E> {
     public String notation(){
         return notation;
     }
-    void setNotation(String not){
+    void setNotation(String pSetNot){
         notation = pSetNot;
     }
     /**

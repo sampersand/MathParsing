@@ -388,7 +388,8 @@ public class EquationSystem implements MathObject, Iterable {
         }
 
         ret += "\n" + indent(idtLvl + 1) + "Domain:\n";
-        ret += constraints.toFancyString(idtLvl + 2);
+        if(constraints != null)
+            ret += "\n" + constraints.toFancyString(idtLvl + 2);
 
         return ret;
     }

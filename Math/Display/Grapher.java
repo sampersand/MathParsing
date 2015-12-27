@@ -39,7 +39,7 @@ public class Grapher extends JPanel implements MathObject {
     protected JLayeredPane layeredPane;
 
     /** TODO: JAVADOC */
-    protected ArrayList<ArrayList<NumberCollection<Double>>> numcs;
+    protected ArrayList<ArrayList<NumberCollection<Number>>> numcs;
 
     /** TODO: JAVADOC */
     protected EquationSystem equationsToGraph;
@@ -59,9 +59,9 @@ public class Grapher extends JPanel implements MathObject {
     }
 
     /** TODO: JAVADOC */
-    public Grapher(NumberCollection<Double> pnumc1, NumberCollection<Double> pnumc2) {
-        this(null, new ArrayList<ArrayList<NumberCollection<Double>>>(){{
-            add(new ArrayList<NumberCollection<Double>>(){{add(pnumc1); add(pnumc2);}});
+    public Grapher(NumberCollection<Number> pnumc1, NumberCollection<Number> pnumc2) {
+        this(null, new ArrayList<ArrayList<NumberCollection<Number>>>(){{
+            add(new ArrayList<NumberCollection<Number>>(){{add(pnumc1); add(pnumc2);}});
         }});
     }
 
@@ -77,13 +77,13 @@ public class Grapher extends JPanel implements MathObject {
 
     /** TODO: JAVADOC */
     public Grapher(final EquationSystem pEqSys,
-                   ArrayList<ArrayList<NumberCollection<Double>>> pNumberCollections) {
+                   ArrayList<ArrayList<NumberCollection<Number>>> pNumberCollections) {
         this(pEqSys, pNumberCollections, new GraphComponents());
     }
 
     /** TODO: JAVADOC */
     public Grapher(final EquationSystem pEqSys,
-                   ArrayList<ArrayList<NumberCollection<Double>>> pNumberCollections,
+                   ArrayList<ArrayList<NumberCollection<Number>>> pNumberCollections,
                    GraphComponents pGraph) {
         this(pEqSys, new EquationSystem(), pNumberCollections, pGraph);
     }
@@ -91,7 +91,7 @@ public class Grapher extends JPanel implements MathObject {
     /** TODO: JAVADOC */
     public Grapher(final EquationSystem pEqSysToGraph,
                    final EquationSystem pEqSysToUse,
-                   ArrayList<ArrayList<NumberCollection<Double>>> pNumberCollections,
+                   ArrayList<ArrayList<NumberCollection<Number>>> pNumberCollections,
                    GraphComponents pGraph) {
         numcs = pNumberCollections;
         equationsToGraph = pEqSysToGraph;
@@ -101,7 +101,7 @@ public class Grapher extends JPanel implements MathObject {
         if(pEqSysToUse == null)
             equationsToUse = pEqSysToGraph;
         if(pNumberCollections == null)
-            numcs = new ArrayList<ArrayList<NumberCollection<Double>>>();
+            numcs = new ArrayList<ArrayList<NumberCollection<Number>>>();
         components = pGraph;
         displays = new ArrayList<DisplayComponent>();
         displays.add(new DisplayComponent(this)); //adds axis
@@ -177,7 +177,7 @@ public class Grapher extends JPanel implements MathObject {
     }
 
     /** TODO: JAVADOC */
-    public ArrayList<ArrayList<NumberCollection<Double>>> numcs() { return numcs; }
+    public ArrayList<ArrayList<NumberCollection<Number>>> numcs() { return numcs; }
 
     /** TODO: JAVADOC */
     public EquationSystem equationsToGraph() { return equationsToGraph; }
@@ -211,9 +211,9 @@ public class Grapher extends JPanel implements MathObject {
     public String toFancyString(int idtLvl) {
         String ret = indent(idtLvl) + "Grapher:";
         ret += "\n" + indent(idtLvl + 1) + "NumberCollections:";
-        for(ArrayList<NumberCollection<Double>> sa : numcs){
+        for(ArrayList<NumberCollection<Number>> sa : numcs){
             assert sa.size() == 2 && sa.get(0).size() == sa.get(1).size();
-            for(NumberCollection<Double> s : sa)
+            for(NumberCollection<Number> s : sa)
                 ret += "\n" + s.toFancyString(idtLvl + 2);
         }
 
@@ -236,9 +236,9 @@ public class Grapher extends JPanel implements MathObject {
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "Grapher:";
         ret += "\n" + indent(idtLvl + 1) + "NumberCollections:";
-        for(ArrayList<NumberCollection<Double>> sa : numcs){
+        for(ArrayList<NumberCollection<Number>> sa : numcs){
             assert sa.size() == 2 && sa.get(0).size() == sa.get(1).size();
-            for(NumberCollection<Double> s : sa)
+            for(NumberCollection<Number> s : sa)
                 ret += "\n" + s.toFullString(idtLvl + 2);
         }
         if(numcs.size() == 0)

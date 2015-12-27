@@ -40,7 +40,7 @@ public class DisplayComponent extends JLabel implements MathObject {
     protected EquationSystem equationsys;
 
     /** TODO: JAVADOC */
-    protected ArrayList<NumberCollection<Double>> numc;
+    protected ArrayList<NumberCollection<Number>> numc;
 
     /** TODO: JAVADOC */
     protected Color color;
@@ -66,12 +66,12 @@ public class DisplayComponent extends JLabel implements MathObject {
      * I draw a set
      * TODO: JAVADOC
      */
-    public DisplayComponent(Grapher pGrapher, ArrayList<NumberCollection<Double>> pNC) {
+    public DisplayComponent(Grapher pGrapher, ArrayList<NumberCollection<Number>> pNC) {
         this(pGrapher, pNC, Color.BLUE);
     }
 
     /** TODO: JAVADOC */
-    public DisplayComponent(Grapher pGrapher, ArrayList<NumberCollection<Double>> pNC, Color pColor) {
+    public DisplayComponent(Grapher pGrapher, ArrayList<NumberCollection<Number>> pNC, Color pColor) {
         this(pGrapher, null, null, pNC, pColor);
     }
 
@@ -90,7 +90,7 @@ public class DisplayComponent extends JLabel implements MathObject {
 
     /** TODO: JAVADOC */
     private DisplayComponent(Grapher pGrapher, Equation pEquation, final EquationSystem pEqSys,
-                             ArrayList<NumberCollection<Double>> pNC, Color pColor) {
+                             ArrayList<NumberCollection<Number>> pNC, Color pColor) {
         grapher = pGrapher;
         equation = pEquation;
         equationsys = pEqSys;
@@ -161,7 +161,7 @@ public class DisplayComponent extends JLabel implements MathObject {
      * @param x          The x coordinant of the point to draw.
      * @param y          The y coordinant of the point to draw.
      */
-    private void drawp(double x, double y) {
+    private void drawp(Number x, Number y) {
        double[] xy=fix(x, y);
        drawer.drawOval((int)xy[0] - 5, (int) xy[1] - 5, 10, 10); // width, height
     }
@@ -174,8 +174,9 @@ public class DisplayComponent extends JLabel implements MathObject {
     }
   
     /** TODO: JAVADOC */
-    private double[] fix(double x, double y) {
-        return grapher.components().fix(x,y);
+    private double[] fix(Number x, Number y) {
+        throw new NotDefinedException(); //TODO: THIS
+        // return grapher.components().fix(x,y);
     }
 
     /** TODO: JAVADOC */
@@ -194,7 +195,7 @@ public class DisplayComponent extends JLabel implements MathObject {
     }
 
     /** TODO: JAVADOC */
-    public ArrayList<NumberCollection<Double>> numc(){
+    public ArrayList<NumberCollection<Number>> numc(){
         return numc;
     }
 

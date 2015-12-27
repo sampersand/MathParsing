@@ -94,9 +94,10 @@ public class GraphFunction extends InBuiltFunction{
                     Print.printe("[ERROR] Unrecognized Argument: '" + id + "'!");
             } 
         }
-        Grapher grapher = new Grapher(equationsToGraph, pEqSys, numcToGraph, gcomp);
-        grapher.graph();
-        return 0;
+        // Grapher grapher = new Grapher(equationsToGraph, pEqSys, numcToGraph, gcomp);
+        // grapher.graph();
+        throw new NotDefinedException(); //TODO: THIS
+        // return 0;
 
     }
 

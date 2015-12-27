@@ -38,7 +38,7 @@ public class CompareCollection<E> extends Collection<E> {
         comparator = Comparators.EQ;
     }
 
-    public <T extends E> CompareCollection(CompareCollection<T> pCollection) {
+    public CompareCollection(CompareCollection<E> pCollection) {
         super(pCollection);
         comparator = Comparators.EQ;
     }

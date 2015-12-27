@@ -23,7 +23,7 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
         add(pElements);
     }
 
-    public <T extends E> Collection(Collection<T> pCollection) {
+    public Collection(Collection<E> pCollection) {
         elements = new ArrayList<E>();
         add(pCollection);
     }
@@ -37,7 +37,7 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
         return this;
     }
 
-    //add an element
+    // add an element
     public boolean add(E pElement){
         assert pElement != null : "pElement cannot be null!";
         elements.add(pElement);
@@ -50,7 +50,7 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
         return this;
     }
 
-    public <T extends E> Collection<E> add(Collection<T> pCollection){ //used so you can build elements
+    public Collection<E> add(Collection<E> pCollection){ //used so you can build elements
         assert pCollection != null : "pCollection cannot be null!";
         elements.addAll(pCollection.elements());
         return this;
@@ -76,12 +76,12 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
     }
 
     // THIS ∪ PRGROUP
-    public <T extends E> Collection<E> union(Collection<T> pCollection){
+    public Collection<E> union(Collection<E> pCollection){
         return copy().add(pCollection);
     }
 
     // THIS ∩ PGROUP
-    public <T extends E> Collection<E> intersect(Collection<T> pCollection){
+    public Collection<E> intersect(Collection<E> pCollection){
         Collection<E> ret = new Collection<E>();
         for(E d : this)
             if(pCollection.contains(d))
@@ -90,9 +90,9 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
     }
     
     // ¬ THIS
-    public <T extends E> Collection<E> not(Collection<T> universe){
+    public Collection<E> not(Collection<E> universe){
         return new Collection<E>(){{
-            for(T e : universe)
+            for(E e : universe)
                 if(!contains(e))
                     add(e);
         }};
