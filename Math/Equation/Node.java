@@ -8,7 +8,7 @@ import Math.Equation.EquationSystem;
 import Math.Equation.Function.InBuiltFunction;
 import static Math.Equation.Token.Type.*;
 import Math.Exception.NotDefinedException;
-
+import Math.Set.Collection;
 import java.util.ArrayList;
 
 /**
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class Node implements MathObject {
 
     /** A list of all nodes that are benith this one in the hierarchical structure. */
-    protected ArrayList<Node> subNodes;
+    protected Collection<Node> subNodes;
 
     /** The token that this class determins how this class interacts with its {@link #subNodes}. */
     protected Token token;
@@ -41,7 +41,7 @@ public class Node implements MathObject {
      * @throws IllegalArgumentException Thrown when pNode is null.
      */
     public Node(Node pNode) throws IllegalArgumentException {
-        this(pNode.token, new ArrayList<Node>());
+        this(pNode.token, new Collection<Node>());
     }
 
     /**
@@ -52,7 +52,7 @@ public class Node implements MathObject {
      * @throws IllegalArgumentException Thrown when pToken is null.
      */
     public Node(Token pToken) throws IllegalArgumentException{
-        this(pToken, new ArrayList<Node>());
+        this(pToken, new Collection<Node>());
     }
 
     /**
@@ -63,7 +63,7 @@ public class Node implements MathObject {
      * @throws IllegalArgumentException Thrown when pToken or pSubNodes is null.
      */
     public Node(Token pToken,
-                ArrayList<Node> pSubNodes) throws IllegalArgumentException{
+                Collection<Node> pSubNodes) throws IllegalArgumentException{
         declP(pToken != null, "Cannot instatiate a Node with a null token! Pass an empty Token instead.");
         declP(pSubNodes != null, "Cannot instatiate a Node with null subNodes! Pass an empty ArrayList instead.");
         subNodes = pSubNodes;
@@ -83,7 +83,7 @@ public class Node implements MathObject {
                 Node... pSubNodes) {
         assert pToken != null; // if no token, then pass an empty token
         assert pSubNodes != null; // shouldnt be calling this if they are null
-        subNodes = new ArrayList<Node>() {{
+        subNodes = new Collection<Node>() {{
             for(Node n : pSubNodes)
                 add(n);
             }};
@@ -94,7 +94,7 @@ public class Node implements MathObject {
      * Returns this class's {@link #subNodes}. Note that this should never be called for {@link FinalNode}s.
      * @return this class's {@link #subNodes}.
      */
-    public ArrayList<Node> subNodes() {
+    public Collection<Node> subNodes() {
         return subNodes;
     }
 
@@ -683,6 +683,6 @@ public class Node implements MathObject {
 
     @Override
     public Node copy(){
-        return new Node(new Token(token.val(), token.type()), new ArrayList<Node>(){{addAll(subNodes);}});
+        return new Node(new Token(token.val(), token.type()), subNodes.copy());
     }
 }
