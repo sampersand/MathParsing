@@ -1,7 +1,7 @@
 import os
 toPrint = []
 lines = []
-for files in os.walk("./Math"):
+for files in os.walk("./West/Math"):
     for fil in files[2]:
         if ".java" in fil:
             toPrint.append(files[0][2:] + "/" + fil)
