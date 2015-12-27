@@ -3,6 +3,13 @@ import Math.MathObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * TODO: JAVADOC
+ * 
+ * @author Sam Westerman
+ * @version 0.75
+ * @since 0.75
+ */ 
 public class Collection<E> extends java.util.AbstractList<E> implements MathObject{
 
     protected ArrayList<E> elements;

@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * in Statistics.
  * 
  * @author Sam Westerman
- * @version 0.72
+ * @version 0.75
  * @since 0.72
  */
 public class NumberCollection<N extends Number> extends Collection<N> implements MathObject {
@@ -58,7 +58,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
 
     }
 
-    public double pred(double pVal) {
+    public double pred(double pVal) { //might not have to be double, not sure.
         return pred(pVal, linReg());
     }
 
@@ -67,22 +67,22 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     }
 
     public static double pred(Number pVal, final EquationSystem pEqSys, final EquationSystem pEqSys2) {
-        return pEqSys.eval("y", pEqSys2);
+        return pEqSys.eval("y", pEqSys2.add("x = " + pVal));
     }
 
-    // TODO: MAKE COMPATIBLE WITH 'N instanceof Number'
+
     public NumberCollection<N> es() {
         return resid();
     }
 
-    public <T extends Number> NumberCollection<N> resid(NumberCollection<T> pNC) {
+    public <M extends Number> NumberCollection<N> resid(NumberCollection<M> pNC) {
         return resid(pNC, linReg(pNC));
     }
     public NumberCollection<N> resid() {
         return resid(enumeration());
     }
 
-    public <T extends Number> NumberCollection<N> resid(NumberCollection<T> pNC, EquationSystem pEq) {
+    public <M extends Number> NumberCollection<N> resid(NumberCollection<M> pNC, EquationSystem pEq) {
         assert size() == pNC.size();
         throw new NotDefinedException(); //TODO: THIS
         // NumberCollection<N> ret = new NumberCollection<N>();
@@ -95,26 +95,25 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     public EquationSystem polyReg() {
         return polyReg(enumeration());
     }    
-    public <T extends Number> EquationSystem polyReg(NumberCollection<T> pNC) {
+    public <M extends Number> EquationSystem polyReg(NumberCollection<M> pNC) {
         return polyReg(10, pNC);
     }
-    public <T extends Number> EquationSystem polyReg(int maxPower, NumberCollection<T> pNC) {
+    public <M extends Number> EquationSystem polyReg(int maxPower, NumberCollection<M> pNC) {
         throw new NotDefinedException();
     }
-    public <T extends Number> EquationSystem linReg(NumberCollection<T> pNC){
+    public <M extends Number> EquationSystem linReg(NumberCollection<M> pNC){
 
-        // double b1 = r(pNC) * pNC.stdev() / stdev();
-        // double b0 = pNC.mean() - b1 * mean();
-        // return new EquationSystem().add(new Equation().add("y = b0 + b1 * x"))
-        //                            .add(new Equation().add("b0 = " + b0)) 
-        //                            .add(new Equation().add("b1 = " + b1));
-        return polyReg(1, pNC);
+        double b1 = r(pNC) * pNC.stdev() / stdev();
+        double b0 = pNC.mean() - b1 * mean();
+        return new EquationSystem().add(new Equation().add("y = b0 + b1 * x"))
+                                   .add(new Equation().add("b0 = " + b0)) 
+                                   .add(new Equation().add("b1 = " + b1));
     }
     public EquationSystem linReg(){
         return linReg(enumeration());
     }
 
-    public <T extends Number> double r(NumberCollection<T> pNC){
+    public <M extends Number> double r(NumberCollection<M> pNC){
         assert size() == pNC.size() : size() + " ≠ " + pNC.size();
         throw new NotDefinedException(); //TODO: THIS
         // double sigZxZy = 0;
@@ -123,13 +122,12 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         // return sigZxZy / (size() -1);
     }
 
-    public <T extends Number> double R2(NumberCollection<T> pNC){
+    public <M extends Number> double R2(NumberCollection<M> pNC){
         return Math.pow(r(pNC), 2);
     }
 
-    public <T extends Number> double Z(N x) {
-        throw new NotDefinedException(); //TODO: THIS
-        // return (x - mean()) / stdev();
+    public <M extends Number> double Z(M x) {
+        return (Double.parseDouble("" + x) - mean()) / stdev();
     }
 
     public NumberCollection<N> Z() {
@@ -153,24 +151,24 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         return sum / size();
     }
 
-    public N instantiate(Number num){
-        try{ 
-            for(java.lang.reflect.Constructor c : get(0).getClass().getConstructors()){
-                if(c.getParameterCount() == 1){
-                    return (N)c.newInstance(c.getParameterTypes()[0].cast(num));
-                }
-            }
-        } catch(InstantiationException err){
-            System.out.println(err);
-        } catch(IllegalAccessException err){
-            System.out.println(err);
-        } catch(java.lang.reflect.InvocationTargetException err){
-            System.out.println(err);
-        }
-        return null;
-    }
+    // public N instantiate(Number num){
+    //     try{ 
+    //         for(java.lang.reflect.Constructor c : get(0).getClass().getConstructors()){
+    //             if(c.getParameterCount() == 1){
+    //                 return (N)c.newInstance(c.getParameterTypes()[0].cast(num));
+    //             }
+    //         }
+    //     } catch(InstantiationException err){
+    //         System.out.println(err);
+    //     } catch(IllegalAccessException err){
+    //         System.out.println(err);
+    //     } catch(java.lang.reflect.InvocationTargetException err){
+    //         System.out.println(err);
+    //     }
+    //     return null;
+    // }
 
-    public Collection<N> outliers() {
+    public NumberCollection<N> outliers() {
         double std = stdev(); //so it wont have to be called very time.
         double mean = mean(); //so it wont have to be called very time.
         NumberCollection<N> ret = new NumberCollection<N>();
@@ -314,27 +312,27 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     //     }};
     // }
 
-    public <T extends Number> void graphe(NumberCollection<T> pNC) {
+    public <M extends Number> void graphe(NumberCollection<M> pNC) {
         //TODO: SEE IF THIS WORKS
         resid(pNC).graph(this); 
     }
 
 
     //TODO: MAKE IT SO YOU CAN GRAPH WITH NO PARAMETER, AND INSTEAD USE THE INDEX OF DIFFERENT ELEMENTS.
-    public <T extends Number> void graph(NumberCollection<T> pNC) { //the number line on the bottom can be different.
+    public <M extends Number> void graph(NumberCollection<M> pNC) { //the number line on the bottom can be different.
         // Grapher grapher = new Grapher(pNC, this);
         // grapher.graph();
         throw new NotDefinedException(); //TODO: THIS
     }
 
-    public <T extends Number> void graph() {
+    public void graph() {
         // Grapher grapher = new Grapher(enumeration(), this);
         // grapher.graph();
         throw new NotDefinedException(); //TODO: THIS
 
         //TODO: FIX THIS
     }
-    public <T extends Number> void graphWLinReg() {
+    public void graphWLinReg() {
         // Grapher grapher = new Grapher(linReg(),
         //     new ArrayList<ArrayList<NumberCollection<Double>>>(){{
         //         add(new ArrayList<NumberCollection<Double>>(){{

@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * each other.
  * 
  * @author Sam Westerman
- * @version 0.72
+ * @version 0.75
  * @since 0.1
  */
 public class Equation implements MathObject {

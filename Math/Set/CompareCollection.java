@@ -3,6 +3,13 @@ import Math.Exception.NotDefinedException;
 import Math.Set.Collection;
 import java.util.ArrayList;
 
+/**
+ * TODO: JAVADOC
+ * 
+ * @author Sam Westerman
+ * @version 0.75
+ * @since 0.75
+ */ 
 public class CompareCollection<E> extends Collection<E> {
     public static enum Comparators {
         LT("<"),

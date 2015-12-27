@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  * The frame that holds all the buttons and displays for the calculator.
  * 
  * @author Sam Westerman
- * @version 0.72
+ * @version 0.75
  * @since 0.3
  */ 
 public class MainClass implements MathObject {

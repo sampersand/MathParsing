@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * The class that represents Sets in mathematics - that is, each element in them has to be unique.
  * 
  * @author Sam Westerman
- * @version 0.72
+ * @version 0.75
  * @since 0.7
  */
 public class MathSet<E extends Double> extends NumberCollection<E> {
