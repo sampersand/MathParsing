@@ -22,7 +22,7 @@ public class Expression implements MathObject {
 
     /**
      * The Node representing the whole expression. 
-     * @see   Node#generateNodes(ArrayList)
+     * @see   Node#generateMasterNode(ArrayList)
      */
     protected Node node;
 
@@ -42,7 +42,7 @@ public class Expression implements MathObject {
      * @param pObj       An Object that this class will be modeled after. 
      */ 
     public Expression(Object pObj) {
-        this("" + pObj, Node.generateNodes(Expression.parseTokens("" + pObj)));
+        this("" + pObj, Node.generateMasterNode(Expression.parseTokens("" + pObj)));
     }
 
     /**
@@ -96,7 +96,7 @@ public class Expression implements MathObject {
      * @param pEq       The expression that this class's node will be based off of.
      */
     public void genNode(String pEq) {
-        node = Node.generateNodes(Expression.parseTokens(pEq));
+        node = Node.generateMasterNode(Expression.parseTokens(pEq));
     }
 
     /**

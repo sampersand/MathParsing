@@ -62,62 +62,22 @@ public class Node implements MathObject {
      * @param pSubNodes     The list of subNodes this class will have. Cannot be null.
      * @throws IllegalArgumentException Thrown when pToken or pSubNodes is null.
      */
-    public Node(Token pToken,
-                Collection<Node> pSubNodes) throws IllegalArgumentException{
+    public Node(Token pToken, Collection<Node> pSubNodes) throws IllegalArgumentException{
         declP(pToken != null, "Cannot instatiate a Node with a null token! Pass an empty Token instead.");
         declP(pSubNodes != null, "Cannot instatiate a Node with null subNodes! Pass an empty ArrayList instead.");
         subNodes = pSubNodes;
         token = pToken;
     }
 
-    /**
-     * An alternate constructor for Node. This one utilizes varargs. 
-     * To instantiate using this constructor, you would do somehting like:
-     * <code>Node n = new Node(Token, Node1, Node2, ... , NodeN</code>.
-     * @param pToken        The token that will determine how this class interacts with its {@link #subNodes}.
-     * @param pSubNodes     A of subNodes this class will have.
-     * @deprecated As of v0.68; Just pass an ArrayList to {@link #Node(Token,ArrayList)}.
-     */
-    @Deprecated
-    public Node(Token pToken,
-                Node... pSubNodes) {
-        assert pToken != null; // if no token, then pass an empty token
-        assert pSubNodes != null; // shouldnt be calling this if they are null
-        subNodes = new Collection<Node>() {{
-            for(Node n : pSubNodes)
-                add(n);
-            }};
-        token = pToken;
-    }
-
-    /**
-     * Returns this class's {@link #subNodes}. Note that this should never be called for {@link FinalNode}s.
-     * @return this class's {@link #subNodes}.
-     */
     public Collection<Node> subNodes() {
         return subNodes;
     }
 
-    /**
-     * Returns this class's {@link #token}.
-     * @return this class's {@link #token}.
-     */
     public Token token() {
         return token;
     }
 
-    /**
-     * Condenses functions and groups together into a single node. Creates 1-length nodes for operations and vars / nums.
-     * Note that this is only ever used with {@link #fixNodes(Node) fixNodes}, 
-     * {@link #generateNodes(ArrayList) generateNodes} and {@link #completeNodes(Node) completeNodes}.
-     * @param pPos      The position to start condensing nodes form.
-     * @param pNode     The "parent" node that any newly generated nodes will be put into.
-     * @param pTokens   The list of tokens that will be put into nodes. Cannot be null.
-     * @return The return type might seem odd, however, it always returns an updated pPos as arg 1, and the new node
-     *         to add as argument 2.
-     */
-    private Object[] condeseNodes(int pPos,
-                                  ArrayList<Token> pTokens) {
+    private Object[] condeseNodes(int pPos, ArrayList<Token> pTokens) {
         declP(pTokens != null, "Cannot condense a null ArrayList of Tokens! Try an empty ArrayList instead.");
         declND(!(this instanceof FinalNode), "Cannot condense a FinalNode, as it has no subNodes!");
         declP(checkForNullTokens(pTokens), "Cannot condeseNodes with null Tokens in pTokens!");
@@ -154,14 +114,6 @@ public class Node implements MathObject {
         return new Object[]{pPos, node};
     }
 
-
-    /**
-     * Creates a master node using the pNode as a starting point by applying the Order of Operations. If
-     * <code>this instanceof FinalNode</code>, it will return this.
-     * Note: pNode should already have been condensed via {@link #condeseNodes(int,Node,ArrayList) condeseNodes}, and
-     * fixed via {@link #fixNodes(Node) fixNodes}.
-     * @return The "master" node - that is, the node to control all other nodes. HAH - LOTR reference.
-     */
     private Node completeNodes() {
         if(this instanceof FinalNode)
             return this;
@@ -207,11 +159,6 @@ public class Node implements MathObject {
         return e;
     }
 
-    /**
-     * Fixes nodes to prevent horrible things like "1*- 1" from crashing. Cannot be used on a FinalNode.
-     * @return A "fixed" version of the nodes.
-     * @throws NotDefinedException Thrown when fixNodes is attempted on a FinalNode
-     */
     private Node fixNodes() {
         declND(!(this instanceof FinalNode), "Cannot fixNodes of a FinalNode!");
         assert subNodes != null : "Cannot fixNodes if subNodes is null!"; //should never happen
@@ -236,22 +183,14 @@ public class Node implements MathObject {
         }
         return node;
     }
-    /**
-     * Generates a "master node" from a list of tokens.
-     * @param pTokens   The list of tokens that the master node will be based off of. Cannot be null.
-     * @return The new master node.
-     * @throws IllegalArgumentException Thrown when <code>pTokens == null</code>.
-     */
-    public static Node generateNodes(ArrayList<Token> pTokens) {
+
+    public static Node generateMasterNode(ArrayList<Token> pTokens) {
         decl(pTokens != null, "Cannot generate nodes from a null ArrayList of Tokens!");
         decl(checkForNullTokens(pTokens), "Cannot generate nodes with null Tokens in pTokens!");
         return ((Node)(new Node(Token.UNI).condeseNodes(0, pTokens))[1]).completeNodes().fixNodes();
     }
 
 
-    /**
-     * Looks for null tokens, returns false if there are null tokens.
-     */
     private static boolean checkForNullTokens(ArrayList<Token> pTokens){
         for(Token t : pTokens)
             if(t == null)
@@ -259,13 +198,6 @@ public class Node implements MathObject {
         return true;
     }
 
-    /**
-     * Appends n to the end of {@link #subNodes}.
-     * <br>Note: <code>this</code> cannot be an instance of {@link FinalNode}.
-     * @param n             The node to append. Cannot be null.
-     * @throws NotDefinedException Thrown if this function is attempted to be executed on a {@link FinalNode}.
-     * @throws IllegalArgumentException Thrown if n is null.
-     */
     private void add(Node n) throws
                          NotDefinedException,
                          IllegalArgumentException {
@@ -275,39 +207,17 @@ public class Node implements MathObject {
         subNodes.add(n);
     }
 
-    /**
-     * Returns the size of {@link #subNodes}. Note there is no restriction on this for FinalNodes, because there is no
-     * need for it as of yet.
-     * @return The size of {@link #subNodes}.
-     */
     public int size() {
         assert subNodes != null; // should have been checked already.
         return subNodes.size();
     }
 
-    /**
-     * Returns the node at position i in {@link #subNodes}. Note there are no safeguards for this;
-     * this means that i can be beyond {@link #size()}.
-     * <br>Note: <code>this</code> cannot be an instance of {@link FinalNode}.
-     * @param i         The position of the node to get.
-     * @return The node at position i in {@link #subNodes}.
-     * @throws NotDefinedException Thrown if this function is attempted to be executed on a {@link FinalNode}.
-     */
     public Node get(int i) throws NotDefinedException{
         declND(!(this instanceof FinalNode), "Cannot get subNodes of a FinalNode!");
         assert subNodes != null; // should have been checked already.
         return subNodes.get(i);
     }
 
-    /**
-     * Sets the node at position i in {@link #subNodes} to n.
-     * Note: <code>this</code> cannot be an instance of {@link FinalNode}.
-     * <br>Note: this doesn't check if i is out of bounds.
-     * @param i         The position that n will be set to.
-     * @param n         The node to replace the current one at position i. Cannot be null.
-     * @throws NotDefinedException Thrown if this function is attempted to be executed on a {@link FinalNode}.
-     * @throws IllegalArgumentException Thrown if n is null.
-     */    
     private void set(int i,
                     Node n) throws
                         NotDefinedException, 
