@@ -23,9 +23,9 @@ public class OperationFunction extends InBuiltFunction {
     public static enum OPERATOR  {
         ADDITION("+", 0),           // Algebra "addition"
         SUBTRACTION("-", 0),        // Algebra "subtraction"
-        MULTIPLICATION("*", 0),     // Algebra "multiplication"
-        DIVISION("/", 0),           // Algebra "division"
-        POWER("^", 0),              // Algebra "power of"
+        MULTIPLICATION("*", 1),     // Algebra "multiplication"
+        DIVISION("/", 1),           // Algebra "division"
+        POWER("^", 2),              // Algebra "power of"
 
         ST_IN("∈"),                 // Set Theory "in"
         ST_NIN("∉"),                // Set Theory "not in"
