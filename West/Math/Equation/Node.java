@@ -318,7 +318,7 @@ public class Node implements MathObject {
         declP(pEqSys != null, "Cannot evaluate a null EquationSystem!");
         double ret = 0;
         if(token.type() == FUNC || token.type() == OPER) {
-            if(token.val().equals("")){
+            if(token.val().isEmpty()){
                 System.out.println(toFullString());
                 System.out.println(toFancyString());
                 System.out.println(this);

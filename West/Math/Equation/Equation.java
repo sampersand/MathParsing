@@ -5,9 +5,18 @@ import West.Math.Equation.Function.CustomFunction;
 import West.Math.Equation.Expression;
 import West.Math.Exception.NotDefinedException;
 import West.Math.Set.CompareCollection;
+import West.Math.Exception.TypeMisMatchException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Pattern;
+
+import West.Math.Equation.Function.OperationFunction;
+import West.Math.Set.CompareCollection;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import West.Math.Set.Collection;
 
 /**
  * A class that represents an equation in West.Math. It really is just a collection of Expressions that are equal to
@@ -22,6 +31,18 @@ public class Equation implements MathObject {
     /** This classe's list of expressions that are equal to eachother. */
     protected CompareCollection<Expression> expressions;
 
+    public static final HashMap<String, Object> CCHARS = new HashMap<String, Object>()
+    {{
+        put("op_un_l", OperationFunction.UNARY_LEFT);
+        put("op_un_r", OperationFunction.UNARY_RIGHT);
+        put("op_bi", OperationFunction.BINARY);
+        put("comp", CompareCollection.COMPARATOR);
+        put("paren_l", Token.PAREN_L);
+        put("paren_r", Token.PAREN_R);
+        put("delim", Token.DELIM);
+    }};
+
+
     /**
      * The default constructor. This just instantiates {@link #expressions} as an empty ArrayList.
      */
@@ -32,7 +53,7 @@ public class Equation implements MathObject {
 
     /**
      * Adds all of the {@link Expression}s as defined in <code>pCol</code>.
-     * @param pCol    An Arraylist of {@link Expression}s that will be added to {@link #expressions}.
+     * @param pCol    An ArrayList of {@link Expression}s that will be added to {@link #expressions}.
      * @return This class, with <code>pCol</code> added.
      */
     public Equation add(CompareCollection<Expression> pCol) {
@@ -40,41 +61,23 @@ public class Equation implements MathObject {
         return this;
     }
 
-    /**
-     * Adds all of the {@link Expression}s as defined in <code>pExprs</code>.
-     * @param pExprs    An Arraylist of {@link Expression}s that will be added to {@link #expressions}.
-     * @return This class, with <code>pExprs</code> added.
-     */
-    public Equation add(ArrayList<Expression> pExprs) {
-        expressions.add(pExprs);
+    public Equation add(String pStr){
+        ArrayList<Token> tokens = parseTokens(pStr);
+        ArrayList<ArrayList<Token>> units= new ArrayList<ArrayList<Token>>(){{
+            ArrayList<Token> prev = new ArrayList<Token>();
+            for(Token t : tokens){
+                prev.add(t);
+                if(isComp(t.val())){
+                    add(prev);
+                    prev = new ArrayList<Token>();
+                }
+            }
+            if(prev.size() != 0)
+                add(prev);
+        }};
+        for()
         return this;
     }
-    /**
-     * Adds all of the {@link Expression}s in <code>pExprs</code> to {@link #expressions}.
-     * @param pExprs    A variable amount of {@link Expression}s that will be added to {@link #expressions}.
-     * @return This class, with <code>pExprs</code> added.
-     */
-    public Equation add(Expression... pExprs) {
-        expressions.add(pExprs);
-        return this;
-    }
-
-    /**
-     * Adds new {@link Expression}s, each instatiated by a paramater in <code>pStrs</code>, to {@link #expressions}.
-     * @param pStrs    A variable amount of Strings that will be added to {@link #expressions}.
-     * @return This class, with <code>pStrs</code> added.
-     */    
-    public Equation add(String... pStrs) {
-        //TODO: FIX THIS UP
-        String[] equalities = {"<=", ">=", "<", ">", "=", "≤", "≥", "≠"};
-        for(String pStr : pStrs)
-            for(String equal : equalities)
-                if(pStr.split(equal).length > 1)
-                    for(String str : pStr.split(equal, 2))
-                        expressions.add(new Expression(str));
-        return this;
-    }
-
     /**
      * Returns the {@link #expressions} that this class defines.
      * @return {@link #expressions}
@@ -93,6 +96,117 @@ public class Equation implements MathObject {
             ret += expr.formattedExpression() + " = ";
         return ret.substring(0, ret.length() - (expressions.size() > 0 ? 3 : 0));
     }
+
+
+    /**
+     * Fixes any terms that might be misleading to the compiler. For example, <code>sinx</code> will become
+     * <code>sin(x)</code>. Note: To not have it do any fixing, put a "@" at the beginning of the input String
+     * @param pEq            The expression to be corrected.
+     * @return A corrected version of the expression.
+     */
+    public static String fixExpression(String pEq) {
+        //TODO: FIX
+        if(pEq.charAt(0) == '@')
+            return pEq.substring(1);
+        String[] trigf = new String[]{"sec", "csc", "cot", "sinh", "cosh", "tanh", "sin", "cos", "tan"};
+        for(String trig : trigf) {
+            pEq = pEq.replaceAll("()" + trig + "(?!h)([A-za-z]+)","$1" + trig + "($2)");
+        }
+
+        pEq = pEq.replaceAll("\\-\\(", "- 1*(");
+        pEq = pEq.replaceAll("([\\d.])+(\\(|(?:[A-Za-z]+))", "$1*$2");
+        return pEq;
+    }
+
+    /**
+     * Generates an ArrayList of tokens that represent rEq.
+     * Note that this removes all whitespace (including spaces) before handling the expression.
+     * @param rEq    The expression to be parsed.
+     * @return An ArrayList of tokens, each representing a different chunk of the expression. 
+     * @see Token
+     */
+    public static ArrayList<Token> parseTokens(String rEq) throws TypeMisMatchException{
+        rEq = fixExpression(rEq.trim().replaceAll(" ","")); //remove all spaces
+
+        ArrayList<Token> tokens = new ArrayList<Token>();
+        String prev = ""; //used for generating things
+        String s;
+        for(int x = 0; x < rEq.length(); x++) {
+            s = "" + rEq.charAt(x); // the character that will be used
+            if(!isControlChar(s, prev)) {
+                prev += s;
+                if(x == rEq.length() - 1)
+                    tokens.add(new Token(prev, Token.Type.VAR));
+                continue;
+            }
+            if(isParen(s)){
+                // if(prev.length() == 0 || isControlChar(prev)) // if there is no preceeding function, it becomes a group
+                //     tokens.add(new Token("", Token.Type.FUNC));
+                // else
+                tokens.add(new Token(prev, Token.Type.FUNC));
+                tokens.add(new Token(s, Token.Type.VAR));
+            } else if(isOper(s, prev)){
+                if(prev.length() != 0)
+                    tokens.add(new Token(prev, Token.Type.VAR));
+                tokens.add(new Token(s, Token.Type.OPER));
+            } else if(isDelim(s)){
+                if(prev.length() != 0)
+                    tokens.add(new Token(prev, Token.Type.VAR));
+                tokens.add(new Token(s, Token.Type.DELIM));
+            } else if(isComp(s)){
+                if(prev.length() != 0)
+                    tokens.add(new Token(prev, Token.Type.VAR));
+                tokens.add(new Token(s, Token.Type.COMP));
+            } else
+                assert false;
+            // } else if(OperationFunction.OPERATOR.fromString(c) != null) {
+            //     if(prev.length() != 0)
+            //         tokens.add(new Token(prev, Token.Type.VAR));
+            //     tokens.add(new Token(c, Token.Type.OPER));
+            // } else if(c == ','){
+            //     if(prev.length() != 0)
+            //         tokens.add(new Token(prev, Token.Type.VAR));
+            //     tokens.add(new Token(c, Token.Type.DELIM));
+            // } else {
+            //     throw new NotDefinedException("No idea what to do with character '" + c + "'");
+            //     // if(prev.length() != 0)
+            //     //     tokens.add(new Token(prev, Token.Type.VAR));
+            //     // tokens.add(new Token(c, Token.Type.NULL));
+            // }
+            prev = "";
+        }
+        return tokens;
+    }
+    
+    private static boolean isOper(String s, String prev){
+        if(prev.length() == 0 && ((HashMap)CCHARS.get("op_un_l")).containsKey(s))
+            return true;
+        if(prev.length() != 0 && ((HashMap)CCHARS.get("op_un_r")).containsKey(s))
+            return true;
+        if(((HashMap)CCHARS.get("op_bi")).containsKey(s))
+            return true;
+        return false;
+    }
+    private static boolean isControlChar(String s, String prev){
+        return isOper(s, prev) || isParen(s) || isDelim(s) || isComp(s);
+    }
+    private static boolean isComp(String s){
+        return ((HashMap)CCHARS.get("comp")).containsKey(s);
+    }
+    private static boolean isDelim(String s){
+        return ((Collection)CCHARS.get("delim")).contains(s);
+    }
+    private static boolean isParen(String s){
+        if(((Collection)CCHARS.get("paren_l")).contains(s))
+            return true;
+        if(((Collection)CCHARS.get("paren_r")).contains(s))
+            return true;
+        return false;
+    }
+
+
+
+
 
     @Override
     public String toString() {

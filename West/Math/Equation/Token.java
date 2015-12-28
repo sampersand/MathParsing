@@ -75,7 +75,7 @@ public class Token implements MathObject {
 
     public boolean isGroup() {
         assert type != null && val != null;
-        return type == Type.FUNC && val.equals("");
+        return type == Type.FUNC && val.isEmpty();
     }
 
     public boolean isOper() {

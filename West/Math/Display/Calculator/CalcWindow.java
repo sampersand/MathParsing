@@ -217,7 +217,7 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
                         break;
                     case "=" :
                         String temp = getResultWithGraph("=" + eqText);
-                        if (!temp.equals("")) {
+                        if (!temp.isEmpty()) {
                            JOptionPane.showMessageDialog(this, "'" + eqText + "' = " + temp);
                         }
                         break;
@@ -286,7 +286,7 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
             return "" + new EquationSystem().add(split[0]).eval("x");
         } else {
             HashMap<String,Double> vars = new HashMap<String,Double>() {{
-                if(!split[1].equals("")) {
+                if(!split[1].isEmpty()) {
                     String[] split1 = split[1].split(",");
                     for(int i = 0; i < split1.length; i++) {
                         String[] spl = split1[i].split(":");
@@ -305,7 +305,7 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
                 }
             }};
             HashMap<String,CustomFunction> funcs = new HashMap<String,CustomFunction>() {{
-                if(!split[2].equals("")) {
+                if(!split[2].isEmpty()) {
                     String[] split2 = split[2].split(",");
                     for(int i = 0; i < split2.length; i++) {
                         String[] spl = split2[i].split(":");

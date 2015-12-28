@@ -60,7 +60,7 @@ public class CustomFunction extends Function implements MathObject {
                           String pSyntax) throws IllegalArgumentException{
         super(pName, pHelp, pSyntax);
         try {
-            if(pName.equals("")) {
+            if(pName.isEmpty()) {
                 Print.printe("Instantiating a CustomFunction without a function associated!");
                 cl = null;
             } else {
