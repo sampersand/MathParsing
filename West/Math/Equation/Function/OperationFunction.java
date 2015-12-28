@@ -19,7 +19,10 @@ import java.util.Random;
  */
 public class OperationFunction extends InBuiltFunction {
 
-
+    ArrayList<String> unary_left = new ArrayList<String>(){{}};
+    ArrayList<String> unary_right = new ArrayList<String>(){{}};
+    // ArrayList<String> unary_left = new ArrayList<String>(){{}};
+    // ArrayList<String> unary_right = new ArrayList<String>(){{}};
     public static enum OPERATOR  {
         ADDITION("+", 0),           // Algebra "addition"
         SUBTRACTION("-", 0),        // Algebra "subtraction"
