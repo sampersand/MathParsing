@@ -363,6 +363,7 @@ public class Node implements MathObject {
     public Node getD(int i) {
         return getD(i, false);
     }
+    
     /**
      * Goes down i layers, or until a group / function is hit if pOver is false.
      * to get the last node in the subNode list. Note: if the current node is a FinalNode, and getD is called, it will
