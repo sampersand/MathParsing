@@ -212,9 +212,14 @@ public class EquationSystem implements MathObject, Iterable {
      * TODO: JAVADOC
      */
     public EquationSystem constraints(){
+        return constraints;
+    }
+    public EquationSystem addConstraint(String equation){
         if(constraints == null)
             constraints = new EquationSystem();
-        return constraints;
+        constraints.add(equation);
+        return this;
+
     }
 
     /**
