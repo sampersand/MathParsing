@@ -5,9 +5,11 @@ import West.Math.Print;
 import West.Math.Exception.TypeMisMatchException;
 import West.Math.Exception.NotDefinedException;
 import West.Math.Equation.Function.OperationFunction;
+import West.Math.Set.CompareCollection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import West.Math.Set.Collection;
 
 /**
  * A class that models an expression, and its behaviour.
@@ -16,6 +18,17 @@ import java.util.HashMap;
  */
 
 public class Expression implements MathObject {
+
+    public static final HashMap<String, Object> CCHARS = new HashMap<String, Object>()
+    {{
+        put("op_un_l", OperationFunction.UNARY_LEFT);
+        put("op_un_r", OperationFunction.UNARY_RIGHT);
+        put("op_bi", OperationFunction.BINARY);
+        put("comp", CompareCollection.COMPARATOR);
+        put("paren_l", Token.PAREN_L);
+        put("paren_r", Token.PAREN_R);
+        put("delim", Token.DELIM);
+    }};
 
     /** The raw expression. */
     protected String expression;
@@ -131,73 +144,79 @@ public class Expression implements MathObject {
 
         ArrayList<Token> tokens = new ArrayList<Token>();
         String prev = ""; //used for generating things
-        char c;
+        String s;
         for(int x = 0; x < rEq.length(); x++) {
-            c = rEq.charAt(x); // the character that will be used
-            if(!isControlChar(c, prev)) {
-
-                prev += c;
+            s = "" + rEq.charAt(x); // the character that will be used
+            if(!isControlChar(s, prev)) {
+                prev += s;
                 if(x == rEq.length() - 1)
-                    tokens.add(new Token(prev, isNumber(prev) ? Token.Type.NUM : Token.Type.VAR));
+                    tokens.add(new Token(prev, Token.Type.VAR));
                 continue;
-                
-            } else if(c == '(') { // This should never be preceeded by a number.
-
-                if(prev.length() == 0 || isNumber(prev)) // if there is no preceeding function, it becomes a group
-                    tokens.add(new Token(prev, Token.Type.GROUP));
-                else
-                    tokens.add(new Token(prev, Token.Type.FUNC));
-                tokens.add(new Token("(", Token.Type.LPAR));
-
-            } else if(c == ')') {
-                if(prev.length() != 0)
-                    tokens.add(new Token(prev, isNumber(prev) ? Token.Type.NUM : Token.Type.VAR));
-                tokens.add(new Token(")", Token.Type.RPAR));
-            } else if(OperationFunction.OPERATOR.fromString("" + c) != null) {
-                if(prev.length() != 0)
-                    tokens.add(new Token(prev, isNumber(prev) ? Token.Type.NUM : Token.Type.VAR));
-                tokens.add(new Token("" + c, Token.Type.OPER));
-            } else if(c == ','){
-                if(prev.length() != 0)
-                    tokens.add(new Token(prev, isNumber(prev) ? Token.Type.NUM : Token.Type.VAR));
-                tokens.add(new Token("" + c, Token.Type.DELIM));
-            } else {
-                throw new NotDefinedException("No idea what to do with character '" + c + "'");
-                // if(prev.length() != 0)
-                //     tokens.add(new Token(prev, isNumber(prev) ? Token.Type.NUM : Token.Type.VAR));
-                // tokens.add(new Token("" + c, Token.Type.NULL));
             }
+            if(isParen(s)){
+                // if(prev.length() == 0 || isControlChar(prev)) // if there is no preceeding function, it becomes a group
+                //     tokens.add(new Token("", Token.Type.FUNC));
+                // else
+                tokens.add(new Token(prev, Token.Type.FUNC));
+                tokens.add(new Token(s, Token.Type.VAR));
+            } else if(isOper(s, prev)){
+                if(prev.length() != 0)
+                    tokens.add(new Token(prev, Token.Type.VAR));
+                tokens.add(new Token(s, Token.Type.OPER));
+            } else if(isDelim(s)){
+                if(prev.length() != 0)
+                    tokens.add(new Token(prev, Token.Type.VAR));
+                tokens.add(new Token(s, Token.Type.DELIM));
+            } else if(isComp(s)){
+                if(prev.length() != 0)
+                    tokens.add(new Token(prev, Token.Type.VAR));
+                tokens.add(new Token(s, Token.Type.COMP));
+            } else
+                assert false;
+            // } else if(OperationFunction.OPERATOR.fromString(c) != null) {
+            //     if(prev.length() != 0)
+            //         tokens.add(new Token(prev, Token.Type.VAR));
+            //     tokens.add(new Token(c, Token.Type.OPER));
+            // } else if(c == ','){
+            //     if(prev.length() != 0)
+            //         tokens.add(new Token(prev, Token.Type.VAR));
+            //     tokens.add(new Token(c, Token.Type.DELIM));
+            // } else {
+            //     throw new NotDefinedException("No idea what to do with character '" + c + "'");
+            //     // if(prev.length() != 0)
+            //     //     tokens.add(new Token(prev, Token.Type.VAR));
+            //     // tokens.add(new Token(c, Token.Type.NULL));
+            // }
             prev = "";
         }
         return tokens;
     }
-
-    private static boolean isNumber(String s){
-        String[] spl = s.split("E"); // for sci notation
-        if(spl.length > 2 || spl.length == 0){
-            return false;
-        }
-
-        spl[0] = spl[0].replaceAll("-?\\d*\\.?\\d*", "");
-        if(spl.length == 1)
-            return spl[0].length() == 0;
-        spl[1] = spl[1].replaceAll("-?\\d*\\.?\\d*", "");
-        return spl[0].length() == 0 && spl[1].length() == 0;
+    
+    private static boolean isOper(String s, String prev){
+        if(prev.length() == 0 && ((HashMap)CCHARS.get("op_un_l")).containsKey(s))
+            return true;
+        if(prev.length() != 0 && ((HashMap)CCHARS.get("op_un_r")).containsKey(s))
+            return true;
+        if(((HashMap)CCHARS.get("op_bi")).containsKey(s))
+            return true;
+        return false;
     }
-
-    private static boolean isControlChar(char c, String prev){
-        if(OperationFunction.OPERATOR.fromString("" + c) != null)
-            return prev.length() == 0 || prev.charAt(prev.length() - 1) != 'E' ;
-        switch(c){
-            case '(':
-            case ')':
-            case ',':
-                return true;
-            default:
-                return false;
-        }
+    private static boolean isControlChar(String s, String prev){
+        return isOper(s, prev) || isParen(s) || isDelim(s) || isComp(s);
     }
-
+    private static boolean isComp(String s){
+        return ((HashMap)CCHARS.get("comp")).containsKey(s);
+    }
+    private static boolean isDelim(String s){
+        return ((Collection)CCHARS.get("delim")).contains(s);
+    }
+    private static boolean isParen(String s){
+        if(((Collection)CCHARS.get("paren_l")).contains(s))
+            return true;
+        if(((Collection)CCHARS.get("paren_r")).contains(s))
+            return true;
+        return false;
+    }
     /**
      * Takes {@link #expession} and returns it formatted cleanly. <code>A+B</code> becomes <code>A + B</code>, etc.
      * @return A cleanly formatted {@link #expression}.

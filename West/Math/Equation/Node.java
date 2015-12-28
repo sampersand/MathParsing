@@ -89,13 +89,13 @@ public class Node implements MathObject {
                 node.add(new FinalNode(t));
             } else if(t.isOper()){
                 node.add(new Node(t));
-            } else if(t.isGroup()) {
+            } else if(t.isFunc()) {
                 int paren = 0;
                 int x = pPos + 1;
 
                 do{
-                    if(pTokens.get(x).type() == LPAR) paren++;
-                    else if(pTokens.get(x).type() == RPAR) paren--;
+                    if(Token.PAREN_L.contains(pTokens.get(x).val())) paren++;
+                    if(Token.PAREN_R.contains(pTokens.get(x).val())) paren--;
                     x++;
                 } while(0 < paren && x < pTokens.size());
 
@@ -140,7 +140,7 @@ public class Node implements MathObject {
                         i++;
                         e.setD(depth - 1, -1, n);
                         break;
-                    } else if (nD.token.isGroup()) {
+                    } else if (nD.token.isFunc()) {
                         n.add(nD);
                         n.add(node.get(i + 1).completeNodes());
                         i++;
@@ -149,7 +149,7 @@ public class Node implements MathObject {
                     }
                 }
 
-            } else if(n.token.isGroup()) {
+            } else if(n.token.isFunc()) {
                 e.addD(e.depth(), n.completeNodes());
             } else {
                 throw new NotDefinedException("Cannot complete the node '" + n + "' because there is no known way to!");
@@ -164,30 +164,30 @@ public class Node implements MathObject {
         assert subNodes != null : "Cannot fixNodes if subNodes is null!"; //should never happen
         int i = 1;
         Node node = copy();
-        while(i < node.size()){
-            Node n = node.get(i);
-            assert n != null  : "no subNode can be null!"; // this should have been caught beforehand.
-            if(n.token.type() == OPER && n.token.val().equals("-") && node.get(i - 1).token.type() == OPER &&
-                                   (node.get(i - 1).token.val().equals("/") ||
-                                    node.get(i - 1).token.val().equals("*") ||
-                                    node.get(i - 1).token.val().equals("^"))) {
-                Node n2 = new Node(new Token("doesnt matter what I put here because it will become GRP", GROUP));
-                n2.add(new FinalNode(new Token("0", NUM)));
-                n2.add(n);
-                n2.add(node.get(i + 1));
-                node.rem(i + 1);
-                node.set(i, n2);
-                i++;
-            }
-            i++;
-        }
+        // while(i < node.size()){
+        //     Node n = node.get(i);
+        //     assert n != null  : "no subNode can be null!"; // this should have been caught beforehand.
+        //     if(n.token.type() == OPER && n.token.val().equals("-") && node.get(i - 1).token.type() == OPER &&
+        //                            (node.get(i - 1).token.val().equals("/") ||
+        //                             node.get(i - 1).token.val().equals("*") ||
+        //                             node.get(i - 1).token.val().equals("^"))) {
+        //         Node n2 = new Node(new Token("", FUNC));
+        //         n2.add(new FinalNode(new Token("0", NUM)));
+        //         n2.add(n);
+        //         n2.add(node.get(i + 1));
+        //         node.rem(i + 1);
+        //         node.set(i, n2);
+        //         i++;
+        //     }
+        //     i++;
+        // }
         return node;
     }
 
     public static Node generateMasterNode(ArrayList<Token> pTokens) {
         decl(pTokens != null, "Cannot generate nodes from a null ArrayList of Tokens!");
         decl(checkForNullTokens(pTokens), "Cannot generate nodes with null Tokens in pTokens!");
-        return ((Node)(new Node(Token.UNI).condeseNodes(0, pTokens))[1]).completeNodes().fixNodes();
+        return ((Node)(new Node(new Token("", FUNC)).condeseNodes(0, pTokens))[1]).completeNodes().fixNodes();
     }
 
     private static boolean checkForNullTokens(ArrayList<Token> pTokens){
@@ -247,7 +247,7 @@ public class Node implements MathObject {
     private void addD(int i, Node n) throws  NotDefinedException, IllegalArgumentException {
         declND(!(this instanceof FinalNode), "Cannot addDepth subNodes to a FinalNode!");
         declP(n != null, "Cannot addDepth null Nodes!");
-        if(i <= 0 || size() <= 0 || get(size() - 1).token.type() == GROUP) {
+        if(i <= 0 || size() <= 0 || get(size() - 1).token.isGroup()) {
             add(n);
         } else {
             if(i == 2 && get(size() - 1) instanceof FinalNode) {
@@ -275,7 +275,7 @@ public class Node implements MathObject {
             if(i == 2 && get(size() - 1) instanceof FinalNode ) {
                 Print.printi("Trying to setD to a FinalNode. Going one level up instead.");
                 set(size() - 1,n);
-            } else if(get(size() - 1).token.type() == GROUP) {
+            } else if(get(size() - 1).token.isGroup()) {
                 set(p, n);
             } else {
                 get(size() - 1).setD(i - 1, p, n);
@@ -287,24 +287,22 @@ public class Node implements MathObject {
         String ret = "";
         switch(token.type()) {
             case FUNC:
-                ret += token.val(); //fall thru
-            case GROUP:
-                ret += "(";
+                ret += token.val() + "(";
                 break;
-            case NUM: case VAR:
+            case VAR:
                 return token.val();
         }
         for(Node n : subNodes) {
             ret += n.genEqString();
             switch(token.type()) {
-                case FUNC: case GROUP:
+                case FUNC:
                     ret += ", ";
                     break;
                 case OPER:
                     ret += " " + token.val() + " ";
             }
         }
-        if(token.type() == FUNC || token.type() == GROUP) {
+        if(token.type() == FUNC) {
             return ret.substring(0, ret.length() - (size() > 0 ? 2 : 0)) + ")";
         } else if(token.type() == OPER) {
             return ret.substring(0, ret.length() - (size() > 0 ? 3 : 0));
@@ -320,12 +318,19 @@ public class Node implements MathObject {
         declP(pEqSys != null, "Cannot evaluate a null EquationSystem!");
         double ret = 0;
         if(token.type() == FUNC || token.type() == OPER) {
-            if(pEqSys.functions().get(token.val()) != null){ // if it is a function
+            if(token.val().equals("")){
+                System.out.println(toFullString());
+                System.out.println(toFancyString());
+                System.out.println(this);
+                assert subNodes.size() == 1;
+                ret = subNodes.get(0).eval(pEqSys);
+            }
+            else if(pEqSys.functions().get(token.val()) != null){ // if it is a function
                 ret = pEqSys.functions().get(token.val()).exec(pEqSys, this);
             } else {
                 ret = InBuiltFunction.exec(token.val(), pEqSys, this);
             }
-        } else if (token.type() == GROUP || token.isUni() || this instanceof FinalNode){
+        } else if (token.isGroup() || this instanceof FinalNode){
             ret = get(0).eval(pEqSys);
         } else {
             throw new NotDefinedException("This shouldn't happen! There is no way to evaluate node: " + token.val());

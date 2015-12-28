@@ -9,6 +9,8 @@ import West.Math.Exception.NotDefinedException;
 import java.util.HashMap;
 import java.util.Random;
 
+import West.Math.Set.Collection;
+
 /**
  * A class that represents an operation in mathametics. It acts very similar to an {@link InBuiltFunction}.
  * 
@@ -19,10 +21,27 @@ import java.util.Random;
  */
 public class OperationFunction extends InBuiltFunction {
 
-    ArrayList<String> unary_left = new ArrayList<String>(){{}};
-    ArrayList<String> unary_right = new ArrayList<String>(){{}};
-    // ArrayList<String> unary_left = new ArrayList<String>(){{}};
-    // ArrayList<String> unary_right = new ArrayList<String>(){{}};
+    public static final HashMap<String, Function> UNARY_LEFT = new HashMap<String, Function>()
+    {{
+        put("+", null);
+        put("-", null);
+        put("~", null);
+    }};
+
+    public static final HashMap<String, Function> UNARY_RIGHT = new HashMap<String, Function>()
+    {{
+        put("!", InBuiltFunction.FUNCTIONS.get("fac"));
+    }};
+
+    public static final HashMap<String, Function> BINARY = new HashMap<String, Function>()
+    {{
+        put("+", InBuiltFunction.FUNCTIONS.get("+"));
+        put("-", InBuiltFunction.FUNCTIONS.get("-"));
+        put("*", InBuiltFunction.FUNCTIONS.get("*"));
+        put("/", InBuiltFunction.FUNCTIONS.get("/"));
+        put("^", InBuiltFunction.FUNCTIONS.get("^"));
+    }};
+
     public static enum OPERATOR  {
         ADDITION("+", 0),           // Algebra "addition"
         SUBTRACTION("-", 0),        // Algebra "subtraction"

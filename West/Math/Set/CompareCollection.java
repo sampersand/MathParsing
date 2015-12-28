@@ -4,6 +4,7 @@ import West.Math.Set.Collection;
 import java.util.ArrayList;
 import West.Math.Equation.Token;
 
+import java.util.HashMap;
 /**
  * TODO: JAVADOC
  * LOL i'm going to have to figure out how to spell 'comparator' correctly XD
@@ -13,6 +14,19 @@ import West.Math.Equation.Token;
  * @since 0.75
  */ 
 public class CompareCollection<E> extends Collection<E> {
+
+
+    public static final HashMap<String, Comparator> COMPARATOR = new HashMap<String, Comparator>()
+    {{
+        put("<", Comparator.LT);
+        put(">", Comparator.GT);
+        put("=", Comparator.EQ);
+        put("≠", Comparator.EQ);
+        put("≥", Comparator.EQ);
+        put("=", Comparator.EQ);
+    }};
+
+
     public static enum Comparator {
         LT("<"),
         GT(">"),

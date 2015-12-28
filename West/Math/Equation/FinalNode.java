@@ -37,16 +37,12 @@ public class FinalNode extends Node implements MathObject {
      */
     public FinalNode(Token pToken) throws TypeMisMatchException {
         super(pToken); // this sets token.
-        assert pToken.type() == Token.Type.NUM || pToken.type() == Token.Type.VAR;
-        if (token.type() == Token.Type.NUM)
-            try {
-                dVal = Double.parseDouble(token.val());
-            } catch(NumberFormatException err) {
-                throw new TypeMisMatchException("Cannot instatiate FinalNode because pToken.type (" + token.type() + ")"
-                + " is a NUM, but pToken.val(" + pToken.val() + ") cannot be parsed as a double!");
-            }
-        else 
+        assert pToken.type() == Token.Type.VAR;
+        try {
+            dVal = Double.parseDouble(token.val());
+        } catch(NumberFormatException err) {
             sVal = token.val();
+        }
         
     }
 
@@ -72,48 +68,41 @@ public class FinalNode extends Node implements MathObject {
     @Override
     public double eval(final EquationSystem pEqSys) throws NotDefinedException {
         declP(pEqSys.isolated(), "pEqSys needs to be isolated to work!");
-        if (token.type() == Token.Type.NUM) {
+        if (sVal == null)
             return dVal;
-        } else if (token.type() == Token.Type.VAR) {
-            if(pEqSys.varExist(sVal)) {
-                for(Equation eq : pEqSys.equations()){
-                    if(eq.expressions().get(0).node().get(0).token.val().equals(sVal)){
-                        double val = eq.expressions().get(1).node().eval(pEqSys);
-                        if(pEqSys.isInBounds(token(), val))
-                            return val;
-                        Print.printe(val + " is out of bounds for '" + token().val() + "'. returning NaN instead!");
-                        return Double.NaN;
-                    }
+        if(pEqSys.varExist(sVal))
+            for(Equation eq : pEqSys.equations())
+                if(eq.expressions().get(0).node().get(0).token.val().equals(sVal)){
+                    double val = eq.expressions().get(1).node().eval(pEqSys);
+                    if(pEqSys.isInBounds(token(), val))
+                        return val;
+                    Print.printe(val + " is out of bounds for '" + token().val() + "'. returning NaN instead!");
+                    return Double.NaN;
                 }
-            } 
-            switch(sVal.toLowerCase()) {
-                case "e":
-                    return Math.E;
-                case "pi":
-                    return Math.PI;
-                case "rand": case "random":
-                    return Math.random();
-                default:
-                    throw new NotDefinedException("Cannot evaluate the FinalNode '" + sVal + "' because there it " + 
-                        "defined as a variable, and isn't an in-built variable.");
-            }
-        } else {
-            throw new TypeMisMatchException("Cannot evaluate the FinalNode '" +sVal + "' / '" + dVal +
-                                            "' because it's type (" + token.type() + ") isn't a NUM, VAR, OR ARGS!");
+        switch(sVal.toLowerCase()) {
+            case "e":
+                return Math.E;
+            case "pi":
+                return Math.PI;
+            case "rand": case "random":
+                return Math.random();
+            default:
+                throw new NotDefinedException("Cannot evaluate the FinalNode '" + sVal + "' because there it " + 
+                    "defined as a variable, and isn't an in-built variable.");
         }
     }
 
     @Override
     public String toString() {
         return "FinalNode: type = [" + token.type() + "], value = [" + 
-                (token.type() == Token.Type.NUM ? dVal : sVal) + "]";
+                (sVal == null ? dVal : sVal) + "]";
     }
     
     @Override
     public String toFancyString(int idtLvl) {
         String ret = indent(idtLvl) + "FinalNode:\n";
         ret += indent(idtLvl + 1) + "Type = " + token.type() + "\n";
-        ret += indent(idtLvl + 1) + "value = " + (token.type() == Token.Type.NUM ? dVal : sVal);
+        ret += indent(idtLvl + 1) + "value = " + (sVal == null ? dVal : sVal);
         return ret;
     }
 
@@ -121,7 +110,7 @@ public class FinalNode extends Node implements MathObject {
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "FinalNode:\n";
         ret += indent(idtLvl + 1) + "FinalNode's Token:\n" + token.toFullString(idtLvl + 2) + "\n";
-        ret += indent(idtLvl + 1) + "Value:\n" + indentE(idtLvl + 2) + (token.type() == Token.Type.NUM ? dVal : sVal);
+        ret += indent(idtLvl + 1) + "Value:\n" + indentE(idtLvl + 2) + (sVal == null ? dVal : sVal);
         return ret + "\n" + indentE(idtLvl + 1);
     }
     @Override
@@ -138,6 +127,6 @@ public class FinalNode extends Node implements MathObject {
         FinalNode pfnode = (FinalNode)pObj;
         if(!token.equals(pfnode.token()))
             return false;
-        return token.type() == Token.Type.NUM ? dVal == pfnode.dVal() : sVal.equals(pfnode.sVal());
+        return sVal == null ? dVal == pfnode.dVal() : sVal.equals(pfnode.sVal());
     }
 }
