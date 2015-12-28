@@ -190,7 +190,6 @@ public class Node implements MathObject {
         return ((Node)(new Node(Token.UNI).condeseNodes(0, pTokens))[1]).completeNodes().fixNodes();
     }
 
-
     private static boolean checkForNullTokens(ArrayList<Token> pTokens){
         for(Token t : pTokens)
             if(t == null)
@@ -198,9 +197,7 @@ public class Node implements MathObject {
         return true;
     }
 
-    private void add(Node n) throws
-                         NotDefinedException,
-                         IllegalArgumentException {
+    private void add(Node n) throws NotDefinedException, IllegalArgumentException {
         declP(n != null, "Cannot add a null Node!");
         declND(!(this instanceof FinalNode), "Cannot add subNodes to a FinalNode!");
         assert subNodes != null; // should have been checked already.
@@ -218,34 +215,19 @@ public class Node implements MathObject {
         return subNodes.get(i);
     }
 
-    private void set(int i,
-                    Node n) throws
-                        NotDefinedException, 
-                        IllegalArgumentException {
+    private void set(int i, Node n) throws NotDefinedException, IllegalArgumentException {
         declND(!(this instanceof FinalNode), "Cannot set subNodes of a FinalNode!");
         declP(n != null, "Cannot set a subNode to a null Node!");
         assert subNodes != null; // should have been checked already.
         subNodes.set(i, n);
     }
 
-    /**
-     * Removes the node at position i. Note: this doesn't check if i is out of bounds.
-     * <br>Note: <code>this</code> cannot be an instance of {@link FinalNode}.
-     * @param i         The position of the node to remove.
-     * @throws NotDefinedException Thrown if this function is attempted to be executed on a {@link FinalNode}.
-     */
     private void rem(int i) throws NotDefinedException{
         declND(!(this instanceof FinalNode), "Cannot remove subNodes from a FinalNode!");
         assert subNodes != null; // should have been checked already.
         subNodes.remove(i);
     }
 
-    /**
-     * Returns how many layers are in this node. <br>Note: if <code>this</code> is an instance of {@link FinalNode},
-     * the depth is 1. <br>Note: if {@link #size()} is 0, the depth is also 1.
-     * See {@link #addD(Node) addD} for more information on what depth is.
-     * @return The "depth" of this node.
-     */
     private int depth() {
         if(this instanceof FinalNode)
             return 1;
