@@ -36,6 +36,7 @@ public class Tester {
             eqsys.add("x2 = x - 2");
             eqsys.add("x3 = x + 2");
             eqsys.add("x4 = x + 1");
+            eqsys.add("x = pi - e");
             eqsys.addConstraint("x < 0");
 
 
@@ -72,13 +73,13 @@ public class Tester {
 
         // System.out.println(eqsys.toFancyString());
         // eqsys.graph();
-        // Print.printi("RESULT:", eqsys.eval("y"));
+        Print.printi("RESULT:", eqsys.eval("y"));
         // NumberCollection<Double> g1 = new NumberCollection<Double>(new Double[]{0D,1D,1D,2D,3D,5D,8D,13D,21D});
         // System.out.println(g1.mean());
         // NumberCollection<Double> g2 = new NumberCollection<Double>(new Double[]{2D,3D,5D,7D,11D,13D,17D});
-        MathSet<Double> g3 = MathSet.fromSetNotation("{y ∈ ℝ : y = x^2}");
+        // MathSet<Double> g3 = MathSet.fromSetNotation("{y ∈ ℝ : y = x^2}");
             // "{y : y = 1 + sin(alpha) + c ∧ alpha = (9.45 + x ^ theta) / 2 ∧ c = 0 - 7 ∧ theta = 4 ^ x - ln(pi)}");
-        g3.graph(NumberCollection.enumerationD(-10, 10, .8));
+        // g3.graph(NumberCollection.enumerationD(-10, 10, .8));
         // System.out.println(g3.linReg().toFancyString());
     }
 
