@@ -98,7 +98,7 @@ public class Node implements MathObject {
                 } while(0 < paren && ++x < pTokens.size());
                 if(--x == pTokens.size() -1) x--;
                 Collection<Token> passTokens = new Collection<Token>();
-                System.out.println(pTokens.subList(pPos*0,x-4));
+                System.out.println(pTokens.get(x));
                 for(Token tk : pTokens.subList(pPos + 1, x )){
                      passTokens.add(tk);
                  }

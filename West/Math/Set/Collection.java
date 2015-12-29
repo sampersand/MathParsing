@@ -1,6 +1,7 @@
 package West.Math.Set;
 import West.Math.MathObject;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Iterator;
 
 /**
@@ -125,6 +126,9 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
     }
     public boolean contains(Object obj){
         return elements.contains(obj);
+    }
+    public List<E> subList(int start, int end){
+        return elements.subList(start,end);
     }
     public Iterator<E> iterator() {
         return (Iterator<E>) new Iter();
