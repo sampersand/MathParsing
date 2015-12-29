@@ -280,7 +280,6 @@ public class EquationSystem implements MathObject, Iterable {
      */
     public double eval(String toEval,
                        EquationSystem pEqSys) throws NotDefinedException {
-        copy();
         return copy().add(pEqSys).eval(toEval);
     }
 
@@ -368,7 +367,7 @@ public class EquationSystem implements MathObject, Iterable {
             return true;
         for(Equation eq : constraints.equations()){
             Node nod = eq.expressions().get(0).get(0);
-            if(nod.token().val().equals(t.val()) && !eq.expressions().compare(eq.expressions().get(1).eval(this), pVal))
+            if(nod.token().val().equals(t.val()) && !eq.expressions().compare(pVal,eq.expressions().get(1).eval(this)))
                     return false;
         }
         return true;

@@ -17,6 +17,8 @@ public class CompareCollection<E> extends Collection<E> {
 
     public static final Collection<String> COMPARATOR = new Collection<String>()
     {{
+        add("<="); //not sure if this works
+        add(">="); //not sure if this works
         add("<");
         add(">");
         add("=");
@@ -53,13 +55,23 @@ public class CompareCollection<E> extends Collection<E> {
     public CompareCollection<E> setComparator(String pObj){
         assert pObj != null;
         comparator = pObj;
-        System.out.println("@"+pObj);
         return this;
     }
 
     public boolean compare(double val1, double val2){
-        // System.out.println(val1 + " " + comparator + "? " + val2 + " = " + (val1 > val2));
-        return val1 > val2;
+        switch(comparator){
+            case "<": return val1 < val2;
+            case ">": return val1 > val2;
+            case "=": return val1 == val2;
+            case "≠": return val1 != val2;
+            case "≥": case ">=":
+                return val1 >= val2;
+            case "≤": case "<=":
+                return val1 <= val2;
+            default:
+                assert false; //shouldnt ever happen
+        }
+        return false;
     }
 
     public boolean equals(Object pObj){
