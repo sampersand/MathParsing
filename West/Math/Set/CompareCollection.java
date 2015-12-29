@@ -53,12 +53,13 @@ public class CompareCollection<E> extends Collection<E> {
     public CompareCollection<E> setComparator(String pObj){
         assert pObj != null;
         comparator = pObj;
+        System.out.println("@"+pObj);
         return this;
     }
 
     public boolean compare(double val1, double val2){
-        System.out.println(val1 + " " + comparator + "? " + val2);
-        return false;
+        // System.out.println(val1 + " " + comparator + "? " + val2 + " = " + (val1 > val2));
+        return val1 > val2;
     }
 
     public boolean equals(Object pObj){
@@ -66,7 +67,9 @@ public class CompareCollection<E> extends Collection<E> {
                pObj instanceof CompareCollection &&
                comparator == ((CompareCollection)pObj).comparator();
     }
-
+    public String toString(){
+        return "'='" + super.toString();
+    }
     public CompareCollection copy(){
         return new CompareCollection<E>(elements).setComparator(comparator);
     }

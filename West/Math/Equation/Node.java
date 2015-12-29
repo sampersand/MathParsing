@@ -303,23 +303,22 @@ public class Node implements MathObject {
         //TODO: IMPLEMENT DOMAIN
         assert token != null;
         assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
-        double ret = 0;
         if(token.type() == FUNC || token.type() == OPER) {
             if(token.val().isEmpty()){
                 assert subNodes.size() == 1 : toFancyString();
-                ret = subNodes.get(0).eval(pEqSys);
+                return subNodes.get(0).eval(pEqSys);
             }
             else if(pEqSys.functions().get(token.val()) != null){ // if it is a function
-                ret = pEqSys.functions().get(token.val()).exec(pEqSys, this);
+                return pEqSys.functions().get(token.val()).exec(pEqSys, this);
             } else {
-                ret = InBuiltFunction.exec(token.val(), pEqSys, this);
+                return InBuiltFunction.exec(token.val(), pEqSys, this);
             }
         } else if (token.isGroup()){
-            ret = get(0).eval(pEqSys);
+            return get(0).eval(pEqSys);
         } else if(isFinal()){
             String val = token.val();
             try {
-                ret = Double.parseDouble(val);
+                return Double.parseDouble(val);
             } catch(NumberFormatException err) {
                 if(pEqSys.varExist(val))
                     for(Equation eq : pEqSys.equations())
@@ -328,7 +327,7 @@ public class Node implements MathObject {
                             if(pEqSys.isInBounds(token, dVal)){
                                 return dVal;
                             }
-                            Print.printe(dVal + " is out of bounds for '" + val + "'. returning NaN instead!");
+                            // Print.printe(dVal + " is out of bounds for '" + val + "'. returning NaN instead!");
                             return Double.NaN;
                         }
                 switch(val.toLowerCase()) {
@@ -346,9 +345,7 @@ public class Node implements MathObject {
         } else {
             throw new NotDefinedException("This shouldn't happen! There is no way to evaluate node: " + token.val());
         }
-        return ret;
     }
-
     @Override
     public String toString() {
         String ret = "Node: token = [" + token + "], subNodes = [";

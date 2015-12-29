@@ -152,11 +152,6 @@ public class Grapher extends JPanel implements MathObject {
 
     /** TODO: JAVADOC */
     public void graph() {
-
-        System.out.println(equationsToGraph);
-        System.out.println(equationsToUse);
-        System.out.println();
-        System.out.println();
         //Create and set up the window.
         String title = "Graph of ";
         if(equationsToGraph.size() + numcs.size() > 3) {

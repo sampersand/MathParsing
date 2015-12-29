@@ -156,8 +156,8 @@ public class DisplayComponent extends JLabel implements MathObject {
             }
         }
         else {
-            drawl(0, dispBounds[1], 0, dispBounds[3]); //axis.
-            drawl(dispBounds[0], 0, dispBounds[2], 0); //axis.
+            drawl(0D, dispBounds[1], 0D, dispBounds[3]); //axis.
+            drawl(dispBounds[0], 0D, dispBounds[2], 0D); //axis.
         }
     }
  
@@ -175,7 +175,9 @@ public class DisplayComponent extends JLabel implements MathObject {
     }
  
     /** TODO: JAVADOC */
-    private void drawl(double x, double y, double X, double Y) {
+    private void drawl(Double x, Double y, Double X, Double Y) {
+        if(y.equals(Double.NaN) || Y.equals(Double.NaN) || x.equals(Double.NaN) || X.equals(Double.NaN))
+            return;
        double[] xy=fix(x, y);
        double[] XY=fix(X, Y);
        drawer.drawLine((int) xy[0], (int)xy[1], (int)XY[0], (int)XY[1]); // width, height

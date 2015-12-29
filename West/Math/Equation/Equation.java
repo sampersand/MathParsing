@@ -47,7 +47,9 @@ public class Equation implements MathObject {
     public Equation() {
         expressions = new CompareCollection<Node>();
     }
-
+    public Equation(String comp) {
+        expressions = new CompareCollection<Node>().setComparator(comp);
+    }
 
     /**
      * Adds all of the {@link Node}s as defined in <code>pCol</code>.
@@ -83,6 +85,11 @@ public class Equation implements MathObject {
         }
         return this;
     }
+
+    public Equation setComparator(String comp) {
+        expressions.setComparator(comp);
+        return this;
+    }
     /**
      * Returns the {@link #expressions} that this class defines.
      * @return {@link #expressions}
@@ -100,9 +107,6 @@ public class Equation implements MathObject {
         for(Node expr : expressions)
             ret += expr.genEqString() + " " + expressions.comparator()+ " ";
         return ret.substring(0, ret.length() - (expressions.size() > 0 ? 3 : 0));
-    }
-    interface Expr{
-        String formattedExpression(String expr);
     }
 
     /**
@@ -248,7 +252,7 @@ public class Equation implements MathObject {
 
     @Override
     public Equation copy(){
-        return new Equation().add(expressions);
+        return new Equation(expressions.comparator()).add(expressions);
     }
 
     @Override
