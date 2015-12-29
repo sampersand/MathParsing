@@ -283,7 +283,6 @@ public class EquationSystem implements MathObject, Iterable {
      */
     public double eval(String toEval,
                        EquationSystem pEqSys) throws NotDefinedException {
-        assert constraints != null : "REMOVE THIS";
         return copy().add(pEqSys).eval(toEval);
     }
 
@@ -300,7 +299,6 @@ public class EquationSystem implements MathObject, Iterable {
             Print.printw("Trying to evaluated an EquationSystem with no equations! returning 0");
             return 0;
         }
-        assert constraints != null : "REMOVE THIS";
         return isod.equations().get(0).expressions().get(0).eval(isod);
 
     }
@@ -314,12 +312,8 @@ public class EquationSystem implements MathObject, Iterable {
      * @throws NotDefinedException  Thrown when there is no known way to isolate the variable
      */
     public EquationSystem isolate(String toIso) throws NotDefinedException {
-        // if(this.equations().get(0). //if the first equation's
-        //     expressions().get(0). // first expression's
-        //     node().get(0). // node's first subnode's
-        //     token().val(). // token's value
-        //     equals(toIso)) // is the string to isolate, return this.
-        //     return this;
+        for(Equation eq : equations)
+            if(eq.get(0).get(0).token().val())
         return this;
     }
 
@@ -365,15 +359,20 @@ public class EquationSystem implements MathObject, Iterable {
         return equations.size();
     }
     public boolean isInBounds(Token t, double pVal){
-        assert constraints != null : "REMOVE THIS";
-        if(t == null || pVal == Double.NaN || !varExist(t.val()))
+        if(!varExist(t.val()) || pVal == Double.NaN || t == null)
             return false;
-        assert constraints != null : "REMOVE THIS";
         if(constraints == null)
             return true;
-        assert constraints != null : "REMOVE THIS";
-        for(Equation eq : equations){
-            System.out.println(eq);
+        assert constraints.isolated();
+        for(Equation eq : constraints.equations()){
+            Node nod = eq.expressions().get(0).get(0);
+            if(nod.token().val().equals(t.val())){
+                // System.out.println(eq.expressions().get(1).get(0).token().val());
+                // double val1 = Double.parseDouble("1"); // FIX THIS!!!!!!!!!
+                // if(!eq.expressions().compare(val1, pVal)){
+                //     System.out.println("@");
+                // }
+            }
         }
         return true;
     }

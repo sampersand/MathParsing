@@ -110,7 +110,7 @@ public class Grapher extends JPanel implements MathObject {
         displays.add(new DisplayComponent(this)); //adds axis
         for(int i = 0; i < equationsToGraph.size(); i++)
             displays.add(new DisplayComponent(this, equationsToGraph.equations().get(i),
-                    equationsToGraph.copy().add(equationsToUse), COLORS[i % COLORS.length]));
+                    equationsToUse.copy().add(equationsToUse), COLORS[i % COLORS.length]));
         for(int i = 0; i < numcs.size(); i++)
             displays.add(new DisplayComponent(this, numcs.get(i), COLORS[i % COLORS.length]));
         graphSetup();

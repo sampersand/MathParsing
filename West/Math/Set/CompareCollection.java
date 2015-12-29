@@ -56,4 +56,9 @@ public class CompareCollection<E> extends Collection<E> {
         return this;
     }
 
+    public boolean compare(double val1, double val2){
+        System.out.println(val1 + " " + comparator + "? " + val2);
+        return false;
+    }
+
 }

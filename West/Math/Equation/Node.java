@@ -302,7 +302,6 @@ public class Node implements MathObject {
     public double eval(final EquationSystem pEqSys) throws NotDefinedException {
         //TODO: IMPLEMENT DOMAIN
         assert token != null;
-        assert pEqSys.constraints != null : "REMOVE THIS";
         assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
         double ret = 0;
         if(token.type() == FUNC || token.type() == OPER) {
@@ -322,14 +321,11 @@ public class Node implements MathObject {
             try {
                 ret = Double.parseDouble(val);
             } catch(NumberFormatException err) {
-                assert pEqSys.constraints != null : "REMOVE THIS";
                 if(pEqSys.varExist(val))
                     for(Equation eq : pEqSys.equations())
                         if(eq.expressions().get(0).get(0).token.val().equals(val)){
                             double dVal = eq.expressions().get(1).eval(pEqSys);
-                            assert pEqSys.constraints != null : "REMOVE THIS";
                             if(pEqSys.isInBounds(token, dVal)){
-                                assert pEqSys.constraints != null : "REMOVE THIS";
                                 return dVal;
                             }
                             Print.printe(dVal + " is out of bounds for '" + val + "'. returning NaN instead!");
