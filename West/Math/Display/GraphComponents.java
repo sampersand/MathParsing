@@ -43,7 +43,7 @@ public class GraphComponents implements MathObject {
 
         //TODO: JAVADOC
 
-        this(new int[]{1250, 750}, new double[]{-10, -10, 10, 10}, 100);
+        this(new int[]{1250, 750}, new double[]{-10, -10, 10, 10}, 250);
     }
     /**
      * TODO: JAVADOC

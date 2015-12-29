@@ -278,7 +278,7 @@ public class EquationSystem implements MathObject, Iterable {
      * @param pEqSys    The EquationSystem that will be evaluated.
      * @return A double that represents the value of <code>toEval</code>.
      */
-    public double eval(String toEval,
+    public Double eval(String toEval,
                        EquationSystem pEqSys) throws NotDefinedException {
         return copy().add(pEqSys).eval(toEval);
     }
@@ -288,11 +288,11 @@ public class EquationSystem implements MathObject, Iterable {
      * @param toEval    The variable to solve for.
      * @return A double that represents the value of <code>toEval</code>.
      */
-    public double eval(String toEval) throws NotDefinedException {
+    public Double eval(String toEval) throws NotDefinedException {
         isolate(toEval);
         if(equations().size() == 0){
             Print.printw("Trying to evaluated an EquationSystem with no equations! returning 0");
-            return 0;
+            return 0D;
         }
         return equations().get(0).expressions().get(0).eval(copy());
 

@@ -24,7 +24,7 @@ public class OperationFunction extends InBuiltFunction {
     public static final HashMap<String, Function> UNARY_LEFT = new HashMap<String, Function>()
     {{
         // put("+", null);
-        // put("-", null);
+        put("-", InBuiltFunction.FUNCTIONS.get("negate"));
         put("~", null);
     }};
 

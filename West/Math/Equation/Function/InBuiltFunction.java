@@ -48,6 +48,7 @@ public class InBuiltFunction extends Function {
         put("ri", new InBuiltFunction("randi", "random integer from [0, 100], [0, 'A'], or ['A', 'B']", "ri(A, B)"));
         put("rd", new InBuiltFunction("randd", "random double from [0, 1), [0, 'A'), or ['A', 'B')", "rd(A, B)"));
         put("fac", new InBuiltFunction("fac", "factorial of 'A'", "fac(A)"));
+        put("neg", new InBuiltFunction("negate", "'A' * -1", "neg(A)"));
         put("graph", new GraphFunction());
     }};
 
@@ -111,6 +112,8 @@ public class InBuiltFunction extends Function {
         double[] args = evalNode(pEqSys, pNode);
         switch(name) {
 
+            case "negate":
+                return args[0] * -1;
             case "sin":
                 return Math.sin(args[0]);
             case "cos":

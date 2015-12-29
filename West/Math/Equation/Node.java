@@ -94,11 +94,11 @@ public class Node implements MathObject {
                 do{
                     if(Token.PAREN_L.contains(pTokens.get(x).val())) paren++;
                     if(Token.PAREN_R.contains(pTokens.get(x).val())) paren--;
-                    x++;
-                } while(0 < paren && x < pTokens.size());
-
+                    System.out.println(pTokens.get(x)+"|"+paren);
+                } while(0 < paren && ++x < pTokens.size());
+                if(--x == pTokens.size() -1) x--;
                 Collection<Token> passTokens = new Collection<Token>();
-
+                System.out.println(pTokens.subList(pPos*0,x-4));
                 for(Token tk : pTokens.subList(pPos + 1, x )){
                      passTokens.add(tk);
                  }
@@ -299,7 +299,7 @@ public class Node implements MathObject {
         }
     }
 
-    public double eval(final EquationSystem pEqSys) throws NotDefinedException {
+    public Double eval(final EquationSystem pEqSys) throws NotDefinedException {
         //TODO: IMPLEMENT DOMAIN
         assert token != null;
         assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
@@ -330,7 +330,7 @@ public class Node implements MathObject {
                             // Print.printe(dVal + " is out of bounds for '" + val + "'. returning NaN instead!");
                             return Double.NaN;
                         }
-                switch(val.toLowerCase()) {
+                switch(val) {
                     case "e":
                         return Math.E;
                     case "pi":

@@ -62,7 +62,9 @@ public class Equation implements MathObject {
     }
 
     public Equation add(String pStr){
+        System.out.println(pStr);
         Collection<Token> tokens = parseTokens(pStr);
+        System.out.println(tokens);
         Collection<Collection<Token>> units= new Collection<Collection<Token>>(){{
             Collection<Token> prev = new Collection<Token>();
             for(Token t : tokens){
@@ -83,6 +85,7 @@ public class Equation implements MathObject {
             expressions.add(Node.generateMasterNode(expr));
 
         }
+        System.out.println(this.toFullString());
         return this;
     }
 
@@ -124,8 +127,10 @@ public class Equation implements MathObject {
             pEq = pEq.replaceAll("()" + trig + "(?!h)([A-za-z]+)","$1" + trig + "($2)");
         }
 
-        pEq = pEq.replaceAll("\\-\\(", "-1*(");
-        pEq = pEq.replaceAll("([\\d.])+(\\(|(?:[A-Za-z]+))", "$1*$2");
+        //# = number    A = letter   & = BOTH
+        pEq = pEq.replaceAll("\\-\\(", "-1*("); // -( → -1 * (
+        pEq = pEq.replaceAll("([\\d\\w.]+)E([\\d\\w.-]+)","($1*10^(0$2))"); // &.&E-?&.& → (&.&*10^(-?&.&))
+        pEq = pEq.replaceAll("([\\d.]+)(?!E)(\\(|(?:[A-Za-z]+))", "$1*$2"); // #A → #*A
         return pEq;
     }
 
@@ -154,7 +159,7 @@ public class Equation implements MathObject {
             if(isParen(s)){
                 if(((Collection)CCHARS.get("paren_l")).contains(s)) //if its a left paren, make function
                     tokens.add(new Token(prev, Token.Type.FUNC));
-                else
+                else if(prev.length() != 0)
                     tokens.add(new Token(prev, Token.Type.VAR));
                 tokens.add(new Token(s, Token.Type.PAREN));
             } else if(isOper(s, prev)){
@@ -191,7 +196,8 @@ public class Equation implements MathObject {
     }
     
     public static boolean isOper(String s, String prev){
-        if(prev.length() == 0 && ((HashMap)CCHARS.get("op_un_l")).containsKey(s))
+        if((prev.length() == 0 || prev.charAt(prev.length() - 1) == 'E') &&
+                            ((HashMap)CCHARS.get("op_un_l")).containsKey(s))
             return true;
         if(prev.length() != 0 && ((HashMap)CCHARS.get("op_un_r")).containsKey(s))
             return true;
