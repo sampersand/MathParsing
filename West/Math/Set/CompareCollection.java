@@ -19,6 +19,7 @@ public class CompareCollection<E> extends Collection<E> {
     {{
         add("<="); //not sure if this works
         add(">="); //not sure if this works
+        add("!="); //not sure if this works
         add("<");
         add(">");
         add("=");

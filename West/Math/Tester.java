@@ -29,14 +29,16 @@ public class Tester {
             // eqsys.add("x = 3");
 
             // eqsys.add("y = x0 * x1 * x2 * x3 * x4");
-            // eqsys.add("x0 = x");
-            // eqsys.add("x1 = x - 1");
-            // eqsys.add("x2 = x - 2");
-            // eqsys.add("x3 = x + 2");
-            // eqsys.add("x4 = x + 1");
-
-            eqsys.add("y = x ^ 2"); //todo: fix sin(x)
-            eqsys.addConstraint("y < 8");
+            // eqsys.add("x0 = (x) * c");
+            // eqsys.add("x1 = (x - 1) * c");
+            // eqsys.add("x2 = (x - 2) * c");
+            // eqsys.add("x3 = (x + 2) * c");
+            // eqsys.add("x4 = (x + 1) * c");
+            // eqsys.add("c = 1/8");
+            eqsys.add("y = (1/cot(x))^(1/ln(x))");
+            // eqsys.addConstraint("y < 9");
+            // eqsys.addConstraint("y > 1");
+            // eqsys.addConstraint("x > .2");
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {

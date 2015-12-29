@@ -94,15 +94,12 @@ public class Node implements MathObject {
                 do{
                     if(Token.PAREN_L.contains(pTokens.get(x).val())) paren++;
                     if(Token.PAREN_R.contains(pTokens.get(x).val())) paren--;
-                    System.out.println(pTokens.get(x)+"|"+paren);
-                } while(0 < paren && ++x < pTokens.size());
-                if(--x == pTokens.size() -1) x--;
+                    x++;
+                } while(0 < paren && x < pTokens.size());
                 Collection<Token> passTokens = new Collection<Token>();
-                System.out.println(pTokens.get(x));
-                for(Token tk : pTokens.subList(pPos + 1, x )){
+                for(Token tk : pTokens.subList(pPos + 1, x ))
                      passTokens.add(tk);
-                 }
-
+                System.out.println(passTokens);
                 Object[] temp = new Node(t).condeseNodes(0, passTokens);
                 pPos += (int)temp[0];
                 node.add(((Node)temp[1]).fixNodes());

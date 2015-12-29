@@ -62,9 +62,7 @@ public class Equation implements MathObject {
     }
 
     public Equation add(String pStr){
-        System.out.println(pStr);
         Collection<Token> tokens = parseTokens(pStr);
-        System.out.println(tokens);
         Collection<Collection<Token>> units= new Collection<Collection<Token>>(){{
             Collection<Token> prev = new Collection<Token>();
             for(Token t : tokens){
@@ -85,7 +83,6 @@ public class Equation implements MathObject {
             expressions.add(Node.generateMasterNode(expr));
 
         }
-        System.out.println(this.toFullString());
         return this;
     }
 
@@ -176,20 +173,6 @@ public class Equation implements MathObject {
                 tokens.add(new Token(s, Token.Type.COMP));
             } else
                 assert false;
-            // } else if(OperationFunction.OPERATOR.fromString(c) != null) {
-            //     if(prev.length() != 0)
-            //         tokens.add(new Token(prev, Token.Type.VAR));
-            //     tokens.add(new Token(c, Token.Type.OPER));
-            // } else if(c == ','){
-            //     if(prev.length() != 0)
-            //         tokens.add(new Token(prev, Token.Type.VAR));
-            //     tokens.add(new Token(c, Token.Type.DELIM));
-            // } else {
-            //     throw new NotDefinedException("No idea what to do with character '" + c + "'");
-            //     // if(prev.length() != 0)
-            //     //     tokens.add(new Token(prev, Token.Type.VAR));
-            //     // tokens.add(new Token(c, Token.Type.NULL));
-            // }
             prev = "";
         }
         return tokens;
