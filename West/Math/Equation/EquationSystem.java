@@ -61,11 +61,7 @@ public class EquationSystem implements MathObject, Iterable {
     public EquationSystem(Collection<Equation> pEqs,
                           HashMap<String, CustomFunction> pFuncs,
                           EquationSystem pConstraints) {
-        equations = new Collection<Equation>();
-        System.out.print("--instantiation--\n"+pEqs+"@");
-        assert size() == 0 : "size !=";
-        equations.add(pEqs);
-        assert size() == 0 || size() == 6 : "size != 0 or 6 ";
+        equations = new Collection<Equation>().add(pEqs);
         functions = new HashMap<String, CustomFunction>();
         functions.putAll(pFuncs);
         constraints = pConstraints;
@@ -370,15 +366,15 @@ public class EquationSystem implements MathObject, Iterable {
             return false;
         if(constraints == null)
             return true;
-        assert constraints.isolated();
+        System.out.println("@");
         for(Equation eq : constraints.equations()){
             Node nod = eq.expressions().get(0).get(0);
             if(nod.token().val().equals(t.val())){
-                // System.out.println(eq.expressions().get(1).get(0).token().val());
-                // double val1 = Double.parseDouble("1"); // FIX THIS!!!!!!!!!
-                // if(!eq.expressions().compare(val1, pVal)){
-                //     System.out.println("@");
-                // }
+                System.out.println(eq.expressions().get(1).get(0).token().val());
+                double val1 = Double.parseDouble("1"); // FIX THIS!!!!!!!!!
+                if(!eq.expressions().compare(val1, pVal)){
+                    System.out.println("@");
+                }
             }
         }
         return true;
@@ -475,7 +471,7 @@ public class EquationSystem implements MathObject, Iterable {
         return new EquationSystem(new Collection<Equation>(){{
             for(Equation eq : equations())
                 add(eq.copy());
-            }},functions, null);// constraints == null ? null : constraints.copy());
+            }},functions, constraints == null ? null : constraints.copy());
     }
 
     /**
