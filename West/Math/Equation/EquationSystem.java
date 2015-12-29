@@ -67,8 +67,7 @@ public class EquationSystem implements MathObject, Iterable {
         functions = new HashMap<String, CustomFunction>();
         if(pFuncs != null && pFuncs.size() != 0)
             functions.putAll(pFuncs);
-        if(pConstraints != null)
-            constraints = pConstraints;
+        constraints = pConstraints;
     }
 
     /**
@@ -284,6 +283,7 @@ public class EquationSystem implements MathObject, Iterable {
      */
     public double eval(String toEval,
                        EquationSystem pEqSys) throws NotDefinedException {
+        assert constraints != null : "REMOVE THIS";
         return copy().add(pEqSys).eval(toEval);
     }
 
@@ -293,11 +293,14 @@ public class EquationSystem implements MathObject, Iterable {
      * @return A double that represents the value of <code>toEval</code>.
      */
     public double eval(String toEval) throws NotDefinedException {
-        EquationSystem isod = copy().isolate(toEval);
+        EquationSystem isod = this;
+        if(!isolated())
+            isod = copy().isolate(toEval);
         if(isod.equations().size() == 0){
             Print.printw("Trying to evaluated an EquationSystem with no equations! returning 0");
             return 0;
         }
+        assert constraints != null : "REMOVE THIS";
         return isod.equations().get(0).expressions().get(0).eval(isod);
 
     }
@@ -362,10 +365,16 @@ public class EquationSystem implements MathObject, Iterable {
         return equations.size();
     }
     public boolean isInBounds(Token t, double pVal){
+        assert constraints != null : "REMOVE THIS";
         if(t == null || pVal == Double.NaN || !varExist(t.val()))
             return false;
+        assert constraints != null : "REMOVE THIS";
         if(constraints == null)
             return true;
+        assert constraints != null : "REMOVE THIS";
+        for(Equation eq : equations){
+            System.out.println(eq);
+        }
         return true;
     }
     @Override
