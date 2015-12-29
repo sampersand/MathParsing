@@ -77,7 +77,6 @@ public class Node implements MathObject {
     }
 
     private Object[] condeseNodes(int pPos, Collection<Token> pTokens) {
-        System.out.println(pTokens);
         assert pTokens != null;
         assert !(this instanceof FinalNode);
         assert checkForNullTokens(pTokens);
@@ -123,7 +122,6 @@ public class Node implements MathObject {
         int i = 0;
         while(i < node.size()) {
             Node n = node.get(i);
-            // System.out.println(e.toFancyString());
             assert n != null : "no subNode can be null!";
             if(n instanceof FinalNode) {
                 e.addD(e.depth(), n);
@@ -320,9 +318,6 @@ public class Node implements MathObject {
         double ret = 0;
         if(token.type() == FUNC || token.type() == OPER) {
             if(token.val().isEmpty()){
-                System.out.println(toFullString());
-                System.out.println(toFancyString());
-                System.out.println(this);
                 // assert subNodes.size() == 1;
                 ret = subNodes.get(0).eval(pEqSys);
             }

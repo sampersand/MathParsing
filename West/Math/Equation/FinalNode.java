@@ -72,8 +72,8 @@ public class FinalNode extends Node implements MathObject {
             return dVal;
         if(pEqSys.varExist(sVal))
             for(Equation eq : pEqSys.equations())
-                if(eq.expressions().get(0).node().get(0).token.val().equals(sVal)){
-                    double val = eq.expressions().get(1).node().eval(pEqSys);
+                if(eq.expressions().get(0).get(0).token.val().equals(sVal)){
+                    double val = eq.expressions().get(1).eval(pEqSys);
                     if(pEqSys.isInBounds(token(), val))
                         return val;
                     Print.printe(val + " is out of bounds for '" + token().val() + "'. returning NaN instead!");

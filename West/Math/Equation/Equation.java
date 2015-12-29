@@ -2,7 +2,7 @@ package West.Math.Equation;
 
 import West.Math.MathObject;
 import West.Math.Equation.Function.CustomFunction;
-import West.Math.Equation.Expression;
+import West.Math.Equation.Node;
 import West.Math.Exception.NotDefinedException;
 import West.Math.Set.CompareCollection;
 import West.Math.Exception.TypeMisMatchException;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 import West.Math.Set.Collection;
 
 /**
- * A class that represents an equation in West.Math. It really is just a collection of Expressions that are equal to
+ * A class that represents an equation in West.Math. It really is just a collection of Nodes that are equal to
  * each other.
  * 
  * @author Sam Westerman
@@ -27,7 +27,7 @@ import West.Math.Set.Collection;
 public class Equation implements MathObject {
 
     /** This classe's list of expressions that are equal to eachother. */
-    protected CompareCollection<Expression> expressions;
+    protected CompareCollection<Node> expressions;
 
     public static final HashMap<String, Object> CCHARS = new HashMap<String, Object>()
     {{
@@ -45,16 +45,16 @@ public class Equation implements MathObject {
      * The default constructor. This just instantiates {@link #expressions} as an empty Collection.
      */
     public Equation() {
-        expressions = new CompareCollection<Expression>();
+        expressions = new CompareCollection<Node>();
     }
 
 
     /**
-     * Adds all of the {@link Expression}s as defined in <code>pCol</code>.
-     * @param pCol    An Collection of {@link Expression}s that will be added to {@link #expressions}.
+     * Adds all of the {@link Node}s as defined in <code>pCol</code>.
+     * @param pCol    An Collection of {@link Node}s that will be added to {@link #expressions}.
      * @return This class, with <code>pCol</code> added.
      */
-    public Equation add(CompareCollection<Expression> pCol) {
+    public Equation add(CompareCollection<Node> pCol) {
         expressions.add(pCol);
         return this;
     }
@@ -76,10 +76,9 @@ public class Equation implements MathObject {
         expressions = new CompareCollection().setComparator(units.get(0).get(0).val());
         for(int i = 0; i < units.size(); i++){
             Collection<Token> expr = units.get(i);
-            // System.out.println(i == units.size()-1 ? "tr": expr.pop().val());
             if(i == units.size() -1 || expr.pop().val().equals(expressions.comparator()))
                 ; //do nothing on purpose
-            expressions.add(new Expression(Node.generateMasterNode(expr)));
+            expressions.add(Node.generateMasterNode(expr));
 
         }
         return this;
@@ -88,21 +87,23 @@ public class Equation implements MathObject {
      * Returns the {@link #expressions} that this class defines.
      * @return {@link #expressions}
      */
-    public CompareCollection<Expression> expressions() {
+    public CompareCollection<Node> expressions() {
         return expressions;
     }
 
     /**
-     * Gets a string representing the {@link Expression#expression} for each {@link Expression} in {@link #expressions}.
+     * Gets a string representing the {@link Node#expression} for each {@link Node} in {@link #expressions}.
      * @return A string comprised of each expression, with <code> = </code> between each one.
      */
-    public String formattedExpressions(){
+    public String formattedNodes(){
         String ret = "";
-        for(Expression expr : expressions)
-            ret += expr.formattedExpression() + " = ";
+        for(Node expr : expressions)
+            ret += expr.genEqString() + " " + expressions.comparator()+ " ";
         return ret.substring(0, ret.length() - (expressions.size() > 0 ? 3 : 0));
     }
-
+    interface Expr{
+        String formattedExpression(String expr);
+    }
 
     /**
      * Fixes any terms that might be misleading to the compiler. For example, <code>sinx</code> will become
@@ -110,7 +111,7 @@ public class Equation implements MathObject {
      * @param pEq            The expression to be corrected.
      * @return A corrected version of the expression.
      */
-    public static String fixExpression(String pEq) {
+    public static String fixNode(String pEq) {
         //TODO: FIX
         if(pEq.charAt(0) == '@')
             return pEq.substring(1);
@@ -132,14 +133,13 @@ public class Equation implements MathObject {
      * @see Token
      */
     public static Collection<Token> parseTokens(String rEq) throws TypeMisMatchException{
-        rEq = fixExpression(rEq.trim().replaceAll(" ","")); //remove all spaces
+        rEq = fixNode(rEq.trim().replaceAll(" ","")); //remove all spaces
         Collection<Token> tokens = new Collection<Token>();
         String prev = ""; //used for generating things
         String s;
         for(int x = 0; x < rEq.length(); x++) {
             s = "" + rEq.charAt(x); // the character that will be used
             if(!isControlChar(s, prev)) {
-                System.out.println("!isControlChar("+s+", "+prev+")");
                 prev += s;
                 if(x == rEq.length() - 1){
                     tokens.add(new Token(prev, Token.Type.VAR));
@@ -147,7 +147,6 @@ public class Equation implements MathObject {
                 }
                 continue;
             }
-            System.out.println("prev:"+prev+",s:"+s);
             if(isParen(s)){
                 if(((Collection)CCHARS.get("paren_l")).contains(s)) //if its a left paren, make function
                     tokens.add(new Token(prev, Token.Type.FUNC));
@@ -226,8 +225,8 @@ public class Equation implements MathObject {
     public String toFancyString(int idtLvl) {
         String ret = indent(idtLvl) + "Equation:\n";
         ret += indent(idtLvl + 1) + "Comparator: " + expressions.comparator() + "\n";
-        ret += indent(idtLvl + 1) + "Expressions:";
-        for(Expression expr : expressions) {
+        ret += indent(idtLvl + 1) + "Nodes:";
+        for(Node expr : expressions) {
             //TODO: Update this "= " here to coincide with greater than or less than equations (when introduced).
             ret += "\n" + expr.toFancyString(idtLvl + 2);
         }
@@ -239,9 +238,9 @@ public class Equation implements MathObject {
         String ret = indent(idtLvl) + "Equation:\n";
         ret += indent(idtLvl + 1) + "Comparator:\n"; 
         ret += indent(idtLvl + 2) + expressions.comparator() + "\n";
-        ret += indent(idtLvl + 1) + "Raw Equation:\n" + indentE(idtLvl + 2) + formattedExpressions() + "\n";
-        ret += indent(idtLvl + 1) + "Expressions:";
-        for(Expression expr : expressions)
+        ret += indent(idtLvl + 1) + "Raw Equation:\n" + indentE(idtLvl + 2) + formattedNodes() + "\n";
+        ret += indent(idtLvl + 1) + "Nodes:";
+        for(Node expr : expressions)
             ret += "\n" + expr.toFullString(idtLvl + 2);
         return ret + "\n" + indentE(idtLvl + 2) + "\n" + indentE(idtLvl + 1);
     }

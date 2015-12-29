@@ -4,7 +4,6 @@ import West.Math.MathObject;
 import West.Math.Print;
 import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Equation;
-import West.Math.Equation.Expression;
 import West.Math.Exception.NotDefinedException;
 import West.Math.Display.Grapher;
 
@@ -45,8 +44,8 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         String firstVar;
         if( pEqSys.equations().size() > 0 &&
             pEqSys.equations().get(0).expressions().size() == 2 && 
-            pEqSys.equations().get(0).expressions().get(1).expression().equals("firstVar")){ //used for what value to
-            firstVar = pEqSys.equations().get(0).expressions().get(0).expression();          //evaluate for.
+            pEqSys.equations().get(0).expressions().get(1).equals("firstVar")){ //used for what value to
+            firstVar = pEqSys.equations().get(0).expressions().get(0).genEqString(); //evaluate for.
             pEqSys.equations().remove(0);
         }
         else

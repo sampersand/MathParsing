@@ -298,7 +298,7 @@ public class EquationSystem implements MathObject, Iterable {
             Print.printw("Trying to evaluated an EquationSystem with no equations! returning 0");
             return 0;
         }
-        return isod.equations().get(0).expressions().get(0).node().eval(isod);
+        return isod.equations().get(0).expressions().get(0).eval(isod);
 
     }
 
@@ -326,7 +326,7 @@ public class EquationSystem implements MathObject, Iterable {
      */
     public boolean isolated(){
         for(Equation eq : equations)
-            if(eq.expressions().size() > 0 && eq.expressions().get(0).node().size() != 1)
+            if(eq.expressions().size() > 0 && eq.expressions().get(0).size() != 1)
                 return false;
         return true;
     }
@@ -337,9 +337,9 @@ public class EquationSystem implements MathObject, Iterable {
     public boolean varExist(String pVar){
         for(Equation eq : equations){
             if(eq == null) continue;
-            for(Expression expr : eq.expressions()){
-                if(expr == null) continue;
-                    if(expr.node().get(0).token().val().equals(pVar))
+            for(Node n : eq.expressions()){
+                if(n == null) continue;
+                    if(n.get(0).token().val().equals(pVar))
                         return true;
             }
         }
