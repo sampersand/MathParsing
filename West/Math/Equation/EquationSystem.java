@@ -366,12 +366,12 @@ public class EquationSystem implements MathObject, Iterable {
             return false;
         if(constraints == null)
             return true;
-        System.out.println("@");
         for(Equation eq : constraints.equations()){
             Node nod = eq.expressions().get(0).get(0);
             if(nod.token().val().equals(t.val())){
                 System.out.println(eq.expressions().get(1).get(0).token().val());
-                double val1 = Double.parseDouble("1"); // FIX THIS!!!!!!!!!
+                // double val1 = Double.parseDouble(eq.expressions().get(1).get(0).token().val()); // FIX THIS!!!!!!!!!
+                double val1 = eq.expressions().get(1).eval(this);
                 if(!eq.expressions().compare(val1, pVal)){
                     System.out.println("@");
                 }
