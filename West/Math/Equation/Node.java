@@ -9,7 +9,6 @@ import West.Math.Equation.Function.InBuiltFunction;
 import static West.Math.Equation.Token.Type.*;
 import West.Math.Exception.NotDefinedException;
 import West.Math.Set.Collection;
-import java.util.ArrayList;
 
 /**
  * A class that represents either a {@link CustomFunction custom function}, an {@link InBuiltFunction inbuilt function}, 
@@ -35,7 +34,7 @@ public class Node implements MathObject {
 
     /**
      * A constructor for Node, which only takes a Node as an input. Just passes pNode's token and an empty list to the
-     * {@link #Node(Token,ArrayList) main constructor} constructor.
+     * {@link #Node(Token,Collection) main constructor} constructor.
      * @param pNode        The Node whose token will determine how this class interacts with its {@link #subNodes}.
      *                     Cannot be null.
      * @throws IllegalArgumentException Thrown when pNode is null.
@@ -46,7 +45,7 @@ public class Node implements MathObject {
 
     /**
      * A constructor for Node, which only takes a token as an input. Just passes an empty list and pToken to
-     * {@link #Node(Token,ArrayList) main} constructor.
+     * {@link #Node(Token,Collection) main} constructor.
      * @param pToken        The token that will determine how this class interacts with its {@link #subNodes}. Cannot be
      *                      null.
      * @throws IllegalArgumentException Thrown when pToken is null.
@@ -64,7 +63,7 @@ public class Node implements MathObject {
      */
     public Node(Token pToken, Collection<Node> pSubNodes) throws IllegalArgumentException{
         declP(pToken != null, "Cannot instatiate a Node with a null token! Pass an empty Token instead.");
-        declP(pSubNodes != null, "Cannot instatiate a Node with null subNodes! Pass an empty ArrayList instead.");
+        declP(pSubNodes != null, "Cannot instatiate a Node with null subNodes! Pass an empty Collection instead.");
         subNodes = pSubNodes;
         token = pToken;
     }
@@ -77,10 +76,11 @@ public class Node implements MathObject {
         return token;
     }
 
-    private Object[] condeseNodes(int pPos, ArrayList<Token> pTokens) {
-        declP(pTokens != null, "Cannot condense a null ArrayList of Tokens! Try an empty ArrayList instead.");
-        declND(!(this instanceof FinalNode), "Cannot condense a FinalNode, as it has no subNodes!");
-        declP(checkForNullTokens(pTokens), "Cannot condeseNodes with null Tokens in pTokens!");
+    private Object[] condeseNodes(int pPos, Collection<Token> pTokens) {
+        System.out.println(pTokens);
+        assert pTokens != null;
+        assert !(this instanceof FinalNode);
+        assert checkForNullTokens(pTokens);
         Node node = copy();
         while(pPos < pTokens.size()) {
             Token t = pTokens.get(pPos);
@@ -99,7 +99,7 @@ public class Node implements MathObject {
                     x++;
                 } while(0 < paren && x < pTokens.size());
 
-                ArrayList<Token> passTokens = new ArrayList<Token>();
+                Collection<Token> passTokens = new Collection<Token>();
 
                 for(Token tk : pTokens.subList(pPos + 1, x )){
                      passTokens.add(tk);
@@ -123,6 +123,7 @@ public class Node implements MathObject {
         int i = 0;
         while(i < node.size()) {
             Node n = node.get(i);
+            // System.out.println(e.toFancyString());
             assert n != null : "no subNode can be null!";
             if(n instanceof FinalNode) {
                 e.addD(e.depth(), n);
@@ -184,13 +185,13 @@ public class Node implements MathObject {
         return node;
     }
 
-    public static Node generateMasterNode(ArrayList<Token> pTokens) {
-        decl(pTokens != null, "Cannot generate nodes from a null ArrayList of Tokens!");
+    public static Node generateMasterNode(Collection<Token> pTokens) {
+        decl(pTokens != null, "Cannot generate nodes from a null Collection of Tokens!");
         decl(checkForNullTokens(pTokens), "Cannot generate nodes with null Tokens in pTokens!");
         return ((Node)(new Node(new Token("", FUNC)).condeseNodes(0, pTokens))[1]).completeNodes().fixNodes();
     }
 
-    private static boolean checkForNullTokens(ArrayList<Token> pTokens){
+    private static boolean checkForNullTokens(Collection<Token> pTokens){
         for(Token t : pTokens)
             if(t == null)
                 return false;
@@ -322,7 +323,7 @@ public class Node implements MathObject {
                 System.out.println(toFullString());
                 System.out.println(toFancyString());
                 System.out.println(this);
-                assert subNodes.size() == 1;
+                // assert subNodes.size() == 1;
                 ret = subNodes.get(0).eval(pEqSys);
             }
             else if(pEqSys.functions().get(token.val()) != null){ // if it is a function
@@ -356,7 +357,7 @@ public class Node implements MathObject {
             ret += "\n" + node.toFancyString(idtLvl + 2);
         if(size() == 0) 
             ret += "\n" + indent(idtLvl + 2) + "null";
-        return ret;
+        return ret + "\n" +  indentE(idtLvl + 2) + "\n"+ indentE(idtLvl + 1);
     }
 
     @Override

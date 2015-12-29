@@ -7,14 +7,12 @@ import West.Math.Exception.NotDefinedException;
 import West.Math.Set.CompareCollection;
 import West.Math.Exception.TypeMisMatchException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import West.Math.Equation.Function.OperationFunction;
 import West.Math.Set.CompareCollection;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import West.Math.Set.Collection;
 
@@ -44,7 +42,7 @@ public class Equation implements MathObject {
 
 
     /**
-     * The default constructor. This just instantiates {@link #expressions} as an empty ArrayList.
+     * The default constructor. This just instantiates {@link #expressions} as an empty Collection.
      */
     public Equation() {
         expressions = new CompareCollection<Expression>();
@@ -53,7 +51,7 @@ public class Equation implements MathObject {
 
     /**
      * Adds all of the {@link Expression}s as defined in <code>pCol</code>.
-     * @param pCol    An ArrayList of {@link Expression}s that will be added to {@link #expressions}.
+     * @param pCol    An Collection of {@link Expression}s that will be added to {@link #expressions}.
      * @return This class, with <code>pCol</code> added.
      */
     public Equation add(CompareCollection<Expression> pCol) {
@@ -62,20 +60,28 @@ public class Equation implements MathObject {
     }
 
     public Equation add(String pStr){
-        ArrayList<Token> tokens = parseTokens(pStr);
-        ArrayList<ArrayList<Token>> units= new ArrayList<ArrayList<Token>>(){{
-            ArrayList<Token> prev = new ArrayList<Token>();
+        Collection<Token> tokens = parseTokens(pStr);
+        Collection<Collection<Token>> units= new Collection<Collection<Token>>(){{
+            Collection<Token> prev = new Collection<Token>();
             for(Token t : tokens){
                 prev.add(t);
                 if(isComp(t.val())){
                     add(prev);
-                    prev = new ArrayList<Token>();
+                    prev = new Collection<Token>();
                 }
             }
             if(prev.size() != 0)
                 add(prev);
         }};
-        for()
+        expressions = new CompareCollection().setComparator(units.get(0).get(0).val());
+        for(int i = 0; i < units.size(); i++){
+            Collection<Token> expr = units.get(i);
+            // System.out.println(i == units.size()-1 ? "tr": expr.pop().val());
+            if(i == units.size() -1 || expr.pop().val().equals(expressions.comparator()))
+                ; //do nothing on purpose
+            expressions.add(new Expression(Node.generateMasterNode(expr)));
+
+        }
         return this;
     }
     /**
@@ -113,38 +119,41 @@ public class Equation implements MathObject {
             pEq = pEq.replaceAll("()" + trig + "(?!h)([A-za-z]+)","$1" + trig + "($2)");
         }
 
-        pEq = pEq.replaceAll("\\-\\(", "- 1*(");
+        pEq = pEq.replaceAll("\\-\\(", "-1*(");
         pEq = pEq.replaceAll("([\\d.])+(\\(|(?:[A-Za-z]+))", "$1*$2");
         return pEq;
     }
 
     /**
-     * Generates an ArrayList of tokens that represent rEq.
+     * Generates an Collection of tokens that represent rEq.
      * Note that this removes all whitespace (including spaces) before handling the expression.
      * @param rEq    The expression to be parsed.
-     * @return An ArrayList of tokens, each representing a different chunk of the expression. 
+     * @return An Collection of tokens, each representing a different chunk of the expression. 
      * @see Token
      */
-    public static ArrayList<Token> parseTokens(String rEq) throws TypeMisMatchException{
+    public static Collection<Token> parseTokens(String rEq) throws TypeMisMatchException{
         rEq = fixExpression(rEq.trim().replaceAll(" ","")); //remove all spaces
-
-        ArrayList<Token> tokens = new ArrayList<Token>();
+        Collection<Token> tokens = new Collection<Token>();
         String prev = ""; //used for generating things
         String s;
         for(int x = 0; x < rEq.length(); x++) {
             s = "" + rEq.charAt(x); // the character that will be used
             if(!isControlChar(s, prev)) {
+                System.out.println("!isControlChar("+s+", "+prev+")");
                 prev += s;
-                if(x == rEq.length() - 1)
+                if(x == rEq.length() - 1){
                     tokens.add(new Token(prev, Token.Type.VAR));
+                    prev = "";
+                }
                 continue;
             }
+            System.out.println("prev:"+prev+",s:"+s);
             if(isParen(s)){
-                // if(prev.length() == 0 || isControlChar(prev)) // if there is no preceeding function, it becomes a group
-                //     tokens.add(new Token("", Token.Type.FUNC));
-                // else
-                tokens.add(new Token(prev, Token.Type.FUNC));
-                tokens.add(new Token(s, Token.Type.VAR));
+                if(((Collection)CCHARS.get("paren_l")).contains(s)) //if its a left paren, make function
+                    tokens.add(new Token(prev, Token.Type.FUNC));
+                else
+                    tokens.add(new Token(prev, Token.Type.VAR));
+                tokens.add(new Token(s, Token.Type.PAREN));
             } else if(isOper(s, prev)){
                 if(prev.length() != 0)
                     tokens.add(new Token(prev, Token.Type.VAR));
@@ -191,7 +200,7 @@ public class Equation implements MathObject {
         return isOper(s, prev) || isParen(s) || isDelim(s) || isComp(s);
     }
     private static boolean isComp(String s){
-        return ((HashMap)CCHARS.get("comp")).containsKey(s);
+        return ((Collection)CCHARS.get("comp")).contains(s);
     }
     private static boolean isDelim(String s){
         return ((Collection)CCHARS.get("delim")).contains(s);
@@ -216,7 +225,7 @@ public class Equation implements MathObject {
     @Override
     public String toFancyString(int idtLvl) {
         String ret = indent(idtLvl) + "Equation:\n";
-        ret += indent(idtLvl + 1) + "Comparator: " + expressions.comparator().val() + "\n";
+        ret += indent(idtLvl + 1) + "Comparator: " + expressions.comparator() + "\n";
         ret += indent(idtLvl + 1) + "Expressions:";
         for(Expression expr : expressions) {
             //TODO: Update this "= " here to coincide with greater than or less than equations (when introduced).
@@ -229,7 +238,7 @@ public class Equation implements MathObject {
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "Equation:\n";
         ret += indent(idtLvl + 1) + "Comparator:\n"; 
-        ret += indent(idtLvl + 2) + expressions.comparator().val() + "\n";
+        ret += indent(idtLvl + 2) + expressions.comparator() + "\n";
         ret += indent(idtLvl + 1) + "Raw Equation:\n" + indentE(idtLvl + 2) + formattedExpressions() + "\n";
         ret += indent(idtLvl + 1) + "Expressions:";
         for(Expression expr : expressions)

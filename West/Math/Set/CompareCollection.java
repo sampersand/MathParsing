@@ -4,7 +4,6 @@ import West.Math.Set.Collection;
 import java.util.ArrayList;
 import West.Math.Equation.Token;
 
-import java.util.HashMap;
 /**
  * TODO: JAVADOC
  * LOL i'm going to have to figure out how to spell 'comparator' correctly XD
@@ -16,64 +15,42 @@ import java.util.HashMap;
 public class CompareCollection<E> extends Collection<E> {
 
 
-    public static final HashMap<String, Comparator> COMPARATOR = new HashMap<String, Comparator>()
+    public static final Collection<String> COMPARATOR = new Collection<String>()
     {{
-        put("<", Comparator.LT);
-        put(">", Comparator.GT);
-        put("=", Comparator.EQ);
-        put("≠", Comparator.EQ);
-        put("≥", Comparator.EQ);
-        put("=", Comparator.EQ);
+        add("<");
+        add(">");
+        add("=");
+        add("≠");
+        add("≥");
+        add("=");
     }};
 
 
-    public static enum Comparator {
-        LT("<"),
-        GT(">"),
-        EQ("="),
-        NEQ("≠"),
-        LTE("≤"),
-        GTE("≥");
-        private String val;
-
-        private Comparator(String pVal){
-            val = pVal;
-        }
-        public String val(){
-            return val;
-        }
-
-        public Comparator from(String str){
-            //DEFINE
-            throw new NotDefinedException();
-        }
-
-    }
-    protected Comparator comparator; // its an object so functions can also use this
+    protected String comparator; // its an object so functions can also use this
 
     public CompareCollection(){
         super();
-        comparator = Comparator.EQ;
+        comparator = "=";
     }
     public CompareCollection(ArrayList<E> pElements){
         super(pElements);
-        comparator = Comparator.EQ;
+        comparator = "=";
     }
 
     public CompareCollection(E[] pElements) {
         super(pElements);
-        comparator = Comparator.EQ;
+        comparator = "=";
     }
 
     public CompareCollection(CompareCollection<E> pCollection) {
         super(pCollection);
-        comparator = Comparator.EQ;
+        comparator = "=";
     }
-    public Comparator comparator(){
+    public String comparator(){
         return comparator;
     }
 
-    public CompareCollection<E> setComparator(Comparator pObj){
+    public CompareCollection<E> setComparator(String pObj){
         assert pObj != null;
         comparator = pObj;
         return this;

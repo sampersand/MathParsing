@@ -20,7 +20,7 @@ public class Token implements MathObject {
     /** The type of token. Used to distinguish between things such as functions, groups, and operations. */
     protected Type type;
 
-    public static enum Type {  //im doing the "," on the next line so as to make Sublime Text 3 not hate me.
+    public static enum Type { 
         VAR, FUNC, PAREN, DELIM, COMP, OPER, UNI
     }
 
@@ -93,7 +93,7 @@ public class Token implements MathObject {
     }
     @Override
     public String toString() {
-        return "Token: val = [" + val + "], type = [" + type + "]";
+        return "["+val+":"+type.toString().substring(0,1)+"]";
     }
 
     @Override
