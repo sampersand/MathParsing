@@ -29,16 +29,13 @@ public class Tester {
             // eqsys.add("x = 3");
 
 
-            eqsys.add("x0 = x");
+            eqsys.addConstraint("x < pi");
             eqsys.add("y = x0 * x1 * x2 * x3 * x4");
+            eqsys.add("x0 = x");
             eqsys.add("x1 = x - 1");
             eqsys.add("x2 = x - 2");
             eqsys.add("x3 = x + 2");
             eqsys.add("x4 = x + 1");
-            eqsys.addConstraint("x < 0");
-
-
-
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {
@@ -70,7 +67,7 @@ public class Tester {
 
         // System.out.println(eqsys.toFancyString());
         eqsys.graph();
-        Print.printi("RESULT:", eqsys.eval("y"));
+        // Print.printi("RESULT:", eqsys.eval("y"));
         // NumberCollection<Double> g1 = new NumberCollection<Double>(new Double[]{0D,1D,1D,2D,3D,5D,8D,13D,21D});
         // System.out.println(g1.mean());
         // NumberCollection<Double> g2 = new NumberCollection<Double>(new Double[]{2D,3D,5D,7D,11D,13D,17D});

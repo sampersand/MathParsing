@@ -10,7 +10,7 @@ import java.util.Iterator;
  * @version 0.75
  * @since 0.75
  */ 
-public class Collection<E> extends java.util.AbstractList<E> implements MathObject{
+public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
 
     protected ArrayList<E> elements;
 
@@ -54,12 +54,13 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
     public Collection<E> add(ArrayList<E> pElements){ //used so you can build elements
         assert pElements != null : "pElements cannot be null!";
         elements.addAll(pElements);
+
         return this;
     }
 
     public Collection<E> add(Collection<E> pCollection){ //used so you can build elements
         assert pCollection != null : "pCollection cannot be null!";
-        elements.addAll(pCollection.elements());
+        elements.addAll(pCollection.copy().elements());
         return this;
     }
 
@@ -71,12 +72,17 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
         elements.set(pPos, pEle);
         return ret;
     }
-
     public E pop(){return remove(size() - 1);}
+    public E pop(int pPos){return remove(pPos);}
     public E remove(int pPos){
         E ret = elements.get(pPos);
         elements.remove(pPos);
         return ret;
+    }
+
+    public void prepend(E obj){
+        elements = new ArrayList<E>(){{add(obj); addAll(elements);}};
+        // elements.remove(pPos);
     }
 
     // THIS ∪ PRGROUP
@@ -117,7 +123,9 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
                 add(i);
         }};
     }
-
+    public boolean contains(Object obj){
+        return elements.contains(obj);
+    }
     public Iterator<E> iterator() {
         return (Iterator<E>) new Iter();
     }
@@ -151,7 +159,7 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
         String ret = indent(idtLvl) + "Collection:\n";
 
         final int columns = 5; // amount of columns
-        final int spacing = 10; // amount of spaces. Note that there will be an additional one between columns
+        final int spacing = 20; // amount of spaces. Note that there will be an additional one between columns
         String spaces = "";
         for(int i = 0; i < spacing; i++) spaces += " ";
 
@@ -159,7 +167,7 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
         for(int i = 0; i < elements.size(); i++){
             if(i % columns == 0)
                 ret += "\n" + indent(idtLvl + 2);
-            ret += (get(i) + spaces).substring(0, spacing) + " ";
+            ret += "'"+(get(i) + spaces).substring(0, spacing) + "', ";
         }
         return ret;
 
@@ -176,11 +184,11 @@ public class Collection<E> extends java.util.AbstractList<E> implements MathObje
             return false;
         if(pObj == this)
             return true;
-        ArrayList<E> pelements = ((Collection<E>)pObj).elements();
+        Collection<E> pelements = (Collection<E>)pObj;
         if(size() != pelements.size())
             return false;
         for(int i = 0; i < elements.size(); i++)
-            if(get(i) != pelements.get(i))
+            if(!get(i).equals(pelements.get(i)))
                 return false;
         return true;
 

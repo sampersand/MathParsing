@@ -77,7 +77,7 @@ public class Equation implements MathObject {
         for(int i = 0; i < units.size(); i++){
             Collection<Token> expr = units.get(i);
             if(isComp(expr.get(expr.size() - 1).val()))
-                expr.pop().val().equals(expressions.comparator());
+                expr.pop(expr.size() - 1).val();
             expressions.add(Node.generateMasterNode(expr));
 
         }
@@ -199,7 +199,7 @@ public class Equation implements MathObject {
         return isOper(s, prev) || isParen(s) || isDelim(s) || isComp(s);
     }
     public static boolean isComp(String s){
-        return ((Collection)CCHARS.get("comp")).contains(s);
+        return ((Collection<String>)CCHARS.get("comp")).contains(s);
     }
     public static boolean isDelim(String s){
         return ((Collection)CCHARS.get("delim")).contains(s);
@@ -214,23 +214,24 @@ public class Equation implements MathObject {
 
 
 
-
+    public String exprtoStr(){
+        String ret = "";
+        for(Node n : expressions){
+            ret += " " +expressions.comparator() + " " +n.genEqString();
+        }
+        return expressions.size() >0 ? ret.substring(3) : "empty equation";
+    }
 
     @Override
     public String toString() {
-        return "Equation: expressions: "  + expressions;
+        return  "eq:" + exprtoStr();
     }
 
     @Override
     public String toFancyString(int idtLvl) {
         String ret = indent(idtLvl) + "Equation:\n";
-        ret += indent(idtLvl + 1) + "Comparator: " + expressions.comparator() + "\n";
-        ret += indent(idtLvl + 1) + "Nodes:";
-        for(Node expr : expressions) {
-            //TODO: Update this "= " here to coincide with greater than or less than equations (when introduced).
-            ret += "\n" + expr.toFancyString(idtLvl + 2);
-        }
-        return ret + "\n" + indentE(idtLvl + 2) + "\n" + indentE(idtLvl + 1);
+        ret += indentE(idtLvl + 1) + "Expressions:" + exprtoStr();
+        return ret;
     }
 
     @Override
@@ -252,6 +253,15 @@ public class Equation implements MathObject {
 
     @Override
     public boolean equals(Object pObj){
-        throw new NotDefinedException();
+        if(pObj == null || !(pObj instanceof Equation))
+            return false;
+        if(this == pObj)
+            return true;
+        Equation peq = (Equation)pObj;
+        for(int i = 0; i < expressions.size(); i++)
+            if(!expressions.get(i).equals(peq.expressions().get(i)))
+                return false;
+        return true;
+
     }
 }

@@ -70,7 +70,7 @@ public class Grapher extends JPanel implements MathObject {
 
     /** TODO: JAVADOC */
     public Grapher(final EquationSystem pEqSys) {
-        this(new EquationSystem().add(pEqSys.equations().get(0)),pEqSys, null, new GraphComponents());
+        this(new EquationSystem().add(pEqSys.equations().get(0)), pEqSys, null, new GraphComponents());
     }
 
     /** TODO: JAVADOC */
@@ -118,6 +118,7 @@ public class Grapher extends JPanel implements MathObject {
 
     /** TODO: JAVADOC */
     private void graphSetup() {
+
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
  
          //Create and set up the layered pane.
@@ -151,6 +152,11 @@ public class Grapher extends JPanel implements MathObject {
 
     /** TODO: JAVADOC */
     public void graph() {
+
+        System.out.println(equationsToGraph);
+        System.out.println(equationsToUse);
+        System.out.println();
+        System.out.println();
         //Create and set up the window.
         String title = "Graph of ";
         if(equationsToGraph.size() + numcs.size() > 3) {

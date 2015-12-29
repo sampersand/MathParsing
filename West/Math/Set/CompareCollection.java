@@ -22,7 +22,7 @@ public class CompareCollection<E> extends Collection<E> {
         add("=");
         add("≠");
         add("≥");
-        add("=");
+        add("≤");
     }};
 
 
@@ -61,4 +61,13 @@ public class CompareCollection<E> extends Collection<E> {
         return false;
     }
 
+    public boolean equals(Object pObj){
+        return super.equals(pObj) &&
+               pObj instanceof CompareCollection &&
+               comparator == ((CompareCollection)pObj).comparator();
+    }
+
+    public CompareCollection copy(){
+        return new CompareCollection<E>(elements).setComparator(comparator);
+    }
 }

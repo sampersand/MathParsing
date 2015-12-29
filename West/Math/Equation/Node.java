@@ -386,7 +386,7 @@ public class Node implements MathObject {
 
     @Override
     public boolean equals(Object pObj){
-        if(pObj == null || !(pObj instanceof  Node))
+        if(pObj == null || !(pObj instanceof Node))
             return false;
         if(this == pObj)
             return true;
