@@ -75,18 +75,17 @@ public class Node implements MathObject {
     public Token token() {
         return token;
     }
-
+    public boolean isFinal(){
+        return size() == 0;
+    }
     private Object[] condeseNodes(int pPos, Collection<Token> pTokens) {
         assert pTokens != null;
-        assert !(this instanceof FinalNode);
         assert checkForNullTokens(pTokens);
         Node node = copy();
         while(pPos < pTokens.size()) {
             Token t = pTokens.get(pPos);
             assert t != null : "this should have been caught earlier.";
-            if(t.isConst()){
-                node.add(new FinalNode(t));
-            } else if(t.isOper()){
+            if(t.isConst() || t.isOper()){
                 node.add(new Node(t));
             } else if(t.isFunc()) {
                 int paren = 0;
@@ -114,7 +113,7 @@ public class Node implements MathObject {
     }
 
     private Node completeNodes() {
-        if(this instanceof FinalNode)
+        if(isFinal())
             return this;
         assert subNodes != null : "Cannot complete nodes when subNodes is null!"; //should never happen
         Node node = copy();
@@ -123,13 +122,13 @@ public class Node implements MathObject {
         while(i < node.size()) {
             Node n = node.get(i);
             assert n != null : "no subNode can be null!";
-            if(n instanceof FinalNode) {
+            if(n.isFinal() && !Equation.isControlChar(n.token().val(),"")) {
                 e.addD(e.depth(), n);
             } else if(n.token.isOper()) {
                 for(int depth = 1; depth < e.depth(); depth++) {
                     Node nD = e.getD(depth);
                     assert nD != null : "subNodes cannot be null!";
-                    if(nD instanceof FinalNode) {
+                    if(nD.isFinal()) {
                         n.add(nD);
                         e.setD(depth - 1, -1, n); //depth is a final node.
                         break;
@@ -159,7 +158,7 @@ public class Node implements MathObject {
     }
 
     private Node fixNodes() {
-        declND(!(this instanceof FinalNode), "Cannot fixNodes of a FinalNode!");
+        // assert !isFinal() : "Cannot fixNodes of a final!";
         assert subNodes != null : "Cannot fixNodes if subNodes is null!"; //should never happen
         int i = 1;
         Node node = copy();
@@ -197,8 +196,7 @@ public class Node implements MathObject {
     }
 
     private void add(Node n) throws NotDefinedException, IllegalArgumentException {
-        declP(n != null, "Cannot add a null Node!");
-        declND(!(this instanceof FinalNode), "Cannot add subNodes to a FinalNode!");
+        assert n != null : "Cannot add a null Node!";
         assert subNodes != null; // should have been checked already.
         subNodes.add(n);
     }
@@ -209,34 +207,27 @@ public class Node implements MathObject {
     }
 
     public Node get(int i) throws NotDefinedException{
-        declND(!(this instanceof FinalNode), "Cannot get subNodes of a FinalNode!");
         assert subNodes != null; // should have been checked already.
         return subNodes.get(i);
     }
 
     private void set(int i, Node n) throws NotDefinedException, IllegalArgumentException {
-        declND(!(this instanceof FinalNode), "Cannot set subNodes of a FinalNode!");
-        declP(n != null, "Cannot set a subNode to a null Node!");
+        assert n != null : "Cannot set a subNode to a null Node!";
         assert subNodes != null; // should have been checked already.
         subNodes.set(i, n);
     }
 
     private void rem(int i) throws NotDefinedException{
-        declND(!(this instanceof FinalNode), "Cannot remove subNodes from a FinalNode!");
         assert subNodes != null; // should have been checked already.
         subNodes.remove(i);
     }
 
     private int depth() {
-        if(this instanceof FinalNode)
-            return 1;
         return size() == 0 ? 1 : 1 + get(size() - 1).depth();
     }
 
     private Node getD(int i) {
-        if(this instanceof FinalNode)
-            return this;
-        if(i <= 0) {
+        if(i <= 0 || size() == 0) {
             return this;
         } else {
             return get(size() - 1).getD(i - 1);
@@ -244,12 +235,11 @@ public class Node implements MathObject {
     }
 
     private void addD(int i, Node n) throws  NotDefinedException, IllegalArgumentException {
-        declND(!(this instanceof FinalNode), "Cannot addDepth subNodes to a FinalNode!");
-        declP(n != null, "Cannot addDepth null Nodes!");
+        assert n != null : "Cannot addDepth null Nodes!";
         if(i <= 0 || size() <= 0 || get(size() - 1).token.isGroup()) {
             add(n);
         } else {
-            if(i == 2 && get(size() - 1) instanceof FinalNode) {
+            if(i == 2 && get(size() - 1).isFinal()) {
                 add(n);
             } else {
                 get(size() - 1).addD(i - 1, n);
@@ -259,8 +249,7 @@ public class Node implements MathObject {
     }
 
     private void setD(int i, int p, Node n) throws NotDefinedException, IllegalArgumentException {
-        declND(!(this instanceof FinalNode), "Cannot setDepth subNodes of a FinalNode!");
-        declP(n != null, "Cannot setDepth null Nodes!");
+        assert n != null : "Cannot setDepth null Nodes!";
         if(i == 0) {
             assert size() > 0;
             assert size() > p && (p >= 0 || p == -1);
@@ -270,9 +259,9 @@ public class Node implements MathObject {
                 set(p, n);
             }
         } else {
-            assert !(get(size() - 1) instanceof FinalNode); //shouldnt happen, methinks.
-            if(i == 2 && get(size() - 1) instanceof FinalNode ) {
-                Print.printi("Trying to setD to a FinalNode. Going one level up instead.");
+            assert !get(size() - 1).isFinal(); //shouldnt happen, methinks.
+            if(i == 2 && get(size() - 1).isFinal()) {
+                Print.printi("Trying to setD to a final. Going one level up instead.");
                 set(size() - 1,n);
             } else if(get(size() - 1).token.isGroup()) {
                 set(p, n);
@@ -312,13 +301,12 @@ public class Node implements MathObject {
 
     public double eval(final EquationSystem pEqSys) throws NotDefinedException {
         //TODO: IMPLEMENT DOMAIN
-        assert !(this instanceof FinalNode) : "This is implemented in FinalNode... How was i triggered...?";
         assert token != null;
-        declP(pEqSys != null, "Cannot evaluate a null EquationSystem!");
+        assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
         double ret = 0;
         if(token.type() == FUNC || token.type() == OPER) {
             if(token.val().isEmpty()){
-                // assert subNodes.size() == 1;
+                assert subNodes.size() == 1 : toFancyString();
                 ret = subNodes.get(0).eval(pEqSys);
             }
             else if(pEqSys.functions().get(token.val()) != null){ // if it is a function
@@ -326,8 +314,34 @@ public class Node implements MathObject {
             } else {
                 ret = InBuiltFunction.exec(token.val(), pEqSys, this);
             }
-        } else if (token.isGroup() || this instanceof FinalNode){
+        } else if (token.isGroup()){
             ret = get(0).eval(pEqSys);
+        } else if(isFinal()){
+            String val = token.val();
+            try {
+                ret = Double.parseDouble(val);
+            } catch(NumberFormatException err) {
+                if(pEqSys.varExist(val))
+                    for(Equation eq : pEqSys.equations())
+                        if(eq.expressions().get(0).get(0).token.val().equals(val)){
+                            double dVal = eq.expressions().get(1).eval(pEqSys);
+                            if(pEqSys.isInBounds(token, dVal))
+                                return dVal;
+                            Print.printe(dVal + " is out of bounds for '" + val + "'. returning NaN instead!");
+                            return Double.NaN;
+                        }
+                switch(val.toLowerCase()) {
+                    case "e":
+                        return Math.E;
+                    case "pi":
+                        return Math.PI;
+                    case "rand": case "random":
+                        return Math.random();
+                    default:
+                        throw new NotDefinedException("Cannot evaluate the FinalNode '" + val + "' because there it " + 
+                            "defined as a variable, and isn't an in-built variable.");
+                }
+            }
         } else {
             throw new NotDefinedException("This shouldn't happen! There is no way to evaluate node: " + token.val());
         }

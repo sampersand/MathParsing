@@ -73,11 +73,11 @@ public class Equation implements MathObject {
             if(prev.size() != 0)
                 add(prev);
         }};
-        expressions = new CompareCollection().setComparator(units.get(0).get(0).val());
+        expressions = new CompareCollection().setComparator(units.get(0).get(units.get(0).size() - 1).val());
         for(int i = 0; i < units.size(); i++){
             Collection<Token> expr = units.get(i);
-            if(i == units.size() -1 || expr.pop().val().equals(expressions.comparator()))
-                ; //do nothing on purpose
+            if(isComp(expr.get(expr.size() - 1).val()))
+                expr.pop().val().equals(expressions.comparator());
             expressions.add(Node.generateMasterNode(expr));
 
         }
@@ -186,7 +186,7 @@ public class Equation implements MathObject {
         return tokens;
     }
     
-    private static boolean isOper(String s, String prev){
+    public static boolean isOper(String s, String prev){
         if(prev.length() == 0 && ((HashMap)CCHARS.get("op_un_l")).containsKey(s))
             return true;
         if(prev.length() != 0 && ((HashMap)CCHARS.get("op_un_r")).containsKey(s))
@@ -195,16 +195,16 @@ public class Equation implements MathObject {
             return true;
         return false;
     }
-    private static boolean isControlChar(String s, String prev){
+    public static boolean isControlChar(String s, String prev){
         return isOper(s, prev) || isParen(s) || isDelim(s) || isComp(s);
     }
-    private static boolean isComp(String s){
+    public static boolean isComp(String s){
         return ((Collection)CCHARS.get("comp")).contains(s);
     }
-    private static boolean isDelim(String s){
+    public static boolean isDelim(String s){
         return ((Collection)CCHARS.get("delim")).contains(s);
     }
-    private static boolean isParen(String s){
+    public static boolean isParen(String s){
         if(((Collection)CCHARS.get("paren_l")).contains(s))
             return true;
         if(((Collection)CCHARS.get("paren_r")).contains(s))

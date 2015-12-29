@@ -11,7 +11,6 @@ West/Math/Display/Calculator/GraphDisplay.java
 West/Math/Display/Calculator/MainClass.java
 West/Math/Equation/Equation.java
 West/Math/Equation/EquationSystem.java
-West/Math/Equation/Expression.java
 West/Math/Equation/FinalNode.java
 West/Math/Equation/Node.java
 West/Math/Equation/Token.java
