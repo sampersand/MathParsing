@@ -36,6 +36,7 @@ public class Tester {
             // eqsys.add("x3 = x + 2");
             // eqsys.add("x4 = x + 1");
             eqsys.addConstraint("x < 2");
+            eqsys.addConstraint("x > 0-4");
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {
