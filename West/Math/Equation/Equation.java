@@ -80,7 +80,7 @@ public class Equation implements MathObject {
             Collection<Token> expr = units.get(i);
             if(isComp(expr.get(expr.size() - 1).val()))
                 expr.pop(expr.size() - 1).val();
-            expressions.add(Node.generateMasterNode(expr));
+            expressions.add(new CompareCollection<Node>(){{add(Node.generateMasterNode(expr));}});
 
         }
         return this;

@@ -369,7 +369,7 @@ public class EquationSystem implements MathObject, Iterable {
         if(constraints == null)
             return true;
         for(Equation eq : constraints.equations()){
-            Node nod = eq.expressions().get(0).get(0);
+            Node nod = eq.expressions().get(0).get(0).get(0);
             if(nod.token().val().equals(t.val()) && !
                     eq.expressions().compare(pVal, 
                                             eq.expressions().get(1).get(0).eval(this) //used to be just get(1).eval

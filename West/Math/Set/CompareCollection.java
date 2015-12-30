@@ -60,6 +60,7 @@ public class CompareCollection<E> extends Collection<E> {
     }
 
     public boolean compare(double val1, double val2){
+        System.out.println(val1 + " " + comparator + " " + val2 + "?");
         switch(comparator){
             case "<": return val1 < val2;
             case ">": return val1 > val2;
