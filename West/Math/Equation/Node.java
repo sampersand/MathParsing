@@ -18,6 +18,7 @@ import West.Math.Set.Collection;
  * @since 0.1
  */
 public class Node implements MathObject {
+    
 
     /** A list of all nodes that are benith this one in the hierarchical structure. */
     protected Collection<Node> subNodes;
