@@ -61,7 +61,7 @@ public class EquationSystem implements MathObject, Iterable {
     public EquationSystem(Collection<Equation> pEqs,
                           HashMap<String, CustomFunction> pFuncs,
                           EquationSystem pConstraints) {
-        equations = new Collection<Equation>().add(pEqs);
+        equations = new Collection.Builder<Equation>().addAll(pEqs).build();
         functions = new HashMap<String, CustomFunction>();
         functions.putAll(pFuncs);
         constraints = pConstraints;
@@ -79,7 +79,7 @@ public class EquationSystem implements MathObject, Iterable {
             Print.printi("pEqSys is null; not adding it to 'equations'.");
             return this;
         }
-        equations.add(pEqSys.equations());
+        equations.addAll(pEqSys.equations());
         return this;
     }
 
@@ -130,7 +130,7 @@ public class EquationSystem implements MathObject, Iterable {
             Print.printi("pEqs is null; not adding it to 'equations'.");
             return this;
         }
-        equations.add(pEqs);
+        equations.addAll(pEqs);
         return this;
     }
 

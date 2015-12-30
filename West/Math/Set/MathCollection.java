@@ -12,46 +12,51 @@ import java.util.ArrayList;
  * @version 0.76
  * @since 0.7
  */
-public class MathSet<E extends Double> extends NumberCollection<E> {
-
+public class MathCollection<E extends Double> extends NumberCollection<E> {
+    public static class MathBuilder<N extends Double> extends Builder{
+        @Override
+        public MathCollection build(){
+            return new MathCollection(this);
+        }
+    }
     protected String notation = "";
-    public MathSet(){
+    public MathCollection(){
         super();
         if(!isUnique()){
-            Print.printi("Trying to instantiate a non-unique MathSet. Compressing it down to become unique.");
+            Print.printi("Trying to instantiate a non-unique MathCollection. Compressing it down to become unique.");
             compress();
         }
     }
-    public MathSet(ArrayList<E> pEle){
+    public MathCollection(ArrayList<E> pEle){
         super(pEle);
         if(!isUnique()){
-            Print.printi("Trying to instantiate a non-unique MathSet. Compressing it down to become unique.");
+            Print.printi("Trying to instantiate a non-unique MathCollection. Compressing it down to become unique.");
             compress();
         }
     }
-    public MathSet(NumberCollection pNumberCollection){
+    public MathCollection(NumberCollection pNumberCollection){
         super(pNumberCollection);
         if(!isUnique()){
-            Print.printi("Trying to instantiate a non-unique MathSet. Compressing it down to become unique.");
+            Print.printi("Trying to instantiate a non-unique MathCollection. Compressing it down to become unique.");
             compress();
         }
     }
 
-    public MathSet(EquationSystem pEqSys){
+    public MathCollection(EquationSystem pEqSys){
         super(pEqSys);
         if(!isUnique()){
-            Print.printi("Trying to instantiate a non-unique MathSet. Compressing it down to become unique.");
+            Print.printi("Trying to instantiate a non-unique MathCollection. Compressing it down to become unique.");
             compress();
         }
     }
 
-    public static MathSet<Double> fromSetNotation(String pSetNot){
-        MathSet<Double> ret = new MathSet<Double>(eqFromSetNotation(pSetNot));
+    public static MathCollection<Double> fromSetNotation(String pSetNot){
+        MathCollection<Double> ret = new MathCollection<Double>(eqFromSetNotation(pSetNot));
         ret.setNotation(pSetNot);
         return ret;
     }
-    public static MathSet<Double> enumerateSetNotation(String pSetNot){
-        MathSet<Double> ret = new MathSet<Double>(eqFromSetNotation(pSetNot));
+    public static MathCollection<Double> enumerateSetNotation(String pSetNot){
+        MathCollection<Double> ret = new MathCollection<Double>(eqFromSetNotation(pSetNot));
         return ret;
     }
 
@@ -61,7 +66,7 @@ public class MathSet<E extends Double> extends NumberCollection<E> {
      */
     public boolean add(E pEle){ 
         if(elements.contains(pEle)){
-            Print.printw("Trying to add a duplicate element (" + pEle +") to a MathSet, but continuing instead.");
+            Print.printw("Trying to add a duplicate element (" + pEle +") to a MathCollection, but continuing instead.");
             elements.add(pEle);
             return false;
         }
@@ -70,8 +75,8 @@ public class MathSet<E extends Double> extends NumberCollection<E> {
     }
 
     @Override
-    public MathSet copy(){
-        return new MathSet(elements);
+    public MathCollection copy(){
+        return new MathCollection(elements);
     }
 
     public String notation(){

@@ -19,20 +19,18 @@ import java.util.ArrayList;
  * @since 0.72
  */
 public class NumberCollection<N extends Number> extends Collection<N> implements MathObject {
-
+    public static class NumberBuilder<N extends Number> extends Builder{
+        @Override
+        public NumberCollection build(){
+            return new NumberCollection(this);
+        }
+    }
     public NumberCollection(){
         super();
     }
-    public NumberCollection(ArrayList<N> pElements){
-        super(pElements);
-    }
 
-    public NumberCollection(N[] pElements) {
-        super(pElements);
-    }
-
-    public NumberCollection(Collection<N> pCollection) {
-        super(pCollection);
+    public NumberCollection(Builder<N> pBuilder) {
+        super(pBuilder);
     }
 
     public NumberCollection(final EquationSystem pEqSys) {
@@ -309,7 +307,8 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     }
 
     public static NumberCollection<Double> enumerationD(double start, double end, double step){
-        return new NumberCollection<Double>(){{
+        return new NumberCollection<Double>()
+        {{
             for(double i = start; i < end; i+=step)
                 add(i);
         }};
@@ -352,9 +351,10 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         throw new NotDefinedException(); //TODO: THIS
         //TODO: FIX THIS
     }
+
     @Override
     public NumberCollection<Integer> enumeration(){ //should be integer, but its this so it works with other things.
-        return new NumberCollection(super.enumeration());
+        return (NumberCollection<Integer>)super.enumeration();
     }
     @Override
     public String toString() {
@@ -369,7 +369,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     }
     @Override
     public NumberCollection copy(){
-        return new NumberCollection(elements);
+        return new NumberBuilder<N>().addAll(elements).build();
     }
 
 

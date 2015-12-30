@@ -13,48 +13,80 @@ import java.util.Iterator;
  */ 
 public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
 
+    public static class Builder<C>{
+        public ArrayList elements;
+        public Builder(){
+            elements = new ArrayList<C>();
+        }
+        public <K extends C> Builder add(K pObj){
+            elements.add(pObj);
+            return this;
+        }
+        public <K extends C> Builder addAll(Object pObj) throws IllegalArgumentException{
+            if(pObj instanceof Collection){
+                elements.addAll(((Collection<K>)pObj).elements());
+                return this;
+            }
+            if(pObj instanceof ArrayList){
+                elements.addAll((ArrayList<K>)pObj);
+                return this;
+            }
+            if(pObj instanceof Object[]){
+                for(K obj : (K[])pObj)
+                    elements.add(pObj);
+                return this;
+            }
+            throw new IllegalArgumentException("no known way to addAll pObj (type = " + pObj.getClass() +
+                                               ") to the Collection Builder!");
+        }
+        public Collection build(){
+            return new Collection<C>(this);
+        }
+
+    }
     protected ArrayList<E> elements;
 
     //empty
     public Collection(){
-        this(new ArrayList<E>());
+        this(new Builder());
     }
 
-
-    public Collection(ArrayList<E> pElements){
-        elements = new ArrayList<E>();
-        add(pElements);
+    public Collection(Builder<E> builder){
+        elements = builder.elements;
     }
 
-    public Collection(E[] pElements) {
-        elements = new ArrayList<E>();
-        add(pElements);
+    //returns a Collection
+    public Collection addE(E pObj){
+        add(pObj);
+        return this;
     }
 
-    public Collection(Collection<E> pCollection) {
-        elements = new ArrayList<E>();
-        add(pCollection);
+    public Collection<E> addAllE(Object pObj){
+        addAll(pObj);
+        return this;
     }
-
     //adds elements. does not check to make sure they are actual valid elements
-    public boolean add(Object pObj){
-        return elements.add((E)pObj); // might throw exception
+    @Override
+    public boolean add(E pObj){
+        return elements.add(pObj); // might throw exception
     }
-    public Collection<E> addAll(Object pObj){
-        if(pObj instanceof Object[]){
-            elements.addAll((Object[])pObj);
-            return this;
-        }
+
+    @Override
+    public boolean addAll(Object pObj){
         if(pObj instanceof Collection){
-            elements.addAll(((Collection<E>)pObj).pElements());
-            return this;
+            return addAll(((Collection<E>)pObj).elements());
         }
         if(pObj instanceof ArrayList){
-            elements.addAll((ArrayList<E>)pObj);
-            return this;
+            return elements.addAll((ArrayList<E>)pObj);
         }
-        assert false : "no known way to add element type '" + pObj.getclass() + "' to A collection of " + E;
-
+        if(pObj instanceof Object[]){
+            for(E obj : (E[])pObj)
+                if(!elements.add(obj))
+                    return false;
+            return true;
+        }
+        throw new IllegalArgumentException("no known way to add element type '" + pObj.getClass() +
+                                           "' to the Collection!");
     }
 
 
@@ -79,7 +111,7 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
 
     // THIS ∪ PRGROUP
     public Collection<E> union(Collection<E> pCollection){
-        return copy().add(pCollection);
+        return copy().addAllE(pCollection);
     }
 
     // THIS ∩ PGROUP
@@ -101,7 +133,7 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
     }
 
     public boolean isUnique(){
-        Collection<E> ms = new Collection<E>(this);
+        Collection<E> ms = new Builder<E>().addAll(this).build();
         while(ms.size() > 0)
             if(ms.elements().contains(ms.pop()))
                 return false;
@@ -170,7 +202,7 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
 
     @Override
     public Collection<E> copy(){
-        return new Collection<E>(elements);
+        return new Builder<E>().addAll(elements).build();
     }
 
     @Override

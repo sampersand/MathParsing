@@ -59,7 +59,7 @@ public class Equation implements MathObject {
      * @return This class, with <code>pCol</code> added.
      */
     public Equation add(EquationNode pCol) {
-        subEquations.add(pCol);
+        subEquations.addN(pCol);
         return this;
     }
 
@@ -122,7 +122,7 @@ public class Equation implements MathObject {
             String comp = eqnod.token().SYMBOL;
             if(isComp(expr.get(expr.size() - 1).val()) != null)
                 comp = expr.pop(expr.size() - 1).val();
-            eqnod.add(new EquationNode(TokenNode.generateMasterNode(expr)).setToken(comp));
+            eqnod.addN(new EquationNode(TokenNode.generateMasterNode(expr)).setToken(comp));
         // System.out.println(eqnod);
 
         }
