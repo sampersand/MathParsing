@@ -64,11 +64,11 @@ public class Equation implements MathObject {
 
     public Equation add(String pStr){
         Collection<Token> tokens = parseTokens(pStr);
-        Collection<Collection<Token>> units= new Collection<Collection<Token>>(){{
+        Collection<Collection<Token>> units = new Collection<Collection<Token>>(){{
             Collection<Token> prev = new Collection<Token>();
             for(Token t : tokens){
                 prev.add(t);
-                if(isComp(t.val())){
+                if(isComp(t.val()) != null){
                     add(prev);
                     prev = new Collection<Token>();
                 }
@@ -81,7 +81,7 @@ public class Equation implements MathObject {
         for(int i = 0; i < units.size(); i++){
             Collection<Token> expr = units.get(i);
             String comp = expressions.comparator();
-            if(isComp(expr.get(expr.size() - 1).val()))
+            if(isComp(expr.get(expr.size() - 1).val()) != null)
                 comp = expr.pop(expr.size() - 1).val();
             expressions.add(new CompareCollection<Node>(Node.generateMasterNode(expr)).setComparator(comp));//{{add(Node.generateMasterNode(expr));}});
         // System.out.println(expressions);
@@ -134,11 +134,10 @@ public class Equation implements MathObject {
     public static Collection<Token> parseTokens(String rEq) throws TypeMisMatchException{
         rEq = fixNode(rEq.trim().replaceAll(" ","")); //remove all spaces
         Collection<Token> tokens = new Collection<Token>();
-        String prev, all = "", s;
+        String all = "", s;
         for(int x = 0; x < rEq.length(); x++) {
             s = "" + rEq.charAt(x);
             all += s;
-            prev = all.substring(0, all.length() - 1);
             if(!isControlChar(all)) {
                 if(x == rEq.length() - 1){
                     tokens.add(new Token(all, Token.Type.VAR));
@@ -146,68 +145,81 @@ public class Equation implements MathObject {
                 }
                 continue;
             }
-            if(isParen(all)){
-                if(isInLast(s,(Collection<String>)CCHARS.get("paren_l"))){ //if its a left paren, make function
-                    tokens.add(new Token(prev, Token.Type.FUNC));
-                } else if(prev.length() != 0)
-                    tokens.add(new Token(prev, Token.Type.VAR));
-                tokens.add(new Token(s, Token.Type.PAREN));
+            String repl;
+            if(isParen(all) != null){
+                repl = isParen(all);
+                if(isInLast(s,(Collection<String>)CCHARS.get("paren_l")) != null){ //if its a left paren, make function
+                    tokens.add(new Token(replLast(all, repl), Token.Type.FUNC));
+                } else if(repl.length() != 0)
+                    tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                tokens.add(new Token(repl, Token.Type.PAREN));
             } else{
-                if(prev.length() != 0)
-                    tokens.add(new Token(prev, Token.Type.VAR));
-                if(isBool(all))
-                    tokens.add(new Token(s, Token.Type.BOOL));
-                else if(isComp(all))
-                    tokens.add(new Token(s, Token.Type.COMP));
-                else if(isOper(all))
-                    tokens.add(new Token(s, Token.Type.OPER));
-                else if(isDelim(all))
-                    tokens.add(new Token(s, Token.Type.DELIM));
-                else
+                if(isBool(all) != null){
+                    repl = isBool(all);
+                    if(repl.length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                    tokens.add(new Token(isBool(all), Token.Type.BOOL));
+                } else if(isComp(all) != null){
+                    repl = isComp(all);
+                    if(repl.length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                    tokens.add(new Token(isComp(all), Token.Type.COMP));
+                } else if(isOper(all) != null){
+                    repl = isOper(all);
+                    if(repl.length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                    tokens.add(new Token(isOper(all), Token.Type.OPER));
+                } else if(isDelim(all) != null){
+                    repl = isDelim(all);
+                    if(repl.length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                    tokens.add(new Token(isDelim(all), Token.Type.DELIM));
+                } else
                     assert false;
             }
             all = "";
         }
         return tokens;
     }
-    
-    public static boolean isControlChar(String s){
-        return isOper(s) || isParen(s) || isDelim(s) || isComp(s) || isBool(s);
+    private static String replLast(String str, String last){
+        System.out.println("str:"+str+" last:"+last+" repl:" +str.replaceAll("\\Q" + last + "\\E$", ""));
+        return str.replaceAll("\\Q" + last + "\\E$", "");
     }
-    public static boolean isOper(String s){
+    public static boolean isControlChar(String s){
+        return isOper(s) != null || isParen(s) != null || isDelim(s) != null || isComp(s) != null || isBool(s) != null;
+    }
+    public static String isOper(String s){
+        String ret = null;
         if((s.length() == 1 || (s.length() > 0 && s.charAt(s.length() - 1) == 'E')) &&
-                            isInLast(s,((HashMap)CCHARS.get("op_un_l")).keySet()))
-            return true;
-        if(s.length() != 1 && isInLast(s,((HashMap)CCHARS.get("op_un_r")).keySet()))
-            return true;
-        // System.out.println(s);
+                            (ret = isInLast(s,((HashMap)CCHARS.get("op_un_l")).keySet())) != null)
+            return ret;
+        if(s.length() != 1 && (ret = isInLast(s,((HashMap)CCHARS.get("op_un_r")).keySet())) != null)
+            return ret;
         return isInLast(s, ((HashMap)CCHARS.get("op_bi")).keySet());
     }
     
 
-    public static boolean isBool(String s){
+    public static String isBool(String s){
         return isInLast(s, (Collection<String>)CCHARS.get("bool"));
     }
-    public static boolean isComp(String s){
+    public static String isComp(String s){
         return isInLast(s, (Collection<String>)CCHARS.get("comp"));
     }
 
-    public static boolean isDelim(String s){
+    public static String isDelim(String s){
         return isInLast(s,(Collection<String>)CCHARS.get("delim"));
     }
 
-    public static boolean isParen(String s){
-        return isInLast(s, (Collection<String>)CCHARS.get("paren_l")) ||
-               isInLast(s, (Collection<String>)CCHARS.get("paren_r"));
+    public static String isParen(String s){
+        String ret;
+        if((ret = isInLast(s, (Collection<String>)CCHARS.get("paren_l"))) != null)
+            return ret;
+        return isInLast(s, (Collection<String>)CCHARS.get("paren_r"));
     }
-    private static boolean isInLast(String pStr, java.util.Collection<String> pList){
+    private static String isInLast(String pStr, java.util.Collection<String> pList){
         if(pStr.isEmpty())
-            return false;
+            return null;
         for(String s : pList){
             if(pStr.replaceAll("\\Q" + s + "\\E$","").length() != pStr.length())
-                return true;
+                return s;
         }
-        return false;
+        return null;
     }
 
     public String exprstoStr(){
