@@ -99,7 +99,6 @@ public class Node implements MathObject {
                 Collection<Token> passTokens = new Collection<Token>();
                 for(Token tk : pTokens.subList(pPos + 1, x ))
                      passTokens.add(tk);
-                System.out.println(passTokens);
                 Object[] temp = new Node(t).condeseNodes(0, passTokens);
                 pPos += (int)temp[0];
                 node.add(((Node)temp[1]).fixNodes());
@@ -302,7 +301,7 @@ public class Node implements MathObject {
         assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
         if(token.type() == FUNC || token.type() == OPER) {
             if(token.val().isEmpty()){
-                assert subNodes.size() == 1 : toFancyString();
+                // assert subNodes.size() == 1 : "\n" + toFancyString();
                 return subNodes.get(0).eval(pEqSys);
             }
             else if(pEqSys.functions().get(token.val()) != null){ // if it is a function
@@ -361,8 +360,6 @@ public class Node implements MathObject {
         ret += indent(idtLvl + 1) + "Sub Nodes:";
         for(Node node : subNodes) 
             ret += "\n" + node.toFancyString(idtLvl + 2);
-        if(size() == 0) 
-            ret += "\n" + indent(idtLvl + 2) + "null";
         return ret + "\n" +  indentE(idtLvl + 2) + "\n"+ indentE(idtLvl + 1);
     }
 
@@ -375,8 +372,6 @@ public class Node implements MathObject {
         for(Node node : subNodes) 
             ret += "\n" + node.toFullString(idtLvl + 2);
         ret += "\n" + indentE(idtLvl + 2);
-        if(size() == 0) 
-            ret += "\n" + indent(idtLvl + 2) + "null";
         return ret + "\n" + indentE(idtLvl + 1);
     }
 

@@ -75,12 +75,15 @@ public class Equation implements MathObject {
             if(prev.size() != 0)
                 add(prev);
         }};
+        //AAAAA@@@@
         expressions = new CompareCollection().setComparator(units.get(0).get(units.get(0).size() - 1).val());
         for(int i = 0; i < units.size(); i++){
             Collection<Token> expr = units.get(i);
+            String comp = expressions.comparator();
             if(isComp(expr.get(expr.size() - 1).val()))
-                expr.pop(expr.size() - 1).val();
-            expressions.add(new CompareCollection<Node>(){{add(Node.generateMasterNode(expr));}});
+                comp = expr.pop(expr.size() - 1).val();
+            expressions.add(new CompareCollection<Node>(Node.generateMasterNode(expr)).setComparator(comp));//{{add(Node.generateMasterNode(expr));}});
+        System.out.println(expressions);
 
         }
         return this;
@@ -152,14 +155,14 @@ public class Equation implements MathObject {
                 if(prev.length() != 0)
                     tokens.add(new Token(prev, Token.Type.VAR));
                 tokens.add(new Token(s, Token.Type.OPER));
-            } else if(isDelim(s)){
-                if(prev.length() != 0)
-                    tokens.add(new Token(prev, Token.Type.VAR));
-                tokens.add(new Token(s, Token.Type.DELIM));
             } else if(isComp(s)){
                 if(prev.length() != 0)
                     tokens.add(new Token(prev, Token.Type.VAR));
                 tokens.add(new Token(s, Token.Type.COMP));
+            } else if(isDelim(s)){
+                if(prev.length() != 0)
+                    tokens.add(new Token(prev, Token.Type.VAR));
+                tokens.add(new Token(s, Token.Type.DELIM));
             } else
                 assert false;
             prev = "";
@@ -200,9 +203,12 @@ public class Equation implements MathObject {
         String ret = "";
         //TODO: MAKE SURE THIS WORKS
         for(CompareCollection<Node> cc : expressions){
-            ret += " " + expressions.comparator() + " ";
-            for(Node n : cc)
+            ret += " " + cc.comparator() + " ";
+            for(Node n : cc){
+                // System.out.println(cc.comparator() + " im a comparator");
+                // System.out.println(n.genEqString() + " im a eqstring");
                 ret += n.genEqString() + " " + cc.comparator();
+            }
             ret = ret.substring(0,ret.length() - 2);
         }
         return expressions.size() >0 ? ret.substring(3) : "empty equation";
@@ -226,11 +232,13 @@ public class Equation implements MathObject {
         ret += indent(idtLvl + 1) + "Comparator:\n"; 
         ret += indent(idtLvl + 2) + expressions.comparator() + "\n";
         ret += indent(idtLvl + 1) + "Raw Equation:\n" + indentE(idtLvl + 2) + exprstoStr() + "\n";
-        ret += indent(idtLvl + 1) + "Nodes:";
+        ret += indent(idtLvl + 1) + "Expressions:";
         for(CompareCollection<Node> cc : expressions){
-            ret += "\n" + indent(idtLvl + 2) + cc.comparator();
+            ret += "\n" + indent(idtLvl + 2) + "CompareCollection:";
+            ret += "\n" + indent(idtLvl + 3) + "Comparator:" + "\n" + indentE(idtLvl + 4) + cc.comparator();
+            ret += "\n" + indent(idtLvl + 3) + "Nodes:";
             for(Node n : cc)
-                ret += "\n" + n.toFullString(idtLvl + 3);
+                ret += "\n" + n.toFullString(idtLvl + 4);
         }
         return ret + "\n" + indentE(idtLvl + 2) + "\n" + indentE(idtLvl + 1);
     }

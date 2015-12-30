@@ -20,6 +20,7 @@ public class CompareCollection<E> extends Collection<E> {
         add("<="); //not sure if this works
         add(">="); //not sure if this works
         add("!="); //not sure if this works
+        add("|"); //not sure if this works
         add("<");
         add(">");
         add("=");
@@ -28,6 +29,12 @@ public class CompareCollection<E> extends Collection<E> {
         add("≤");
     }};
 
+    public static final Collection<String> BOOLEANS = new Collection<String>()
+    {{
+        add("||");
+        add("&&");
+        add("^^");
+    }};
 
     protected String comparator; // its an object so functions can also use this
 
@@ -39,11 +46,14 @@ public class CompareCollection<E> extends Collection<E> {
         super(pElements);
         comparator = "=";
     }
-
-    public CompareCollection(E[] pElements) {
+    public CompareCollection(E... pElements) {
         super(pElements);
         comparator = "=";
     }
+    // public CompareCollection(E[] pElements) {
+    //     super(pElements);
+    //     comparator = "=";
+    // }
 
     public CompareCollection(CompareCollection<E> pCollection) {
         super(pCollection);
@@ -60,7 +70,7 @@ public class CompareCollection<E> extends Collection<E> {
     }
 
     public boolean compare(double val1, double val2){
-        System.out.println(val1 + " " + comparator + " " + val2 + "?");
+        // System.out.println(val1 + " " + comparator + " " + val2 + "?");
         switch(comparator){
             case "<": return val1 < val2;
             case ">": return val1 > val2;
@@ -70,6 +80,10 @@ public class CompareCollection<E> extends Collection<E> {
                 return val1 >= val2;
             case "≤": case "<=":
                 return val1 <= val2;
+            case "|":
+                System.out.println("hi im here");
+                assert false;
+                // return val1 || val2;
             default:
                 assert false; //shouldnt ever happen
         }
@@ -82,7 +96,7 @@ public class CompareCollection<E> extends Collection<E> {
                comparator == ((CompareCollection)pObj).comparator();
     }
     public String toString(){
-        return "'='" + super.toString();
+        return "'=' Compare" + super.toString();
     }
     public CompareCollection copy(){
         return new CompareCollection<E>(elements).setComparator(comparator);
