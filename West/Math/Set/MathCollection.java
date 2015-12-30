@@ -12,14 +12,20 @@ import java.util.ArrayList;
  * @version 0.76
  * @since 0.7
  */
-public class MathCollection<E extends Double> extends NumberCollection<E> {
-    public static class MathBuilder<N extends Double> extends Builder{
+public class MathCollection<N extends Double> extends NumberCollection<N> {
+    public static class MathBuilder<M extends Double> extends NumberBuilder{
+
+        public MathBuilder(){
+            super();
+        }
+
         @Override
         public MathCollection build(){
-            return new MathCollection(this);
+            return new MathCollection<M>(this);
         }
     }
     protected String notation = "";
+
     public MathCollection(){
         super();
         if(!isUnique()){
@@ -27,21 +33,14 @@ public class MathCollection<E extends Double> extends NumberCollection<E> {
             compress();
         }
     }
-    public MathCollection(ArrayList<E> pEle){
-        super(pEle);
-        if(!isUnique()){
-            Print.printi("Trying to instantiate a non-unique MathCollection. Compressing it down to become unique.");
-            compress();
-        }
-    }
-    public MathCollection(NumberCollection pNumberCollection){
-        super(pNumberCollection);
-        if(!isUnique()){
-            Print.printi("Trying to instantiate a non-unique MathCollection. Compressing it down to become unique.");
-            compress();
-        }
-    }
+    public MathCollection(MathBuilder<N> builder){
+        super(builder);
 
+        if(!isUnique()){
+            Print.printi("Trying to instantiate a non-unique MathCollection. Compressing it down to become unique.");
+            compress();
+        }
+    }
     public MathCollection(EquationSystem pEqSys){
         super(pEqSys);
         if(!isUnique()){
@@ -64,7 +63,7 @@ public class MathCollection<E extends Double> extends NumberCollection<E> {
      * TODO: JAVADOC
      * returns false if the thing cannot add it
      */
-    public boolean add(E pEle){ 
+    public boolean add(N pEle){ 
         if(elements.contains(pEle)){
             Print.printw("Trying to add a duplicate element (" + pEle +") to a MathCollection, but continuing instead.");
             elements.add(pEle);
@@ -76,7 +75,9 @@ public class MathCollection<E extends Double> extends NumberCollection<E> {
 
     @Override
     public MathCollection copy(){
-        return new MathCollection(elements);
+        throw new NotDefinedException();
+        //TODO: DEFINE
+        // return new MathBuilder().addAll(elements).build();
     }
 
     public String notation(){

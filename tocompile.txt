@@ -24,7 +24,6 @@ West/Math/Exception/MathException.java
 West/Math/Exception/NotDefinedException.java
 West/Math/Exception/TypeMisMatchException.java
 West/Math/Set/Collection.java
-West/Math/Set/CompareCollection.java
 West/Math/Set/MathCollection.java
 West/Math/Set/NumberCollection.java
 West/Math/Set/SetTester.java

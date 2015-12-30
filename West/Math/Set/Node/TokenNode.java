@@ -165,7 +165,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         assert pN instanceof TokenNode;
         TokenNode n = (TokenNode)pN;
         if(i <= 0 || size() <= 0 || getN(size() - 1).token.isGroup()) {
-            add(n);
+            addN(n);
         } else {
             if(i == 2 && getN(size() - 1).isFinal()) {
                 addN(n);

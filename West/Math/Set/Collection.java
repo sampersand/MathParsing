@@ -71,7 +71,6 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
         return elements.add(pObj); // might throw exception
     }
 
-    @Override
     public boolean addAll(Object pObj){
         if(pObj instanceof Collection){
             return addAll(((Collection<E>)pObj).elements());
