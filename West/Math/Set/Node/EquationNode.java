@@ -12,7 +12,7 @@ import West.Math.MathObject;
  * @version 0.76
  * @since 0.75
  */
-public class EquationNode extends Node<EquationNode.Comparator, EquationNode> implements MathObject{
+public class EquationNode extends Node<EquationNode.Comparator, Node> implements MathObject{
     public class Comparator{
         public final String SYMBOL;
         public final TokenObj TOKENOBJ;
@@ -44,18 +44,18 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
     }};
 
 
-    protected ArrayList<EquationNode> elements;
+    protected ArrayList<Node> elements;
 
     public EquationNode(){
-        elements = new ArrayList<EquationNode>();
+        elements = new ArrayList<Node>();
     }
 
     public EquationNode(ArrayList<Equation> pElements){
-        elements = new ArrayList<EquationNode>();
+        elements = new ArrayList<Node>();
         elements.add(generateMasterNode(pElements));
     }
-    public EquationNode(EquationNode pCollection) {
-        elements = new ArrayList<EquationNode>();
+    public EquationNode(Node pCollection) {
+        elements = new ArrayList<Node>();
         elements.add(pCollection);
     }
     public EquationNode(Comparator pEquation) {
@@ -204,13 +204,17 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
     }
 
     @Override
-    public EquationNode addAllN(ArrayList<EquationNode> pNs){ // add Node
+    public EquationNode addAllN(ArrayList<Node> pNs){ // add Node
         return (EquationNode)super.addAllN(pNs);
     }
   
     @Override
     public EquationNode copy(){
         return new EquationNode(token).addAllN(elements);
+    }
+
+    public EquationNode setToken(String pStr){
+        return (EquationNode)super.setToken(BOOLEANS.get(pStr) == null ? COMPARATOR.get(pStr) : BOOLEANS.get(pStr));
     }
   
     @Override
