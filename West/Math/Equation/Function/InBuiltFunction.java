@@ -4,7 +4,6 @@ import West.Math.MathObject;
 import West.Math.Print;
 import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Node;
-import West.Math.Equation.Token.Type;
 import West.Math.Exception.NotDefinedException;
 
 import java.util.HashMap;

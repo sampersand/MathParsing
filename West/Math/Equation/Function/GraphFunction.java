@@ -5,7 +5,6 @@ import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Equation;
 import West.Math.Equation.Node;
 import West.Math.Equation.Function.InBuiltFunction;
-import West.Math.Equation.Token.Type;
 import West.Math.Exception.NotDefinedException;
 import West.Math.Set.NumberCollection;
 import West.Math.Display.GraphComponents;

@@ -2,7 +2,6 @@ package West.Math.Set;
 import West.Math.Exception.NotDefinedException;
 import West.Math.Set.Collection;
 import java.util.ArrayList;
-import West.Math.Equation.Token;
 
 /**
  * TODO: JAVADOC
