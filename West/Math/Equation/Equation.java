@@ -35,6 +35,7 @@ public class Equation implements MathObject {
         put("op_un_r", OperationFunction.UNARY_RIGHT);
         put("op_bi", OperationFunction.BINARY);
         put("comp", CompareCollection.COMPARATOR);
+        put("bool", CompareCollection.BOOLEANS);
         put("paren_l", Token.PAREN_L);
         put("paren_r", Token.PAREN_R);
         put("delim", Token.DELIM);
@@ -154,10 +155,12 @@ public class Equation implements MathObject {
             } else{
                 if(prev.length() != 0)
                     tokens.add(new Token(prev, Token.Type.VAR));
-                if(isOper(all))
-                    tokens.add(new Token(s, Token.Type.OPER));
+                if(isBool(all))
+                    tokens.add(new Token(s, Token.Type.BOOL));
                 else if(isComp(all))
                     tokens.add(new Token(s, Token.Type.COMP));
+                else if(isOper(all))
+                    tokens.add(new Token(s, Token.Type.OPER));
                 else if(isDelim(all))
                     tokens.add(new Token(s, Token.Type.DELIM));
                 else
@@ -169,7 +172,7 @@ public class Equation implements MathObject {
     }
     
     public static boolean isControlChar(String s){
-        return isOper(s) || isParen(s) || isDelim(s) || isComp(s);
+        return isOper(s) || isParen(s) || isDelim(s) || isComp(s) || isBool(s);
     }
     public static boolean isOper(String s){
         if((s.length() == 1 || (s.length() > 0 && s.charAt(s.length() - 1) == 'E')) &&
@@ -182,6 +185,9 @@ public class Equation implements MathObject {
     }
     
 
+    public static boolean isBool(String s){
+        return isInLast(s, (Collection<String>)CCHARS.get("bool"));
+    }
     public static boolean isComp(String s){
         return isInLast(s, (Collection<String>)CCHARS.get("comp"));
     }
@@ -198,17 +204,11 @@ public class Equation implements MathObject {
         if(pStr.isEmpty())
             return false;
         for(String s : pList){
-            if(pStr.replaceAll("["+(rc.contains(s) ? "\\" : "") + s + "]$","").length() != pStr.length())
+            if(pStr.replaceAll("\\Q" + s + "\\E$","").length() != pStr.length())
                 return true;
         }
         return false;
     }
-
-    private static Collection<String> rc = new Collection<String>(){{
-            add("[");add("]");
-            add("^");
-        }};
-
 
     public String exprstoStr(){
         String ret = "";
