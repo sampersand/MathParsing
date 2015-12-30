@@ -178,7 +178,6 @@ public class Equation implements MathObject {
         return tokens;
     }
     private static String replLast(String str, String last){
-        System.out.println("str:"+str+" last:"+last+" repl:" +str.replaceAll("\\Q" + last + "\\E$", ""));
         return str.replaceAll("\\Q" + last + "\\E$", "");
     }
     public static boolean isControlChar(String s){
@@ -221,20 +220,30 @@ public class Equation implements MathObject {
         }
         return null;
     }
-
     public String exprstoStr(){
+        return exprstoStr(expressions);
+    }
+    public String exprstoStr(CompareCollection exprs){
         String ret = "";
-        //TODO: MAKE SURE THIS WORKS
-        for(CompareCollection<Node> cc : expressions){
-            ret += " " + cc.comparator() + " ";
-            for(Node n : cc){
-                // System.out.println(cc.comparator() + " im a comparator");
-                // System.out.println(n.genEqString() + " im a eqstring");
-                ret += n.genEqString() + " " + cc.comparator();
+        for(Object obj : exprs){
+            assert obj instanceof CompareCollection || obj instanceof Token;
+            if(obj instanceof CompareCollection){
+                CompareCollection cobj =(CompareCollection)obj;
+                ret += exprstoStr(cobj);
+            } else {
+                ret += ((Token)obj).val();
             }
-            ret = ret.substring(0,ret.length() - 2);
         }
-        return expressions.size() >0 ? ret.substring(3) : "empty equation";
+        // for(CompareCollection<Node> cc : expressions){
+        //     ret += " " + cc.comparator() + " ";
+        //     for(Node n : cc){
+        //         // System.out.println(cc.comparator() + " im a comparator");
+        //         // System.out.println(n.genEqString() + " im a eqstring");
+        //         ret += n.genEqString() + " " + cc.comparator();
+        //     }
+        //     ret = ret.substring(0,ret.length() - 2);
+        // }
+        return exprs.size() >0 ? ret.substring(3) : "empty equation";
     }
 
     @Override
@@ -256,13 +265,14 @@ public class Equation implements MathObject {
         ret += indent(idtLvl + 2) + expressions.comparator() + "\n";
         ret += indent(idtLvl + 1) + "Raw Equation:\n" + indentE(idtLvl + 2) + exprstoStr() + "\n";
         ret += indent(idtLvl + 1) + "Expressions:";
-        for(CompareCollection<Node> cc : expressions){
-            ret += "\n" + indent(idtLvl + 2) + "CompareCollection:";
-            ret += "\n" + indent(idtLvl + 3) + "Comparator:" + "\n" + indentE(idtLvl + 4) + cc.comparator();
-            ret += "\n" + indent(idtLvl + 3) + "Nodes:";
-            for(Node n : cc)
-                ret += "\n" + n.toFullString(idtLvl + 4);
-        }
+        assert false;
+        // for(CompareCollection<Node> cc : expressions){
+        //     ret += "\n" + indent(idtLvl + 2) + "CompareCollection:";
+        //     ret += "\n" + indent(idtLvl + 3) + "Comparator:" + "\n" + indentE(idtLvl + 4) + cc.comparator();
+        //     ret += "\n" + indent(idtLvl + 3) + "Nodes:";
+        //     for(Node n : cc)
+        //         ret += "\n" + n.toFullString(idtLvl + 4);
+        // }
         return ret + "\n" + indentE(idtLvl + 2) + "\n" + indentE(idtLvl + 1);
     }
 

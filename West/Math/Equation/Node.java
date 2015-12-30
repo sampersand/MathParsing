@@ -318,14 +318,15 @@ public class Node implements MathObject {
             } catch(NumberFormatException err) {
                 if(pEqSys.varExist(val)){
                     for(Equation eq : pEqSys.equations()){
-                        if(eq.expressions().get(0).get(0).get(0).token.val().equals(val)){
-                            double dVal = eq.expressions().get(1).get(0).eval(pEqSys); //used to be get(1).eval
-                            if(pEqSys.isInBounds(token, dVal)){
-                                return dVal;
-                            }
-                            // Print.printe(dVal + " is out of bounds for '" + val + "'. returning NaN instead!");
-                            return Double.NaN;
-                        }
+                        assert false;
+                        // if(eq.expressions().get(0).get(0).get(0).token.val().equals(val)){
+                        //     double dVal = eq.expressions().get(1).get(0).eval(pEqSys); //used to be get(1).eval
+                        //     if(pEqSys.isInBounds(token, dVal)){
+                        //         return dVal;
+                        //     }
+                        //     // Print.printe(dVal + " is out of bounds for '" + val + "'. returning NaN instead!");
+                        //     return Double.NaN;
+                        // }
                     }
                 }
                 switch(val) {

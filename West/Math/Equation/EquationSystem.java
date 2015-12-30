@@ -294,7 +294,9 @@ public class EquationSystem implements MathObject, Iterable {
             Print.printw("Trying to evaluated an EquationSystem with no equations! returning 0");
             return 0D;
         }
-        return equations().get(0).expressions().get(0).get(0).eval(copy());
+        assert false;
+        return null;
+        // return equations().get(0).expressions().get(0).get(0).eval(copy());
 
     }
 
@@ -308,9 +310,10 @@ public class EquationSystem implements MathObject, Iterable {
      */
     public EquationSystem isolate(String toIso) throws NotDefinedException {
         for(int i = 0; i < size(); i++){
-            if(equations.get(i).expressions().get(0).get(0).token().val().equals(toIso)){
-                equations.prepend(equations.pop(i));
-            }
+            assert false;
+            // if(equations.get(i).expressions().get(0).get(0).token().val().equals(toIso)){
+            //     equations.prepend(equations.pop(i));
+            // }
         }
         return this;
     }
@@ -320,9 +323,11 @@ public class EquationSystem implements MathObject, Iterable {
      * @return true if this is an {@link #isolate() isolated EquationSystem}.
      */
     public boolean isolated(){
-        for(Equation eq : equations)
-            if(eq.expressions().size() > 0 && eq.expressions().get(0).size() != 1)
-                return false;
+        for(Equation eq : equations){
+            assert false;
+            // if(eq.expressions().size() > 0 && eq.expressions().get(0).size() != 1)
+            //     return false;
+        }
         return true;
     }
 
@@ -332,14 +337,15 @@ public class EquationSystem implements MathObject, Iterable {
     public boolean varExist(String pVar){
         for(Equation eq : equations){
             assert eq != null;
-            for(CompareCollection<Node> cc : eq.expressions()){
-                assert cc != null;
-                for(Node n : cc){
-                    assert n != null;
-                    if(n.get(0).token().val().equals(pVar))
-                        return true;
-                }
-            }
+            assert false;
+            // for(CompareCollection<Node> cc : eq.expressions()){
+            //     assert cc != null;
+            //     for(Node n : cc){
+            //         assert n != null;
+            //         if(n.get(0).token().val().equals(pVar))
+            //             return true;
+            //     }
+            // }
         }
         return false;
     }
@@ -369,12 +375,13 @@ public class EquationSystem implements MathObject, Iterable {
         if(constraints == null)
             return true;
         for(Equation eq : constraints.equations()){
-            Node nod = eq.expressions().get(0).get(0).get(0);
-            if(nod.token().val().equals(t.val()) && !
-                    eq.expressions().compare(pVal, 
-                                            eq.expressions().get(1).get(0).eval(this) //used to be just get(1).eval
-                                             ))
-                return false;
+            return false;
+            // Node nod = eq.expressions().get(0).get(0).get(0);
+            // if(nod.token().val().equals(t.val()) && !
+            //         eq.expressions().compare(pVal, 
+            //                                 eq.expressions().get(1).get(0).eval(this) //used to be just get(1).eval
+            //                                  ))
+            //     return false;
         }
         return true;
     }

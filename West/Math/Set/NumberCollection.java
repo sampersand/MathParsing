@@ -42,20 +42,21 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     public NumberCollection(final EquationSystem pEqSys, double min, double max, double cStep) {
         super();
         String firstVar;
-        if( pEqSys.equations().size() > 0 &&
-            pEqSys.equations().get(0).expressions().size() == 2 && 
-            pEqSys.equations().get(0).expressions().get(1).equals("firstVar")){ //used for what value to
-            firstVar = pEqSys.equations().get(0).expressions().get(0).get(0).genEqString(); //evaluate for.
-            pEqSys.equations().remove(0);
-        }
-        else
-            firstVar = "y";
+        // if( pEqSys.equations().size() > 0 &&
+        //     pEqSys.equations().get(0).expressions().size() == 2 && 
+        //     pEqSys.equations().get(0).expressions().get(1).equals("firstVar")){ //used for what value to
+        //     firstVar = pEqSys.equations().get(0).expressions().get(0).get(0).genEqString(); //evaluate for.
+        //     pEqSys.equations().remove(0);
+        // }
+        // else
+        //     firstVar = "y";
+        assert false;
         double i = min;
         // System.out.println(pEqSys);
-        while(i < max) {
-            add((N)new Double(pEqSys.eval(firstVar, new EquationSystem().add("x = " + i))));//will add a NaN to the list
-            i += (max - min) / cStep;
-        }
+        // while(i < max) {
+        //     add((N)new Double(pEqSys.eval(firstVar, new EquationSystem().add("x = " + i))));//will add a NaN to the list
+        //     i += (max - min) / cStep;
+        // }
 
 
     }
