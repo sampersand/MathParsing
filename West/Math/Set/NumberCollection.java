@@ -20,6 +20,7 @@ import java.util.ArrayList;
  */
 public class NumberCollection<N extends Number> extends Collection<N> implements MathObject {
     public static class NumberBuilder<N extends Number> extends Builder{
+
         @Override
         public NumberCollection build(){
             return new NumberCollection(this);
@@ -369,7 +370,8 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     }
     @Override
     public NumberCollection copy(){
-        return new NumberBuilder<N>().addAll(elements).build();
+        throw new NotDefinedException();
+        // return new NumberBuilder<N>().addAll(elements).build();
     }
 
 

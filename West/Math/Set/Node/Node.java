@@ -25,13 +25,14 @@ public class Node<T, N extends Node> extends Collection<Node<Object, N>> impleme
 
     public Node(ArrayList<Node<Object, N>> pElements){
         elements = new ArrayList<Node<Object, N>>();
-        add(pElements);
+        addAll(pElements);
         token = null;
     }
 
 
-    public Node(Node<?, N> pCollection) {
-        super(pCollection);
+    public Node(Node<Object, N> pCollection) {
+        elements = new ArrayList<Node<Object, N>>();
+        add(pCollection);
         token = null;
     }
 
@@ -41,7 +42,7 @@ public class Node<T, N extends Node> extends Collection<Node<Object, N>> impleme
 
 
     public Node<T, N> addN(N pN){ // add Node
-        super.add(new Node<T, N>(){{
+        super.add(new Node<Object, N>(){{
             addN(pN);
         }});
         return this;
@@ -56,7 +57,7 @@ public class Node<T, N extends Node> extends Collection<Node<Object, N>> impleme
     }
 
     public Node<T, N> addAllN(ArrayList<N> pNs){ // add Node
-        super.add(new Node<T, N>(){{
+        super.add(new Node<Object, N>(){{
             for(N n : pNs)
                 add(n);
         }});
@@ -97,32 +98,32 @@ public class Node<T, N extends Node> extends Collection<Node<Object, N>> impleme
         }
     }
 
-    protected void addD(int i, Node<?, N> n) {
+    protected void addD(int i, Node<Object, N> n) {
         assert n != null : "Cannot addDepth null Nodes!";
         if(i <= 0 || size() <= 0){
-            addN(n);
+            add(n);
         } else {
             if(i == 2 && get(size() - 1).isFinal()) {
-                addN(n);
+                add(n);
             } else {
                 getN(size() - 1).addD(i - 1, n);
             }
         }
     }
 
-    protected void setD(int i, int p, Node<?, N> n) {
+    protected void setD(int i, int p, Node<Object, N> n) {
         assert n != null : "Cannot setDepth null Nodes!";
         if(i == 0) {
             assert size() > 0;
             assert size() > p && (p >= 0 || p == -1);
             if(p == - 1) {
-                setN(size() - 1, n);
+                set(size() - 1, n);
             } else {
-                setN(p, n);
+                set(p, n);
             }
         } else {
-            assert !getN(size() - 1).isFinal(); //shouldnt happen, methinks.
-            getN(size() - 1).setD(i - 1, p, n);
+            assert !get(size() - 1).isFinal(); //shouldnt happen, methinks.
+            get(size() - 1).setD(i - 1, p, n);
         }
     }
 
