@@ -5,7 +5,7 @@ package West.Math;
  * {@link #toFancyString()}, and {@link #toFullString(int idtLvl)} methods.
  * 
  * @author Sam Westerman
- * @version 0.75
+ * @version 0.76
  * @since 0.1
  */
 public interface MathObject {

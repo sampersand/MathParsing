@@ -16,7 +16,7 @@ import javax.swing.JComponent;
  * The component that is used to graph an equation. This is depreciated, and will be removed soon
  *
  * @author Sam Westerman
- * @version 0.75
+ * @version 0.76
  * @since 0.3
  * @depreciated
  */

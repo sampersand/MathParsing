@@ -5,10 +5,10 @@ import java.util.ArrayList;
 
 /**
  * TODO: JAVADOC
- * LOL i'm going to have to figure out how to spell 'comparator' correctly XD
+ * LOL i'm going to have to figure out how to spell 'token' correctly XD
  * 
  * @author Sam Westerman
- * @version 0.75
+ * @version 0.76
  * @since 0.75
  */ 
 public class CompareCollection<E> extends Collection<E> {
@@ -35,42 +35,42 @@ public class CompareCollection<E> extends Collection<E> {
         add("^^");
     }};
 
-    protected String comparator; // its an object so functions can also use this
+    protected String token; // its an object so functions can also use this
 
     public CompareCollection(){
         super();
-        comparator = "=";
+        token = "=";
     }
     public CompareCollection(ArrayList<E> pElements){
         super(pElements);
-        comparator = "=";
+        token = "=";
     }
     public CompareCollection(E... pElements) {
         super(pElements);
-        comparator = "=";
+        token = "=";
     }
     // public CompareCollection(E[] pElements) {
     //     super(pElements);
-    //     comparator = "=";
+    //     token = "=";
     // }
 
     public CompareCollection(CompareCollection<E> pCollection) {
         super(pCollection);
-        comparator = "=";
+        token = "=";
     }
-    public String comparator(){
-        return comparator;
+    public String token(){
+        return token;
     }
 
-    public CompareCollection<E> setComparator(String pObj){
+    public CompareCollection<E> setToken(String pObj){
         assert pObj != null;
-        comparator = pObj;
+        token = pObj;
         return this;
     }
 
     public boolean compare(double val1, double val2){
-        // System.out.println(val1 + " " + comparator + " " + val2 + "?");
-        switch(comparator){
+        // System.out.println(val1 + " " + token + " " + val2 + "?");
+        switch(token){
             case "<": return val1 < val2;
             case ">": return val1 > val2;
             case "=": return val1 == val2;
@@ -92,12 +92,12 @@ public class CompareCollection<E> extends Collection<E> {
     public boolean equals(Object pObj){
         return super.equals(pObj) &&
                pObj instanceof CompareCollection &&
-               comparator == ((CompareCollection)pObj).comparator();
+               token == ((CompareCollection)pObj).token();
     }
     public String toString(){
         return "'=' Compare" + super.toString();
     }
     public CompareCollection copy(){
-        return new CompareCollection<E>(elements).setComparator(comparator);
+        return new CompareCollection<E>(elements).setToken(token);
     }
 }

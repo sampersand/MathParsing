@@ -2,7 +2,7 @@ package West.Math.Equation;
 
 import West.Math.MathObject;
 import West.Math.Equation.Function.CustomFunction;
-import West.Math.Equation.Node;
+import West.Math.Set.Node.EquationNode;
 import West.Math.Exception.NotDefinedException;
 import West.Math.Set.CompareCollection;
 import West.Math.Exception.TypeMisMatchException;
@@ -21,14 +21,13 @@ import West.Math.Set.Collection;
  * each other.
  * 
  * @author Sam Westerman
- * @version 0.75
+ * @version 0.76
  * @since 0.1
  */
 public class Equation implements MathObject {
 
-    /** This classe's list of expressions that are equal to eachother. */
-    protected CompareCollection<Object> expressions;
-
+    /** This classe's list of subEquations that are equal to eachother. */
+    protected EquationNode subEquations;
     public static final HashMap<String, Object> CCHARS = new HashMap<String, Object>()
     {{
         put("op_un_l", OperationFunction.UNARY_LEFT);
@@ -43,63 +42,67 @@ public class Equation implements MathObject {
 
 
     /**
-     * The default constructor. This just instantiates {@link #expressions} as an empty Collection.
+     * The default constructor. This just instantiates {@link #subEquations} as an empty Collection.
      */
     public Equation() {
-        expressions = new CompareCollection<Object>();
+        subEquations = new EquationNode();
     }
     public Equation(String comp) {
-        expressions = new CompareCollection<Object>().setComparator(comp);
+        subEquations = new EquationNode();
+        setToken(comp);
     }
 
     /**
      * Adds all of the {@link Node}s as defined in <code>pCol</code>.
-     * @param pCol    An Collection of {@link Node}s that will be added to {@link #expressions}.
+     * @param pCol    An Collection of {@link Node}s that will be added to {@link #subEquations}.
      * @return This class, with <code>pCol</code> added.
      */
-    public Equation add(CompareCollection<Object> pCol) {
-        expressions.add(pCol);
+    public Equation add(EquationNode pCol) {
+        subEquations.add(pCol);
         return this;
     }
 
-    private CompareCollection<Object> segmentTokens(Collection<Token> tokens){
-        CompareCollection<Object> units = new CompareCollection<Object>(){{
-            Collection<Token> prev = new Collection<Token>();
-            for(Token t : tokens){
-                prev.add(t);
-                if(isComp(t.val()) != null){
-                    add(prev);
-                    prev = new Collection<Token>();
-                }
-            }
-            if(prev.size() != 0)
-                add(prev);
-        }};
-        return units;
-        // expressions = new CompareCollection().setComparator(units.get(0).get(units.get(0).size() - 1).val());
-        // for(int i = 0; i < units.size(); i++){
-        //     Collection<Token> expr = units.get(i);
-        //     String comp = expressions.comparator();
-        //     if(isComp(expr.get(expr.size() - 1).val()) != null)
-        //         comp = expr.pop(expr.size() - 1).val();
-        //     expressions.add(new CompareCollection<Node>(Node.generateMasterNode(expr)).setComparator(comp));//{{add(Node.generateMasterNode(expr));}});
+    private EquationNode segmentTokens(Collection<Token> tokens){
+    // Collection<Token> prev = new Collection<Token>();
+    // {{
+    //     for(Token t : tokens){
+    //         add(t);
+    //         if(isComp(t.val()) != null){
+    //             add(prev);
+    //             prev = new Collection<Token>();
+    //         }
+    //     }
+    //     if(prev.size() != 0)
+    //         add(prev);
+    // }};
+
+    //     EquationNode units = new EquationNode().setToken(prev.get(0).getN(prev.get(0).size() - 1).val());
+    //     for(int i = 0; i < units.size(); i++){
+    //         Collection<Token> expr = units.get(i);
+    //         String comp = units.token();
+    //         if(isComp(expr.get(expr.size() - 1).val()) != null)
+    //             comp = expr.pop(expr.size() - 1).val();
+    //         units.add(new EquationNode(TokenNode.generateMasterNode(expr)).setToken(comp));//{{add(Node.generateMasterNode(expr));}});
+    //     }
+    //     return units;
+        return null;
     }
     public Equation add(String pStr){
         Collection<Token> tokens = parseTokens(pStr);
-        expressions = segmentTokens(tokens);
+        subEquations = segmentTokens(tokens);
         return this;
     }
 
-    public Equation setComparator(String comp) {
-        expressions.setComparator(comp);
+    public Equation setToken(String comp) {
+        subEquations.setToken(EquationNode.getComp(comp));
         return this;
     }
     /**
-     * Returns the {@link #expressions} that this class defines.
-     * @return {@link #expressions}
+     * Returns the {@link #subEquations} that this class defines.
+     * @return {@link #subEquations}
      */
-    public CompareCollection<Object> expressions() {
-        return expressions;
+    public EquationNode subEquations() {
+        return subEquations;
     }
 
     /**
@@ -221,25 +224,25 @@ public class Equation implements MathObject {
         return null;
     }
     public String exprstoStr(){
-        return exprstoStr(expressions);
+        return exprstoStr(subEquations);
     }
-    public String exprstoStr(CompareCollection exprs){
+    public String exprstoStr(EquationNode exprs){
         String ret = "";
         for(Object obj : exprs){
-            assert obj instanceof CompareCollection || obj instanceof Token;
-            if(obj instanceof CompareCollection){
-                CompareCollection cobj =(CompareCollection)obj;
+            assert obj instanceof Node || obj instanceof Token;
+            if(obj instanceof Node){
+                EquationNode cobj =(EquationNode)obj;
                 ret += exprstoStr(cobj);
             } else {
                 ret += ((Token)obj).val();
             }
         }
-        // for(CompareCollection<Node> cc : expressions){
-        //     ret += " " + cc.comparator() + " ";
-        //     for(Node n : cc){
-        //         // System.out.println(cc.comparator() + " im a comparator");
+        // for(CompareCollection<EquationNode> cc : subEquations){
+        //     ret += " " + cc.token() + " ";
+        //     for(EquationNode n : cc){
+        //         // System.out.println(cc.token() + " im a comparator");
         //         // System.out.println(n.genEqString() + " im a eqstring");
-        //         ret += n.genEqString() + " " + cc.comparator();
+        //         ret += n.genEqString() + " " + cc.token();
         //     }
         //     ret = ret.substring(0,ret.length() - 2);
         // }
@@ -262,15 +265,15 @@ public class Equation implements MathObject {
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "Equation:\n";
         ret += indent(idtLvl + 1) + "Comparator:\n"; 
-        ret += indent(idtLvl + 2) + expressions.comparator() + "\n";
+        ret += indent(idtLvl + 2) + subEquations.token() + "\n";
         ret += indent(idtLvl + 1) + "Raw Equation:\n" + indentE(idtLvl + 2) + exprstoStr() + "\n";
         ret += indent(idtLvl + 1) + "Expressions:";
-        assert false;
-        // for(CompareCollection<Node> cc : expressions){
+        // assert false;
+        // for(CompareCollection<EquationNode> cc : subEquations){
         //     ret += "\n" + indent(idtLvl + 2) + "CompareCollection:";
-        //     ret += "\n" + indent(idtLvl + 3) + "Comparator:" + "\n" + indentE(idtLvl + 4) + cc.comparator();
-        //     ret += "\n" + indent(idtLvl + 3) + "Nodes:";
-        //     for(Node n : cc)
+        //     ret += "\n" + indent(idtLvl + 3) + "Comparator:" + "\n" + indentE(idtLvl + 4) + cc.token();
+        //     ret += "\n" + indent(idtLvl + 3) + "EquationNodes:";
+        //     for(EquationNode n : cc)
         //         ret += "\n" + n.toFullString(idtLvl + 4);
         // }
         return ret + "\n" + indentE(idtLvl + 2) + "\n" + indentE(idtLvl + 1);
@@ -278,7 +281,7 @@ public class Equation implements MathObject {
 
     @Override
     public Equation copy(){
-        return new Equation(expressions.comparator()).add(expressions);
+        return new Equation("" + subEquations.token()).add(subEquations);
     }
 
     @Override
@@ -288,8 +291,8 @@ public class Equation implements MathObject {
         if(this == pObj)
             return true;
         Equation peq = (Equation)pObj;
-        for(int i = 0; i < expressions.size(); i++)
-            if(!expressions.get(i).equals(peq.expressions().get(i)))
+        for(int i = 0; i < subEquations.size(); i++)
+            if(!subEquations.get(i).equals(peq.subEquations().get(i)))
                 return false;
         return true;
 

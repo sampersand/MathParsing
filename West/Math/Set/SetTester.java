@@ -10,7 +10,7 @@ import West.Math.Exception.NotDefinedException;
  * This is just a hacked up thing I used to find the correlation values of data in <code>West.Math.Set/data.csv</code>.
  * 
  * @author Sam Westerman
- * @version 0.75
+ * @version 0.76
  * @since 0.65
  */
 public class SetTester {

@@ -14,11 +14,10 @@ import West.Math.Set.Collection;
  * A class that represents either a {@link CustomFunction custom function}, an {@link InBuiltFunction inbuilt function}, 
  * an {@link OperationFunction operation}, or a group of tokens.
  * @author Sam Westerman
- * @version 0.75
+ * @version 0.76
  * @since 0.1
  */
 public class Node implements MathObject {
-    
 
     /** A list of all nodes that are benith this one in the hierarchical structure. */
     protected Collection<Node> subNodes;
@@ -320,8 +319,8 @@ public class Node implements MathObject {
                 if(pEqSys.varExist(val)){
                     for(Equation eq : pEqSys.equations()){
                         assert false;
-                        // if(eq.expressions().get(0).get(0).get(0).token.val().equals(val)){
-                        //     double dVal = eq.expressions().get(1).get(0).eval(pEqSys); //used to be get(1).eval
+                        // if(eq.subEquations().get(0).get(0).get(0).token.val().equals(val)){
+                        //     double dVal = eq.subEquations().get(1).get(0).eval(pEqSys); //used to be get(1).eval
                         //     if(pEqSys.isInBounds(token, dVal)){
                         //         return dVal;
                         //     }

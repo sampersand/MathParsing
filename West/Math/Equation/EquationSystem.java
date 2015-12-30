@@ -16,7 +16,7 @@ import West.Math.Set.Collection;
  * {@link CustomFunction}s (and the corresponding classes for them).
  * 
  * @author Sam Westerman
- * @version 0.75
+ * @version 0.76
  * @since 0.1
  */
 public class EquationSystem implements MathObject, Iterable {
@@ -296,7 +296,7 @@ public class EquationSystem implements MathObject, Iterable {
         }
         assert false;
         return null;
-        // return equations().get(0).expressions().get(0).get(0).eval(copy());
+        // return equations().get(0).subEquations().get(0).get(0).eval(copy());
 
     }
 
@@ -311,7 +311,7 @@ public class EquationSystem implements MathObject, Iterable {
     public EquationSystem isolate(String toIso) throws NotDefinedException {
         for(int i = 0; i < size(); i++){
             assert false;
-            // if(equations.get(i).expressions().get(0).get(0).token().val().equals(toIso)){
+            // if(equations.get(i).subEquations().get(0).get(0).token().val().equals(toIso)){
             //     equations.prepend(equations.pop(i));
             // }
         }
@@ -325,7 +325,7 @@ public class EquationSystem implements MathObject, Iterable {
     public boolean isolated(){
         for(Equation eq : equations){
             assert false;
-            // if(eq.expressions().size() > 0 && eq.expressions().get(0).size() != 1)
+            // if(eq.subEquations().size() > 0 && eq.subEquations().get(0).size() != 1)
             //     return false;
         }
         return true;
@@ -338,7 +338,7 @@ public class EquationSystem implements MathObject, Iterable {
         for(Equation eq : equations){
             assert eq != null;
             assert false;
-            // for(CompareCollection<Node> cc : eq.expressions()){
+            // for(CompareCollection<Node> cc : eq.subEquations()){
             //     assert cc != null;
             //     for(Node n : cc){
             //         assert n != null;
@@ -376,10 +376,10 @@ public class EquationSystem implements MathObject, Iterable {
             return true;
         for(Equation eq : constraints.equations()){
             return false;
-            // Node nod = eq.expressions().get(0).get(0).get(0);
+            // Node nod = eq.subEquations().get(0).get(0).get(0);
             // if(nod.token().val().equals(t.val()) && !
-            //         eq.expressions().compare(pVal, 
-            //                                 eq.expressions().get(1).get(0).eval(this) //used to be just get(1).eval
+            //         eq.subEquations().compare(pVal, 
+            //                                 eq.subEquations().get(1).get(0).eval(this) //used to be just get(1).eval
             //                                  ))
             //     return false;
         }
@@ -433,7 +433,6 @@ public class EquationSystem implements MathObject, Iterable {
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "EquationSystem:";
         ret += "\n" + indent(idtLvl + 1) + "Equations:";
-
         for(Equation eqs : equations) {
             ret += "\n" + eqs.toFullString(idtLvl + 2);
         }

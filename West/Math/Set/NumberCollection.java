@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * in Statistics.
  * 
  * @author Sam Westerman
- * @version 0.75
+ * @version 0.76
  * @since 0.72
  */
 public class NumberCollection<N extends Number> extends Collection<N> implements MathObject {
@@ -43,9 +43,9 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         super();
         String firstVar;
         // if( pEqSys.equations().size() > 0 &&
-        //     pEqSys.equations().get(0).expressions().size() == 2 && 
-        //     pEqSys.equations().get(0).expressions().get(1).equals("firstVar")){ //used for what value to
-        //     firstVar = pEqSys.equations().get(0).expressions().get(0).get(0).genEqString(); //evaluate for.
+        //     pEqSys.equations().get(0).subEquations().size() == 2 && 
+        //     pEqSys.equations().get(0).subEquations().get(1).equals("firstVar")){ //used for what value to
+        //     firstVar = pEqSys.equations().get(0).subEquations().get(0).get(0).genEqString(); //evaluate for.
         //     pEqSys.equations().remove(0);
         // }
         // else

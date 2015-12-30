@@ -8,7 +8,7 @@ import java.util.Iterator;
  * TODO: JAVADOC
  * 
  * @author Sam Westerman
- * @version 0.75
+ * @version 0.76
  * @since 0.75
  */ 
 public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
@@ -41,12 +41,12 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
         assert pElements != null : "pElements cannot be null!";
         assert pElements.length != 0 : "pElements's length can't be 0";
         for(E e : pElements)
-            elements.add(e);
+            addE(e);
         return this;
     }
 
     // add an element
-    public boolean add(E pElement){
+    public boolean addE(E pElement){
         assert pElement != null : "pElement cannot be null!";
         elements.add(pElement);
         return true; //false of it cannot add. used for subsets.
@@ -69,9 +69,7 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
     public int size(){ return elements.size();}
     public E get(int pPos){ return elements.get(pPos);}
     public E set(int pPos, E pEle){
-        E ret = get(pPos);
-        elements.set(pPos, pEle);
-        return ret;
+        return elements.set(pPos, pEle);
     }
     public E pop(){return remove(size() - 1);}
     public E pop(int pPos){return remove(pPos);}
