@@ -27,7 +27,7 @@ import West.Math.Set.Collection;
 public class Equation implements MathObject {
 
     /** This classe's list of expressions that are equal to eachother. */
-    protected CompareCollection<Node> expressions;
+    protected CompareCollection<CompareCollection<Node>> expressions;
 
     public static final HashMap<String, Object> CCHARS = new HashMap<String, Object>()
     {{
@@ -45,10 +45,10 @@ public class Equation implements MathObject {
      * The default constructor. This just instantiates {@link #expressions} as an empty Collection.
      */
     public Equation() {
-        expressions = new CompareCollection<Node>();
+        expressions = new CompareCollection<CompareCollection<Node>>();
     }
     public Equation(String comp) {
-        expressions = new CompareCollection<Node>().setComparator(comp);
+        expressions = new CompareCollection<CompareCollection<Node>>().setComparator(comp);
     }
 
     /**
@@ -56,7 +56,7 @@ public class Equation implements MathObject {
      * @param pCol    An Collection of {@link Node}s that will be added to {@link #expressions}.
      * @return This class, with <code>pCol</code> added.
      */
-    public Equation add(CompareCollection<Node> pCol) {
+    public Equation add(CompareCollection<CompareCollection<Node>> pCol) {
         expressions.add(pCol);
         return this;
     }
@@ -94,19 +94,8 @@ public class Equation implements MathObject {
      * Returns the {@link #expressions} that this class defines.
      * @return {@link #expressions}
      */
-    public CompareCollection<Node> expressions() {
+    public CompareCollection<CompareCollection<Node>> expressions() {
         return expressions;
-    }
-
-    /**
-     * Gets a string representing the {@link Node#expression} for each {@link Node} in {@link #expressions}.
-     * @return A string comprised of each expression, with <code> = </code> between each one.
-     */
-    public String formattedNodes(){
-        String ret = "";
-        for(Node expr : expressions)
-            ret += expr.genEqString() + " " + expressions.comparator()+ " ";
-        return ret.substring(0, ret.length() - (expressions.size() > 0 ? 3 : 0));
     }
 
     /**
@@ -207,23 +196,27 @@ public class Equation implements MathObject {
 
 
 
-    public String exprtoStr(){
+    public String exprstoStr(){
         String ret = "";
-        for(Node n : expressions){
-            ret += " " +expressions.comparator() + " " +n.genEqString();
+        //TODO: MAKE SURE THIS WORKS
+        for(CompareCollection<Node> cc : expressions){
+            ret += " " + expressions.comparator() + " ";
+            for(Node n : cc)
+                ret += n.genEqString() + " " + cc.comparator();
+            ret = ret.substring(0,ret.length() - 2);
         }
         return expressions.size() >0 ? ret.substring(3) : "empty equation";
     }
 
     @Override
     public String toString() {
-        return  "eq:" + exprtoStr();
+        return  "eq:" + exprstoStr();
     }
 
     @Override
     public String toFancyString(int idtLvl) {
         String ret = indent(idtLvl) + "Equation:\n";
-        ret += indentE(idtLvl + 1) + "Expressions:" + exprtoStr();
+        ret += indentE(idtLvl + 1) + "Expressions:" + exprstoStr();
         return ret;
     }
 
@@ -232,10 +225,13 @@ public class Equation implements MathObject {
         String ret = indent(idtLvl) + "Equation:\n";
         ret += indent(idtLvl + 1) + "Comparator:\n"; 
         ret += indent(idtLvl + 2) + expressions.comparator() + "\n";
-        ret += indent(idtLvl + 1) + "Raw Equation:\n" + indentE(idtLvl + 2) + formattedNodes() + "\n";
+        ret += indent(idtLvl + 1) + "Raw Equation:\n" + indentE(idtLvl + 2) + exprstoStr() + "\n";
         ret += indent(idtLvl + 1) + "Nodes:";
-        for(Node expr : expressions)
-            ret += "\n" + expr.toFullString(idtLvl + 2);
+        for(CompareCollection<Node> cc : expressions){
+            ret += "\n" + indent(idtLvl + 2) + cc.comparator();
+            for(Node n : cc)
+                ret += "\n" + n.toFullString(idtLvl + 3);
+        }
         return ret + "\n" + indentE(idtLvl + 2) + "\n" + indentE(idtLvl + 1);
     }
 

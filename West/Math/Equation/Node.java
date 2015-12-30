@@ -320,7 +320,7 @@ public class Node implements MathObject {
                 if(pEqSys.varExist(val))
                     for(Equation eq : pEqSys.equations())
                         if(eq.expressions().get(0).get(0).token.val().equals(val)){
-                            double dVal = eq.expressions().get(1).eval(pEqSys);
+                            double dVal = eq.expressions().get(1).get(0).eval(pEqSys); //used to be get(1).eval
                             if(pEqSys.isInBounds(token, dVal)){
                                 return dVal;
                             }

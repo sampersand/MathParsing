@@ -45,7 +45,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         if( pEqSys.equations().size() > 0 &&
             pEqSys.equations().get(0).expressions().size() == 2 && 
             pEqSys.equations().get(0).expressions().get(1).equals("firstVar")){ //used for what value to
-            firstVar = pEqSys.equations().get(0).expressions().get(0).genEqString(); //evaluate for.
+            firstVar = pEqSys.equations().get(0).expressions().get(0).get(0).genEqString(); //evaluate for.
             pEqSys.equations().remove(0);
         }
         else

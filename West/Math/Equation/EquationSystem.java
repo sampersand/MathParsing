@@ -294,7 +294,7 @@ public class EquationSystem implements MathObject, Iterable {
             Print.printw("Trying to evaluated an EquationSystem with no equations! returning 0");
             return 0D;
         }
-        return equations().get(0).expressions().get(0).eval(copy());
+        return equations().get(0).expressions().get(0).get(0).eval(copy());
 
     }
 
@@ -331,11 +331,14 @@ public class EquationSystem implements MathObject, Iterable {
      */
     public boolean varExist(String pVar){
         for(Equation eq : equations){
-            if(eq == null) continue;
-            for(Node n : eq.expressions()){
-                if(n == null) continue;
+            assert eq != null;
+            for(CompareCollection<Node> cc : eq.expressions()){
+                assert cc != null;
+                for(Node n : cc){
+                    assert n != null;
                     if(n.get(0).token().val().equals(pVar))
                         return true;
+                }
             }
         }
         return false;
@@ -367,8 +370,11 @@ public class EquationSystem implements MathObject, Iterable {
             return true;
         for(Equation eq : constraints.equations()){
             Node nod = eq.expressions().get(0).get(0);
-            if(nod.token().val().equals(t.val()) && !eq.expressions().compare(pVal,eq.expressions().get(1).eval(this)))
-                    return false;
+            if(nod.token().val().equals(t.val()) && !
+                    eq.expressions().compare(pVal, 
+                                            eq.expressions().get(1).get(0).eval(this) //used to be just get(1).eval
+                                             ))
+                return false;
         }
         return true;
     }
