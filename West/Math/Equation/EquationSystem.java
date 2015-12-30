@@ -9,7 +9,6 @@ import West.Math.Exception.NotDefinedException;
 import West.Math.Equation.Function.CustomFunction;
 import java.util.HashMap;
 import java.util.Iterator;
-import West.Math.Set.CompareCollection;
 import West.Math.Set.Collection;
 /**
  * The main class for all equation-related things. It keeps track of different equations, and of names of 

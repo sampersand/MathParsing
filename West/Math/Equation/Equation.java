@@ -5,7 +5,6 @@ import West.Math.Equation.Function.CustomFunction;
 
 import West.Math.Set.Node.EquationNode;
 import West.Math.Set.Node.TokenNode;
-import West.Math.Set.CompareCollection;
 
 import West.Math.Exception.TypeMisMatchException;
 import West.Math.Exception.NotDefinedException;
