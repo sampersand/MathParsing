@@ -27,7 +27,7 @@ import West.Math.Set.Collection;
 public class Equation implements MathObject {
 
     /** This classe's list of expressions that are equal to eachother. */
-    protected CompareCollection<CompareCollection<Node>> expressions;
+    protected CompareCollection<Object> expressions;
 
     public static final HashMap<String, Object> CCHARS = new HashMap<String, Object>()
     {{
@@ -46,10 +46,10 @@ public class Equation implements MathObject {
      * The default constructor. This just instantiates {@link #expressions} as an empty Collection.
      */
     public Equation() {
-        expressions = new CompareCollection<CompareCollection<Node>>();
+        expressions = new CompareCollection<Object>();
     }
     public Equation(String comp) {
-        expressions = new CompareCollection<CompareCollection<Node>>().setComparator(comp);
+        expressions = new CompareCollection<Object>().setComparator(comp);
     }
 
     /**
@@ -57,14 +57,13 @@ public class Equation implements MathObject {
      * @param pCol    An Collection of {@link Node}s that will be added to {@link #expressions}.
      * @return This class, with <code>pCol</code> added.
      */
-    public Equation add(CompareCollection<CompareCollection<Node>> pCol) {
+    public Equation add(CompareCollection<Object> pCol) {
         expressions.add(pCol);
         return this;
     }
 
-    public Equation add(String pStr){
-        Collection<Token> tokens = parseTokens(pStr);
-        Collection<Collection<Token>> units = new Collection<Collection<Token>>(){{
+    private CompareCollection<Object> segmentTokens(Collection<Token> tokens){
+        CompareCollection<Object> units = new CompareCollection<Object>(){{
             Collection<Token> prev = new Collection<Token>();
             for(Token t : tokens){
                 prev.add(t);
@@ -76,17 +75,18 @@ public class Equation implements MathObject {
             if(prev.size() != 0)
                 add(prev);
         }};
-        //AAAAA@@@@
-        expressions = new CompareCollection().setComparator(units.get(0).get(units.get(0).size() - 1).val());
-        for(int i = 0; i < units.size(); i++){
-            Collection<Token> expr = units.get(i);
-            String comp = expressions.comparator();
-            if(isComp(expr.get(expr.size() - 1).val()) != null)
-                comp = expr.pop(expr.size() - 1).val();
-            expressions.add(new CompareCollection<Node>(Node.generateMasterNode(expr)).setComparator(comp));//{{add(Node.generateMasterNode(expr));}});
-        // System.out.println(expressions);
-
-        }
+        return units;
+        // expressions = new CompareCollection().setComparator(units.get(0).get(units.get(0).size() - 1).val());
+        // for(int i = 0; i < units.size(); i++){
+        //     Collection<Token> expr = units.get(i);
+        //     String comp = expressions.comparator();
+        //     if(isComp(expr.get(expr.size() - 1).val()) != null)
+        //         comp = expr.pop(expr.size() - 1).val();
+        //     expressions.add(new CompareCollection<Node>(Node.generateMasterNode(expr)).setComparator(comp));//{{add(Node.generateMasterNode(expr));}});
+    }
+    public Equation add(String pStr){
+        Collection<Token> tokens = parseTokens(pStr);
+        expressions = segmentTokens(tokens);
         return this;
     }
 
@@ -98,7 +98,7 @@ public class Equation implements MathObject {
      * Returns the {@link #expressions} that this class defines.
      * @return {@link #expressions}
      */
-    public CompareCollection<CompareCollection<Node>> expressions() {
+    public CompareCollection<Object> expressions() {
         return expressions;
     }
 
