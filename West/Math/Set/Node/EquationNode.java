@@ -12,6 +12,9 @@ import West.Math.MathObject;
  * @version 0.76
  * @since 0.75
  */
+interface TokenObj{
+    public Object compare(Object obj1, Object obj2);
+}
 public class EquationNode extends Node<EquationNode.Comparator, Node> implements MathObject{
     public class Comparator{
         public final String SYMBOL;
@@ -24,16 +27,15 @@ public class EquationNode extends Node<EquationNode.Comparator, Node> implements
 
     public static final HashMap<String, Comparator> COMPARATOR = new HashMap<String, Comparator>()
     {{
-       // put("<=", new EquationNode.Comparator("<=", (obj1, obj2) -> null));
-       // put(">=", new EquationNode.Comparator(">=", (obj1, obj2) -> null));
-       // put("!=", new EquationNode.Comparator("!=", (obj1, obj2) -> null));
-       // put("|", new EquationNode.Comparator("|", (obj1, obj2) -> null));
-       // put("<", new EquationNode.Comparator("<", (obj1, obj2) -> null));
-       // put(">", new EquationNode.Comparator(">", (obj1, obj2) -> null));
-       // put("=", new EquationNode.Comparator("=", (obj1, obj2) -> null));
-       // put("≠", new EquationNode.Comparator("≠", (obj1, obj2) -> null));
-       // put("≥", new EquationNode.Comparator("≥", (obj1, obj2) -> null));
-       // put("≤", new EquationNode.Comparator("≤", (obj1, obj2) -> null));
+       put("<=",null);// new EquationNode.Comparator("<=", (obj1, obj2) -> null));
+       put(">=",null);// new EquationNode.Comparator(">=", (obj1, obj2) -> null));
+       put("!=",null);// new EquationNode.Comparator("!=", (obj1, obj2) -> null));
+       put("<", null);//new EquationNode.Comparator("<", (obj1, obj2) -> null));
+       put(">", null);//new EquationNode.Comparator(">", (obj1, obj2) -> null));
+       put("=", null);//new EquationNode.Comparator("=", (obj1, obj2) -> null));
+       put("≠", null);//new EquationNode.Comparator("≠", (obj1, obj2) -> null));
+       put("≥", null);//new EquationNode.Comparator("≥", (obj1, obj2) -> null));
+       put("≤", null);//new EquationNode.Comparator("≤", (obj1, obj2) -> null));
    }};
 
     public static final HashMap<String, Comparator> BOOLEANS = new HashMap<String, Comparator>()
@@ -73,7 +75,7 @@ public class EquationNode extends Node<EquationNode.Comparator, Node> implements
     //         Equation t = pEquations.get(pPos);
     //         assert t != null : "this should have been caught earlier.";
     //         if(t.isConst() || t.isOper()){
-    //             node.addE(new EquationNode(t));
+    //             node.add(new EquationNode(t));
     //         } else if(t.isFunc()) {
     //             int paren = 0;
     //             int x = pPos + 1;
@@ -88,7 +90,7 @@ public class EquationNode extends Node<EquationNode.Comparator, Node> implements
     //                  passEquations.add(tk);
     //             Object[] temp = new EquationNode(t).condeseNodes(0, passEquations);
     //             pPos += (int)temp[0];
-    //             node.addE(((EquationNode)temp[1]).fixNodes());
+    //             node.add(((EquationNode)temp[1]).fixNodes());
     //         } 
     //         pPos++;
     //     }
@@ -118,18 +120,18 @@ public class EquationNode extends Node<EquationNode.Comparator, Node> implements
     //                 EquationNode nD = e.getD(depth);
     //                 assert nD != null : "elements cannot be null!";
     //                 if(nD.isFinal()) {
-    //                     n.addE(nD);
+    //                     n.add(nD);
     //                     e.setD(depth - 1, -1, n); //depth is a final node.
     //                     break;
     //                 } else if(n.token.priority() < nD.token.priority()) {
-    //                     n.addE(nD);
-    //                     n.addE(((EquationNode)node.get(i + 1)).completeNodes());
+    //                     n.add(nD);
+    //                     n.add(((EquationNode)node.get(i + 1)).completeNodes());
     //                     i++;
     //                     e.setD(depth - 1, -1, n);
     //                     break;
     //                 } else if (nD.token.isFunc()) {
-    //                     n.addE(nD);
-    //                     n.addE(node.get(i + 1).completeNodes());
+    //                     n.add(nD);
+    //                     n.add(node.get(i + 1).completeNodes());
     //                     i++;
     //                     e.setD(depth - 1, -1, n);
     //                     break;

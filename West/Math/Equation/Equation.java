@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import West.Math.Equation.Function.OperationFunction;
-import West.Math.Set.CompareCollection;
 
 import java.util.HashMap;
 import West.Math.Set.Collection;
@@ -36,8 +35,8 @@ public class Equation implements MathObject {
         put("op_un_l", OperationFunction.UNARY_LEFT);
         put("op_un_r", OperationFunction.UNARY_RIGHT);
         put("op_bi", OperationFunction.BINARY);
-        put("comp", CompareCollection.COMPARATOR);
-        put("bool", CompareCollection.BOOLEANS);
+        put("comp", EquationNode.COMPARATOR);
+        put("bool", EquationNode.BOOLEANS);
         put("paren_l", Token.PAREN_L);
         put("paren_r", Token.PAREN_R);
         put("delim", Token.DELIM);
@@ -64,7 +63,25 @@ public class Equation implements MathObject {
         return this;
     }
 
-    private EquationNode segmentTokens(Collection<Token> tokens){
+    public Equation add(String pStr){
+        Collection<Token> tokens = parseTokens(pStr);
+        subEquations = segmentTokens(tokens);
+        return this;
+    }
+
+    public Equation setToken(String comp) {
+        subEquations.setToken(comp);
+        return this;
+    }
+    /**
+     * Returns the {@link #subEquations} that this class defines.
+     * @return {@link #subEquations}
+     */
+    public EquationNode subEquations() {
+        return subEquations;
+    }
+
+   private EquationNode segmentTokens(Collection<Token> tokens){
     // Collection<Token> prev = new Collection<Token>();
     // {{
     //     for(Token t : tokens){
@@ -87,19 +104,18 @@ public class Equation implements MathObject {
     //         units.add(new EquationNode(TokenNode.generateMasterNode(expr)).setToken(comp));//{{add(Node.generateMasterNode(expr));}});
     //     }
     //     return units;
-        Collection<Collection<Token>> units = new Collection<Collection<Token>>(){{
-            Collection<Token> prev = new Collection<Token>();
-            for(Token t : tokens){
-                prev.add(t);
-                if(isComp(t.val()) != null){
-                    add(prev);
-                    prev = new Collection<Token>();
-                }
+        Collection<Collection<Token>> units = new Collection<Collection<Token>>();
+        Collection<Token> prev = new Collection<Token>();
+        for(Token t : tokens){
+            prev.add(t);
+            if(isComp(t.val()) != null){
+                units.add(prev);
+                prev = new Collection<Token>();
             }
-            if(prev.size() != 0)
-                add(prev);
-        }};
-        //AAAAA@@@@
+        }
+        if(prev.size() != 0)
+            units.add(prev);
+        System.out.println(units.get(0).get(units.get(0).size()));
         EquationNode eqnod = new EquationNode().setToken(units.get(0).get(units.get(0).size() - 1).val());
         for(int i = 0; i < units.size(); i++){
             Collection<Token> expr = units.get(i);
@@ -112,23 +128,6 @@ public class Equation implements MathObject {
         }
         return eqnod;
 
-    }
-    public Equation add(String pStr){
-        Collection<Token> tokens = parseTokens(pStr);
-        subEquations = segmentTokens(tokens);
-        return this;
-    }
-
-    public Equation setToken(String comp) {
-        subEquations.setToken(comp);
-        return this;
-    }
-    /**
-     * Returns the {@link #subEquations} that this class defines.
-     * @return {@link #subEquations}
-     */
-    public EquationNode subEquations() {
-        return subEquations;
     }
 
     /**
@@ -169,7 +168,7 @@ public class Equation implements MathObject {
             all += s;
             if(!isControlChar(all)) {
                 if(x == rEq.length() - 1){
-                    tokens.addE(new Token(all, Token.Type.VAR));
+                    tokens.add(new Token(all, Token.Type.VAR));
                     all = "";
                 }
                 continue;
@@ -178,27 +177,27 @@ public class Equation implements MathObject {
             if(isParen(all) != null){
                 repl = isParen(all);
                 if(isInLast(s,(Collection<String>)CCHARS.get("paren_l")) != null){ //if its a left paren, make function
-                    tokens.addE(new Token(replLast(all, repl), Token.Type.FUNC));
+                    tokens.add(new Token(replLast(all, repl), Token.Type.FUNC));
                 } else if(repl.length() != 0)
-                    tokens.addE(new Token(replLast(all, repl), Token.Type.VAR));
-                tokens.addE(new Token(repl, Token.Type.PAREN));
+                    tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                tokens.add(new Token(repl, Token.Type.PAREN));
             } else{
                 if(isBool(all) != null){
                     repl = isBool(all);
-                    if(repl.length() != 0) tokens.addE(new Token(replLast(all, repl), Token.Type.VAR));
-                    tokens.addE(new Token(isBool(all), Token.Type.BOOL));
+                    if(repl.length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                    tokens.add(new Token(isBool(all), Token.Type.BOOL));
                 } else if(isComp(all) != null){
                     repl = isComp(all);
-                    if(repl.length() != 0) tokens.addE(new Token(replLast(all, repl), Token.Type.VAR));
-                    tokens.addE(new Token(isComp(all), Token.Type.COMP));
+                    if(repl.length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                    tokens.add(new Token(isComp(all), Token.Type.COMP));
                 } else if(isOper(all) != null){
                     repl = isOper(all);
-                    if(repl.length() != 0) tokens.addE(new Token(replLast(all, repl), Token.Type.VAR));
-                    tokens.addE(new Token(isOper(all), Token.Type.OPER));
+                    if(repl.length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                    tokens.add(new Token(isOper(all), Token.Type.OPER));
                 } else if(isDelim(all) != null){
                     repl = isDelim(all);
-                    if(repl.length() != 0) tokens.addE(new Token(replLast(all, repl), Token.Type.VAR));
-                    tokens.addE(new Token(isDelim(all), Token.Type.DELIM));
+                    if(repl.length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                    tokens.add(new Token(isDelim(all), Token.Type.DELIM));
                 } else
                     assert false;
             }
@@ -224,10 +223,10 @@ public class Equation implements MathObject {
     
 
     public static String isBool(String s){
-        return isInLast(s, (Collection<String>)CCHARS.get("bool"));
+        return isInLast(s, ((HashMap<String,Object>)CCHARS.get("bool")).keySet());
     }
     public static String isComp(String s){
-        return isInLast(s, (Collection<String>)CCHARS.get("comp"));
+        return isInLast(s, ((HashMap<String,Object>)CCHARS.get("comp")).keySet());
     }
 
     public static String isDelim(String s){

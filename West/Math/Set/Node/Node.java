@@ -13,9 +13,7 @@ import java.util.ArrayList;
  * @version 0.76
  * @since 0.75
  */ 
-interface TokenObj{
-    public Object compare(Object obj1, Object obj2);
-}
+
 public class Node<T, N extends Node> extends Collection<Node<Object, N>> implements MathObject {
 
     protected T token; // its an object so functions can also use this
@@ -60,7 +58,7 @@ public class Node<T, N extends Node> extends Collection<Node<Object, N>> impleme
     public Node<T, N> addAllN(ArrayList<N> pNs){ // add Node
         super.add(new Node<T, N>(){{
             for(N n : pNs)
-                addE(n);
+                add(n);
         }});
         return this;
     }
@@ -102,12 +100,12 @@ public class Node<T, N extends Node> extends Collection<Node<Object, N>> impleme
     protected void addD(int i, Node<?, N> n) {
         assert n != null : "Cannot addDepth null Nodes!";
         if(i <= 0 || size() <= 0){
-            add(new Node[]{n});
+            addN(n);
         } else {
             if(i == 2 && get(size() - 1).isFinal()) {
-                add(new Node[]{n});
+                addN(n);
             } else {
-                get(size() - 1).addD(i - 1, n);
+                getN(size() - 1).addD(i - 1, n);
             }
         }
     }
@@ -118,13 +116,13 @@ public class Node<T, N extends Node> extends Collection<Node<Object, N>> impleme
             assert size() > 0;
             assert size() > p && (p >= 0 || p == -1);
             if(p == - 1) {
-                set(size() - 1, (Node<Object, N>)n);
+                setN(size() - 1, n);
             } else {
-                set(p, (Node<Object, N>)n);
+                setN(p, n);
             }
         } else {
-            assert !get(size() - 1).isFinal(); //shouldnt happen, methinks.
-            get(size() - 1).setD(i - 1, p, n);
+            assert !getN(size() - 1).isFinal(); //shouldnt happen, methinks.
+            getN(size() - 1).setD(i - 1, p, n);
         }
     }
 

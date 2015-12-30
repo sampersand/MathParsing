@@ -36,34 +36,27 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
         add(pCollection);
     }
 
-    //add an array of elements
-    public Collection<E> add(E[] pElements){
-        assert pElements != null : "pElements cannot be null!";
-        assert pElements.length != 0 : "pElements's length can't be 0";
-        for(E e : pElements)
-            addE(e);
-        return this;
+    //adds elements. does not check to make sure they are actual valid elements
+    public boolean add(Object pObj){
+        return elements.add((E)pObj); // might throw exception
+    }
+    public Collection<E> addAll(Object pObj){
+        if(pObj instanceof Object[]){
+            elements.addAll((Object[])pObj);
+            return this;
+        }
+        if(pObj instanceof Collection){
+            elements.addAll(((Collection<E>)pObj).pElements());
+            return this;
+        }
+        if(pObj instanceof ArrayList){
+            elements.addAll((ArrayList<E>)pObj);
+            return this;
+        }
+        assert false : "no known way to add element type '" + pObj.getclass() + "' to A collection of " + E;
+
     }
 
-    // add an element
-    public boolean addE(E pElement){
-        assert pElement != null : "pElement cannot be null!";
-        elements.add(pElement);
-        return true; //false of it cannot add. used for subsets.
-    }
-
-    public Collection<E> add(ArrayList<E> pElements){ //used so you can build elements
-        assert pElements != null : "pElements cannot be null!";
-        elements.addAll(pElements);
-
-        return this;
-    }
-
-    public Collection<E> add(Collection<E> pCollection){ //used so you can build elements
-        assert pCollection != null : "pCollection cannot be null!";
-        elements.addAll(pCollection.copy().elements());
-        return this;
-    }
 
     public ArrayList<E> elements(){ return elements; }
     public int size(){ return elements.size();}
