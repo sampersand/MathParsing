@@ -28,14 +28,13 @@ public class Tester {
             // eqsys.add("theta = ln(pi) - c ^ x ");
             // eqsys.add("x = 3");
 
-            eqsys.add("x > 5 | x < 9");
-            // eqsys.add("y = x0 * x1 * x2 * x3 * x4");
-            // eqsys.add("x0 = (x) * c");
-            // eqsys.add("x1 = (x - 8) * c");
-            // eqsys.add("x2 = (x - 4) * c");
-            // eqsys.add("x3 = (x + 8) * c");
-            // eqsys.add("x4 = (x + 4) * c");
-            // eqsys.add("c = 1/4");
+            eqsys.add("y = x0 * x1 * x2 * x3 * x4");
+            eqsys.add("x0 = (x) * c");
+            eqsys.add("x1 = (x - 8) * c");
+            eqsys.add("x2 = (x - 4) * c");
+            eqsys.add("x3 = (x + 8) * c");
+            eqsys.add("x4 = (x + 4) * c");
+            eqsys.add("c = 1/4");
             // eqsys.addConstraint("x > 5 | x < 4");
             // eqsys.add("y = x * (x - 2) * (x + 2)");
         } else {

@@ -42,7 +42,7 @@ public class OperationFunction extends InBuiltFunction {
         put("^", InBuiltFunction.FUNCTIONS.get("^"));
     }};
 
-    public static enum OPERATOR  {
+    public static enum OPERATOR  { //TODO: REMOVE THIS
         ADDITION("+", 0),           // Algebra "addition"
         SUBTRACTION("-", 0),        // Algebra "subtraction"
         MULTIPLICATION("*", 1),     // Algebra "multiplication"

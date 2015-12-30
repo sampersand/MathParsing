@@ -19,7 +19,6 @@ import West.Math.Set.Collection;
  */
 public class Node implements MathObject {
 
-
     /** A list of all nodes that are benith this one in the hierarchical structure. */
     protected Collection<Node> subNodes;
 
@@ -119,7 +118,7 @@ public class Node implements MathObject {
         while(i < node.size()) {
             Node n = node.get(i);
             assert n != null : "no subNode can be null!";
-            if(n.isFinal() && !Equation.isControlChar(n.token().val(),"")) {
+            if(n.isFinal() && !Equation.isControlChar(n.token().val())) {
                 e.addD(e.depth(), n);
             } else if(n.token.isOper()) {
                 for(int depth = 1; depth < e.depth(); depth++) {
