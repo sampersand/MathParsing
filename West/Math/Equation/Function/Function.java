@@ -2,7 +2,7 @@ package West.Math.Equation.Function;
 
 import West.Math.MathObject;
 import West.Math.Equation.EquationSystem;
-import West.Math.Set.Node.Node;
+import West.Math.Set.Node.TokenNode;
 import static West.Math.Declare.*;
 import West.Math.Exception.NotDefinedException;
 
@@ -100,10 +100,10 @@ public abstract class Function implements MathObject {
      *         {@link Node#elements() pNode's elements()}.
      */
     protected double[] evalNode(final EquationSystem pEqSys,
-                                Node pNode) {
+                                TokenNode pNode) {
         double[] ret = new double[pNode.size()];
         for(int i = 0; i < ret.length; i++) {
-            ret[i] = pNode.elements().get(i).eval(pEqSys);
+            ret[i] = ((TokenNode)pNode.elements().get(i)).eval(pEqSys);
         }
         return ret;
 
@@ -120,7 +120,7 @@ public abstract class Function implements MathObject {
      * @throws IllegalArgumentException   Thrown when the function required parameters, and the ones passed aren't right.
      */
     public abstract double exec(final EquationSystem pEqSys,
-                                Node pNode) throws
+                                TokenNode pNode) throws
                                     NotDefinedException,
                                     IllegalArgumentException;
 

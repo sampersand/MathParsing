@@ -3,7 +3,7 @@ package West.Math.Equation.Function;
 import West.Math.MathObject;
 import West.Math.Print;
 import West.Math.Equation.Function.Function;
-import West.Math.Set.Node.Node;
+import West.Math.Set.Node.TokenNode;
 import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Function.CustomFunctions.*;
 import West.Math.Exception.NotDefinedException;
@@ -133,11 +133,11 @@ public class CustomFunction extends Function implements MathObject {
     @Override
     @SuppressWarnings("unchecked") //stupid cl.getDeclaredMethod
     public double exec(final EquationSystem pEqSys,
-                       Node pNode) throws
+                       TokenNode pNode) throws
                            NotDefinedException,
                            IllegalArgumentException {
         try {
-            Class[] argType = {EquationSystem.class, Node.class};
+            Class[] argType = {EquationSystem.class, TokenNode.class};
             Method execMethod = cl.getDeclaredMethod("exec",argType);
             Object[] argListForInvokedExec = new Object[]{pEqSys, pNode};
             return (double)execMethod.invoke(cl.newInstance(), argListForInvokedExec);

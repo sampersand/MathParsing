@@ -53,7 +53,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         double i = min;
         // System.out.println(pEqSys);
         // while(i < max) {
-        //     add((N)new Double(pEqSys.eval(firstVar, new EquationSystem().add("x = " + i))));//will add a NaN to the list
+        //     add((N)new ((TokenNode)Double(pEqSys).eval(firstVar, new EquationSystem().add("x = " + i))));//will add a NaN to the list
         //     i += (max - min) / cStep;
         // }
 

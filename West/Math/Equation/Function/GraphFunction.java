@@ -3,7 +3,7 @@ package West.Math.Equation.Function;
 import West.Math.Print;
 import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Equation;
-import West.Math.Set.Node.Node;
+import West.Math.Set.Node.TokenNode;
 import West.Math.Equation.Function.InBuiltFunction;
 import West.Math.Exception.NotDefinedException;
 import West.Math.Set.NumberCollection;
@@ -20,7 +20,7 @@ public class GraphFunction extends InBuiltFunction{
     protected EquationSystem equationsToGraph;
     protected ArrayList<ArrayList<NumberCollection<Double>>> numcToGraph;
     protected GraphComponents gcomp;
-    protected Node node;
+    protected TokenNode node;
 
     public String help() {
         return "Graphs any combination of numcs and / or functions";
@@ -36,7 +36,7 @@ public class GraphFunction extends InBuiltFunction{
 
     @Override
     public double exec(final EquationSystem pEqSys,
-                       Node pNode) throws
+                       TokenNode pNode) throws
                            NotDefinedException,
                            IllegalArgumentException {
         assert pNode.size() > 0 : "Cannot evaluate the node '" + pNode.token().val() + "' when it's size isn't greater"+
@@ -46,7 +46,8 @@ public class GraphFunction extends InBuiltFunction{
         gcomp = new GraphComponents(new int[]{1250, 750}, new double[]{- 10, - 10, 10, 10}, 1000);
         node = pNode;
 
-        for(Node n : node.elements()) {
+        for(Object o : node.elements()) { //TokenNode t
+            TokenNode n = new TokenNode();
             String id = n.token().val().replaceAll("^(.*):.*","$1");
             String[] vals = n.token().val().replaceAll("^" + id + ":","").replaceAll(" ","").split(",");
             ArrayList<NumberCollection<Double>> temp;

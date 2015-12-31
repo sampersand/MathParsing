@@ -335,19 +335,21 @@ public class EquationSystem implements MathObject, Iterable {
      * Sees if <code>pVar</code> is defined on the left-hand side of any equation.
      */
     public boolean varExist(String pVar){
-        for(Equation eq : equations){
-            assert eq != null;
-            assert false;
-            // for(CompareCollection<Node> cc : eq.subEquations()){
-            //     assert cc != null;
-            //     for(Node n : cc){
-            //         assert n != null;
-            //         if(n.get(0).token().val().equals(pVar))
-            //             return true;
-            //     }
-            // }
-        }
-        return false;
+        System.out.println("TODO: varExist");
+        return true;
+        // for(Equation eq : equations){
+        //     assert eq != null;
+        //     for(EquationNode en : eq.subEquations()){
+        //         assert cc != null;
+        //         for(Node n : en){
+        //             assert n != null;
+        //             if(!(n instanceof TokenNode))
+        //             if(n.get(0).token().val().equals(pVar))
+        //                 return true;
+        //         }
+        //     }
+        // }
+        // return false;
     }
 
     /**
@@ -379,7 +381,7 @@ public class EquationSystem implements MathObject, Iterable {
             // Node nod = eq.subEquations().get(0).get(0).get(0);
             // if(nod.token().val().equals(t.val()) && !
             //         eq.subEquations().compare(pVal, 
-            //                                 eq.subEquations().get(1).get(0).eval(this) //used to be just get(1).eval
+            //                                 ((TokenNode)eq.subEquations().get(1).get(0)).eval(this) //used to be just get(1).eval
             //                                  ))
             //     return false;
         }

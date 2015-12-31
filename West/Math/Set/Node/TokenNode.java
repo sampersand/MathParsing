@@ -2,6 +2,7 @@ package West.Math.Set.Node;
 import West.Math.Set.Collection;
 import java.util.ArrayList;
 import West.Math.Equation.EquationSystem;
+import West.Math.Equation.Function.InBuiltFunction;
 import West.Math.Equation.Token;
 import West.Math.MathObject;
 import West.Math.Equation.Equation;
@@ -226,15 +227,14 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             } catch(NumberFormatException err) {
                 if(pEqSys.varExist(val)){
                     for(Equation eq : pEqSys.equations()){
-                        assert false;
-                        // if(eq.subEquations().get(0).get(0).get(0).token.val().equals(val)){
-                        //     double dVal = eq.subEquations().get(1).get(0).eval(pEqSys); //used to be get(1).eval
-                        //     if(pEqSys.isInBounds(token, dVal)){
-                        //         return dVal;
-                        //     }
-                        //     // Print.printe(dVal + " is out of bounds for '" + val + "'. returning NaN instead!");
-                        //     return Double.NaN;
-                        // }
+                        if(((TokenNode)eq.subEquations().getD(eq.subEquations().depth())).token.val().equals(val)){
+                            double dVal = eq.subEquations().get(1).get(0).eval(pEqSys); //used to be get(1).eval
+                            if(pEqSys.isInBounds(token, dVal)){
+                                return dVal;
+                            }
+                            // Print.printe(dVal + " is out of bounds for '" + val + "'. returning NaN instead!");
+                            return Double.NaN;
+                        }
                     }
                 }
                 switch(val) {

@@ -3,7 +3,7 @@ package West.Math.Equation.Function;
 import West.Math.MathObject;
 import West.Math.Print;
 import West.Math.Equation.EquationSystem;
-import West.Math.Set.Node.Node;
+import West.Math.Set.Node.TokenNode;
 import West.Math.Exception.NotDefinedException;
 
 import java.util.HashMap;
@@ -94,7 +94,7 @@ public class InBuiltFunction extends Function {
      */
     public static double exec(String pName,
                               final EquationSystem pEqSys,
-                              Node pNode) throws
+                              TokenNode pNode) throws
                                   NotDefinedException,
                                   IllegalArgumentException {
         if(FUNCTIONS.get(pName) == null)
@@ -105,7 +105,7 @@ public class InBuiltFunction extends Function {
 
     @Override
     public double exec(final EquationSystem pEqSys,
-                       Node pNode) throws
+                       TokenNode pNode) throws
                            NotDefinedException,
                            IllegalArgumentException {
         double[] args = evalNode(pEqSys, pNode);

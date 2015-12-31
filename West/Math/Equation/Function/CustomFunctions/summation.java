@@ -2,7 +2,7 @@ package West.Math.Equation.Function.CustomFunctions;
 
 import West.Math.Equation.Function.Function;
 import West.Math.Equation.EquationSystem;
-import West.Math.Set.Node.Node;
+import West.Math.Set.Node.TokenNode;
 import West.Math.Equation.Function.CustomFunction;
 
 
@@ -27,7 +27,7 @@ public class summation extends CustomFunction{
      */
     @Override
     public double exec(EquationSystem pEq,
-                       Node pNode) throws
+                       TokenNode pNode) throws
                            NotDefinedException,
                            IllegalArgumentException {
         double[] vals = evalNode(pEq, pNode);

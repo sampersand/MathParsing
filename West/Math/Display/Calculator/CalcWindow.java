@@ -321,7 +321,7 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
                 }
             }};
             throw new NotDefinedException();
-            // return "" + new EquationSystem().add(split[0]).add(vars).add(funcs).eval();
+            // return "" + new ((TokenNode)EquationSystem().add(split[0]).add(vars).add(funcs)).eval();
         }
         
     }

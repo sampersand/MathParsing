@@ -2,6 +2,7 @@ package West.Math.Set.Node;
 import West.Math.Exception.NotDefinedException;
 import West.Math.MathObject;
 import West.Math.Set.Collection;
+import West.Math.Equation.EquationSystem;
 import java.util.HashMap;
 import java.util.ArrayList;
 
