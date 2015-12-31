@@ -226,8 +226,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             String val = token.val();
             Double d;
             try{
-                d = Double.parseDouble(val); //check if its a double, if it isnt, it continues
-                return pEqSys.isInBounds(token, d) ? d : Double.NaN; 
+                return Double.parseDouble(val); 
             } catch(NumberFormatException err){ 
                 if(pEqSys.varExist(val))
                     for(Equation eq : pEqSys.equations())

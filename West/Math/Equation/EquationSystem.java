@@ -374,9 +374,8 @@ public class EquationSystem implements MathObject, Iterable {
         return equations.size();
     }
     public boolean isInBounds(Token t, double pVal){
-        if(true)
-            return true;
-        if(!varExist(t.val()) || pVal == Double.NaN || t == null){;
+        if(!varExist(t.val()) || pVal == Double.NaN || t == null){
+            System.out.println(varExist(t.val())+"|"+t.val());
             return false;
         }
         if(constraints == null)
