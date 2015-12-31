@@ -329,9 +329,8 @@ public class EquationSystem implements MathObject, Iterable {
         // System.out.println("TODO: isolated");
         for(Equation eq : equations){
             EquationNode eqn = eq.subEquations();
-            if(!eqn.getSD(3).isLone()){ //top node is comparator, second top is empty function, bottom is variable
+            if(!eqn.getCSD().get(0).isLone()) //top node is comparator, second top is empty function, bottom is variable
                 return false;
-            }
         }
         return true;
     }
@@ -340,7 +339,6 @@ public class EquationSystem implements MathObject, Iterable {
      * Sees if <code>pVar</code> is defined on the left-hand side of any equation.
      */
     public boolean varExist(String pVar){
-        // System.out.println("TODO: varExist");
         for(Equation eq : equations){
             EquationNode eqn = eq.subEquations();
             if(eqn.size() ==0)
@@ -376,16 +374,9 @@ public class EquationSystem implements MathObject, Iterable {
             return false;
         if(constraints == null)
             return true;
-        for(Equation eq : constraints.equations()){
-            System.out.println("TODO: isInBounds");
-            System.out.println(eq);
-            // Node nod = eq.subEquations().get(0).get(0).get(0);
-            // if(nod.token().val().equals(t.val()) && !
-            //         eq.subEquations().compare(pVal, 
-            //                                 ((TokenNode)eq.subEquations().get(1).get(0)).eval(this) //used to be just get(1).eval
-            //                                  ))
-            //     return false;
-        }
+        for(Equation eq : constraints.equations())
+            if(!((EquationNode)eq.subEquations().get(0)).isInBounds(t, pVal))
+                return false;
         return true;
     }
     @Override
