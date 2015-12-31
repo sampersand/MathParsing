@@ -86,7 +86,6 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
             if(get(-1).get(-1) instanceof TokenNode){
                 addE(en);
                 while(size() > 1){
-                    System.out.println(get(-1)+"\n\t"+get(0));
                     EquationNode eqn = (EquationNode)pop(0);
                     get(-1).add(eqn);
                 }
@@ -113,11 +112,8 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
         if(size() <= 0)
             addE(en);
         else {
-            if(get(-1) instanceof TokenNode){
-                System.out.println("get(-1) is TokenNode:\n" + toFullString());
+            if(get(-1) instanceof TokenNode)
                 addE(en);
-                System.out.println("just addE en:\n" + toFullString());
-            }
             else
                 ((EquationNode)get(-1)).addCD(en);
         }

@@ -64,7 +64,7 @@ public class Equation implements MathObject {
 
     public Equation add(String pStr){
         Collection<Token> tokens = parseTokens(pStr);
-        subEquations = segmentTokens(tokens);
+        subEquations.add(segmentTokens(tokens));
         return this;
     }
 
@@ -82,11 +82,8 @@ public class Equation implements MathObject {
 
    private EquationNode segmentTokens(Collection<Token> tokens){
         EquationNode eqnod = new EquationNode(EquationNode.getBool(""));
-        System.out.println(tokens);
         Collection<Token> prev = new Collection<Token>();
         for(Token t : tokens){
-            System.out.println("~~~BEFORE~~~\ntoken:\n"+t.toFancyString()+"\n\neqnod:\n"+
-                               eqnod.toFancyString()+"\n\nprev:\n"+prev.toFancyString()+"\n\n---\n\n");
             if(isBool(t.val()) != null){
                 eqnod.addCD(TokenNode.generateMasterNode(prev));
                 eqnod.addED(new EquationNode(EquationNode.getBool(t.val())));
@@ -95,99 +92,14 @@ public class Equation implements MathObject {
                 eqnod.addBD(new EquationNode(TokenNode.generateMasterNode(prev)).
                                              setToken(EquationNode.getComp(t.val())));
                 prev.empty();
-            } else {
+            } else 
                 prev.add(t);
-            }
-            System.out.println("~~~AFTER~~~\neqnod:\n"+
-                               eqnod.toFancyString()+"\n\nprev:\n"+prev.toFancyString()+"\n---\n");
         }
         if(prev.size() != 0)
             eqnod.addCD(TokenNode.generateMasterNode(prev));
-            System.out.println("~~~END~~~\neqnod:\n"+
-                               eqnod.toFancyString()+"\n\nprev:\n"+prev.toFancyString()+"\n---\n");
-
-        // EquationNode eqnod = new EquationNode(EquationNode.getBool(""));
-        // TokenNode prev = new TokenNode();
-        // for(Token t : tokens){
-        //     System.out.println("~~~BEFORE~~~\ntoken:\n"+t.toFancyString()+"\n\neqnod:\n"+
-        //                        eqnod.toFancyString()+"\n\nprev:\n"+prev.toFancyString()+"\n\n---\n\n");
-        //     if(isBool(t.val()) != null){
-        //         eqnod.addBD(eqnod.depth(), new EquationNode(prev).setToken(EquationNode.getComp(t.val())));
-        //         eqnod.addED(eqnod.depth(),new EquationNode(EquationNode.getBool(t.val())));
-        //     } else if(isComp(t.val()) != null){
-        //         eqnod.addBD(eqnod.depth(), new EquationNode(prev).setToken(EquationNode.getComp(t.val())));
-        //         prev = new TokenNode();
-        //     } else {
-        //         prev.add(new TokenNode(t));
-        //     }
-        //     System.out.println("~~~AFTER~~~\neqnod:\n"+
-        //                        eqnod.toFancyString()+"\n\nprev:\n"+prev.toFancyString()+"\n---\n");
-        // }
-        // if(prev.size() != 0)
-        //     eqnod.addD(eqnod.depth(), prev);
-
-
-
-
-        // Collection<Collection<Token>> units = new Collection<Collection<Token>>();
-        // Collection<Token> prev = new Collection<Token>();
-        // for(Token t : tokens){
-        //     prev.add(t);
-        //     if(isComp(t.val()) != null){
-        //         units.add(prev);
-        //         prev = new Collection<Token>();
-        //     }
-        // }
-        // System.out.println(tokens);
-        // System.out.println(units);
-        // if(prev.size() != 0)
-        //     units.add(prev);
-        // EquationNode eqnod = new EquationNode().setToken(units.get(-1).val());
-        // for(int i = 0; i < units.size(); i++){
-        //     Collection<Token> expr = units.get(i);
-        //     String comp = null;
-        //     if(isComp(expr.get(-1).val()) != null)
-        //         comp = expr.pop(expr.size() - 1).val();
-        //     if(comp == null)
-        //         eqnod.add(TokenNode.generateMasterNode(expr));
-        //     else
-        //         eqnod.add(new EquationNode(TokenNode.generateMasterNode(expr)).setToken(comp));
-        // }
-        // System.out.println(eqnod.toFancyString());
-        System.out.println(eqnod.toFancyString());
         return eqnod;
 
     }
-
-   // private EquationNode segmentTokens(Collection<Token> tokens){
-   //      Collection<Collection<Token>> units = new Collection<Collection<Token>>();
-   //      Collection<Token> prev = new Collection<Token>();
-   //      for(Token t : tokens){
-   //          prev.add(t);
-   //          if(isComp(t.val()) != null){
-   //              units.add(prev);
-   //              prev = new Collection<Token>();
-   //          }
-   //      }
-   //      System.out.println(tokens);
-   //      System.out.println(units);
-   //      if(prev.size() != 0)
-   //          units.add(prev);
-   //      EquationNode eqnod = new EquationNode().setToken(units.get(-1).val());
-   //      for(int i = 0; i < units.size(); i++){
-   //          Collection<Token> expr = units.get(i);
-   //          String comp = null;
-   //          if(isComp(expr.get(-1).val()) != null)
-   //              comp = expr.pop(expr.size() - 1).val();
-   //          if(comp == null)
-   //              eqnod.add(TokenNode.generateMasterNode(expr));
-   //          else
-   //              eqnod.add(new EquationNode(TokenNode.generateMasterNode(expr)).setToken(comp));
-   //      }
-   //      System.out.println(eqnod.toFancyString());
-   //      return eqnod;
-
-   //  }
 
     /**
      * Fixes any terms that might be misleading to the compiler. For example, <code>sinx</code> will become
@@ -196,7 +108,7 @@ public class Equation implements MathObject {
      * @return A corrected version of the expression.
      */
     public static String fixNode(String pEq) {
-        //TODO: FIX
+        System.out.println("TODO: FIXNODE");
         if(pEq.charAt(0) == '@')
             return pEq.substring(1);
         String[] trigf = new String[]{"sec", "csc", "cot", "sinh", "cosh", "tanh", "sin", "cos", "tan"};

@@ -329,10 +329,8 @@ public class EquationSystem implements MathObject, Iterable {
         // System.out.println("TODO: isolated");
         for(Equation eq : equations){
             EquationNode eqn = eq.subEquations();
-            if(!eqn.getSD(2).isLone()){ //top node is comparator, second top is empty function, bottom is variable
-                System.out.println(eqn.getSD(2).toFancyString());
+            if(!eqn.getSD(2).isLone()) //top node is comparator, second top is empty function, bottom is variable
                 return false;
-            }
         }
         return true;
     }
@@ -349,8 +347,6 @@ public class EquationSystem implements MathObject, Iterable {
             assert eqn.getSD(eqn.depthS()) instanceof TokenNode;
             if(((TokenNode)eqn.getSD(eqn.depthS())).token().val().equals(pVar))
                 return true;
-            // if(eq.subEquations().size() > 0 && eq.subEquations().get(0).size() != 1)
-            //     return false;
         }
         return false;
     }
