@@ -22,14 +22,13 @@ public class Tester {
     public static void main(String[] args) throws NotDefinedException {
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
-            // eqsys.add("y = 1 + sin(alpha) + c");
-            // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
-            // eqsys.add("c = pi - e");
-            // eqsys.add("theta = ln(pi) - c ^ x ");
-            // eqsys.add("x = pi - e");
-            // eqsys.add("x = 3");
+            eqsys.add("y = 1 + sin(alpha) + c");
+            eqsys.add("alpha = (9.45 + x ^ theta) / 2");
+            eqsys.add("c = pi - e");
+            eqsys.add("theta = ln(pi) - c ^ x ");
+            eqsys.add("x = pi - e");
 
-            eqsys.add("y = (pi + 3) * e");
+
             // eqsys.add("x = 9");
             // eqsys.add("c = x^2 * pi");
             // eqsys.add("y = x0 * x1 * x2 * x3 * x4");

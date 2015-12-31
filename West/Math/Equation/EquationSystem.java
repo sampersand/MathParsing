@@ -10,6 +10,8 @@ import West.Math.Equation.Function.CustomFunction;
 import java.util.HashMap;
 import java.util.Iterator;
 import West.Math.Set.Collection;
+import West.Math.Set.Node.EquationNode;
+import West.Math.Set.Node.TokenNode;
 /**
  * The main class for all equation-related things. It keeps track of different equations, and of names of 
  * {@link CustomFunction}s (and the corresponding classes for them).
@@ -324,10 +326,12 @@ public class EquationSystem implements MathObject, Iterable {
      * @return true if this is an {@link #isolate() isolated EquationSystem}.
      */
     public boolean isolated(){
-        System.out.println("TODO: isolated");
+        // System.out.println("TODO: isolated");
         for(Equation eq : equations){
-            // if(eq.subEquations().size() > 0 && eq.subEquations().get(0).size() != 1)
-            //     return false;
+            EquationNode eqn = eq.subEquations();
+            if(eqn.depthS() != 3){ //top node is comparator, second top is empty function, bottom is variable
+                return false;
+            }
         }
         return true;
     }
@@ -336,21 +340,18 @@ public class EquationSystem implements MathObject, Iterable {
      * Sees if <code>pVar</code> is defined on the left-hand side of any equation.
      */
     public boolean varExist(String pVar){
-        System.out.println("TODO: varExist");
-        return true;
-        // for(Equation eq : equations){
-        //     assert eq != null;
-        //     for(EquationNode en : eq.subEquations()){
-        //         assert cc != null;
-        //         for(Node n : en){
-        //             assert n != null;
-        //             if(!(n instanceof TokenNode))
-        //             if(n.get(0).token().val().equals(pVar))
-        //                 return true;
-        //         }
-        //     }
-        // }
-        // return false;
+        // System.out.println("TODO: varExist");
+        for(Equation eq : equations){
+            EquationNode eqn = eq.subEquations();
+            if(eqn.size() ==0)
+                continue;
+            assert eqn.getSD(eqn.depthS()) instanceof TokenNode;
+            if(((TokenNode)eqn.getSD(eqn.depthS())).token().val().equals(pVar))
+                return true;
+            // if(eq.subEquations().size() > 0 && eq.subEquations().get(0).size() != 1)
+            //     return false;
+        }
+        return false;
     }
 
     /**
@@ -373,8 +374,11 @@ public class EquationSystem implements MathObject, Iterable {
         return equations.size();
     }
     public boolean isInBounds(Token t, double pVal){
-        if(!varExist(t.val()) || pVal == Double.NaN || t == null)
+        if(true)
+            return true;
+        if(!varExist(t.val()) || pVal == Double.NaN || t == null){;
             return false;
+        }
         if(constraints == null)
             return true;
         for(Equation eq : constraints.equations()){

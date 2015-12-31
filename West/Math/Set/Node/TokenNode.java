@@ -206,46 +206,35 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         }
     }
 
+    /**
+     * TODO: JAVADOC
+     * returns Double.NaN if the result isnt in bounds
+     */
     public Double eval(final EquationSystem pEqSys){
         assert token != null;
         assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
-        System.out.println("evaluating:\n" + toFancyString(1));
-        if(token.type() == FUNC || token.type() == OPER) {
-            System.out.println("is FUNC/OPER:\n" + toFancyString(1));
-            if(token.val().isEmpty()){
-                System.out.println("token val isEmpty:\n" + toFancyString(1));
-                // assert elements.size() == 1 :\n"\n" + toFancyString();
+        if(token.type() == FUNC || token.type() == OPER)
+            if(token.val().isEmpty())
                 return ((TokenNode)elements.get(0)).eval(pEqSys);
-            }
-            else if(pEqSys.functions().get(token.val()) != null){ // if it is a function
-                System.out.println("is a custom function:\n" + toFancyString(1));
+            else if(pEqSys.functions().get(token.val()) != null) // if it is a function
                 return pEqSys.functions().get(token.val()).exec(pEqSys, this);
-            } else {
-                System.out.println("is a built in function:\n" + toFancyString(1));
+            else
                 return InBuiltFunction.exec(token.val(), pEqSys, this);
-            }
-        } else if (token.isGroup()){
-            System.out.println("isGroup:\n" + toFancyString(1));
+        else if (token.isGroup())
             return ((TokenNode)get(0)).eval(pEqSys);
-        } else if(isFinal()){
-            System.out.println("isFinal:\n" + toFancyString(1));
+        else if(isFinal()){
             String val = token.val();
-            try {
-                return Double.parseDouble(val);
-            } catch(NumberFormatException err) {
-                if(pEqSys.varExist(val)){
-                    for(Equation eq : pEqSys.equations()){
+            Double d;
+            try{
+                d = Double.parseDouble(val); //check if its a double, if it isnt, it continues
+                return pEqSys.isInBounds(token, d) ? d : Double.NaN; 
+            } catch(NumberFormatException err){ 
+                if(pEqSys.varExist(val))
+                    for(Equation eq : pEqSys.equations())
                         if(((TokenNode)eq.subEquations().getSD(eq.subEquations().depthS())).token.val().equals(val)){
-                            double dVal = ((TokenNode)eq.subEquations().get(0).get(1)).eval(pEqSys); //used to be get(1).eval
-                            if(pEqSys.isInBounds(token, dVal)){
-                                return dVal;
-                            }
-                            // Print.printe(dVal + " is out of bounds for '" + val + "'. returning NaN instead!");
-                            return Double.NaN;
+                            d = ((TokenNode)eq.subEquations().get(0).get(1)).eval(pEqSys); //used to be get(1).eval
+                            return pEqSys.isInBounds(token, d) ? d : Double.NaN;
                         }
-                        // System.out.println(eq.subEquations().getD(eq.subEquations().depth()));
-                    }
-                }
                 switch(val) {
                     case "e":
                         return Math.E;
@@ -258,9 +247,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                             "defined as a variable, and isn't an in-built variable.");
                 }
             }
-        } else {
+        } else 
             throw new NotDefinedException("This shouldn't happen! There is no way to evaluate node: " + token.val());
-        }
 
     }
 

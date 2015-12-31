@@ -81,30 +81,7 @@ public class Equation implements MathObject {
     }
 
    private EquationNode segmentTokens(Collection<Token> tokens){
-    // Collection<Token> prev = new Collection<Token>();
-    // {{
-    //     for(Token t : tokens){
-    //         add(t);
-    //         if(isComp(t.val()) != null){
-    //             add(prev);
-    //             prev = new Collection<Token>();
-    //         }
-    //     }
-    //     if(prev.size() != 0)
-    //         add(prev);
-    // }};
-
-    //     EquationNode units = new EquationNode().setToken(prev.get(0).getN(prev.get(0).size() - 1).val());
-    //     for(int i = 0; i < units.size(); i++){
-    //         Collection<Token> expr = units.get(i);
-    //         String comp = units.token();
-    //         if(isComp(expr.get(expr.size() - 1).val()) != null)
-    //             comp = expr.pop(expr.size() - 1).val();
-    //         units.add(new EquationNode(TokenNode.generateMasterNode(expr)).setToken(comp));//{{add(Node.generateMasterNode(expr));}});
-    //     }
-    //     return units;
         Collection<Collection<Token>> units = new Collection<Collection<Token>>();
-        System.out.println(tokens);
         Collection<Token> prev = new Collection<Token>();
         for(Token t : tokens){
             prev.add(t);
@@ -126,7 +103,6 @@ public class Equation implements MathObject {
             else
                 eqnod.add(new EquationNode(TokenNode.generateMasterNode(expr)).setToken(comp));
         }
-        System.out.println(eqnod.toFullString());
         return eqnod;
 
     }
@@ -177,30 +153,27 @@ public class Equation implements MathObject {
             String repl;
             if(isParen(all) != null){
                 repl = isParen(all);
-                if(isInLast(s,(Collection<String>)CCHARS.get("paren_l")) != null){ //if its a left paren, make function
+                if(isInLast(s,(Collection<String>)CCHARS.get("paren_l")) != null) //if its a left paren, make function
                     tokens.add(new Token(replLast(all, repl), Token.Type.FUNC));
-                } else if(isInLast(s,(Collection<String>)CCHARS.get("paren_r")) != null && repl.length() != 1){
-                // } else if(repl.length() != 0){
-                    System.out.println(repl);
+                if(isInLast(s,(Collection<String>)CCHARS.get("paren_r")) != null && !replLast(all, repl).isEmpty())
                     tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
-                }
                 tokens.add(new Token(repl, Token.Type.PAREN));
             } else{
                 if(isBool(all) != null){
                     repl = isBool(all);
-                    if(replLast(all, repl).length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                    if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
                     tokens.add(new Token(isBool(all), Token.Type.BOOL));
                 } else if(isComp(all) != null){
                     repl = isComp(all);
-                    if(replLast(all, repl).length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                    if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
                     tokens.add(new Token(isComp(all), Token.Type.COMP));
                 } else if(isOper(all) != null){
                     repl = isOper(all);
-                    if(replLast(all, repl).length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                    if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
                     tokens.add(new Token(isOper(all), Token.Type.OPER));
                 } else if(isDelim(all) != null){
                     repl = isDelim(all);
-                    if(replLast(all, repl).length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                    if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
                     tokens.add(new Token(isDelim(all), Token.Type.DELIM));
                 } else
                     assert false;
