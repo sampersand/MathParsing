@@ -104,6 +104,7 @@ public class Equation implements MathObject {
     //     }
     //     return units;
         Collection<Collection<Token>> units = new Collection<Collection<Token>>();
+        System.out.println(tokens);
         Collection<Token> prev = new Collection<Token>();
         for(Token t : tokens){
             prev.add(t);
@@ -125,6 +126,7 @@ public class Equation implements MathObject {
             else
                 eqnod.add(new EquationNode(TokenNode.generateMasterNode(expr)).setToken(comp));
         }
+        System.out.println(eqnod.toFullString());
         return eqnod;
 
     }
@@ -177,25 +179,28 @@ public class Equation implements MathObject {
                 repl = isParen(all);
                 if(isInLast(s,(Collection<String>)CCHARS.get("paren_l")) != null){ //if its a left paren, make function
                     tokens.add(new Token(replLast(all, repl), Token.Type.FUNC));
-                } else if(repl.length() != 0)
+                } else if(isInLast(s,(Collection<String>)CCHARS.get("paren_r")) != null && repl.length() != 1){
+                // } else if(repl.length() != 0){
+                    System.out.println(repl);
                     tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                }
                 tokens.add(new Token(repl, Token.Type.PAREN));
             } else{
                 if(isBool(all) != null){
                     repl = isBool(all);
-                    if(repl.length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                    if(replLast(all, repl).length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
                     tokens.add(new Token(isBool(all), Token.Type.BOOL));
                 } else if(isComp(all) != null){
                     repl = isComp(all);
-                    if(repl.length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                    if(replLast(all, repl).length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
                     tokens.add(new Token(isComp(all), Token.Type.COMP));
                 } else if(isOper(all) != null){
                     repl = isOper(all);
-                    if(repl.length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                    if(replLast(all, repl).length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
                     tokens.add(new Token(isOper(all), Token.Type.OPER));
                 } else if(isDelim(all) != null){
                     repl = isDelim(all);
-                    if(repl.length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                    if(replLast(all, repl).length() != 0) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
                     tokens.add(new Token(isDelim(all), Token.Type.DELIM));
                 } else
                     assert false;

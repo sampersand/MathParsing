@@ -110,6 +110,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     private TokenNode fixNodes() {
         int i = 1;
         TokenNode node = copy();
+        System.out.println("TODO: fixNodes");
         // while(i < node.size()){
         //     Node n = node.get(i);
         //     assert n != null  : "no subNode can be null!"; // this should have been caught beforehand.
@@ -208,19 +209,26 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public Double eval(final EquationSystem pEqSys){
         assert token != null;
         assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
+        System.out.println("evaluating:\n" + toFancyString(1));
         if(token.type() == FUNC || token.type() == OPER) {
+            System.out.println("is FUNC/OPER:\n" + toFancyString(1));
             if(token.val().isEmpty()){
-                // assert elements.size() == 1 : "\n" + toFancyString();
+                System.out.println("token val isEmpty:\n" + toFancyString(1));
+                // assert elements.size() == 1 :\n"\n" + toFancyString();
                 return ((TokenNode)elements.get(0)).eval(pEqSys);
             }
             else if(pEqSys.functions().get(token.val()) != null){ // if it is a function
+                System.out.println("is a custom function:\n" + toFancyString(1));
                 return pEqSys.functions().get(token.val()).exec(pEqSys, this);
             } else {
+                System.out.println("is a built in function:\n" + toFancyString(1));
                 return InBuiltFunction.exec(token.val(), pEqSys, this);
             }
         } else if (token.isGroup()){
+            System.out.println("isGroup:\n" + toFancyString(1));
             return ((TokenNode)get(0)).eval(pEqSys);
         } else if(isFinal()){
+            System.out.println("isFinal:\n" + toFancyString(1));
             String val = token.val();
             try {
                 return Double.parseDouble(val);

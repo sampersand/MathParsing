@@ -61,7 +61,7 @@ public interface MathObject {
     public default String indentU(int idtLvl){
         String ret = "";
         for(int i = 0; i < idtLvl; i++)
-            ret += (i % 2 == 0 ? "│" : "║");// + "  ";
+            ret += (i % 2 == 0 ? "│" : "║")+ "  ";
         return ret;
         //┌
         //│─

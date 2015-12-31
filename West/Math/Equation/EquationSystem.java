@@ -288,14 +288,14 @@ public class EquationSystem implements MathObject, Iterable {
      * @return A double that represents the value of <code>toEval</code>.
      */
     public Double eval(String toEval) throws NotDefinedException {
-        isolate(toEval);
         if(equations().size() == 0){
             Print.printw("Trying to evaluated an EquationSystem with no equations! returning 0");
             return 0D;
         }
-        // return null;
+        isolate(toEval);
+        assert isolated();
         West.Math.Set.Node.Node n = equations().get(0).subEquations();
-        return ((West.Math.Set.Node.TokenNode)n.getD(n.depth())).eval(copy());
+        return ((West.Math.Set.Node.TokenNode)n.getSD(n.depthS())).eval(copy());
 
     }
 
@@ -315,6 +315,7 @@ public class EquationSystem implements MathObject, Iterable {
             //     equations.prepend(equations.pop(i));
             // }
         // }
+        System.out.println("TODO: isolate");
         return this;
     }
 
@@ -323,8 +324,8 @@ public class EquationSystem implements MathObject, Iterable {
      * @return true if this is an {@link #isolate() isolated EquationSystem}.
      */
     public boolean isolated(){
+        System.out.println("TODO: isolated");
         for(Equation eq : equations){
-            assert false;
             // if(eq.subEquations().size() > 0 && eq.subEquations().get(0).size() != 1)
             //     return false;
         }
@@ -377,7 +378,7 @@ public class EquationSystem implements MathObject, Iterable {
         if(constraints == null)
             return true;
         for(Equation eq : constraints.equations()){
-            return false;
+            System.out.println("TODO: isInBounds");
             // Node nod = eq.subEquations().get(0).get(0).get(0);
             // if(nod.token().val().equals(t.val()) && !
             //         eq.subEquations().compare(pVal, 
