@@ -114,15 +114,15 @@ public class Equation implements MathObject {
         }
         if(prev.size() != 0)
             units.add(prev);
-        System.out.println(units.get(0).get(units.get(0).size()));
         EquationNode eqnod = new EquationNode().setToken(units.get(0).get(units.get(0).size() - 1).val());
         for(int i = 0; i < units.size(); i++){
             Collection<Token> expr = units.get(i);
             String comp = eqnod.token().SYMBOL;
             if(isComp(expr.get(expr.size() - 1).val()) != null)
                 comp = expr.pop(expr.size() - 1).val();
+            System.out.println("EXPR: "+expr);
+            System.out.println("TOKEN GEN: " +TokenNode.generateMasterNode(expr));
             eqnod.addN(new EquationNode(TokenNode.generateMasterNode(expr)).setToken(comp));
-        // System.out.println(eqnod);
 
         }
         return eqnod;

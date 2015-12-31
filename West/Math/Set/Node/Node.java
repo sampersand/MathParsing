@@ -42,9 +42,10 @@ public class Node<T, N extends Node> extends Collection<Node<Object, N>> impleme
 
 
     public Node<T, N> addN(N pN){ // add Node
-        super.add(new Node<Object, N>(){{
-            addN(pN);
-        }});
+        super.add(pN);
+        // new Node<Object, N>(){{
+        //     add(pN);
+        // }});
         return this;
     }
 
@@ -57,6 +58,15 @@ public class Node<T, N extends Node> extends Collection<Node<Object, N>> impleme
     }
 
     public Node<T, N> addAllN(ArrayList<N> pNs){ // add Node
+        if(pNs == null){
+            // System.out.println("pns is null! this]= " + this);
+            return this;
+        }
+        if(pNs.size() == 0){
+            System.out.println("pns size is 0! this]= " + this);
+            
+            return this;
+        }
         super.add(new Node<Object, N>(){{
             for(N n : pNs)
                 add(n);

@@ -14,7 +14,7 @@ import static West.Math.Equation.Token.Type.*;
  * @since 0.75
  */
 public class TokenNode extends Node<Token, TokenNode> implements MathObject {
-    protected ArrayList<TokenNode> elements;
+    // protected ArrayList<TokenNode> elements;
     // protected Token token;
     public TokenNode(){
         elements = new ArrayList<TokenNode>();
@@ -29,10 +29,11 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         elements.add(pCollection);
     }
     public TokenNode(Token pToken) {
+        elements = new ArrayList<TokenNode>();
         token = pToken;
     }
 
-    private Object[] condeseNodes(int pPos, ArrayList<Token> pTokens) {
+    protected Object[] condeseNodes(int pPos, ArrayList<Token> pTokens) {
         assert pTokens != null;
         assert checkForNullTokens(pTokens);
         TokenNode node = copy();
@@ -63,13 +64,14 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     }
 
 
-    private TokenNode completeNodes() {
+    protected TokenNode completeNodes() {
         if(isFinal())
             return this;
         TokenNode node = copy();
         TokenNode e = new TokenNode(token);
         int i = 0;
         while(i < node.size()) {
+            System.out.println(node+"NODE");
             TokenNode n = node.getN(i);
             assert n != null : "no subNode can be null!";
             if(n.isFinal() && !Equation.isControlChar(n.token().val())) {
@@ -132,7 +134,21 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
     public static TokenNode generateMasterNode(ArrayList<Token> pTokens) {
         assert checkForNullTokens(pTokens);
-        return ((TokenNode)(new TokenNode(new Token("", FUNC)).condeseNodes(0, pTokens))[1]).completeNodes().fixNodes();
+        System.out.println("--------");
+        Token baseToken = new Token("", FUNC);
+        System.out.println("baseToken:"+baseToken);
+        TokenNode baseNode = new TokenNode(baseToken);
+        System.out.println("baseNode:"+baseNode);
+        TokenNode condNode = (TokenNode)baseNode.condeseNodes(0,pTokens)[1];
+        System.out.println("condNode:" + condNode);
+        TokenNode complNode = condNode.completeNodes();
+        System.out.println("complNode:" + complNode);
+        TokenNode fixNode = complNode.fixNodes();
+        System.out.println("fixNode:" + fixNode);
+
+
+        return ((TokenNode)(new TokenNode().condeseNodes(0, pTokens))[1]).completeNodes().fixNodes();
+        // return ((TokenNode)(new TokenNode(new Token("", FUNC)).condeseNodes(0, pTokens))[1]).completeNodes().fixNodes();
     }
 
     private static boolean checkForNullTokens(ArrayList<Token> pTokens){
@@ -142,8 +158,17 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return true;
     }
 
+    public TokenNode getN(int pos){ // add Node
+        System.out.println("TOKENNODE GETN: " + super.get(pos));
+        assert false;
+        // return (TokenNode)super.get(pos);
+        return null;
+    }
+
     @Override
     public TokenNode copy(){
+        assert elements != null;
+        System.out.println("elements:"+elements);
         return (TokenNode)new TokenNode(token).addAllN(elements);
     }
 

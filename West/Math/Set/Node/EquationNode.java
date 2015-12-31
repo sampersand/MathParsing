@@ -12,11 +12,11 @@ import West.Math.MathObject;
  * @version 0.76
  * @since 0.75
  */
-interface TokenObj{
-    public Object compare(Object obj1, Object obj2);
-}
 public class EquationNode extends Node<EquationNode.Comparator, Node> implements MathObject{
-    public class Comparator{
+    interface TokenObj{
+        public Object compare(Object obj1, Object obj2);
+    }
+    public static class Comparator{
         public final String SYMBOL;
         public final TokenObj TOKENOBJ;
         public Comparator(String s, TokenObj t){
@@ -27,15 +27,15 @@ public class EquationNode extends Node<EquationNode.Comparator, Node> implements
 
     public static final HashMap<String, Comparator> COMPARATOR = new HashMap<String, Comparator>()
     {{
-       put("<=",null);// new EquationNode.Comparator("<=", (obj1, obj2) -> null));
-       put(">=",null);// new EquationNode.Comparator(">=", (obj1, obj2) -> null));
-       put("!=",null);// new EquationNode.Comparator("!=", (obj1, obj2) -> null));
-       put("<", null);//new EquationNode.Comparator("<", (obj1, obj2) -> null));
-       put(">", null);//new EquationNode.Comparator(">", (obj1, obj2) -> null));
-       put("=", null);//new EquationNode.Comparator("=", (obj1, obj2) -> null));
-       put("≠", null);//new EquationNode.Comparator("≠", (obj1, obj2) -> null));
-       put("≥", null);//new EquationNode.Comparator("≥", (obj1, obj2) -> null));
-       put("≤", null);//new EquationNode.Comparator("≤", (obj1, obj2) -> null));
+       put("<=", new Comparator("<=", (obj1, obj2) -> null));
+       put(">=", new Comparator(">=", (obj1, obj2) -> null));
+       put("!=", new Comparator("!=", (obj1, obj2) -> null));
+       put("<",  new Comparator("<",  (obj1, obj2) -> null));
+       put(">",  new Comparator(">",  (obj1, obj2) -> null));
+       put("=",  new Comparator("=",  (obj1, obj2) -> null));
+       put("≠",  new Comparator("≠",  (obj1, obj2) -> null));
+       put("≥",  new Comparator("≥",  (obj1, obj2) -> null));
+       put("≤",  new Comparator("≤",  (obj1, obj2) -> null));
    }};
 
     public static final HashMap<String, Comparator> BOOLEANS = new HashMap<String, Comparator>()
