@@ -1,7 +1,7 @@
 package West.Math.Equation.Function.CustomFunctions;
 
 import West.Math.Equation.EquationSystem;
-import West.Math.Equation.Node;
+import West.Math.Set.Node.Node;
 import West.Math.Equation.Function.CustomFunction;
 
 import West.Math.Exception.NotDefinedException;

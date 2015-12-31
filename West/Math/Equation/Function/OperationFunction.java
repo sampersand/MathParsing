@@ -3,7 +3,7 @@ package West.Math.Equation.Function;
 import West.Math.MathObject;
 import West.Math.Print;
 import West.Math.Equation.EquationSystem;
-import West.Math.Equation.Node;
+import West.Math.Set.Node.Node;
 import West.Math.Exception.NotDefinedException;
 
 import java.util.HashMap;
@@ -114,32 +114,32 @@ public class OperationFunction extends InBuiltFunction {
                        Node pNode) throws 
                            NotDefinedException,
                            IllegalArgumentException {
-        assert pNode.subNodes().size() != 0 : "Node size cannot be 0!";
+        assert pNode.elements().size() != 0 : "Node size cannot be 0!";
         assert name.equals("+") || name.equals("-") || name.equals("*") || name.equals("/") || name.equals("^");
         double ret = pNode.get(0).eval(pEqSys);
         switch(name) {
             case "+":
-                for(int i = 1; i < pNode.subNodes().size(); i++) {
+                for(int i = 1; i < pNode.elements().size(); i++) {
                     ret += pNode.get(i).eval(pEqSys);
                 }
                 break;
             case "-":
-                for(int i = 1; i < pNode.subNodes().size(); i++) {
+                for(int i = 1; i < pNode.elements().size(); i++) {
                     ret -= pNode.get(i).eval(pEqSys);
                 }
                 break;
             case "*":
-                for(int i = 1; i < pNode.subNodes().size(); i++) {
+                for(int i = 1; i < pNode.elements().size(); i++) {
                     ret *= pNode.get(i).eval(pEqSys);
                 }
                 break;
             case "/":
-                for(int i = 1; i < pNode.subNodes().size(); i++) {
+                for(int i = 1; i < pNode.elements().size(); i++) {
                     ret /= pNode.get(i).eval(pEqSys);
                 }
                 break;
             case "^":
-                for(int i = 1; i < pNode.subNodes().size(); i++) {
+                for(int i = 1; i < pNode.elements().size(); i++) {
                     ret = Math.pow(ret, pNode.get(1).eval(pEqSys)); // not sure this works
                 }
                 break;

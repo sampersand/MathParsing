@@ -2,7 +2,7 @@ package West.Math.Equation.Function;
 
 import West.Math.MathObject;
 import West.Math.Equation.EquationSystem;
-import West.Math.Equation.Node;
+import West.Math.Set.Node.Node;
 import static West.Math.Declare.*;
 import West.Math.Exception.NotDefinedException;
 
@@ -93,17 +93,17 @@ public abstract class Function implements MathObject {
 
     /**
      * This thing takes a {@link Node} (usually the node from {@link #exec(EquationSystem,Node) exec}), and returns an
-     * array of the numerical values of each {@link Node#subNodes() subNode}.
+     * array of the numerical values of each {@link Node#elements() subNode}.
      * @param pEqSys        The {@link EquationSystem} that will be used when evaluating <code>pNode</code>.
      * @param pNode         The node to be evaluated.
      * @return An array of doubles, with each position corresponding to the value of each Node of that position in 
-     *         {@link Node#subNodes() pNode's subNodes()}.
+     *         {@link Node#elements() pNode's elements()}.
      */
     protected double[] evalNode(final EquationSystem pEqSys,
                                 Node pNode) {
         double[] ret = new double[pNode.size()];
         for(int i = 0; i < ret.length; i++) {
-            ret[i] = pNode.subNodes().get(i).eval(pEqSys);
+            ret[i] = pNode.elements().get(i).eval(pEqSys);
         }
         return ret;
 

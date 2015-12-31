@@ -3,7 +3,7 @@ package West.Math.Equation.Function;
 import West.Math.Print;
 import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Equation;
-import West.Math.Equation.Node;
+import West.Math.Set.Node.Node;
 import West.Math.Equation.Function.InBuiltFunction;
 import West.Math.Exception.NotDefinedException;
 import West.Math.Set.NumberCollection;
@@ -46,7 +46,7 @@ public class GraphFunction extends InBuiltFunction{
         gcomp = new GraphComponents(new int[]{1250, 750}, new double[]{- 10, - 10, 10, 10}, 1000);
         node = pNode;
 
-        for(Node n : node.subNodes()) {
+        for(Node n : node.elements()) {
             String id = n.token().val().replaceAll("^(.*):.*","$1");
             String[] vals = n.token().val().replaceAll("^" + id + ":","").replaceAll(" ","").split(",");
             ArrayList<NumberCollection<Double>> temp;
