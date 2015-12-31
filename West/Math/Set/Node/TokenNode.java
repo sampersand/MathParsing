@@ -12,7 +12,7 @@ import static West.Math.Equation.Token.Type.*;
  * TODO: JAVADOC
  * 
  * @author Sam Westerman
- * @version 0.76
+ * @version 0.80
  * @since 0.75
  */
 public class TokenNode extends Node<Token, TokenNode> implements MathObject {
