@@ -28,11 +28,10 @@ public class Tester {
             // eqsys.add("theta = ln(pi) - c ^ x ");
             // eqsys.add("x = pi - e");
 
-
-            // eqsys.add("x = 9");
-            // eqsys.add("c = x^2 * pi");
-
-            eqsys.addConstraint("x > 1 || y > 2");
+            eqsys.add("x = c + e");
+            eqsys.add("c = qq^2 * pi");
+            eqsys.add("qq = 9");
+            eqsys.addConstraint("x > 1 || x < 0");
             // eqsys.addConstraint("x^4 > (3 * 4)^2 && x < 5");
 
             // eqsys.add("y = x0 * x1 * x2 * x3 * x4");
@@ -75,16 +74,9 @@ public class Tester {
         }
 
 
-        // System.out.println(eqsys.toFullString());
+        Print.printi(eqsys.toFullString());
         // eqsys.graph();
-        Print.printi("RESULT:", eqsys.eval("y"));
-        // NumberCollection<Double> g1 = new NumberCollection<Double>(new Double[]{0D,1D,1D,2D,3D,5D,8D,13D,21D});
-        // System.out.println(g1.mean());
-        // NumberCollection<Double> g2 = new NumberCollection<Double>(new Double[]{2D,3D,5D,7D,11D,13D,17D});
-        // MathCollection<Double> g3 = MathCollection.fromSetNotation("{y ∈ ℝ : y = x^2}");
-            // "{y : y = 1 + sin(alpha) + c ∧ alpha = (9.45 + x ^ theta) / 2 ∧ c = 0 - 7 ∧ theta = 4 ^ x - ln(pi)}");
-        // g3.graph(NumberCollection.enumerationD(-10, 10, .8));
-        // System.out.println(g3.linReg().toFancyString());
+        Print.printi("RESULT:", eqsys.eval("x"));
     }
 
 

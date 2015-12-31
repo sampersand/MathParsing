@@ -239,7 +239,7 @@ public class EquationSystem implements MathObject, Iterable {
      * @return This class's {@link #equations}.
      */
     public Collection<Equation> equations() {
-        assert functions != null; // it should always be instatiated by the constructor.
+        assert equations != null; // it should always be instatiated by the constructor.
         return equations;
     }
 
@@ -296,8 +296,8 @@ public class EquationSystem implements MathObject, Iterable {
         }
         isolate(toEval);
         assert isolated();
-        West.Math.Set.Node.Node n = equations().get(0).subEquations();
-        return ((West.Math.Set.Node.TokenNode)n.getSD(n.depthS())).eval(copy());
+        EquationNode n = equations().get(0).subEquations();
+        return ((West.Math.Set.Node.TokenNode)n.getCSD().get(0)).eval(copy());
 
     }
 
@@ -329,8 +329,9 @@ public class EquationSystem implements MathObject, Iterable {
         // System.out.println("TODO: isolated");
         for(Equation eq : equations){
             EquationNode eqn = eq.subEquations();
-            if(!eqn.getSD(2).isLone()) //top node is comparator, second top is empty function, bottom is variable
+            if(!eqn.getSD(3).isLone()){ //top node is comparator, second top is empty function, bottom is variable
                 return false;
+            }
         }
         return true;
     }

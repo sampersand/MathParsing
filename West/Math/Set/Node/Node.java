@@ -74,20 +74,6 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         token = pToken;
         return this;
     }
-    @Override
-    public boolean equals(Object pObj){
-        return super.equals(pObj) &&
-               pObj instanceof Node &&
-               token.equals(((Node<T, N>)pObj).token());
-    }
-    @Override
-    public String toString(){
-        return "Node '" + token + "' elements = " + elements;
-    }
-
-    public Node copy(){
-        return new Node<T, N>(elements).setToken(token);
-    }
 
     public boolean isFinal(){
         return size() == 0;
@@ -147,6 +133,23 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
             assert !get(-1).isFinal(); //shouldnt happen, methinks.
             get(-1).setD(i - 1, p, n);
         }
+    }
+
+    @Override
+    public boolean equals(Object pObj){
+        return super.equals(pObj) &&
+               pObj instanceof Node &&
+               token.equals(((Node<T, N>)pObj).token());
+    }
+    
+    @Override
+    public String toString(){
+        return "Node '" + token + "' elements = " + elements;
+    }
+
+    @Override
+    public Node copy(){
+        return new Node<T, N>(elements).setToken(token);
     }
 
     @Override

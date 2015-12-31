@@ -119,6 +119,13 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
         }
     }
 
+    public EquationNode getCSD(){ // get topmost token.
+        assert size() != 0;
+        if(get(-1) instanceof TokenNode)
+            return this;
+        return ((EquationNode)get(0)).getCSD();
+    }
+
     // private Object[] condeseNodes(int pPos, ArrayList<Equation> pEquations) {
     //     assert pEquations != null;
     //     assert checkForNullEquations(pEquations);
