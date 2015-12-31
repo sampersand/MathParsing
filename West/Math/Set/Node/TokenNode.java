@@ -238,7 +238,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 if(pEqSys.varExist(val))
                     for(Equation eq : pEqSys.equations())
                         if(((TokenNode)eq.subEquations().getSD(eq.subEquations().depthS())).token.val().equals(val)){
-                            d = ((TokenNode)eq.subEquations().get(0).get(1)).eval(pEqSys); //used to be get(1).eval
+                            d = ((TokenNode)eq.subEquations().get(0).get(0).get(1)).eval(pEqSys);
+                                //^ is first equation, first "boolean", then second half of the first "equality".
                             return pEqSys.isInBounds(token, d) ? d : Double.NaN;
                         }
                 switch(val) {
