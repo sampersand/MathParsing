@@ -39,7 +39,7 @@ public class Tester {
             // eqsys.add("x4 = (x + 4) * c");
             // eqsys.add("c = 1/4");
             // eqsys.add("x = 0");
-            // eqsys.addConstraint("x > 5 | x < 4");
+            eqsys.addConstraint("x > 5 && x < 0");
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {

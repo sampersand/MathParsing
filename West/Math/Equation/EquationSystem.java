@@ -374,14 +374,13 @@ public class EquationSystem implements MathObject, Iterable {
         return equations.size();
     }
     public boolean isInBounds(Token t, double pVal){
-        if(!varExist(t.val()) || pVal == Double.NaN || t == null){
-            System.out.println(varExist(t.val())+"|"+t.val());
+        if(!varExist(t.val()) || pVal == Double.NaN || t == null)
             return false;
-        }
         if(constraints == null)
             return true;
         for(Equation eq : constraints.equations()){
             System.out.println("TODO: isInBounds");
+            System.out.println(eq);
             // Node nod = eq.subEquations().get(0).get(0).get(0);
             // if(nod.token().val().equals(t.val()) && !
             //         eq.subEquations().compare(pVal, 

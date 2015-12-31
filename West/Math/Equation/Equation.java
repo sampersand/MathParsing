@@ -90,6 +90,8 @@ public class Equation implements MathObject {
                 prev = new Collection<Token>();
             }
         }
+        System.out.println(tokens);
+        System.out.println(units);
         if(prev.size() != 0)
             units.add(prev);
         EquationNode eqnod = new EquationNode().setToken(units.get(0).pop(units.get(0).size() - 1).val());
@@ -103,6 +105,7 @@ public class Equation implements MathObject {
             else
                 eqnod.add(new EquationNode(TokenNode.generateMasterNode(expr)).setToken(comp));
         }
+        System.out.println(eqnod.toFancyString());
         return eqnod;
 
     }
