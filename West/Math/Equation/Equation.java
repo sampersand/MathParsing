@@ -89,14 +89,11 @@ public class Equation implements MathObject {
                                eqnod.toFancyString()+"\n\nprev:\n"+prev.toFancyString()+"\n\n---\n\n");
             if(isBool(t.val()) != null){
                 eqnod.addCD(TokenNode.generateMasterNode(prev));
-                // eqnod.addCD(
-                //             new EquationNode(TokenNode.generateMasterNode(prev)).
-                //                              setToken(EquationNode.getBool(t.val())));
-                // eqnod.addED(eqnod.depth(),new EquationNode(EquationNode.getBool(t.val())));
+                eqnod.addED(new EquationNode(EquationNode.getBool(t.val())));
                 prev.empty();
             } else if(isComp(t.val()) != null){
                 // eqnod.addBD(eqnod.depth(), new EquationNode(prev).setToken(EquationNode.getComp(t.val())));
-                eqnod.addED(
+                eqnod.addBD(
                             new EquationNode(TokenNode.generateMasterNode(prev)).
                                              setToken(EquationNode.getComp(t.val())));
                 prev.empty();
@@ -110,7 +107,6 @@ public class Equation implements MathObject {
             eqnod.addCD(TokenNode.generateMasterNode(prev));
             System.out.println("~~~END~~~\neqnod:\n"+
                                eqnod.toFancyString()+"\n\nprev:\n"+prev.toFancyString()+"\n---\n");
-        System.out.println("TODO: THIS; BUT WILL FINISH AFTER!");
 
         // EquationNode eqnod = new EquationNode(EquationNode.getBool(""));
         // TokenNode prev = new TokenNode();
