@@ -81,34 +81,84 @@ public class Equation implements MathObject {
     }
 
    private EquationNode segmentTokens(Collection<Token> tokens){
-        Collection<Collection<Token>> units = new Collection<Collection<Token>>();
-        Collection<Token> prev = new Collection<Token>();
+        EquationNode eqnod = new EquationNode(EquationNode.getBool(""));
+        TokenNode prev = new TokenNode();
         for(Token t : tokens){
-            prev.add(t);
-            if(isComp(t.val()) != null){
-                units.add(prev);
-                prev = new Collection<Token>();
+            System.out.println("~~~BEFORE~~~\ntoken:\n"+t.toFancyString()+"\n\neqnod:\n"+
+                               eqnod.toFancyString()+"\n\nprev:\n"+prev.toFancyString()+"\n\n---\n\n");
+            if(isBool(t.val()) != null){
+                eqnod.addBD(eqnod.depth(), new EquationNode(prev).setToken(EquationNode.getComp(t.val())));
+                eqnod.addED(eqnod.depth(),new EquationNode(EquationNode.getBool(t.val())));
+            } else if(isComp(t.val()) != null){
+                eqnod.addBD(eqnod.depth(), new EquationNode(prev).setToken(EquationNode.getComp(t.val())));
+                prev = new TokenNode();
+            } else {
+                prev.add(new TokenNode(t));
             }
+            System.out.println("~~~AFTER~~~\neqnod:\n"+
+                               eqnod.toFancyString()+"\n\nprev:\n"+prev.toFancyString()+"\n---\n");
         }
-        System.out.println(tokens);
-        System.out.println(units);
         if(prev.size() != 0)
-            units.add(prev);
-        EquationNode eqnod = new EquationNode().setToken(units.get(0).pop(units.get(0).size() - 1).val());
-        for(int i = 0; i < units.size(); i++){
-            Collection<Token> expr = units.get(i);
-            String comp = null;
-            if(isComp(expr.get(expr.size() - 1).val()) != null)
-                comp = expr.pop(expr.size() - 1).val();
-            if(comp == null)
-                eqnod.add(TokenNode.generateMasterNode(expr));
-            else
-                eqnod.add(new EquationNode(TokenNode.generateMasterNode(expr)).setToken(comp));
-        }
+            eqnod.addD(eqnod.depth(), prev);
+        // Collection<Collection<Token>> units = new Collection<Collection<Token>>();
+        // Collection<Token> prev = new Collection<Token>();
+        // for(Token t : tokens){
+        //     prev.add(t);
+        //     if(isComp(t.val()) != null){
+        //         units.add(prev);
+        //         prev = new Collection<Token>();
+        //     }
+        // }
+        // System.out.println(tokens);
+        // System.out.println(units);
+        // if(prev.size() != 0)
+        //     units.add(prev);
+        // EquationNode eqnod = new EquationNode().setToken(units.get(-1).val());
+        // for(int i = 0; i < units.size(); i++){
+        //     Collection<Token> expr = units.get(i);
+        //     String comp = null;
+        //     if(isComp(expr.get(-1).val()) != null)
+        //         comp = expr.pop(expr.size() - 1).val();
+        //     if(comp == null)
+        //         eqnod.add(TokenNode.generateMasterNode(expr));
+        //     else
+        //         eqnod.add(new EquationNode(TokenNode.generateMasterNode(expr)).setToken(comp));
+        // }
+        // System.out.println(eqnod.toFancyString());
         System.out.println(eqnod.toFancyString());
         return eqnod;
 
     }
+
+   // private EquationNode segmentTokens(Collection<Token> tokens){
+   //      Collection<Collection<Token>> units = new Collection<Collection<Token>>();
+   //      Collection<Token> prev = new Collection<Token>();
+   //      for(Token t : tokens){
+   //          prev.add(t);
+   //          if(isComp(t.val()) != null){
+   //              units.add(prev);
+   //              prev = new Collection<Token>();
+   //          }
+   //      }
+   //      System.out.println(tokens);
+   //      System.out.println(units);
+   //      if(prev.size() != 0)
+   //          units.add(prev);
+   //      EquationNode eqnod = new EquationNode().setToken(units.get(-1).val());
+   //      for(int i = 0; i < units.size(); i++){
+   //          Collection<Token> expr = units.get(i);
+   //          String comp = null;
+   //          if(isComp(expr.get(-1).val()) != null)
+   //              comp = expr.pop(expr.size() - 1).val();
+   //          if(comp == null)
+   //              eqnod.add(TokenNode.generateMasterNode(expr));
+   //          else
+   //              eqnod.add(new EquationNode(TokenNode.generateMasterNode(expr)).setToken(comp));
+   //      }
+   //      System.out.println(eqnod.toFancyString());
+   //      return eqnod;
+
+   //  }
 
     /**
      * Fixes any terms that might be misleading to the compiler. For example, <code>sinx</code> will become

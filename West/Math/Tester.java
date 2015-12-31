@@ -22,15 +22,18 @@ public class Tester {
     public static void main(String[] args) throws NotDefinedException {
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
-            eqsys.add("y = 1 + sin(alpha) + c");
-            eqsys.add("alpha = (9.45 + x ^ theta) / 2");
-            eqsys.add("c = pi - e");
-            eqsys.add("theta = ln(pi) - c ^ x ");
-            eqsys.add("x = pi - e");
+            // eqsys.add("y = 1 + sin(alpha) + c");
+            // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
+            // eqsys.add("c = pi - e");
+            // eqsys.add("theta = ln(pi) - c ^ x ");
+            // eqsys.add("x = pi - e");
 
 
             // eqsys.add("x = 9");
             // eqsys.add("c = x^2 * pi");
+
+            eqsys.addConstraint("x > 3 && x < 5");
+
             // eqsys.add("y = x0 * x1 * x2 * x3 * x4");
             // eqsys.add("x0 = (x) * c");
             // eqsys.add("x1 = (x - 8) * c");
@@ -39,7 +42,9 @@ public class Tester {
             // eqsys.add("x4 = (x + 4) * c");
             // eqsys.add("c = 1/4");
             // eqsys.add("x = 0");
-            eqsys.addConstraint("x > 5 && x < 0");
+
+
+            // eqsys.addConstraint("x > 5 && x < 0");
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {

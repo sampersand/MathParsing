@@ -167,24 +167,24 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return "Token"+super.toString();
     }
     @Override
-    protected void addD(int i, Node pN) {
+    public void addD(int i, Node pN) {
         assert pN != null : "Cannot addDepth null Nodes!";
         assert pN instanceof TokenNode;
         TokenNode n = (TokenNode)pN;
-        if(i <= 0 || size() <= 0 ||((TokenNode)get(size() - 1)).token().isGroup()) {
+        if(i <= 0 || size() <= 0 ||((TokenNode)get(-1)).token().isGroup()) {
             add(n);
         } else {
-            if(i == 2 && get(size() - 1).isFinal()) {
+            if(i == 2 && get(-1).isFinal()) {
                 add(n);
             } else {
-                get(size() - 1).addD(i - 1, n);
+                get(-1).addD(i - 1, n);
             }
         }
 
     }
 
     @Override
-    protected void setD(int i, int p, Node pN) {
+    public void setD(int i, int p, Node pN) {
         assert pN != null : "Cannot setDepth null Nodes!";
         assert pN instanceof TokenNode;
         TokenNode n = (TokenNode)pN;
@@ -197,15 +197,22 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 setN(p, n);
             }
         } else {
-            assert !get(size() - 1).isFinal(); //shouldnt happen, methinks.
-            if(((TokenNode)get(size() - 1)).token.isGroup()) {
+            assert !get(-1).isFinal(); //shouldnt happen, methinks.
+            if(((TokenNode)get(-1)).token.isGroup()) {
                 setN(p, n);
             } else {
-                get(size() - 1).setD(i - 1, p, n);
+                get(-1).setD(i - 1, p, n);
             }
         }
     }
-
+    @Override
+    public String toFancyString(){
+        return super.toFancyString().replaceFirst("Node", "TokenNode");
+    }
+    @Override
+    public String toFullString(){
+        return super.toFullString().replaceFirst("Node", "TokenNode");
+    }
     /**
      * TODO: JAVADOC
      * returns Double.NaN if the result isnt in bounds

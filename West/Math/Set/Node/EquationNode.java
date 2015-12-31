@@ -26,6 +26,12 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
         public String toString(){
             return SYMBOL;
         }
+        public boolean isBool(){
+            return BOOLEANS.containsKey(SYMBOL);
+        }
+        public boolean isComp(){
+            return COMPARATOR.containsKey(SYMBOL);
+        }
     }
 
     public static final HashMap<String, Comparator> COMPARATOR = new HashMap<String, Comparator>()
@@ -39,7 +45,7 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
        put("≠",  new Comparator("≠",  (obj1, obj2) -> null));
        put("≥",  new Comparator("≥",  (obj1, obj2) -> null));
        put("≤",  new Comparator("≤",  (obj1, obj2) -> null));
-       put(null, null);
+       // put(null, null);
    }};
 
     public static final HashMap<String, Comparator> BOOLEANS = new HashMap<String, Comparator>()
@@ -47,6 +53,7 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
       put("||", new Comparator("||", (obj1, obj2) -> null));
       put("&&", new Comparator("&&", (obj1, obj2) -> null));
       put("^^", new Comparator("^^", (obj1, obj2) -> null));
+      put("", new Comparator("", (obj1, obj2) -> null));
     }};
 
     public EquationNode(){
@@ -65,8 +72,41 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
         token = pEquation;
     }
 
+    public static Comparator getBool(String s){
+        return BOOLEANS.get(s);
+    }
     public static Comparator getComp(String s){
-        return BOOLEANS.get(s) == null ? COMPARATOR.get(s) : BOOLEANS.get(s);
+        return COMPARATOR.get(s);
+    }
+    public void addED(int i, EquationNode en) { // addD, but stops at a non EquationNode
+        assert en != null : "Cannot addDepth null Nodes!";
+        if(i <= 0 || size() <= 0){
+            addE(en);
+        } else {
+            if(get(-1).get(-1) instanceof TokenNode){
+                addE(en);
+                while(size() > 1){
+                    System.out.println(get(-1)+"\n\t"+get(0));
+                    EquationNode eqn = (EquationNode)pop(0);
+                    get(-1).add(eqn);
+                }
+            }
+            else
+                ((EquationNode)get(-1)).addED(i - 1, en);
+        }
+    }
+
+    public void addBD(int i, EquationNode en) { //addD, but stops @ a non-BOOLEAN EquationNode
+        assert en != null : "Cannot addDepth null Nodes!";
+        if(i <= 0 || size() <= 0)
+            addE(en);
+        else {
+            assert get(-1) instanceof EquationNode;
+            if(!((Comparator)get(-1).token()).isBool())
+                addE(en);
+            else
+                ((EquationNode)get(-1)).addBD(i - 1, en);
+        }
     }
     // private Object[] condeseNodes(int pPos, ArrayList<Equation> pEquations) {
     //     assert pEquations != null;
@@ -228,10 +268,12 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
     public EquationNode setToken(Comparator pEquation){
         return (EquationNode)super.setToken(pEquation);
     }
-  
-    // @Override
-    // protected EquationNode getD(int i) {
-    //     return (EquationNode)super.getD(i);
-    // }
-    
+    @Override
+    public String toFancyString(){
+        return super.toFancyString().replaceFirst("Node", "EquationNode");
+    }
+    @Override
+    public String toFullString(){
+        return super.toFullString().replaceFirst("Node", "EquationNode");
+    }
  }

@@ -91,17 +91,14 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
 
     public ArrayList<E> elements(){ return elements; }
     public int size(){ return elements.size();}
-    public E get(int pPos){ return elements.get(pPos);}
+    public E get(int pPos){ return elements.get(stdPos(pPos));}
     public E set(int pPos, E pEle){
-        return elements.set(pPos, pEle);
+        return elements.set(stdPos(pPos), pEle);
     }
-    public E pop(){return remove(size() - 1);}
+    public int stdPos(int pPos){return pPos < 0 ? size() + pPos : pPos;}
+    public E pop(){return remove(-1);}
     public E pop(int pPos){return remove(pPos);}
-    public E remove(int pPos){
-        E ret = elements.get(pPos);
-        elements.remove(pPos);
-        return ret;
-    }
+    public E remove(int pPos){ return elements.remove(stdPos(pPos)); }
 
     public void prepend(E obj){
         elements = new ArrayList<E>(){{add(obj); addAll(elements);}};

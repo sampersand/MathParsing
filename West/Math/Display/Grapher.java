@@ -63,8 +63,8 @@ public class Grapher extends JPanel implements MathObject {
     public Grapher(NumberCollection<Double> pnumc1, NumberCollection<Double> pnumc2) {
         this(null, new ArrayList<Collection<NumberCollection<Double>>>(){{
             add(new Collection<NumberCollection<Double>>());
-            get(size()-1).add(pnumc1);
-            get(size()-1).add(pnumc2);
+            get(-1).add(pnumc1);
+            get(-1).add(pnumc2);
         }});
     }
 

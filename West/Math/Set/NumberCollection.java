@@ -186,7 +186,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         double y_  = mean();
         for(N y : this)
             sigYy_  += Math.pow(Double.parseDouble("" + y) - y_, 2); //aha cheating
-        return Math.sqrt(sigYy_  / (size() - 1));
+        return Math.sqrt(sigYy_  / stdPos(-1));
     }
 
     public NumberCollection<N> fns() {
@@ -207,7 +207,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         //     if(size % 4 == 0) q3 = (sorted.get(size * 3 / 4 - 1) + sorted.get(size * 3 / 4)) / 2;
         //     else q3 = sorted.get(size * 3 / 4);
 
-        //     q4 = sorted.get(sorted.size() - 1);
+        //     q4 = sorted.get(-1);
 
         //     add((N) new Double(q0));
         //     add((N) new Double(q1));

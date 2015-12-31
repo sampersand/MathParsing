@@ -94,7 +94,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
     }
 
     public int depth() {
-        return size() == 0 ? 1 : 1 + get(size() - 1).depth();
+        return size() == 0 ? 1 : 1 + get(-1).depth();
     }
     public int depthS() {
         return size() == 0 ? 1 : 1 + get(0).depthS();
@@ -104,7 +104,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         if(i <= 0 || size() == 0) {
             return this;
         } else {
-            return get(size() - 1).getD(i - 1);
+            return get(-1).getD(i - 1);
         }
     }
 
@@ -116,12 +116,12 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         }
     }
 
-    protected void addD(int i, Node<?, ?> n) {
+    public void addD(int i, Node<?, ?> n) {
         assert n != null : "Cannot addDepth null Nodes!";
         if(i <= 0 || size() <= 0){
             addE(n);
         } else {
-            if(i == 2 && get(size() - 1).isFinal()) {
+            if(i == 2 && get(-1).isFinal()) {
                 addE(n);
             } else {
                 getN(size() - 1).addD(i - 1, n);
@@ -129,7 +129,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         }
     }
 
-    protected void setD(int i, int p, Node<?, ?> n) {
+    public void setD(int i, int p, Node<?, ?> n) {
         assert n != null : "Cannot setDepth null Nodes!";
         if(i == 0) {
             assert size() > 0;
@@ -140,8 +140,8 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
                 set(p, n);
             }
         } else {
-            assert !get(size() - 1).isFinal(); //shouldnt happen, methinks.
-            get(size() - 1).setD(i - 1, p, n);
+            assert !get(-1).isFinal(); //shouldnt happen, methinks.
+            get(-1).setD(i - 1, p, n);
         }
     }
 
