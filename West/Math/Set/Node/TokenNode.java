@@ -1,6 +1,7 @@
 package West.Math.Set.Node;
 import West.Math.Set.Collection;
 import java.util.ArrayList;
+import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Token;
 import West.Math.MathObject;
 import West.Math.Equation.Equation;
@@ -156,7 +157,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     }
 
     @Override
-    protected TokenNode getD(int i) {
+    public TokenNode getD(int i) {
         return (TokenNode)super.getD(i);
     }
     @Override
@@ -201,6 +202,57 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 get(size() - 1).setD(i - 1, p, n);
             }
         }
+    }
+
+    public Double eval(final EquationSystem pEqSys){
+        assert token != null;
+        assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
+        if(token.type() == FUNC || token.type() == OPER) {
+            if(token.val().isEmpty()){
+                // assert elements.size() == 1 : "\n" + toFancyString();
+                return ((TokenNode)elements.get(0)).eval(pEqSys);
+            }
+            else if(pEqSys.functions().get(token.val()) != null){ // if it is a function
+                return pEqSys.functions().get(token.val()).exec(pEqSys, this);
+            } else {
+                return InBuiltFunction.exec(token.val(), pEqSys, this);
+            }
+        } else if (token.isGroup()){
+            return ((TokenNode)get(0)).eval(pEqSys);
+        } else if(isFinal()){
+            String val = token.val();
+            try {
+                return Double.parseDouble(val);
+            } catch(NumberFormatException err) {
+                if(pEqSys.varExist(val)){
+                    for(Equation eq : pEqSys.equations()){
+                        assert false;
+                        // if(eq.subEquations().get(0).get(0).get(0).token.val().equals(val)){
+                        //     double dVal = eq.subEquations().get(1).get(0).eval(pEqSys); //used to be get(1).eval
+                        //     if(pEqSys.isInBounds(token, dVal)){
+                        //         return dVal;
+                        //     }
+                        //     // Print.printe(dVal + " is out of bounds for '" + val + "'. returning NaN instead!");
+                        //     return Double.NaN;
+                        // }
+                    }
+                }
+                switch(val) {
+                    case "e":
+                        return Math.E;
+                    case "pi":
+                        return Math.PI;
+                    case "rand": case "random":
+                        return Math.random();
+                    default:
+                        throw new NotDefinedException("Cannot evaluate the FinalNode '" + val + "' because there it " + 
+                            "defined as a variable, and isn't an in-built variable.");
+                }
+            }
+        } else {
+            throw new NotDefinedException("This shouldn't happen! There is no way to evaluate node: " + token.val());
+        }
+
     }
 
 }

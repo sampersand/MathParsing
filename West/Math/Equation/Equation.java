@@ -266,7 +266,6 @@ public class Equation implements MathObject {
                 assert node.size() == 0 : "node is not a function, but has subnodes: " + node;
             }
         } else {
-            System.out.println("node:"+node);
             for(Node<?, ?> n : node){
                 String es;
                 ret += exprstoStr(n);
@@ -297,13 +296,13 @@ public class Equation implements MathObject {
         ret += indent(idtLvl + 1) + "Raw Equation:\n" + indentE(idtLvl + 2) + exprstoStr() + "\n";
         ret += indent(idtLvl + 1) + "Expressions:\n";
         for(Node<?, ?> eqn : subEquations){
-            ret += eqn.toFullString(idtLvl + 2);
+            ret += eqn.toFullString(idtLvl + 2) + "\n";
             // ret += "\n" + indent(idtLvl + 3) + "Comparator:" + "\n" + indentE(idtLvl + 4) + cc.token();
             // ret += "\n" + indent(idtLvl + 3) + "EquationNodes:";
             // for(EquationNode n : cc)
             //     ret += "\n" + n.toFullString(idtLvl + 4);
         }
-        return ret + "\n" + indentE(idtLvl + 2) + "\n" + indentE(idtLvl + 1);
+        return ret + indentE(idtLvl + 2) + "\n" + indentE(idtLvl + 1);
     }
 
     @Override

@@ -195,7 +195,7 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
                 ret += "\n" + indent(idtLvl + 2);
             ret += "'"+(get(i) + spaces).substring(0, spacing) + "', ";
         }
-        return ret;
+        return ret + "\n";
 
     }
 

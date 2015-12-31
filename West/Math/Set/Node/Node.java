@@ -96,7 +96,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         return size() == 0 ? 1 : 1 + get(size() - 1).depth();
     }
 
-    protected Node getD(int i) {
+    public Node getD(int i) {
         if(i <= 0 || size() == 0) {
             return this;
         } else {

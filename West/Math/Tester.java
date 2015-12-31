@@ -65,7 +65,7 @@ public class Tester {
         }
 
 
-        System.out.println(eqsys.toFullString());
+        // System.out.println(eqsys.toFullString());
         // eqsys.graph();
         Print.printi("RESULT:", eqsys.eval("y"));
         // NumberCollection<Double> g1 = new NumberCollection<Double>(new Double[]{0D,1D,1D,2D,3D,5D,8D,13D,21D});

@@ -229,9 +229,9 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
         return (EquationNode)super.setToken(pEquation);
     }
   
-    @Override
-    protected EquationNode getD(int i) {
-        return (EquationNode)super.getD(i);
-    }
+    // @Override
+    // protected EquationNode getD(int i) {
+    //     return (EquationNode)super.getD(i);
+    // }
     
  }

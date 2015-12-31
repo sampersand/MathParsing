@@ -293,9 +293,9 @@ public class EquationSystem implements MathObject, Iterable {
             Print.printw("Trying to evaluated an EquationSystem with no equations! returning 0");
             return 0D;
         }
-        assert false;
-        return null;
-        // return equations().get(0).subEquations().get(0).get(0).eval(copy());
+        // return null;
+        West.Math.Set.Node.Node n = equations().get(0).subEquations();
+        return ((West.Math.Set.Node.TokenNode)n.getD(n.depth())).eval(copy());
 
     }
 
