@@ -42,7 +42,6 @@ public class Token implements MathObject {
     {{
         add(",");
         add(":");
-        add("|");
     }};
     public Token() {
         this("", Type.VAR);

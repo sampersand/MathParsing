@@ -302,7 +302,6 @@ public class Equation implements MathObject {
         if(pStr.isEmpty())
             return null;
         for(String s : pList){
-            System.out.println("S:"+s+", pStr:"+pStr+", repl:"+pStr.replaceAll("\\Q" + s + "\\E$",""));
             if(pStr.replaceAll("\\Q" + s + "\\E$","").length() != pStr.length())
                 return s;
         }
