@@ -58,7 +58,7 @@ public class Equation implements MathObject {
      * @return This class, with <code>pCol</code> added.
      */
     public Equation add(EquationNode pCol) {
-        subEquations.addN(pCol);
+        subEquations.add(pCol);
         return this;
     }
 
@@ -121,11 +121,9 @@ public class Equation implements MathObject {
             if(isComp(expr.get(expr.size() - 1).val()) != null)
                 comp = expr.pop(expr.size() - 1).val();
             if(comp == null)
-                eqnod.addN(TokenNode.generateMasterNode(expr));
+                eqnod.add(TokenNode.generateMasterNode(expr));
             else
-                eqnod.addN(new EquationNode(TokenNode.generateMasterNode(expr)).setToken(comp));
-
-
+                eqnod.add(new EquationNode(TokenNode.generateMasterNode(expr)).setToken(comp));
         }
         return eqnod;
 
@@ -253,40 +251,30 @@ public class Equation implements MathObject {
         return exprstoStr(subEquations);
     }
 
-    public String exprstoStr(Node exprs){
+    public String exprstoStr(Node<?, ?> node){
         String ret = "";
-        for(Node<?, ?> node :(Node<?, ?>)exprs){
-            System.out.println(node.token().getClass()+" " + node);
-            if(node.token() instanceof Token){
-                Token token = (Token)node.token();
-                ret += token.val();
-                if(token.type() == Token.Type.OPER || token.type() == Token.Type.FUNC){
-                    ret += "(";
-                    for(Node n : node){
-                        ret += exprstoStr(n) + ", ";
-                    }
-                    ret += ")";
-                } else{
-                    assert node.size() == 0 : "node is not a function, but has subnodes: " + node;
+        if(node.token() instanceof Token){
+            Token token = (Token)node.token();
+            ret += token.val();
+            if(token.type() == Token.Type.OPER || token.type() == Token.Type.FUNC){
+                ret += "(";
+                for(Node n : node){
+                    ret += exprstoStr(n) + ", ";
                 }
-            } else {
-                System.out.println("node:"+node);
-                for(Node<?, ?> n : node){
-                    ret += exprstoStr(n);
-                    ret += node.token() == null ? "" : node.token();
-                }
-            }                
-            // ret += node.token();
-            // if(node.token() instanceof Token && ((Token)node.token()).type == Token.Type.FUNC)
-            //     ret += "(";
-            // ret += exprstoStr(node);
-            // if(node.token() instanceof Token && ((Token)node.token()).type == Token.Type.FUNC)
-
-            //     ret += ")";
-            // System.out.println(ret);
+                ret = ret.substring(0, ret.length() - 2) + ")";
+            } else{
+                assert node.size() == 0 : "node is not a function, but has subnodes: " + node;
+            }
+        } else {
+            System.out.println("node:"+node);
+            for(Node<?, ?> n : node){
+                String es;
+                ret += exprstoStr(n);
+                ret += " " + (node.token() == null ? "" : node.token()) + " ";
+            }
+            return ret.substring(0, ret.length() - 2);
         }
         return ret;
-        // return exprs.size() > 0 ? ret.substring(3) : "empty equation";
     }
 
     @Override
@@ -307,15 +295,14 @@ public class Equation implements MathObject {
         ret += indent(idtLvl + 1) + "Comparator:\n"; 
         ret += indent(idtLvl + 2) + subEquations.token() + "\n";
         ret += indent(idtLvl + 1) + "Raw Equation:\n" + indentE(idtLvl + 2) + exprstoStr() + "\n";
-        ret += indent(idtLvl + 1) + "Expressions:";
-        // assert false;
-        // for(CompareCollection<EquationNode> cc : subEquations){
-        //     ret += "\n" + indent(idtLvl + 2) + "CompareCollection:";
-        //     ret += "\n" + indent(idtLvl + 3) + "Comparator:" + "\n" + indentE(idtLvl + 4) + cc.token();
-        //     ret += "\n" + indent(idtLvl + 3) + "EquationNodes:";
-        //     for(EquationNode n : cc)
-        //         ret += "\n" + n.toFullString(idtLvl + 4);
-        // }
+        ret += indent(idtLvl + 1) + "Expressions:\n";
+        for(Node<?, ?> eqn : subEquations){
+            ret += eqn.toFullString(idtLvl + 2);
+            // ret += "\n" + indent(idtLvl + 3) + "Comparator:" + "\n" + indentE(idtLvl + 4) + cc.token();
+            // ret += "\n" + indent(idtLvl + 3) + "EquationNodes:";
+            // for(EquationNode n : cc)
+            //     ret += "\n" + n.toFullString(idtLvl + 4);
+        }
         return ret + "\n" + indentE(idtLvl + 2) + "\n" + indentE(idtLvl + 1);
     }
 

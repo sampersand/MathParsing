@@ -21,7 +21,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
     public TokenNode(ArrayList<Token> pElements){
         super();
-        addN(generateMasterNode(pElements));
+        add(generateMasterNode(pElements));
     }
     public TokenNode(TokenNode pCollection) {
         super(pCollection);
@@ -38,7 +38,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             Token t = pTokens.get(pPos);
             assert t != null : "this should have been caught earlier.";
             if(t.isConst() || t.isOper()){
-                node.addN(new TokenNode(t));
+                node.add(new TokenNode(t));
             } else if(t.isFunc()) {
                 int paren = 0;
                 int x = pPos + 1;
@@ -54,7 +54,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 Object[] temp = new TokenNode(t).condeseNodes(0, passTokens);
                 pPos += (int)temp[0];
                 TokenNode o;
-                node.addN(o = ((TokenNode)temp[1]).fixNodes());
+                node.add(o = ((TokenNode)temp[1]).fixNodes());
             } 
             pPos++;
         }
@@ -68,7 +68,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         TokenNode e = new TokenNode(token);
         int i = 0;
         while(i < node.size()) {
-            TokenNode n = node.getN(i);
+            TokenNode n = (TokenNode)node.get(i);
             assert n != null : "no subNode can be null!";
             if(n.isFinal() && !Equation.isControlChar(n.token().val())) {
                 e.addD(e.depth(), n);
@@ -77,18 +77,18 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     TokenNode nD = e.getD(depth);
                     assert nD != null : "elements cannot be null!";
                     if(nD.isFinal()) {
-                        n.addN(nD);
+                        n.add(nD);
                         e.setD(depth - 1, -1, n); //depth is a final node.
                         break;
                     } else if(n.token.priority() < nD.token.priority()) {
-                        n.addN(nD);
-                        n.addN(((TokenNode)node.getN(i + 1)).completeNodes());
+                        n.add(nD);
+                        n.add(((TokenNode)node.get(i + 1)).completeNodes());
                         i++;
                         e.setD(depth - 1, -1, n);
                         break;
                     } else if (nD.token.isFunc()) {
-                        n.addN(nD);
-                        n.addN(node.getN(i + 1).completeNodes());
+                        n.add(nD);
+                        n.add(((TokenNode)node.get(i + 1)).completeNodes());
                         i++;
                         e.setD(depth - 1, -1, n);
                         break;
@@ -141,11 +141,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return true;
     }
 
-    @Override
-    public TokenNode getN(int pos){ // add Node
-        assert get(pos) instanceof TokenNode : get(pos).getClass();
-        return (TokenNode)get(pos);
-    }
 
     @Override
     public TokenNode copy(){
@@ -173,13 +168,13 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         assert pN != null : "Cannot addDepth null Nodes!";
         assert pN instanceof TokenNode;
         TokenNode n = (TokenNode)pN;
-        if(i <= 0 || size() <= 0 || getN(size() - 1).token.isGroup()) {
-            addN(n);
+        if(i <= 0 || size() <= 0 ||((TokenNode)get(size() - 1)).token().isGroup()) {
+            add(n);
         } else {
-            if(i == 2 && getN(size() - 1).isFinal()) {
-                addN(n);
+            if(i == 2 && get(size() - 1).isFinal()) {
+                add(n);
             } else {
-                getN(size() - 1).addD(i - 1, n);
+                get(size() - 1).addD(i - 1, n);
             }
         }
 
@@ -199,11 +194,11 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 setN(p, n);
             }
         } else {
-            assert !getN(size() - 1).isFinal(); //shouldnt happen, methinks.
-            if(getN(size() - 1).token.isGroup()) {
+            assert !get(size() - 1).isFinal(); //shouldnt happen, methinks.
+            if(((TokenNode)get(size() - 1)).token.isGroup()) {
                 setN(p, n);
             } else {
-                getN(size() - 1).setD(i - 1, p, n);
+                get(size() - 1).setD(i - 1, p, n);
             }
         }
     }

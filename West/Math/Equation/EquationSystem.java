@@ -308,12 +308,13 @@ public class EquationSystem implements MathObject, Iterable {
      * @throws NotDefinedException  Thrown when there is no known way to isolate the variable
      */
     public EquationSystem isolate(String toIso) throws NotDefinedException {
-        for(int i = 0; i < size(); i++){
-            assert false;
+        // for(Equation eq : equations){
+            // if(eq.expressions().get(0).)
+        // }
             // if(equations.get(i).subEquations().get(0).get(0).token().val().equals(toIso)){
             //     equations.prepend(equations.pop(i));
             // }
-        }
+        // }
         return this;
     }
 

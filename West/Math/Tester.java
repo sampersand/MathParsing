@@ -22,11 +22,11 @@ public class Tester {
     public static void main(String[] args) throws NotDefinedException {
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
-            // eqsys.add("y = 1 + sin(alpha) + c");
-            // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
-            // eqsys.add("c = pi - e");
-            // eqsys.add("theta = ln(pi) - c ^ x ");
-            // eqsys.add("x = 3");
+            eqsys.add("y = 1 + sin(alpha) + c");
+            eqsys.add("alpha = (9.45 + x ^ theta) / 2");
+            eqsys.add("c = pi - e");
+            eqsys.add("theta = ln(pi) - c ^ x ");
+            eqsys.add("x = 3");
 
             // eqsys.add("y = x0 * x1 * x2 * x3 * x4");
             // eqsys.add("x0 = (x) * c");
@@ -34,7 +34,7 @@ public class Tester {
             // eqsys.add("x2 = (x - 4) * c");
             // eqsys.add("x3 = (x + 8) * c");
             // eqsys.add("x4 = (x + 4) * c");
-            eqsys.add("c = 1/4");
+            // eqsys.add("c = 1/4");
             // eqsys.addConstraint("x > 5 | x < 4");
         } else {
             eqsys = new EquationSystem();
@@ -67,7 +67,7 @@ public class Tester {
 
         System.out.println(eqsys.toFullString());
         // eqsys.graph();
-        // Print.printi("RESULT:", eqsys.eval("y"));
+        Print.printi("RESULT:", eqsys.eval("y"));
         // NumberCollection<Double> g1 = new NumberCollection<Double>(new Double[]{0D,1D,1D,2D,3D,5D,8D,13D,21D});
         // System.out.println(g1.mean());
         // NumberCollection<Double> g2 = new NumberCollection<Double>(new Double[]{2D,3D,5D,7D,11D,13D,17D});
