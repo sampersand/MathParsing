@@ -96,12 +96,23 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
     public int depth() {
         return size() == 0 ? 1 : 1 + get(size() - 1).depth();
     }
+    public int depthS() {
+        return size() == 0 ? 1 : 1 + get(0).depthS();
+    }
 
     public Node getD(int i) {
         if(i <= 0 || size() == 0) {
             return this;
         } else {
             return get(size() - 1).getD(i - 1);
+        }
+    }
+
+    public Node getSD(int i) {
+        if(i <= 0 || size() == 0) {
+            return this;
+        } else {
+            return get(0).getSD(i - 1);
         }
     }
 

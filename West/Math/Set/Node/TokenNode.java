@@ -227,14 +227,15 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             } catch(NumberFormatException err) {
                 if(pEqSys.varExist(val)){
                     for(Equation eq : pEqSys.equations()){
-                        if(((TokenNode)eq.subEquations().getD(eq.subEquations().depth())).token.val().equals(val)){
-                            double dVal = eq.subEquations().get(1).get(0).eval(pEqSys); //used to be get(1).eval
+                        if(((TokenNode)eq.subEquations().getSD(eq.subEquations().depthS())).token.val().equals(val)){
+                            double dVal = ((TokenNode)eq.subEquations().get(0).get(1)).eval(pEqSys); //used to be get(1).eval
                             if(pEqSys.isInBounds(token, dVal)){
                                 return dVal;
                             }
                             // Print.printe(dVal + " is out of bounds for '" + val + "'. returning NaN instead!");
                             return Double.NaN;
                         }
+                        // System.out.println(eq.subEquations().getD(eq.subEquations().depth()));
                     }
                 }
                 switch(val) {
