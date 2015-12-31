@@ -32,7 +32,8 @@ public class Tester {
             // eqsys.add("x = 9");
             // eqsys.add("c = x^2 * pi");
 
-            eqsys.addConstraint("x^4 > (3 * 4)^2 && x < 5");
+            eqsys.addConstraint("x > 1 || y > 2");
+            // eqsys.addConstraint("x^4 > (3 * 4)^2 && x < 5");
 
             // eqsys.add("y = x0 * x1 * x2 * x3 * x4");
             // eqsys.add("x0 = (x) * c");

@@ -92,9 +92,7 @@ public class Equation implements MathObject {
                 eqnod.addED(new EquationNode(EquationNode.getBool(t.val())));
                 prev.empty();
             } else if(isComp(t.val()) != null){
-                // eqnod.addBD(eqnod.depth(), new EquationNode(prev).setToken(EquationNode.getComp(t.val())));
-                eqnod.addBD(
-                            new EquationNode(TokenNode.generateMasterNode(prev)).
+                eqnod.addBD(new EquationNode(TokenNode.generateMasterNode(prev)).
                                              setToken(EquationNode.getComp(t.val())));
                 prev.empty();
             } else {
@@ -304,6 +302,7 @@ public class Equation implements MathObject {
         if(pStr.isEmpty())
             return null;
         for(String s : pList){
+            System.out.println("S:"+s+", pStr:"+pStr+", repl:"+pStr.replaceAll("\\Q" + s + "\\E$",""));
             if(pStr.replaceAll("\\Q" + s + "\\E$","").length() != pStr.length())
                 return s;
         }
