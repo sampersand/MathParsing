@@ -39,6 +39,7 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
        put("≠",  new Comparator("≠",  (obj1, obj2) -> null));
        put("≥",  new Comparator("≥",  (obj1, obj2) -> null));
        put("≤",  new Comparator("≤",  (obj1, obj2) -> null));
+       put(null, null);
    }};
 
     public static final HashMap<String, Comparator> BOOLEANS = new HashMap<String, Comparator>()
@@ -211,12 +212,16 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
     // }
   
     @Override
+    public String toString(){
+        return "Equaiton"+super.toString();
+    }
+    @Override
     public EquationNode copy(){
         return (EquationNode)new EquationNode(token).addAllN(elements);
     }
 
     public EquationNode setToken(String pStr){
-        return (EquationNode)super.setToken(BOOLEANS.get(pStr) == null ? COMPARATOR.get(pStr) : BOOLEANS.get(pStr));
+        return (EquationNode)super.setToken(BOOLEANS.containsKey(pStr)? BOOLEANS.get(pStr) : COMPARATOR.get(pStr));
     }
   
     @Override

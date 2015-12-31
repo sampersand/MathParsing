@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * @since 0.75
  */ 
 
-public class Node<T, N extends Node> extends Collection<Node<?, N>> implements MathObject {
+public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements MathObject {
 
     protected T token; // its an object so functions can also use this
 
@@ -23,14 +23,14 @@ public class Node<T, N extends Node> extends Collection<Node<?, N>> implements M
         token = null;
     }
 
-    public Node(ArrayList<Node<?, N>> pElements){
+    public Node(ArrayList<Node<?, ?>> pElements){
         super();
         addAll(pElements);
         token = null;
     }
 
 
-    public Node(Node<?, N> pCollection) {
+    public Node(Node<?, ?> pCollection) {
         super();
         add(pCollection);
         token = null;
@@ -61,21 +61,15 @@ public class Node<T, N extends Node> extends Collection<Node<?, N>> implements M
         super.set(pos, pN);
     }
 
-    public Node<T, N> addAllN(ArrayList<Node<?, N>> pNs){ // add Node
-        System.out.println("ADDALLN_THIS:"+this);
-        System.out.println("ADDALLN_PNS:"+pNs);
+    public Node<T, N> addAllN(ArrayList<Node<?, ? extends Node>> pNs){ // add Node
         assert pNs != null;
-        if(pNs.size() == 0){
-            System.out.println("pns size is 0! this]= " + this);
+        if(pNs.size() == 0)
             return this;
-        }
         for(Node n : pNs)
             addE(n);
-        System.out.println("ADDALLN_END:"+this);
         return this;
     }
     public Node<T, N> setToken(T pToken){
-        assert pToken != null;
         token = pToken;
         return this;
     }
@@ -110,7 +104,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, N>> implements M
         }
     }
 
-    protected void addD(int i, Node<?, N> n) {
+    protected void addD(int i, Node<?, ?> n) {
         assert n != null : "Cannot addDepth null Nodes!";
         if(i <= 0 || size() <= 0){
             addE(n);
@@ -123,7 +117,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, N>> implements M
         }
     }
 
-    protected void setD(int i, int p, Node<?, N> n) {
+    protected void setD(int i, int p, Node<?, ?> n) {
         assert n != null : "Cannot setDepth null Nodes!";
         if(i == 0) {
             assert size() > 0;
@@ -143,7 +137,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, N>> implements M
     public String toFancyString(int idtLvl) {
         String ret = indent(idtLvl) + "Node '" + token + "':\n";
         ret += indent(idtLvl + 1) + "Sub Nodes:";
-        for(Node<?, N> node : elements) 
+        for(Node<?, ?> node : elements) 
             ret += "\n" + node.toFancyString(idtLvl + 2);
         return ret + "\n" +  indentE(idtLvl + 2) + "\n" + indentE(idtLvl + 1);
     }

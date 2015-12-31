@@ -114,15 +114,17 @@ public class Equation implements MathObject {
         }
         if(prev.size() != 0)
             units.add(prev);
-        EquationNode eqnod = new EquationNode().setToken(units.get(0).get(units.get(0).size() - 1).val());
+        EquationNode eqnod = new EquationNode().setToken(units.get(0).pop(units.get(0).size() - 1).val());
         for(int i = 0; i < units.size(); i++){
             Collection<Token> expr = units.get(i);
-            String comp = eqnod.token().SYMBOL;
+            String comp = null;
             if(isComp(expr.get(expr.size() - 1).val()) != null)
                 comp = expr.pop(expr.size() - 1).val();
-            System.out.println("EXPR: "+expr);
-            System.out.println("TOKEN GEN: " +TokenNode.generateMasterNode(expr));
-            eqnod.addN(new EquationNode(TokenNode.generateMasterNode(expr)).setToken(comp));
+            if(comp == null)
+                eqnod.addN(TokenNode.generateMasterNode(expr));
+            else
+                eqnod.addN(new EquationNode(TokenNode.generateMasterNode(expr)).setToken(comp));
+
 
         }
         return eqnod;
@@ -250,38 +252,39 @@ public class Equation implements MathObject {
     public String exprstoStr(){
         return exprstoStr(subEquations);
     }
+
     public String exprstoStr(Node exprs){
         String ret = "";
-        for(Object obj : exprs){
-            // System.out.println("IM AN OBJECT!"+obj);
-            // System.out.println("RET:"+ret);
-            assert obj instanceof Node || obj instanceof Token : obj.getClass();
-            if (obj instanceof TokenNode){
-                System.out.print("A, RET:");
-                Token t =  null;
-                assert (t = ((TokenNode)obj).token()) != null;
-                ret += t.val();
-                System.out.println(ret);
-            } if(obj instanceof Node){
-                System.out.print("B, RET:");
-                ret += " " + ((Node)obj).token() + " " + exprstoStr((Node)obj);
-                System.out.println(ret);
+        for(Node<?, ?> node :(Node<?, ?>)exprs){
+            System.out.println(node.token().getClass()+" " + node);
+            if(node.token() instanceof Token){
+                Token token = (Token)node.token();
+                ret += token.val();
+                if(token.type() == Token.Type.OPER || token.type() == Token.Type.FUNC){
+                    ret += "(";
+                    for(Node n : node){
+                        ret += exprstoStr(n) + ", ";
+                    }
+                    ret += ")";
+                } else{
+                    assert node.size() == 0 : "node is not a function, but has subnodes: " + node;
+                }
             } else {
-                System.out.print("C, RET:");
-                assert obj instanceof Token;
-                ret += ((Token)obj).val();
-                System.out.println(ret);
-            }
+                System.out.println("node:"+node);
+                for(Node<?, ?> n : node){
+                    ret += exprstoStr(n);
+                    ret += node.token() == null ? "" : node.token();
+                }
+            }                
+            // ret += node.token();
+            // if(node.token() instanceof Token && ((Token)node.token()).type == Token.Type.FUNC)
+            //     ret += "(";
+            // ret += exprstoStr(node);
+            // if(node.token() instanceof Token && ((Token)node.token()).type == Token.Type.FUNC)
+
+            //     ret += ")";
+            // System.out.println(ret);
         }
-        // for(CompareCollection<EquationNode> cc : subEquations){
-        //     ret += " " + cc.token().SYMBOL + " ";
-        //     for(EquationNode n : cc){
-        //         // System.out.println(cc.token() + " im a token");
-        //         // System.out.println(n.genEqString() + " im a eqstring");
-        //         ret += n.genEqString() + " " + cc.token();
-        //     }
-        //     ret = ret.substring(0,ret.length() - 2);
-        // }
         return ret;
         // return exprs.size() > 0 ? ret.substring(3) : "empty equation";
     }
