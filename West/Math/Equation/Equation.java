@@ -5,7 +5,7 @@ import West.Math.Equation.Function.CustomFunction;
 
 import West.Math.Set.Node.EquationNode;
 import West.Math.Set.Node.TokenNode;
-
+import West.Math.Set.Node.Node;
 import West.Math.Exception.TypeMisMatchException;
 import West.Math.Exception.NotDefinedException;
 
@@ -250,15 +250,20 @@ public class Equation implements MathObject {
     public String exprstoStr(){
         return exprstoStr(subEquations);
     }
-    public String exprstoStr(EquationNode exprs){
+    public String exprstoStr(Node exprs){
         String ret = "";
         for(Object obj : exprs){
-            assert obj instanceof Node || obj instanceof Token;
-            if(obj instanceof Node){
-                EquationNode cobj =(EquationNode)obj;
-                ret += exprstoStr(cobj);
+            assert obj instanceof Node || obj instanceof Token : obj.getClass();
+            if(obj instanceof EquationNode){
+                ret += " " + ((Node)obj).token()+ " " + exprstoStr((Node)obj);
+            } else if (obj instanceof TokenNode){
+                Token t =  null;
+                assert (t = ((TokenNode)obj).token()) != null;
+                ret += t.val();
             } else {
+                assert obj instanceof Token;
                 ret += ((Token)obj).val();
+
             }
         }
         // for(CompareCollection<EquationNode> cc : subEquations){
@@ -270,7 +275,7 @@ public class Equation implements MathObject {
         //     }
         //     ret = ret.substring(0,ret.length() - 2);
         // }
-        return exprs.size() >0 ? ret.substring(3) : "empty equation";
+        return exprs.size() > 0 ? ret.substring(3) : "empty equation";
     }
 
     @Override

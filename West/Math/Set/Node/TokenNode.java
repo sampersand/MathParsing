@@ -14,23 +14,19 @@ import static West.Math.Equation.Token.Type.*;
  * @since 0.75
  */
 public class TokenNode extends Node<Token, TokenNode> implements MathObject {
-    // protected ArrayList<TokenNode> elements;
-    // protected Token token;
     public TokenNode(){
-        elements = new ArrayList<TokenNode>();
+        super();
     }
 
     public TokenNode(ArrayList<Token> pElements){
-        elements = new ArrayList<TokenNode>();
-        elements.add(generateMasterNode(pElements));
+        super();
+        addN(generateMasterNode(pElements));
     }
     public TokenNode(TokenNode pCollection) {
-        elements = new ArrayList<TokenNode>();
-        elements.add(pCollection);
+        super(pCollection);
     }
     public TokenNode(Token pToken) {
-        elements = new ArrayList<TokenNode>();
-        token = pToken;
+        super(pToken);
     }
 
     protected Object[] condeseNodes(int pPos, ArrayList<Token> pTokens) {
@@ -56,22 +52,25 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                      passTokens.add(tk);
                 Object[] temp = new TokenNode(t).condeseNodes(0, passTokens);
                 pPos += (int)temp[0];
-                node.addN(((TokenNode)temp[1]).fixNodes());
+                TokenNode o;
+                node.addN(o = ((TokenNode)temp[1]).fixNodes());
             } 
             pPos++;
         }
+            System.out.println("NODECN:"+node);
         return new Object[]{pPos, node};
     }
-
 
     protected TokenNode completeNodes() {
         if(isFinal())
             return this;
+        System.out.println("THIS:"+this);
         TokenNode node = copy();
         TokenNode e = new TokenNode(token);
+        System.out.println("COPY:"+node);
         int i = 0;
         while(i < node.size()) {
-            System.out.println(node+"NODE");
+            System.out.println("NODE:"+node);
             TokenNode n = node.getN(i);
             assert n != null : "no subNode can be null!";
             if(n.isFinal() && !Equation.isControlChar(n.token().val())) {
@@ -158,17 +157,16 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return true;
     }
 
+    @Override
     public TokenNode getN(int pos){ // add Node
         System.out.println("TOKENNODE GETN: " + super.get(pos));
-        assert false;
-        // return (TokenNode)super.get(pos);
-        return null;
+        assert get(pos) instanceof TokenNode : get(pos).getClass();
+        return (TokenNode)get(pos);
     }
 
     @Override
     public TokenNode copy(){
         assert elements != null;
-        System.out.println("elements:"+elements);
         return (TokenNode)new TokenNode(token).addAllN(elements);
     }
 
@@ -183,7 +181,10 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     protected TokenNode getD(int i) {
         return (TokenNode)super.getD(i);
     }
-
+    @Override
+    public String toString(){
+        return "Token"+super.toString();
+    }
     @Override
     protected void addD(int i, Node pN) {
         assert pN != null : "Cannot addDepth null Nodes!";

@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * @since 0.75
  */ 
 
-public class Node<T, N extends Node> extends Collection<Node<Object, N>> implements MathObject {
+public class Node<T, N extends Node> extends Collection<Node<?, N>> implements MathObject {
 
     protected T token; // its an object so functions can also use this
 
@@ -23,19 +23,23 @@ public class Node<T, N extends Node> extends Collection<Node<Object, N>> impleme
         token = null;
     }
 
-    public Node(ArrayList<Node<Object, N>> pElements){
-        elements = new ArrayList<Node<Object, N>>();
+    public Node(ArrayList<Node<?, N>> pElements){
+        super();
         addAll(pElements);
         token = null;
     }
 
 
-    public Node(Node<Object, N> pCollection) {
-        elements = new ArrayList<Node<Object, N>>();
+    public Node(Node<?, N> pCollection) {
+        super();
         add(pCollection);
         token = null;
     }
 
+    public Node(T pToken) {
+        super();
+        token = pToken;
+    }
     public T token(){
         return token;
     }
@@ -49,15 +53,17 @@ public class Node<T, N extends Node> extends Collection<Node<Object, N>> impleme
         return this;
     }
 
-    public N getN(int pos){ // add Node
-        return (N)super.get(pos);
+    public Node<T, N> getN(int pos){ // get Node
+        return (Node<T, N>)super.get(pos);
     }
 
-    public void setN(int pos, N pN){ // add Node
+    public void setN(int pos, N pN){ // set Node
         super.set(pos, pN);
     }
 
-    public Node<T, N> addAllN(ArrayList<N> pNs){ // add Node
+    public Node<T, N> addAllN(ArrayList<Node<?, N>> pNs){ // add Node
+        System.out.println("ADDALLN_THIS:"+this);
+        System.out.println("ADDALLN_PNS:"+pNs);
         if(pNs == null){
             // System.out.println("pns is null! this]= " + this);
             return this;
@@ -67,10 +73,8 @@ public class Node<T, N extends Node> extends Collection<Node<Object, N>> impleme
             
             return this;
         }
-        super.add(new Node<Object, N>(){{
-            for(N n : pNs)
-                add(n);
-        }});
+        for(Node n : pNs)
+            addE(n);
         return this;
     }
     public Node<T, N> setToken(T pToken){
@@ -78,14 +82,15 @@ public class Node<T, N extends Node> extends Collection<Node<Object, N>> impleme
         token = pToken;
         return this;
     }
-
+    @Override
     public boolean equals(Object pObj){
         return super.equals(pObj) &&
                pObj instanceof Node &&
                token.equals(((Node<T, N>)pObj).token());
     }
+    @Override
     public String toString(){
-        return "'" + token + "' Compare" + super.toString();
+        return "Node '" + token + "' elements = " + elements;
     }
 
     public Node copy(){
@@ -108,20 +113,20 @@ public class Node<T, N extends Node> extends Collection<Node<Object, N>> impleme
         }
     }
 
-    protected void addD(int i, Node<Object, N> n) {
+    protected void addD(int i, Node<?, N> n) {
         assert n != null : "Cannot addDepth null Nodes!";
         if(i <= 0 || size() <= 0){
-            add(n);
+            addE(n);
         } else {
             if(i == 2 && get(size() - 1).isFinal()) {
-                add(n);
+                addE(n);
             } else {
                 getN(size() - 1).addD(i - 1, n);
             }
         }
     }
 
-    protected void setD(int i, int p, Node<Object, N> n) {
+    protected void setD(int i, int p, Node<?, N> n) {
         assert n != null : "Cannot setDepth null Nodes!";
         if(i == 0) {
             assert size() > 0;

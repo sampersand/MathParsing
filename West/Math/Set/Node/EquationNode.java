@@ -12,7 +12,7 @@ import West.Math.MathObject;
  * @version 0.76
  * @since 0.75
  */
-public class EquationNode extends Node<EquationNode.Comparator, Node> implements MathObject{
+public class EquationNode extends Node<EquationNode.Comparator, EquationNode> implements MathObject{
     interface TokenObj{
         public Object compare(Object obj1, Object obj2);
     }
@@ -22,6 +22,9 @@ public class EquationNode extends Node<EquationNode.Comparator, Node> implements
         public Comparator(String s, TokenObj t){
             SYMBOL = s;
             TOKENOBJ = t;
+        }
+        public String toString(){
+            return SYMBOL;
         }
     }
 
@@ -40,24 +43,21 @@ public class EquationNode extends Node<EquationNode.Comparator, Node> implements
 
     public static final HashMap<String, Comparator> BOOLEANS = new HashMap<String, Comparator>()
     {{
-      // put("||", (obj1, obj2) -> null);
-      // put("&&", (obj1, obj2) -> null);
-      // put("^^", (obj1, obj2) -> null);
+      put("||", new Comparator("||", (obj1, obj2) -> null));
+      put("&&", new Comparator("&&", (obj1, obj2) -> null));
+      put("^^", new Comparator("^^", (obj1, obj2) -> null));
     }};
 
-
-    protected ArrayList<Node> elements;
-
     public EquationNode(){
-        elements = new ArrayList<Node>();
+        super();
     }
 
     public EquationNode(ArrayList<Equation> pElements){
-        elements = new ArrayList<Node>();
+        super();
         elements.add(generateMasterNode(pElements));
     }
     public EquationNode(Node pCollection) {
-        elements = new ArrayList<Node>();
+        super();
         elements.add(pCollection);
     }
     public EquationNode(Comparator pEquation) {
@@ -205,14 +205,14 @@ public class EquationNode extends Node<EquationNode.Comparator, Node> implements
         return false;
     }
 
-    @Override
-    public EquationNode addAllN(ArrayList<Node> pNs){ // add Node
-        return (EquationNode)super.addAllN(pNs);
-    }
+    // @Override
+    // public EquationNode addAllN(ArrayList<Node> pNs){ // add Node
+    //     return (EquationNode)super.addAllN(pNs);
+    // }
   
     @Override
     public EquationNode copy(){
-        return new EquationNode(token).addAllN(elements);
+        return (EquationNode)new EquationNode(token).addAllN(elements);
     }
 
     public EquationNode setToken(String pStr){
