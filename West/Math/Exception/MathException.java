@@ -5,7 +5,7 @@ package West.Math.Exception;
  * deciphering errors easier.
  * 
  * @author Sam Westerman
- * @version 0.80
+ * @version 0.82
  * @since 0.1
  */
 public class MathException extends RuntimeException {

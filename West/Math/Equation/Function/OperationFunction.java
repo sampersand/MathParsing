@@ -15,7 +15,7 @@ import West.Math.Set.Collection;
  * A class that represents an operation in mathametics. It acts very similar to an {@link InBuiltFunction}.
  * 
  * @author Sam Westerman
- * @version 0.80
+ * @version 0.82
  * @since 0.1
   * @see <a href="https://en.wikipedia.org/wiki/Operation_(mathematics)">Operation</a>
  */

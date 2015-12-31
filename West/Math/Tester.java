@@ -9,7 +9,7 @@ import West.Math.Set.*;
 /**
  * A tester class for the whole equation
  * @author Sam Westerman
- * @version 0.80
+ * @version 0.82
  * @since 0.1
  */
 public class Tester {

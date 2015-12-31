@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * LOL i'm going to have to figure out how to spell 'token' correctly XD
  * 
  * @author Sam Westerman
- * @version 0.80
+ * @version 0.82
  * @since 0.75
  */ 
 

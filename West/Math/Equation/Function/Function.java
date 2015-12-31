@@ -12,7 +12,7 @@ import West.Math.Exception.NotDefinedException;
  * For example, in <code>f(x)</code>, this class would represent f.
  * 
  * @author Sam Westerman
- * @version 0.80
+ * @version 0.82
  * @since 0.1
  */
 public abstract class Function implements MathObject {

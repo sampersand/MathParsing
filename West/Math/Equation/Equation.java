@@ -22,7 +22,7 @@ import West.Math.Set.Collection;
  * each other.
  * 
  * @author Sam Westerman
- * @version 0.80
+ * @version 0.82
  * @since 0.1
  */
 public class Equation implements MathObject {
