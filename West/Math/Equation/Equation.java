@@ -253,17 +253,24 @@ public class Equation implements MathObject {
     public String exprstoStr(Node exprs){
         String ret = "";
         for(Object obj : exprs){
+            // System.out.println("IM AN OBJECT!"+obj);
+            // System.out.println("RET:"+ret);
             assert obj instanceof Node || obj instanceof Token : obj.getClass();
-            if(obj instanceof EquationNode){
-                ret += " " + ((Node)obj).token()+ " " + exprstoStr((Node)obj);
-            } else if (obj instanceof TokenNode){
+            if (obj instanceof TokenNode){
+                System.out.print("A, RET:");
                 Token t =  null;
                 assert (t = ((TokenNode)obj).token()) != null;
                 ret += t.val();
+                System.out.println(ret);
+            } if(obj instanceof Node){
+                System.out.print("B, RET:");
+                ret += " " + ((Node)obj).token() + " " + exprstoStr((Node)obj);
+                System.out.println(ret);
             } else {
+                System.out.print("C, RET:");
                 assert obj instanceof Token;
                 ret += ((Token)obj).val();
-
+                System.out.println(ret);
             }
         }
         // for(CompareCollection<EquationNode> cc : subEquations){
@@ -275,7 +282,8 @@ public class Equation implements MathObject {
         //     }
         //     ret = ret.substring(0,ret.length() - 2);
         // }
-        return exprs.size() > 0 ? ret.substring(3) : "empty equation";
+        return ret;
+        // return exprs.size() > 0 ? ret.substring(3) : "empty equation";
     }
 
     @Override

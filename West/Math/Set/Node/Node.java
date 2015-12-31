@@ -64,17 +64,14 @@ public class Node<T, N extends Node> extends Collection<Node<?, N>> implements M
     public Node<T, N> addAllN(ArrayList<Node<?, N>> pNs){ // add Node
         System.out.println("ADDALLN_THIS:"+this);
         System.out.println("ADDALLN_PNS:"+pNs);
-        if(pNs == null){
-            // System.out.println("pns is null! this]= " + this);
-            return this;
-        }
+        assert pNs != null;
         if(pNs.size() == 0){
             System.out.println("pns size is 0! this]= " + this);
-            
             return this;
         }
         for(Node n : pNs)
             addE(n);
+        System.out.println("ADDALLN_END:"+this);
         return this;
     }
     public Node<T, N> setToken(T pToken){
