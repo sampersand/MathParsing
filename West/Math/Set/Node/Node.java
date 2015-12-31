@@ -93,6 +93,10 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         return size() == 0;
     }
 
+    public boolean isLone(){
+        return isFinal() || (size() == 1 ? get(0).isLone() : false);
+    }
+
     public int depth() {
         return size() == 0 ? 1 : 1 + get(-1).depth();
     }
@@ -158,7 +162,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "Node:\n";
         ret += indent(idtLvl + 1) + "Token:\n";
-        ret += token instanceof MathObject ? ((MathObject)token).toFullString(idtLvl + 2) :  indent(idtLvl) + token;
+        ret += token instanceof MathObject ? ((MathObject)token).toFullString(idtLvl + 2) :  indent(idtLvl + 2) + token;
         ret += "\n";
         ret += indent(idtLvl + 1) + "Sub Nodes:";
         for(Node node : elements) 

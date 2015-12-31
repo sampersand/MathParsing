@@ -105,6 +105,10 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
         // elements.remove(pPos);
     }
 
+    public Collection<E> empty(){
+        elements = new ArrayList<E>();
+        return this;
+    }
     // THIS ∪ PRGROUP
     public Collection<E> union(Collection<E> pCollection){
         return copy().addAllE(pCollection);

@@ -329,7 +329,8 @@ public class EquationSystem implements MathObject, Iterable {
         // System.out.println("TODO: isolated");
         for(Equation eq : equations){
             EquationNode eqn = eq.subEquations();
-            if(eqn.depthS() != 3){ //top node is comparator, second top is empty function, bottom is variable
+            if(!eqn.getSD(2).isLone()){ //top node is comparator, second top is empty function, bottom is variable
+                System.out.println(eqn.getSD(2).toFancyString());
                 return false;
             }
         }

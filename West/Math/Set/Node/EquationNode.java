@@ -78,9 +78,9 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
     public static Comparator getComp(String s){
         return COMPARATOR.get(s);
     }
-    public void addED(int i, EquationNode en) { // addD, but stops at a non EquationNode
+    public void addED(EquationNode en) { // addD, but stops at a non EquationNode
         assert en != null : "Cannot addDepth null Nodes!";
-        if(i <= 0 || size() <= 0){
+        if(size() <= 0){
             addE(en);
         } else {
             if(get(-1).get(-1) instanceof TokenNode){
@@ -92,22 +92,37 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
                 }
             }
             else
-                ((EquationNode)get(-1)).addED(i - 1, en);
+                ((EquationNode)get(-1)).addED(en);
         }
     }
 
-    public void addBD(int i, EquationNode en) { //addD, but stops @ a non-BOOLEAN EquationNode
+    public void addBD(EquationNode en) { //addD, but stops @ a non-BOOLEAN EquationNode
         assert en != null : "Cannot addDepth null Nodes!";
-        if(i <= 0 || size() <= 0)
+        if(size() <= 0)
             addE(en);
         else {
             assert get(-1) instanceof EquationNode;
             if(!((Comparator)get(-1).token()).isBool())
                 addE(en);
             else
-                ((EquationNode)get(-1)).addBD(i - 1, en);
+                ((EquationNode)get(-1)).addBD(en);
         }
     }
+    public void addCD(Node en) { //addD, but stops @ a non-BOOLEAN EquationNode
+        assert en != null : "Cannot addDepth null Nodes!";
+        if(size() <= 0)
+            addE(en);
+        else {
+            if(get(-1) instanceof TokenNode){
+                System.out.println("get(-1) is TokenNode:\n" + toFullString());
+                addE(en);
+                System.out.println("just addE en:\n" + toFullString());
+            }
+            else
+                ((EquationNode)get(-1)).addCD(en);
+        }
+    }
+
     // private Object[] condeseNodes(int pPos, ArrayList<Equation> pEquations) {
     //     assert pEquations != null;
     //     assert checkForNullEquations(pEquations);
