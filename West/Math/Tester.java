@@ -35,8 +35,7 @@ public class Tester {
             eqsys.add("x3 = (x + 8) * c");
             eqsys.add("x4 = (x + 4) * c");
             eqsys.add("c = 1/4");
-            eqsys.addConstraint("x > 4 || x < -2 || (x < 1 && x > -1)");
-            eqsys.addConstraint("y > -2");
+            eqsys.addConstraint("x < pi * e && y > -1");
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {
