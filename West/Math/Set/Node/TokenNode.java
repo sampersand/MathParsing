@@ -13,7 +13,7 @@ import java.util.HashMap;
  * TODO: JAVADOC
  * 
  * @author Sam Westerman
- * @version 0.82
+ * @version 0.85
  * @since 0.75
  */
 public class TokenNode extends Node<Token, TokenNode> implements MathObject {

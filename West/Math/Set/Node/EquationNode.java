@@ -2,6 +2,7 @@ package West.Math.Set.Node;
 import West.Math.Set.Collection;
 import java.util.ArrayList;
 import West.Math.Equation.Equation;
+import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Token;
 import West.Math.Exception.NotDefinedException;
 import java.util.HashMap;
@@ -11,12 +12,12 @@ import java.lang.Comparable;
  * TODO: JAVADOC
  * 
  * @author Sam Westerman
- * @version 0.82
+ * @version 0.85
  * @since 0.75
  */
 public class EquationNode extends Node<EquationNode.Comparator, EquationNode> implements MathObject{
-    interface TokenObj{
-        public <C extends Comparable<C>> boolean checkBounds(C val1, C val2);
+    private interface TokenObj {
+        public boolean checkBounds(Double val1, Double val2);
     }
     public static class Comparator{
         public final String SYMBOL;
@@ -38,36 +39,39 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
 
     public static final HashMap<String, Comparator> COMPARATOR = new HashMap<String, Comparator>()
     {{
-       put("<=", null);//new Comparator("<=", (obj1, obj2) -> null));
-       put(">=", null);//new Comparator(">=", (obj1, obj2) -> null));
-       put("!=", null);//new Comparator("!=", (obj1, obj2) -> null));
-       put("<",  null);//new Comparator("<",  (obj1, obj2) -> null));
-       put(">",  null);//new Comparator(">",  (obj1, obj2) -> null));
-       put("=",  null);//new Comparator("=",  (obj1, obj2) -> null));
-       put("≠",  null);//new Comparator("≠",  (obj1, obj2) -> null));
-       put("≥",  null);//new Comparator("≥",  (obj1, obj2) -> null));
-       put("≤",  null);//new Comparator("≤",  (obj1, obj2) -> null));
+       put("<=", new Comparator("<=", (d1, d2) -> d1 <= d2));
+       put(">=", new Comparator(">=", (d1, d2) -> d1 >= d2));
+       put("!=", new Comparator("!=", (d1, d2) -> d1 != d2));
+       put("<",  new Comparator("<",  (d1, d2) -> d1 < d2));
+       put(">",  new Comparator(">",  (d1, d2) -> d1 > d2));
+       put("=",  new Comparator("=",  (d1, d2) -> d1 == d2));
+       put("≣",  new Comparator("≣",  (d1, d2) -> d1 == d2)); //from here down are backups
+       put("≠",  new Comparator("≠",  (d1, d2) -> d1 != d2));
+       put("≥",  new Comparator("≥",  (d1, d2) -> d1 >= d2));
+       put("≤",  new Comparator("≤",  (d1, d2) -> d1 <= d2));
        // put(null, null);
    }};
 
     public static final HashMap<String, Comparator> BOOLEANS = new HashMap<String, Comparator>()
     {{
-      put("||", null);//new Comparator("||", (obj1, obj2) -> null));
-      put("&&", null);//new Comparator("&&", (obj1, obj2) -> null));
-      put("^^", null);//new Comparator("^^", (obj1, obj2) -> null));
-      put("", null);//new Comparator("", (obj1, obj2) -> null));
+      put("||", new Comparator("||", (d1, d2) -> d1.equals(1D) || d2.equals(1D)));
+      put("&&", new Comparator("&&", (d1, d2) -> d1.equals(1D) && d2.equals(1D)));
+      put("^^", new Comparator("^^", (d1, d2) -> d1.equals(1D) ^  d2.equals(1D)));
+      put("", new Comparator("", (d1, d2) -> true)); //this one should just say go on to the next one
     }};
 
     public EquationNode(){
         super();
+        setToken(BOOLEANS.get(""));
     }
 
     public EquationNode(Node pCollection) {
         super();
         elements.add(pCollection);
+        setToken(BOOLEANS.get(""));
     }
-    public EquationNode(Comparator pEquation) {
-        token = pEquation;
+    public EquationNode(Comparator pComp) {
+        setToken(pComp);
     }
 
 
@@ -88,9 +92,25 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
     //         default:
     //             assert false; //shouldnt ever happen
     //     }
-        // if(token.isBool())
-            // return token.TOKENOBJ.isInBounds(val1, val2);
-        return false;
+        if(token.SYMBOL.isEmpty()){
+            assert size() == 1 : toFancyString();
+            return ((EquationNode)get(0)).isInBounds(vars, toEval);
+        }
+        assert size() == 2;
+        assert token.isBool() || token.isComp();
+        Double d1, d2;
+        if(token.isBool()){
+            d1 = ((EquationNode)get(0)).isInBounds(vars, toEval) ? 1D : 0D;
+            d2 = ((EquationNode)get(1)).isInBounds(vars, toEval) ? 1D : 0D;
+        } else { 
+            d1 = ((TokenNode)get(0)).evalForDouble(EquationSystem.fromHashMap(vars));
+            d2 = ((TokenNode)get(1)).evalForDouble(EquationSystem.fromHashMap(vars));
+        }
+        System.out.println(this.toFancyString());
+        System.out.println("d1:"+d1);
+        System.out.println("d2:"+d2);
+        System.out.println("TO:"+token.TOKENOBJ.checkBounds(d1, d2));
+        return token.TOKENOBJ.checkBounds(d1, d2);
     }
 
     public static Comparator getBool(String s){
@@ -124,6 +144,7 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
             addE(en);
         else {
             assert get(-1) instanceof EquationNode;
+            System.out.println(get(-1).toFancyString());
             if(!((Comparator)get(-1).token()).isBool())
                 addE(en);
             else

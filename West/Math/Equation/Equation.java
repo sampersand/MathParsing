@@ -22,7 +22,7 @@ import West.Math.Set.Collection;
  * each other.
  * 
  * @author Sam Westerman
- * @version 0.82
+ * @version 0.85
  * @since 0.1
  */
 public class Equation implements MathObject {
@@ -64,7 +64,8 @@ public class Equation implements MathObject {
 
     public Equation add(String pStr){
         Collection<Token> tokens = parseTokens(pStr);
-        subEquations.add(segmentTokens(tokens));
+        EquationNode eqn = segmentTokens(tokens);
+        subEquations.add(eqn);
         return this;
     }
 
@@ -84,7 +85,6 @@ public class Equation implements MathObject {
         EquationNode eqnod = new EquationNode(EquationNode.getBool(""));
         Collection<Token> prev = new Collection<Token>();
         for(Token t : tokens){
-                System.out.println(eqnod.toFancyString()+"|"+prev);
             if(isBool(t.val()) != null){
                 eqnod.addCD(TokenNode.generateMasterNode(prev));
                 eqnod.addED(new EquationNode(EquationNode.getBool(t.val())));
@@ -99,6 +99,7 @@ public class Equation implements MathObject {
         }
         if(prev.size() != 0)
             eqnod.addCD(TokenNode.generateMasterNode(prev));
+    System.out.println(eqnod.toFancyString());
         return eqnod;
 
     }

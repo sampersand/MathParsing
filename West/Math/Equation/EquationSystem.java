@@ -17,7 +17,7 @@ import West.Math.Set.Node.TokenNode;
  * {@link CustomFunction}s (and the corresponding classes for them).
  * 
  * @author Sam Westerman
- * @version 0.82
+ * @version 0.85
  * @since 0.1
  */
 public class EquationSystem implements MathObject, Iterable {
@@ -68,6 +68,12 @@ public class EquationSystem implements MathObject, Iterable {
         constraints = pConstraints;
     }
 
+    public static <K,V> EquationSystem fromHashMap(HashMap<K, V> hm){
+        EquationSystem ret = new EquationSystem();
+        for(K k : hm.keySet())
+            ret.add(k + " = " + hm.get(k));
+        return ret;
+    }
     /**
      * Adds <code>pEqSys</code>'s {@link #equations()} to this class's {@link #equations}. Used as a constructor
      * builder.

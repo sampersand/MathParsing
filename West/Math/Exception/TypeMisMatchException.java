@@ -5,7 +5,7 @@ package West.Math.Exception;
  * Type Mismatch. Yes, Type "MisMatch" Exception is a bit of a misnomer, because mismatch is one word.
  * 
  * @author Sam Westerman
- * @version 0.82
+ * @version 0.85
  * @since 0.1
  */
 public class TypeMisMatchException extends MathException {

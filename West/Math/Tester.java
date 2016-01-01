@@ -9,7 +9,7 @@ import West.Math.Set.*;
 /**
  * A tester class for the whole equation
  * @author Sam Westerman
- * @version 0.82
+ * @version 0.85
  * @since 0.1
  */
 public class Tester {
@@ -22,14 +22,13 @@ public class Tester {
     public static void main(String[] args) throws NotDefinedException {
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
-            // eqsys.add("y = 1 + sin(alpha) + c");
-            // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
-            // eqsys.add("c = pi - e");
-            // eqsys.add("theta = ln(pi) - c ^ x ");
-            // eqsys.add("x = pi - e");
+            eqsys.add("y = 1 + sin(alpha) + c");
+            eqsys.add("alpha = (9.45 + x ^ theta) / 2");
+            eqsys.add("c = pi - e");
+            eqsys.add("theta = ln(pi) - c ^ x ");
+            eqsys.add("x = pi - e");
 
-            // eqsys.add("x = 0.5");
-            eqsys.addConstraint("x > 1 || x < 0");
+            eqsys.addConstraint("x ≣ pi - e");
             // eqsys.addConstraint("x^4 > (3 * 4)^2 && x < 5");
 
             // eqsys.add("y = x0 * x1 * x2 * x3 * x4");
