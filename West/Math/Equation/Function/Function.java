@@ -35,22 +35,40 @@ public abstract class Function implements MathObject {
      */
     protected String syntax;
 
+    protected int priority;
+
     protected Collection<Integer> argsLength;
+
     protected FuncObj funcObj;
+
+
+    public static final HashMap<String, Function> UNARY_LEFT = new HashMap<String, Function>()
+    {{
+        // put("+", null);
+        put("-", InBuiltFunction.FUNCTIONS.get("negate"));
+        put("~", null);
+    }};
+
+    public static final HashMap<String, Function> UNARY_RIGHT = new HashMap<String, Function>()
+    {{
+        put("!", InBuiltFunction.FUNCTIONS.get("fac"));
+    }};
+
+    public static final HashMap<String, Function> BINARY = new HashMap<String, Function>()
+    {{
+        put("+", InBuiltFunction.FUNCTIONS.get("+"));
+        put("-", InBuiltFunction.FUNCTIONS.get("-"));
+        put("*", InBuiltFunction.FUNCTIONS.get("*"));
+        put("/", InBuiltFunction.FUNCTIONS.get("/"));
+        put("^", InBuiltFunction.FUNCTIONS.get("^"));
+    }};
+
     /**
      * The default constructor for the Function class. Instatiates {@link #name}, {@link #help}, and {@link #syntax} as
      * empty strings.
      */
     public Function() {
-        this(null, new Collection.Builder<Integer>().add(0).build(), null);
-    }
-
-    /**
-     * Instantiates the Function with the name of <code>pName</code>, and <code>""</code> for help and syntax.
-     * @param pName         The name of this function.
-     */
-    public Function(String pName, Collection<Integer> pArgsLength, FuncObj pFuncObj) {
-        this(pName, "", "", pArgsLength, pFuncObj);
+        this(null, null, null, -1, null, null);
     }
     
     /**
@@ -64,6 +82,7 @@ public abstract class Function implements MathObject {
     public Function(String pName,
                     String pHelp,
                     String pSyntax,
+                    int pPriority,
                     Collection<Integer> pArgsLength,
                     FuncObj pFuncObj) throws IllegalArgumentException{
         assert pName != null;
@@ -74,6 +93,7 @@ public abstract class Function implements MathObject {
         name = pName;
         help = pHelp;
         syntax = pSyntax;
+        priority = pPriority;
         argsLength = pArgsLength;
         if(funcObj == null)
             funcObj = a -> null;
@@ -103,6 +123,9 @@ public abstract class Function implements MathObject {
         return syntax;
     }
 
+    public int priority() {
+        return priority;
+    }
     public Collection<Integer> argsLength() {
         return argsLength;
     }
@@ -123,12 +146,8 @@ public abstract class Function implements MathObject {
         Double[] retd = new Double[pNode.size()];
         HashMap<String, Double> rethm = new HashMap<String, Double>();
         for(int i = 0; i < pNode.size(); i++) {
-            System.out.println((TokenNode)pNode.elements().get(i));
-            HashMap<String, Double> evald = ((TokenNode)pNode.elements().get(i)).eval(pEqSys);
-            rethm.putAll(evald);
-            System.out.println("evald:"+evald);
-            System.out.println("pNode:"+pNode);
-            retd[i] = evald.get(pNode.elements().get(i).toString());
+            rethm.putAll(((TokenNode)pNode.elements().get(i)).eval(pEqSys));
+            retd[i] = rethm.get(pNode.elements().get(i).toString());
         }
         return new Object[]{retd, rethm};
     }

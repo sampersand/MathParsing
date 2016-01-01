@@ -19,101 +19,101 @@ public class InBuiltFunction extends Function {
      */
     public static HashMap<String, InBuiltFunction> FUNCTIONS = new HashMap<String, InBuiltFunction>() {{
         put("+", new InBuiltFunction("+", "Adds 'A' to 'B'", "+(A, B)",
-            new Collection.Builder<Integer>().add(2).build(),
+            -1, new Collection.Builder<Integer>().add(2).build(),
             a -> a[0] + a[1]));
         put("-", new InBuiltFunction("-", "Subtracts 'A' to 'B'", "-(A, B)",
-            new Collection.Builder<Integer>().add(2).build(),
+            -1, new Collection.Builder<Integer>().add(2).build(),
             a -> a[0] - a[1]));
         put("*", new InBuiltFunction("*", "Multiplies 'A' to 'B'", "*(A, B)",
-            new Collection.Builder<Integer>().add(2).build(),
+            -1, new Collection.Builder<Integer>().add(2).build(),
             a -> a[0] * a[1]));
         put("/", new InBuiltFunction("/", "Divides 'A' to 'B'", "/(A, B)",
-            new Collection.Builder<Integer>().add(2).build(),
+            -1, new Collection.Builder<Integer>().add(2).build(),
             a -> a[0] / a[1]));
         put("^", new InBuiltFunction("^", "Raises 'A' to 'B'", "^(A, B)",
-            new Collection.Builder<Integer>().add(2).build(),
+            -1, new Collection.Builder<Integer>().add(2).build(),
             a -> Math.pow(a[0],a[1])));
         put("sin", new InBuiltFunction("sin", "sin of 'A'", "sin(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("cos", new InBuiltFunction("cos", "cos of 'A'", "cos(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("tan", new InBuiltFunction("tan", "tan of 'A'", "tan(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("csc", new InBuiltFunction("csc", "csc of 'A'", "csc(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("sec", new InBuiltFunction("sec", "sec of 'A'", "sec(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("cot", new InBuiltFunction("cot", "cot of 'A'", "cot(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("sinh", new InBuiltFunction("sinh", "sinh of 'A'", "sinh(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("cosh", new InBuiltFunction("cosh", "cosh of 'A'", "cosh(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("tanh", new InBuiltFunction("tanh", "tanh of 'A'", "tanh(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("asin", new InBuiltFunction("asin", "asin of 'A'", "asin(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("acos", new InBuiltFunction("acos", "acos of 'A'", "acos(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("atan", new InBuiltFunction("atan", "atan of 'A'", "atan(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("abs", new InBuiltFunction("abs", "absolute value of 'A'", "abs(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("ceil", new InBuiltFunction("ceil", "closest integer greater than 'A'", "ceil(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("floor", new InBuiltFunction("floor", "closest integer less than 'A'", "floor(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("hypot", new InBuiltFunction("hypot", "hypotenuse of 'A' and 'B' ( √[A² + B²] )", "hypot(A, B)",
-            new Collection.Builder<Integer>().add(2).build(),
+            -1, new Collection.Builder<Integer>().add(2).build(),
             null));
         put("ln", new InBuiltFunction("ln", "natural log of 'A'", "ln(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("log", new InBuiltFunction("log", "log base 10 of 'A'", "log(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("round", new InBuiltFunction("round", "rounds 'A' to the nearest integer", "round(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("sqrt", new InBuiltFunction("sqrt", "the square root (√) of 'A'", "sqrt(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("degrees", new InBuiltFunction("degr", "turns 'A' into degrees (from radians)", "degrees(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("radians", new InBuiltFunction("radi", "turns 'A' into radians (from degrees)", "radians(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("ri", new InBuiltFunction("randi", "random integer from [0, 100], [0, 'A'], or ['A', 'B']", "ri(A, B)",
-            new Collection.Builder<Integer>().add(0).add(1).add(2).build(),
+            -1, new Collection.Builder<Integer>().add(0).add(1).add(2).build(),
             null));
         put("rd", new InBuiltFunction("randd", "random double from [0, 1), [0, 'A'), or ['A', 'B')", "rd(A, B)",
-            new Collection.Builder<Integer>().add(0).add(1).add(2).build(),
+            -1, new Collection.Builder<Integer>().add(0).add(1).add(2).build(),
             null));
         put("fac", new InBuiltFunction("fac", "factorial of 'A'", "fac(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("neg", new InBuiltFunction("negate", "'A' * -1", "neg(A)",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             null));
         put("graph", new GraphFunction());
         put("", new InBuiltFunction("","","",
-            new Collection.Builder<Integer>().add(1).build(),
+            -1, new Collection.Builder<Integer>().add(1).build(),
             a -> a[0]));
     }};
 
@@ -143,9 +143,10 @@ public class InBuiltFunction extends Function {
                            // String pInverse,
                            String pHelp,
                            String pSyntax,
+                           int priority,
                            Collection<Integer> pArgsLength,
                            FuncObj pFuncObj){
-        super(pName, pHelp, pSyntax, pArgsLength, pFuncObj);
+        super(pName, pHelp, pSyntax, priority, pArgsLength, pFuncObj);
         // inverse = pInverse;
     }
 
@@ -160,11 +161,7 @@ public class InBuiltFunction extends Function {
      * @throws NotDefinedException    Thrown when the function is defined, but how to execute it isn't.
      * @throws IllegalArgumentException   Thrown when the function required parameters, and the ones passed aren't right.
      */
-    public static HashMap<String, Double> exec(String pName,
-                                               final EquationSystem pEqSys,
-                                               TokenNode pNode) throws
-                                                   NotDefinedException,
-                                                   IllegalArgumentException {
+    public static HashMap<String, Double> exec(String pName, final EquationSystem pEqSys, TokenNode pNode) {
         if(FUNCTIONS.get(pName) == null)
             throw new NotDefinedException("Cannot execute the InBuiltFunction '" + pName +"' because it isn't defined "+
                     "in FUNCTIONS.");
@@ -300,7 +297,7 @@ public class InBuiltFunction extends Function {
 
     @Override
     public InBuiltFunction copy(){
-        return new InBuiltFunction(name, help, syntax, argsLength, funcObj);
+        return new InBuiltFunction(name, help, syntax, priority, argsLength, funcObj);
     }
 
 }

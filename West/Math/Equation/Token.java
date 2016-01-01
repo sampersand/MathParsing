@@ -3,7 +3,6 @@ package West.Math.Equation;
 import West.Math.MathObject;
 import static West.Math.Declare.*;
 import West.Math.Exception.NotDefinedException;
-import West.Math.Equation.Function.OperationFunction;
 import West.Math.Set.Collection;
 
 /**
@@ -82,14 +81,6 @@ public class Token implements MathObject {
         return type == Type.OPER;
     }
 
-    public int priority() {
-        assert val != null : "val cannot be null! It was declared in the constructor, and has no way to be changed!";
-        if(OperationFunction.OPERATOR.fromString(val) != null){
-            assert isOper();
-            return OperationFunction.OPERATOR.fromString(val).priority();
-        }
-        return -1;
-    }
     @Override
     public String toString() {
         return "["+val+":"+type.toString().substring(0,3)+"]";

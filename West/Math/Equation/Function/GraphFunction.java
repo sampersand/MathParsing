@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class GraphFunction extends InBuiltFunction{
     public GraphFunction(){
         super("graph", "graph the arguments", "graph(A, B, ... )", 
-              new Collection.Builder<Integer>().add(-1).build(),
+              -1, new Collection.Builder<Integer>().add(-1).build(),
               null);
     }
     protected EquationSystem equationsToGraph;

@@ -1,7 +1,7 @@
 package West.Math.Equation;
 
 import West.Math.MathObject;
-import West.Math.Equation.Function.CustomFunction;
+import West.Math.Equation.Function.Function;
 
 import West.Math.Set.Node.EquationNode;
 import West.Math.Set.Node.TokenNode;
@@ -12,9 +12,6 @@ import West.Math.Exception.NotDefinedException;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
-import West.Math.Equation.Function.OperationFunction;
-
-import java.util.HashMap;
 import West.Math.Set.Collection;
 
 /**
@@ -31,9 +28,9 @@ public class Equation implements MathObject {
     protected EquationNode subEquations;
     public static final HashMap<String, Object> CCHARS = new HashMap<String, Object>()
     {{
-        put("op_un_l", OperationFunction.UNARY_LEFT);
-        put("op_un_r", OperationFunction.UNARY_RIGHT);
-        put("op_bi", OperationFunction.BINARY);
+        put("op_un_l", Function.UNARY_LEFT);
+        put("op_un_r", Function.UNARY_RIGHT);
+        put("op_bi", Function.BINARY);
         put("comp", EquationNode.COMPARATOR);
         put("bool", EquationNode.BOOLEANS);
         put("paren_l", Token.PAREN_L);

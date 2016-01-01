@@ -46,7 +46,7 @@ public class CustomFunction extends Function implements MathObject {
      * @throws IllegalArgumentException When either name, help, and / or syntax is null.
      */
     public CustomFunction(String pName) throws IllegalArgumentException{
-        super(pName, new Collection.Builder<Integer>().add(0).build(), null);
+        super(pName, null, null, -1, new Collection.Builder<Integer>().add(0).build(), null);
     }
 
     /**
@@ -59,9 +59,10 @@ public class CustomFunction extends Function implements MathObject {
     public CustomFunction(String pName,
                           String pHelp,
                           String pSyntax,
+                          int pPriroity,
                           Collection<Integer> pArgsLength,
                           FuncObj pFuncObj) throws IllegalArgumentException{
-        super(pName, pHelp, pSyntax, pArgsLength, pFuncObj);
+        super(pName, pHelp, pSyntax, pPriroity, pArgsLength, pFuncObj);
         try {
             if(pName.isEmpty()) {
                 Print.printe("Instantiating a CustomFunction without a function associated!");
@@ -191,7 +192,7 @@ public class CustomFunction extends Function implements MathObject {
     }
     @Override
     public CustomFunction copy(){
-        return new CustomFunction(name, help, syntax, argsLength, funcObj);
+        return new CustomFunction(name, help, syntax, priority, argsLength, funcObj);
     }
 
 }

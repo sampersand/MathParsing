@@ -1,4 +1,3 @@
-    
 package West.Math.Set.Node;
 import West.Math.Set.Collection;
 import java.util.ArrayList;
@@ -84,7 +83,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                         n.add(nD);
                         e.setD(depth - 1, -1, n); //depth is a final node.
                         break;
-                    } else if(n.token.priority() < nD.token.priority()) {
+                    } else if(InBuiltFunction.FUNCTIONS.get(n.token().val()).priority() < 
+                              InBuiltFunction.FUNCTIONS.get(n.token().val()).priority()){
                         n.add(nD);
                         n.add(((TokenNode)node.get(i + 1)).completeNodes());
                         i++;
@@ -257,7 +257,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                             pVars = appendHashMap(pVars,
                                                  ((TokenNode)eq.subEquations().getCSD().get(1)).eval(pVars, pEqSys));
                             appendHashMap(pVars, val, pVars.get(eq.subEquations().getCSD().get(1).toString()));
-                            System.out.println(val+":"+pVars);
                             return pVars;
                         }
                     }
