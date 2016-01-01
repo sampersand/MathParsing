@@ -119,7 +119,7 @@ public abstract class Function implements MathObject {
      * @throws NotDefinedException    Thrown when the function is defined, but how to execute it isn't.
      * @throws IllegalArgumentException   Thrown when the function required parameters, and the ones passed aren't right.
      */
-    public abstract double exec(final EquationSystem pEqSys,
+    public abstract Object[] exec(final EquationSystem pEqSys,
                                 TokenNode pNode) throws
                                     NotDefinedException,
                                     IllegalArgumentException;

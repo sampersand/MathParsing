@@ -132,7 +132,7 @@ public class CustomFunction extends Function implements MathObject {
      */
     @Override
     @SuppressWarnings("unchecked") //stupid cl.getDeclaredMethod
-    public double exec(final EquationSystem pEqSys,
+    public Object[] exec(final EquationSystem pEqSys,
                        TokenNode pNode) throws
                            NotDefinedException,
                            IllegalArgumentException {
@@ -140,7 +140,7 @@ public class CustomFunction extends Function implements MathObject {
             Class[] argType = {EquationSystem.class, TokenNode.class};
             Method execMethod = cl.getDeclaredMethod("exec",argType);
             Object[] argListForInvokedExec = new Object[]{pEqSys, pNode};
-            return (double)execMethod.invoke(cl.newInstance(), argListForInvokedExec);
+            return (Object[])execMethod.invoke(cl.newInstance(), argListForInvokedExec);
         } catch (NoSuchMethodException err) {
             Print.printe("A NoSuchMethodException happened when attempting to execute a " +
                                "custom method in file '" + name + "'. ERROR: " + err + " | MESSAGE:  " +
@@ -161,7 +161,8 @@ public class CustomFunction extends Function implements MathObject {
                                "custom method in file '" + name + "'. ERROR: " + err + " | MESSAGE:  " +
                                 err.getMessage() + " | CAUSE: " + err.getCause() + " | CAUSE'S STACKTRACE:\n");
             err.getCause().printStackTrace();
-        } return 0;
+        }
+        return new Object[]{null, null};
     }
     @Override
     public String toString() {

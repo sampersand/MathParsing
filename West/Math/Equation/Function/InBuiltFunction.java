@@ -104,7 +104,7 @@ public class InBuiltFunction extends Function {
     }
 
     @Override
-    public double exec(final EquationSystem pEqSys,
+    public Object[] exec(final EquationSystem pEqSys,
                        TokenNode pNode) throws
                            NotDefinedException,
                            IllegalArgumentException {
