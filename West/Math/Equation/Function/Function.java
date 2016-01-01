@@ -12,7 +12,7 @@ import java.util.HashMap;
  * For example, in <code>f(x)</code>, this class would represent f.
  * 
  * @author Sam Westerman
- * @version 0.85
+ * @version 0.87
  * @since 0.1
  */
 public abstract class Function implements MathObject {
@@ -104,14 +104,12 @@ public abstract class Function implements MathObject {
         double[] retd = new double[pNode.size()];
         HashMap<String, Double> rethm = new HashMap<String, Double>();
         for(int i = 0; i < pNode.size(); i++) {
-            rethm.putAll(((TokenNode)pNode.elements().get(i)).eval(pEqSys));
-            if(rethm.containsKey("**TEMP**"))
-                retd[i] = rethm.get("**TEMP**");
-            else{
-                System.out.println("@ " + ((TokenNode)pNode.elements().get(i)).token().val() + " \n"+((TokenNode)pNode.elements().get(i)).toFullString());
-                System.out.println(rethm);
-                retd[i] = rethm.get(((TokenNode)pNode.elements().get(i)).token().val());
-            }
+            HashMap<String, Double> evald = ((TokenNode)pNode.elements().get(i)).eval(pEqSys);
+            rethm.putAll(evald);
+            if(evald.containsKey("**TEMP**")) //used for when passing results to equations.
+                retd[i] = evald.get("**TEMP**");
+            else
+                retd[i] = evald.get(((TokenNode)pNode.elements().get(i)).token().val());
         }
         return new Object[]{retd, rethm};
 

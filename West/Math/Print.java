@@ -4,7 +4,7 @@ package West.Math;
  * A class that handles all printing to the console done by the West.Math.package.
  * 
  * @author Sam Westerman
- * @version 0.85
+ * @version 0.87
  * @since 0.1
  */
 public class Print {

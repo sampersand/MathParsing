@@ -12,7 +12,7 @@ import java.lang.Comparable;
  * TODO: JAVADOC
  * 
  * @author Sam Westerman
- * @version 0.85
+ * @version 0.87
  * @since 0.75
  */
 public class EquationNode extends Node<EquationNode.Comparator, EquationNode> implements MathObject{
@@ -60,6 +60,9 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
       put("||", new Comparator("||", (d1, d2) -> d1.equals(1D) || d2.equals(1D)));
       put("&&", new Comparator("&&", (d1, d2) -> d1.equals(1D) && d2.equals(1D)));
       put("^^", new Comparator("^^", (d1, d2) -> d1.equals(1D) ^  d2.equals(1D)));
+      put("∨", new Comparator("∨", (d1, d2) -> d1.equals(1D) ||  d2.equals(1D))); //backup, OR
+      put("∧", new Comparator("∧", (d1, d2) -> d1.equals(1D) &&  d2.equals(1D))); //backup, AND
+      put("⊻", new Comparator("⊻", (d1, d2) -> d1.equals(1D) ^  d2.equals(1D))); //backup, XOR
       put("", new Comparator("", (d1, d2) -> true)); //this one should just say go on to the next one
     }};
 
@@ -85,15 +88,17 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
         }
         assert size() == 2;
         assert token.isBool() || token.isComp();
-        Double d1, d2;
+        Double d0, d1;
         if(token.isBool()){
-            d1 = ((EquationNode)get(0)).isInBounds(vars, toEval) ? 1D : 0D;
-            d2 = ((EquationNode)get(1)).isInBounds(vars, toEval) ? 1D : 0D;
+            d0 = ((EquationNode)get(0)).isInBounds(vars, toEval) ? 1D : 0D;
+            d1 = ((EquationNode)get(1)).isInBounds(vars, toEval) ? 1D : 0D;
         } else { 
-            d1 = ((TokenNode)get(0)).evalDouble(EquationSystem.fromHashMap(vars));
-            d2 = ((TokenNode)get(1)).evalDouble(EquationSystem.fromHashMap(vars));
+            d0 = ((TokenNode)getCSD().get(0)).eval((EquationSystem.fromHashMap(vars))).get("**TEMP**"); 
+            d1 = ((TokenNode)getCSD().get(1)).eval((EquationSystem.fromHashMap(vars))).get("**TEMP**"); 
+            //its **TEMP** because every one TokenNode
+            //list starts with an empty function.
         }
-        return token.TOKENOBJ.checkBounds(d1, d2);
+        return token.TOKENOBJ.checkBounds(d0, d1);
     }
 
     public static Comparator getBool(String s){

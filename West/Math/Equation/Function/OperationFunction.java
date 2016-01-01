@@ -15,7 +15,7 @@ import West.Math.Set.Collection;
  * A class that represents an operation in mathametics. It acts very similar to an {@link InBuiltFunction}.
  * 
  * @author Sam Westerman
- * @version 0.85
+ * @version 0.87
  * @since 0.1
   * @see <a href="https://en.wikipedia.org/wiki/Operation_(mathematics)">Operation</a>
  */
@@ -130,7 +130,6 @@ public class OperationFunction extends InBuiltFunction {
                 ret *= args[1];
                 break;
             case "/":
-                // assert false : args[0] + " / " + args[1];
                 ret /= args[1];
                 break;
             case "^": // not sure this works
@@ -139,8 +138,6 @@ public class OperationFunction extends InBuiltFunction {
             default:
                 Print.printw("No known way to evaluate '" + this + "'");
         }
-        // System.out.println(args[0] + " " + pNode.token().val() + " " + args[1]);
-        // assert false : rethm;
         rethm.put("**TEMP**", ret);
         return rethm;
     }

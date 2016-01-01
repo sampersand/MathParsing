@@ -256,8 +256,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                             pVars = appendHashMap(pVars,
                                                  ((TokenNode)eq.subEquations().getCSD().get(1)).eval(pVars, pEqSys));
                             appendHashMap(pVars, val, pVars.get("**TEMP**"));
-                            System.out.println("pVars:" + pVars);
-                            pVars.remove("**TEMP**");
+                            pVars.remove("**TEMP**"); //remove this temp thing
                             return pVars;
                         }
                     }
