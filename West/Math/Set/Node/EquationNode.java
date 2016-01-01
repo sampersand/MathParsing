@@ -16,7 +16,7 @@ import java.lang.Comparable;
  */
 public class EquationNode extends Node<EquationNode.Comparator, EquationNode> implements MathObject{
     interface TokenObj{
-        public <C extends Comparable<C>> boolean isInBounds(C val1, C val2);
+        public <C extends Comparable<C>> boolean checkBounds(C val1, C val2);
     }
     public static class Comparator{
         public final String SYMBOL;
@@ -38,24 +38,24 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
 
     public static final HashMap<String, Comparator> COMPARATOR = new HashMap<String, Comparator>()
     {{
-       put("<=", new Comparator("<=", (obj1, obj2) -> null));
-       put(">=", new Comparator(">=", (obj1, obj2) -> null));
-       put("!=", new Comparator("!=", (obj1, obj2) -> null));
-       put("<",  new Comparator("<",  (obj1, obj2) -> null));
-       put(">",  new Comparator(">",  (obj1, obj2) -> null));
-       put("=",  new Comparator("=",  (obj1, obj2) -> null));
-       put("≠",  new Comparator("≠",  (obj1, obj2) -> null));
-       put("≥",  new Comparator("≥",  (obj1, obj2) -> null));
-       put("≤",  new Comparator("≤",  (obj1, obj2) -> null));
+       put("<=", null);//new Comparator("<=", (obj1, obj2) -> null));
+       put(">=", null);//new Comparator(">=", (obj1, obj2) -> null));
+       put("!=", null);//new Comparator("!=", (obj1, obj2) -> null));
+       put("<",  null);//new Comparator("<",  (obj1, obj2) -> null));
+       put(">",  null);//new Comparator(">",  (obj1, obj2) -> null));
+       put("=",  null);//new Comparator("=",  (obj1, obj2) -> null));
+       put("≠",  null);//new Comparator("≠",  (obj1, obj2) -> null));
+       put("≥",  null);//new Comparator("≥",  (obj1, obj2) -> null));
+       put("≤",  null);//new Comparator("≤",  (obj1, obj2) -> null));
        // put(null, null);
    }};
 
     public static final HashMap<String, Comparator> BOOLEANS = new HashMap<String, Comparator>()
     {{
-      put("||", new Comparator("||", (obj1, obj2) -> null));
-      put("&&", new Comparator("&&", (obj1, obj2) -> null));
-      put("^^", new Comparator("^^", (obj1, obj2) -> null));
-      put("", new Comparator("", (obj1, obj2) -> null));
+      put("||", null);//new Comparator("||", (obj1, obj2) -> null));
+      put("&&", null);//new Comparator("&&", (obj1, obj2) -> null));
+      put("^^", null);//new Comparator("^^", (obj1, obj2) -> null));
+      put("", null);//new Comparator("", (obj1, obj2) -> null));
     }};
 
     public EquationNode(){
@@ -71,7 +71,7 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
     }
 
 
-    public <C extends Comparable<C>> boolean isInBounds(Token pT, double pD){ //<T extends Comparable<T>>
+    public <C extends Comparable<C>> boolean isInBounds(HashMap<String, Double> vars, String toEval){
     //     switch((String)token){
     //         case "<": return val1 < val2;
     //         case ">": return val1 > val2;
@@ -88,8 +88,9 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
     //         default:
     //             assert false; //shouldnt ever happen
     //     }
-        if()
-        return token.TOKENOBJ.isInBounds(val1, val2);
+        // if(token.isBool())
+            // return token.TOKENOBJ.isInBounds(val1, val2);
+        return false;
     }
 
     public static Comparator getBool(String s){

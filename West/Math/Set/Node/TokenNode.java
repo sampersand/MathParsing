@@ -8,6 +8,7 @@ import West.Math.MathObject;
 import West.Math.Equation.Equation;
 import West.Math.Exception.NotDefinedException;
 import static West.Math.Equation.Token.Type.*;
+import java.util.HashMap;
 /**
  * TODO: JAVADOC
  * 
@@ -213,11 +214,15 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public String toFullString(){
         return super.toFullString().replaceFirst("Node", "TokenNode");
     }
+
+    public HashMap<String, Double> eval(final EquationSystem pEqSys){
+        return eval(new HashMap<String, Double>(), pEqSys);
+    }
     /**
      * TODO: JAVADOC
      * returns Double.NaN if the result isnt in bounds
      */
-    public Double eval(final EquationSystem pEqSys){
+    public HashMap<String, Double> eval(HashMap<String, Double> pVars, final EquationSystem pEqSys){
         assert token != null;
         assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
         if(token.type() == FUNC || token.type() == OPER)
@@ -239,7 +244,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     for(Equation eq : pEqSys.equations())
                         if(((TokenNode)eq.subEquations().getSD(eq.subEquations().depthS())).token.val().equals(val)){
                             d = ((TokenNode)eq.subEquations().getCSD().get(1)).eval(pEqSys);
-                            return pEqSys.isInBounds(token, d) ? d : Double.NaN;
+                            return pEqSys.checkBounds(token, d) ? d : Double.NaN;
                         }
                 switch(val) {
                     case "e":

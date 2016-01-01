@@ -297,7 +297,8 @@ public class EquationSystem implements MathObject, Iterable {
         isolate(toEval);
         assert isolated();
         EquationNode n = equations().get(0).subEquations();
-        return ((West.Math.Set.Node.TokenNode)n.getCSD().get(0)).eval(copy());
+        HashMap<String, Double> evald = ((TokenNode)n.getCSD().get(0)).eval(copy());
+        return checkBounds(evald, toEval);
 
     }
 
@@ -369,15 +370,14 @@ public class EquationSystem implements MathObject, Iterable {
     public int size() {
         return equations.size();
     }
-    public boolean isInBounds(Token t, double pVal){
-        if(!varExist(t.val()) || pVal == Double.NaN || t == null)
-            return false;
-        if(constraints == null)
-            return true;
-        for(Equation eq : constraints.equations())
-            if(!((EquationNode)eq.subEquations().get(0)).isInBounds(t.val(), pVal))
-                return false;
-        return true;
+    public Double checkBounds(HashMap<String, Double> pVars, String toEval){
+        if(!pVars.containsKey(toEval))
+            return Double.NaN;
+        if(constraints != null)
+            for(Equation eq : constraints.equations())
+                if(!((EquationNode)eq.subEquations().get(0)).isInBounds(pVars, toEval))
+                    return Double.NaN;
+        return pVars.get(toEval);
     }
     @Override
     public String toString() {
