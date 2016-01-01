@@ -93,7 +93,7 @@ public class OperationFunction extends InBuiltFunction {
      * @throws IllegalArgumentException When either name, help, and / or syntax is null.
      */
     public OperationFunction() throws NotDefinedException{
-        this("", "", "");
+        super();
     }
 
     /**
@@ -105,42 +105,44 @@ public class OperationFunction extends InBuiltFunction {
      */
     public OperationFunction(String pOper,
                              String pHelp,
-                             String pSyntax) throws IllegalArgumentException{
-        super(pOper, pHelp, pSyntax);
+                             String pSyntax,
+                             Collection<Integer> pArgsLength,
+                             FuncObj pFuncObj) throws IllegalArgumentException{
+        super(pOper, pHelp, pSyntax, pArgsLength, pFuncObj);
     }
 
-    @Override
-    public HashMap<String, Double> exec(final EquationSystem pEqSys,
-                       TokenNode pNode) throws 
-                           NotDefinedException,
-                           IllegalArgumentException {
-        assert pNode.elements().size() == 2;
-        Object[] rargs = evalNode(pEqSys, pNode);
-        HashMap<String, Double> rethm = (HashMap<String, Double>)rargs[1];
-        double[] args = (double[])rargs[0];
-        Double ret = args[0];
-        switch(name) {
-            case "+":
-                ret += args[1];
-                break;
-            case "-":
-                ret -= args[1];
-                break;
-            case "*":
-                ret *= args[1];
-                break;
-            case "/":
-                ret /= args[1];
-                break;
-            case "^": // not sure this works
-                ret = Math.pow(ret, args[1]);
-                break;
-            default:
-                Print.printw("No known way to evaluate '" + this + "'");
-        }
-        rethm.put("**TEMP**", ret);
-        return rethm;
-    }
+    // @Override
+    // public HashMap<String, Double> exec(final EquationSystem pEqSys,
+    //                    TokenNode pNode) throws 
+    //                        NotDefinedException,
+    //                        IllegalArgumentException {
+    //     assert pNode.elements().size() == 2;
+    //     Object[] rargs = evalNode(pEqSys, pNode);
+    //     HashMap<String, Double> rethm = (HashMap<String, Double>)rargs[1];
+    //     double[] args = (double[])rargs[0];
+    //     Double ret = args[0];
+    //     switch(name) {
+    //         case "+":
+    //             ret += args[1];
+    //             break;
+    //         case "-":
+    //             ret -= args[1];
+    //             break;
+    //         case "*":
+    //             ret *= args[1];
+    //             break;
+    //         case "/":
+    //             ret /= args[1];
+    //             break;
+    //         case "^": // not sure this works
+    //             ret = Math.pow(ret, args[1]);
+    //             break;
+    //         default:
+    //             Print.printw("No known way to evaluate '" + this + "'");
+    //     }
+    //     rethm.put("**TEMP**", ret);
+    //     return rethm;
+    // }
 
     @Override
     public String toString() {
@@ -166,6 +168,6 @@ public class OperationFunction extends InBuiltFunction {
 
     @Override
     public OperationFunction copy(){
-        return new OperationFunction(name, help, syntax);
+        return new OperationFunction(name, help, syntax, argsLength, funcObj);
     }
 }

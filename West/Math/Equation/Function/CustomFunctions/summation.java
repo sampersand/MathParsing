@@ -26,20 +26,18 @@ public class summation extends CustomFunction{
      * @return The summation of the numbers defined by pNode.
      */
     @Override
-    public HashMap<String, Double> exec(EquationSystem pEqSys,
-                       TokenNode pNode) throws
-                           NotDefinedException,
-                           IllegalArgumentException {
-        Object[] rargs = evalNode(pEqSys, pNode);
-        double[] args = (double[])rargs[0];
-        HashMap<String, Double> rethm = (HashMap<String, Double>)rargs[1];
-        if(args.length == 0 || args.length > 3)
-            throw new IllegalArgumentException("ERROR when parsing summation. Syntax: " + syntax());
-        if(args.length == 1) { args = new double[]{0,args[0],1};}
-        if(args.length == 2) { args = new double[]{args[0],args[1],1};}
-        double ret = 0;
-        for(double x = args[0]; x <= args[1]; x+= args[2]) ret += x; 
-        rethm.put(pNode.token().val(), ret);
-        return rethm;
+    public HashMap<String, Double> exec(EquationSystem pEqSys, TokenNode pNode) {
+        return null;
+        // Object[] rargs = evalNode(pEqSys, pNode);
+        // double[] args = (double[])rargs[0];
+        // HashMap<String, Double> rethm = (HashMap<String, Double>)rargs[1];
+        // if(args.length == 0 || args.length > 3)
+        //     throw new IllegalArgumentException("ERROR when parsing summation. Syntax: " + syntax());
+        // if(args.length == 1) { args = new double[]{0,args[0],1};}
+        // if(args.length == 2) { args = new double[]{args[0],args[1],1};}
+        // double ret = 0;
+        // for(double x = args[0]; x <= args[1]; x+= args[2]) ret += x; 
+        // rethm.put(pNode.token().val(), ret);
+        // return rethm;
     }
 }

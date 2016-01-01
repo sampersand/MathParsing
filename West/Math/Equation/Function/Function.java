@@ -3,6 +3,7 @@ package West.Math.Equation.Function;
 import West.Math.MathObject;
 import West.Math.Equation.EquationSystem;
 import West.Math.Set.Node.TokenNode;
+import West.Math.Set.Collection;
 import static West.Math.Declare.*;
 import West.Math.Exception.NotDefinedException;
 import java.util.HashMap;
@@ -16,7 +17,28 @@ import java.util.HashMap;
  * @since 0.1
  */
 public abstract class Function implements MathObject {
+    interface FuncObj{
+        public HashMap<String, Double> exec(double... args);
+        // public HashMap<String, Double> exec(final EquationSystem pEqSys, TokenNode pNode, int argsLength);
+        public default HashMap<String, Double> retArgs(Object hm, String key, Double val){
+            ((HashMap<String, Double>)hm).put(key, val);
+            return (HashMap<String, Double>)hm;
+        }
+        public default Object[] evalNode(final EquationSystem pEqSys, TokenNode pNode) {
+            double[] retd = new double[pNode.size()];
+            HashMap<String, Double> rethm = new HashMap<String, Double>();
+            for(int i = 0; i < pNode.size(); i++) {
+                HashMap<String, Double> evald = ((TokenNode)pNode.elements().get(i)).eval(pEqSys);
+                rethm.putAll(evald);
+                if(evald.containsKey("**TEMP**")) //used for when passing results to equations.
+                    retd[i] = evald.get("**TEMP**");
+                else
+                    retd[i] = evald.get(((TokenNode)pNode.elements().get(i)).token().val());
+            }
+            return new Object[]{retd, rethm};
+        }
 
+    }
     /**
      * A String that holds either the function name ({@link InBuiltFunction}) or the file name ({@link CustomFunction}).
      */
@@ -32,20 +54,22 @@ public abstract class Function implements MathObject {
      */
     protected String syntax;
 
+    protected Collection<Integer> argsLength;
+    protected FuncObj funcObj;
     /**
      * The default constructor for the Function class. Instatiates {@link #name}, {@link #help}, and {@link #syntax} as
      * empty strings.
      */
     public Function() {
-        this("");
+        this(null, new Collection.Builder<Integer>().add(0).build(), null);
     }
 
     /**
      * Instantiates the Function with the name of <code>pName</code>, and <code>""</code> for help and syntax.
      * @param pName         The name of this function.
      */
-    public Function(String pName) {
-        this(pName, "", "");
+    public Function(String pName, Collection<Integer> pArgsLength, FuncObj pFuncObj) {
+        this(pName, "", "", pArgsLength, pFuncObj);
     }
     
     /**
@@ -58,13 +82,20 @@ public abstract class Function implements MathObject {
      */
     public Function(String pName,
                     String pHelp,
-                    String pSyntax) throws IllegalArgumentException{
-        declP(pName != null, "Cannot instantiate a function with a null name! Try an empty name String instead.");
-        declP(pHelp != null, "Cannot instantiate a function with a null help! Try an empty help String instead.");
-        declP(pSyntax != null, "Cannot instantiate a function with a null syntax! Try an empty syntax String instead.");
+                    String pSyntax,
+                    Collection<Integer> pArgsLength,
+                    FuncObj pFuncObj) throws IllegalArgumentException{
+        assert pName != null;
+        assert pHelp != null;
+        assert pSyntax != null;
+        assert pArgsLength.size() >= 0;
+        funcObj = pFuncObj;
         name = pName;
         help = pHelp;
         syntax = pSyntax;
+        argsLength = pArgsLength;
+        if(funcObj == null)
+            funcObj = a -> null;
     }
 
     /**
@@ -91,6 +122,14 @@ public abstract class Function implements MathObject {
         return syntax;
     }
 
+    public Collection<Integer> argsLength() {
+        return argsLength;
+    }
+
+    public FuncObj funcObj() {
+        return funcObj;
+    }
+
     /**
      * This thing takes a {@link Node} (usually the node from {@link #exec(EquationSystem,Node) exec}), and returns an
      * array of the numerical values of each {@link Node#elements() subNode}.
@@ -99,21 +138,6 @@ public abstract class Function implements MathObject {
      * @return An array of doubles, with each position corresponding to the value of each Node of that position in 
      *         {@link Node#elements() pNode's elements()}.
      */
-    protected Object[] evalNode(final EquationSystem pEqSys,
-                                TokenNode pNode) {
-        double[] retd = new double[pNode.size()];
-        HashMap<String, Double> rethm = new HashMap<String, Double>();
-        for(int i = 0; i < pNode.size(); i++) {
-            HashMap<String, Double> evald = ((TokenNode)pNode.elements().get(i)).eval(pEqSys);
-            rethm.putAll(evald);
-            if(evald.containsKey("**TEMP**")) //used for when passing results to equations.
-                retd[i] = evald.get("**TEMP**");
-            else
-                retd[i] = evald.get(((TokenNode)pNode.elements().get(i)).token().val());
-        }
-        return new Object[]{retd, rethm};
-
-    }
 
     /**
      * Takes the parameter {@link Node} (and {@link EquationSystem}, performs whatever this function is defined to do,
@@ -125,10 +149,9 @@ public abstract class Function implements MathObject {
      * @throws NotDefinedException    Thrown when the function is defined, but how to execute it isn't.
      * @throws IllegalArgumentException   Thrown when the function required parameters, and the ones passed aren't right.
      */
-    public abstract HashMap<String,Double> exec(final EquationSystem pEqSys,
-                                TokenNode pNode) throws
-                                    NotDefinedException,
-                                    IllegalArgumentException;
+    public HashMap<String,Double> exec(final EquationSystem pEqSys, TokenNode pNode) {
+        return null;
+    }
 
     @Override
     public boolean equals(Object pObj){

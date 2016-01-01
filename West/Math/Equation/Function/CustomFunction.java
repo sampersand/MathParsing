@@ -7,6 +7,7 @@ import West.Math.Set.Node.TokenNode;
 import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Function.CustomFunctions.*;
 import West.Math.Exception.NotDefinedException;
+import West.Math.Set.Collection;
 
 import java.lang.reflect.*;
 import java.util.HashMap;
@@ -35,7 +36,7 @@ public class CustomFunction extends Function implements MathObject {
      * @throws IllegalArgumentException When either name, help, and / or syntax is null.
      */
     public CustomFunction() throws IllegalArgumentException{
-        this("");
+        super();
     }
 
     /**
@@ -45,7 +46,7 @@ public class CustomFunction extends Function implements MathObject {
      * @throws IllegalArgumentException When either name, help, and / or syntax is null.
      */
     public CustomFunction(String pName) throws IllegalArgumentException{
-        this(pName, "", "");
+        super(pName, new Collection.Builder<Integer>().add(0).build(), null);
     }
 
     /**
@@ -57,8 +58,10 @@ public class CustomFunction extends Function implements MathObject {
      */
     public CustomFunction(String pName,
                           String pHelp,
-                          String pSyntax) throws IllegalArgumentException{
-        super(pName, pHelp, pSyntax);
+                          String pSyntax,
+                          Collection<Integer> pArgsLength,
+                          FuncObj pFuncObj) throws IllegalArgumentException{
+        super(pName, pHelp, pSyntax, pArgsLength, pFuncObj);
         try {
             if(pName.isEmpty()) {
                 Print.printe("Instantiating a CustomFunction without a function associated!");
@@ -188,7 +191,7 @@ public class CustomFunction extends Function implements MathObject {
     }
     @Override
     public CustomFunction copy(){
-        return new CustomFunction(name, help, syntax);
+        return new CustomFunction(name, help, syntax, argsLength, funcObj);
     }
 
 }
