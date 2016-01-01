@@ -168,8 +168,10 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
   
     @Override
     public String toString(){
-        return "Equaiton"+super.toString();
+        String s;
+        return (s = toExprString()).substring(1, s.length() - 1);
     }
+    
     @Override
     public EquationNode copy(){
         return (EquationNode)new EquationNode(token).addAllN(elements);

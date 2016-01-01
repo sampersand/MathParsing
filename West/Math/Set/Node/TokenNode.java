@@ -164,10 +164,13 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public TokenNode getD(int i) {
         return (TokenNode)super.getD(i);
     }
+
     @Override
     public String toString(){
-        return "Token"+super.toString();
+        String s;
+        return (s = toExprString()).substring(1, s.length() - 1);
     }
+
     @Override
     public void addD(int i, Node pN) {
         assert pN != null : "Cannot addDepth null Nodes!";
@@ -279,52 +282,5 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public Double evalDouble(final EquationSystem pEqSys){
         return eval(new HashMap<String, Double>(), pEqSys).get(token.val());
     }
-    // public Object[] eval(HashMap<String, Double> pVars, final EquationSystem pEqSys){
-    //     assert token != null;
-    //     assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
-    //     Double ret = 0D;
-    //     if(token.type() == FUNC || token.type() == OPER)
-    //         if(token.val().isEmpty()){
-    //             Object[] temp = ((TokenNode)elements.get(0)).eval(pVars, pEqSys);
-    //             ret = (Double)temp[0];
-    //             pVars = appendHashMap(pVars, (HashMap<String, Double>)temp[1]);
-    //         }
-    //         else if(pEqSys.functions().get(token.val()) != null) // if it is a function
-    //             ret = pEqSys.functions().get(token.val()).exec(pEqSys, this);
-    //         else
-    //             ret = InBuiltFunction.exec(token.val(), pEqSys, this);
-    //     else if(isFinal()){
-    //         String val = token.val();
-    //         try{
-    //             ret = Double.parseDouble(val); 
-    //         } catch(NumberFormatException err){ 
-    //             if(pEqSys.varExist(val)){
-    //                 for(Equation eq : pEqSys.equations()){
-    //                     if(((TokenNode)eq.subEquations().getSD(eq.subEquations().depthS())).token.val().equals(val)){
-    //                         Object[] temp = ((TokenNode)eq.subEquations().getCSD().get(1)).eval(pVars, pEqSys);
-    //                         ret = (Double)temp[0];
-    //                         pVars = appendHashMap(pVars, (HashMap<String, Double>)temp[1]);
-    //                         pVars = appendHashMap(pVars, val, ret);
-    //                     }
-    //                 }
-    //             } else{
-    //                 switch(val) {
-    //                     case "e":
-    //                         ret = Math.E; break;
-    //                     case "pi":
-    //                         ret = Math.PI; break;
-    //                     case "rand": case "random":
-    //                         ret = Math.random(); break; // this might need work
-    //                     default:
-    //                         throw new NotDefinedException("Cannot evaluate the FinalNode '" + val +
-    //                                                       "' because it isn't defined as a variable," + 
-    //                                                       " and isn't an in-built variable.");
-    //                 }
-    //             }
-    //         }
-    //     } else 
-    //         throw new NotDefinedException("This shouldn't happen! There is no way to evaluate node: " + token.val());
-    //     return new Object[]{ret, pVars};
-    // }
 
 }

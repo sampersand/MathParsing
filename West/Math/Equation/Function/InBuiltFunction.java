@@ -114,7 +114,7 @@ public class InBuiltFunction extends Function {
         put("graph", new GraphFunction());
         put("", new InBuiltFunction("","","",
             new Collection.Builder<Integer>().add(1).build(),
-            a -> null));
+            a -> a[0]));
     }};
 
     ///** The name of the {@link #inverse()} of this funtion. The reason it's not an actual function is because of 

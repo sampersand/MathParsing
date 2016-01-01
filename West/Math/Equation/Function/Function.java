@@ -18,26 +18,7 @@ import java.util.HashMap;
  */
 public abstract class Function implements MathObject {
     interface FuncObj{
-        public HashMap<String, Double> exec(double... args);
-        // public HashMap<String, Double> exec(final EquationSystem pEqSys, TokenNode pNode, int argsLength);
-        public default HashMap<String, Double> retArgs(Object hm, String key, Double val){
-            ((HashMap<String, Double>)hm).put(key, val);
-            return (HashMap<String, Double>)hm;
-        }
-        public default Object[] evalNode(final EquationSystem pEqSys, TokenNode pNode) {
-            double[] retd = new double[pNode.size()];
-            HashMap<String, Double> rethm = new HashMap<String, Double>();
-            for(int i = 0; i < pNode.size(); i++) {
-                HashMap<String, Double> evald = ((TokenNode)pNode.elements().get(i)).eval(pEqSys);
-                rethm.putAll(evald);
-                if(evald.containsKey("**TEMP**")) //used for when passing results to equations.
-                    retd[i] = evald.get("**TEMP**");
-                else
-                    retd[i] = evald.get(((TokenNode)pNode.elements().get(i)).token().val());
-            }
-            return new Object[]{retd, rethm};
-        }
-
+        public Double exec(Double[] args);
     }
     /**
      * A String that holds either the function name ({@link InBuiltFunction}) or the file name ({@link CustomFunction}).
@@ -138,6 +119,20 @@ public abstract class Function implements MathObject {
      * @return An array of doubles, with each position corresponding to the value of each Node of that position in 
      *         {@link Node#elements() pNode's elements()}.
      */
+    public Object[] evalNode(final EquationSystem pEqSys, TokenNode pNode) {
+        Double[] retd = new Double[pNode.size()];
+        HashMap<String, Double> rethm = new HashMap<String, Double>();
+        for(int i = 0; i < pNode.size(); i++) {
+            HashMap<String, Double> evald = ((TokenNode)pNode.elements().get(i)).eval(pEqSys);
+            rethm.putAll(evald);
+            if(evald.containsKey("**TEMP**")) //used for when passing results to equations.
+                retd[i] = evald.get("**TEMP**");
+            else
+                retd[i] = evald.get(((TokenNode)pNode.elements().get(i)).token().val());
+        }
+        return new Object[]{retd, rethm};
+    }
+
 
     /**
      * Takes the parameter {@link Node} (and {@link EquationSystem}, performs whatever this function is defined to do,
@@ -150,7 +145,16 @@ public abstract class Function implements MathObject {
      * @throws IllegalArgumentException   Thrown when the function required parameters, and the ones passed aren't right.
      */
     public HashMap<String,Double> exec(final EquationSystem pEqSys, TokenNode pNode) {
-        return null;
+        Object[] rargs = evalNode(pEqSys, pNode);
+        Double[] args = (Double[])rargs[0];
+        assert argsLength.contains(args.length) || argsLength.contains(-1);
+        HashMap<String, Double> rethm = (HashMap<String, Double>)rargs[1];
+        return addArgs(rethm, pNode.toString(), funcObj.exec(args));
+    }
+
+    public HashMap<String, Double> addArgs(HashMap<String, Double> hm, String key, Double val){
+        hm.put(key, val);
+        return hm;
     }
 
     @Override
