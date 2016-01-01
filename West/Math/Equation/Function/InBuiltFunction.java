@@ -18,103 +18,193 @@ public class InBuiltFunction extends Function {
      * names.
      */
     public static HashMap<String, InBuiltFunction> FUNCTIONS = new HashMap<String, InBuiltFunction>() {{
-        put("+", new InBuiltFunction("+", "Adds 'A' to 'B'", "+(A, B)",
-            -1, new Collection.Builder<Integer>().add(2).build(),
-            a -> a[0] + a[1]));
-        put("-", new InBuiltFunction("-", "Subtracts 'A' to 'B'", "-(A, B)",
-            -1, new Collection.Builder<Integer>().add(2).build(),
-            a -> a[0] - a[1]));
-        put("*", new InBuiltFunction("*", "Multiplies 'A' to 'B'", "*(A, B)",
-            -1, new Collection.Builder<Integer>().add(2).build(),
-            a -> a[0] * a[1]));
-        put("/", new InBuiltFunction("/", "Divides 'A' to 'B'", "/(A, B)",
-            -1, new Collection.Builder<Integer>().add(2).build(),
-            a -> a[0] / a[1]));
-        put("^", new InBuiltFunction("^", "Raises 'A' to 'B'", "^(A, B)",
-            -1, new Collection.Builder<Integer>().add(2).build(),
-            a -> Math.pow(a[0],a[1])));
-        put("sin", new InBuiltFunction("sin", "sin of 'A'", "sin(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("cos", new InBuiltFunction("cos", "cos of 'A'", "cos(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("tan", new InBuiltFunction("tan", "tan of 'A'", "tan(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("csc", new InBuiltFunction("csc", "csc of 'A'", "csc(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("sec", new InBuiltFunction("sec", "sec of 'A'", "sec(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("cot", new InBuiltFunction("cot", "cot of 'A'", "cot(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("sinh", new InBuiltFunction("sinh", "sinh of 'A'", "sinh(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("cosh", new InBuiltFunction("cosh", "cosh of 'A'", "cosh(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("tanh", new InBuiltFunction("tanh", "tanh of 'A'", "tanh(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("asin", new InBuiltFunction("asin", "asin of 'A'", "asin(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("acos", new InBuiltFunction("acos", "acos of 'A'", "acos(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("atan", new InBuiltFunction("atan", "atan of 'A'", "atan(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("abs", new InBuiltFunction("abs", "absolute value of 'A'", "abs(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("ceil", new InBuiltFunction("ceil", "closest integer greater than 'A'", "ceil(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("floor", new InBuiltFunction("floor", "closest integer less than 'A'", "floor(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("hypot", new InBuiltFunction("hypot", "hypotenuse of 'A' and 'B' ( √[A² + B²] )", "hypot(A, B)",
-            -1, new Collection.Builder<Integer>().add(2).build(),
-            null));
-        put("ln", new InBuiltFunction("ln", "natural log of 'A'", "ln(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("log", new InBuiltFunction("log", "log base 10 of 'A'", "log(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("round", new InBuiltFunction("round", "rounds 'A' to the nearest integer", "round(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("sqrt", new InBuiltFunction("sqrt", "the square root (√) of 'A'", "sqrt(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("degrees", new InBuiltFunction("degr", "turns 'A' into degrees (from radians)", "degrees(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("radians", new InBuiltFunction("radi", "turns 'A' into radians (from degrees)", "radians(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("ri", new InBuiltFunction("randi", "random integer from [0, 100], [0, 'A'], or ['A', 'B']", "ri(A, B)",
-            -1, new Collection.Builder<Integer>().add(0).add(1).add(2).build(),
-            null));
-        put("rd", new InBuiltFunction("randd", "random double from [0, 1), [0, 'A'), or ['A', 'B')", "rd(A, B)",
-            -1, new Collection.Builder<Integer>().add(0).add(1).add(2).build(),
-            null));
-        put("fac", new InBuiltFunction("fac", "factorial of 'A'", "fac(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
-        put("neg", new InBuiltFunction("negate", "'A' * -1", "neg(A)",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            null));
+        put("+", new InBuiltFunction("+", "Adds 'A' to 'B'", "+(A, B)", 0, 
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> a[0] + a[1]
+            ));
+
+        put("-", new InBuiltFunction("-", "Subtracts 'A' to 'B'", "-(A, B)", 0,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> a[0] - a[1]
+            ));
+
+        put("*", new InBuiltFunction("*", "Multiplies 'A' to 'B'", "*(A, B)", 1,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> a[0] * a[1]
+            ));
+
+        put("/", new InBuiltFunction("/", "Divides 'A' to 'B'", "/(A, B)", 1,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> a[0] / a[1]
+            ));
+
+        put("^", new InBuiltFunction("^", "Raises 'A' to 'B'", "^(A, B)", 2,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> Math.pow(a[0],a[1])
+            ));
+
+        put("sin", new InBuiltFunction("sin", "sin of 'A'", "sin(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> Math.sin(a[0])
+            ));
+
+        put("cos", new InBuiltFunction("cos", "cos of 'A'", "cos(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> Math.cos(a[0])
+            ));
+
+        put("tan", new InBuiltFunction("tan", "tan of 'A'", "tan(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> Math.tan(a[0])
+            ));
+
+        put("csc", new InBuiltFunction("csc", "csc of 'A'", "csc(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> 1D / Math.sin(a[0])
+            ));
+
+        put("sec", new InBuiltFunction("sec", "sec of 'A'", "sec(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> 1D / Math.cos(a[0])
+            ));
+
+        put("cot", new InBuiltFunction("cot", "cot of 'A'", "cot(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> 1D / Math.tan(a[0])
+            ));
+
+        put("sinh", new InBuiltFunction("sinh", "sinh of 'A'", "sinh(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> Math.sinh(a[0])
+            ));
+
+        put("cosh", new InBuiltFunction("cosh", "cosh of 'A'", "cosh(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> Math.cosh(a[0])
+            ));
+
+        put("tanh", new InBuiltFunction("tanh", "tanh of 'A'", "tanh(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> Math.tanh(a[0])
+            ));
+
+        put("asin", new InBuiltFunction("asin", "asin of 'A'", "asin(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> Math.asin(a[0])
+            ));
+
+        put("acos", new InBuiltFunction("acos", "acos of 'A'", "acos(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> Math.acos(a[0])
+            ));
+
+        put("atan", new InBuiltFunction("atan", "atan of 'A'", "atan(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> Math.atan(a[0])
+            ));
+
+        put("abs", new InBuiltFunction("abs", "absolute value of 'A'", "abs(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> Math.abs(a[0])
+            ));
+
+        put("ceil", new InBuiltFunction("ceil", "closest integer greater than 'A'", "ceil(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> Math.ceil(a[0])
+            ));
+
+        put("floor", new InBuiltFunction("floor", "closest integer less than 'A'", "floor(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> Math.floor(a[0])
+            ));
+
+        put("hypot", new InBuiltFunction("hypot", "hypotenuse of 'A' and 'B' ( √[A² + B²] )", "hypot(A, B)", -1,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> Math.hypot(a[0], a[1])
+            ));
+
+        put("ln", new InBuiltFunction("ln", "natural log of 'A'", "ln(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> Math.log(a[0])
+            ));
+
+        put("log", new InBuiltFunction("log", "log base 10 of 'A'", "log(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> Math.log10(a[0])
+            ));
+
+        put("round", new InBuiltFunction("round", "rounds 'A' to the nearest integer", "round(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> Long.valueOf(Math.round(a[0])).doubleValue()
+            ));
+
+        put("sqrt", new InBuiltFunction("sqrt", "the square root (√) of 'A'", "sqrt(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> Math.sqrt(a[0])
+            ));
+
+        put("degrees", new InBuiltFunction("degr", "turns 'A' into degrees (from radians)", "degrees(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> Math.toDegrees(a[0])
+            ));
+
+        put("radians", new InBuiltFunction("radi", "turns 'A' into radians (from degrees)", "radians(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> Math.toRadians(a[0])
+            ));
+
+        put("ri", new InBuiltFunction("randi", "random integer from [0, 100], [0, 'A'], or ['A', 'B']", "ri(A, B)", -1,
+            new Collection.Builder<Integer>().add(0).add(1).add(2).build(),
+            a -> {
+               if(a.length == 0)
+                    return Integer.valueOf(new Random().nextInt(100)).doubleValue();
+                else if(a.length == 1)
+                    return Integer.valueOf(new Random().nextInt((int)a[0])).doubleValue();
+                else if(a.length == 2)
+                    return Integer.valueOf(new Random().nextInt((int)a[1])+a[0]).doubleValue();
+                else
+                    throw new NotDefinedException();
+                }
+            ));
+
+        put("rd", new InBuiltFunction("randd", "random double from [0, 1), [0, 'A'), or ['A', 'B')", "rd(A, B)", -1,
+            new Collection.Builder<Integer>().add(0).add(1).add(2).build(),
+            a -> {
+                if(a.length == 1)
+                    return new Random().nextDouble() * a[0];
+                else if(a.length == 2)
+                    return (new Random().nextDouble() + a[0]) * a[1];
+                else if(a.length == 0)
+                    return Math.random();
+                else
+                    throw new NotDefinedException();
+                }
+            ));
+ 
+
+    //         case "fac":
+    //             double ret = 1;
+    //             for(int x = 1; x <= (int)args[0]; x++)
+    //                 ret *= x;
+    //             rethm.put("**TEMP**", ret);
+    //             break;
+        put("fac", new InBuiltFunction("fac", "factorial of 'A'", "fac(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> null
+            ));
+
+        put("neg", new InBuiltFunction("negate", "'A' * -1", "neg(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> -1 * a[0]
+            ));
+
         put("graph", new GraphFunction());
-        put("", new InBuiltFunction("","","",
-            -1, new Collection.Builder<Integer>().add(1).build(),
-            a -> a[0]));
+
+        put("", new InBuiltFunction("","","", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> a[0]
+            ));
+
     }};
 
     ///** The name of the {@link #inverse()} of this funtion. The reason it's not an actual function is because of 
