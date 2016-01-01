@@ -224,28 +224,7 @@ public class Equation implements MathObject {
     }
 
     public String exprstoStr(Node<?, ?> node){
-        String ret = "";
-        if(node.token() instanceof Token){
-            Token token = (Token)node.token();
-            ret += token.val();
-            if(token.type() == Token.Type.OPER || token.type() == Token.Type.FUNC){
-                ret += "(";
-                for(Node n : node){
-                    ret += exprstoStr(n) + ", ";
-                }
-                ret = ret.substring(0, ret.length() - 2) + ")";
-            } else{
-                assert node.size() == 0 : "node is not a function, but has subnodes: " + node;
-            }
-        } else {
-            for(Node<?, ?> n : node){
-                String es;
-                ret += exprstoStr(n);
-                ret += " " + (node.token() == null ? "" : node.token()) + " ";
-            }
-            return ret.substring(0, ret.length() - 2);
-        }
-        return ret;
+        return node.toExprString();
     }
 
     @Override

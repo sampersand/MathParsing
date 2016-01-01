@@ -218,6 +218,15 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public HashMap<String, Double> eval(final EquationSystem pEqSys){
         return eval(new HashMap<String, Double>(), pEqSys);
     }
+    private HashMap<String, Double> appendHashMap(HashMap<String, Double> a, HashMap<String, Double> b){
+        a.putAll(b);
+        return a;
+    }
+    private HashMap<String, Double> appendHashMap(HashMap<String, Double> a, String b, Double c){
+        a.put(b,c);
+        return a;
+    }
+
     /**
      * TODO: JAVADOC
      * returns Double.NaN if the result isnt in bounds
@@ -225,15 +234,62 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public HashMap<String, Double> eval(HashMap<String, Double> pVars, final EquationSystem pEqSys){
         assert token != null;
         assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
+
+        if(token.type() == FUNC || token.type() == OPER)
+            if(token.val().isEmpty()){
+                return appendHashMap(pVars, ((TokenNode)elements.get(0)).eval(pEqSys));
+            }
+            else if(pEqSys.functions().get(token.val()) != null){ // if it is a function
+                System.out.println("UH OH! CUSTOM FUNCTIONS AREN'T UNIQUE!");
+                return appendHashMap(pVars, "TODO: THIS", pEqSys.functions().get(token.val()).exec(pEqSys, this));
+            }
+            else{
+                System.out.println("UH OH! INBUILTFUNCTIONS ARENT UNIQUE!");
+                return appendHashMap(pVars, "TODO: THIS", InBuiltFunction.exec(token.val(), pEqSys, this));
+            }
+        // else if (token.isGroup()) //dont think i need this anymore
+        //     return ((TokenNode)get(0)).eval(pEqSys);
+        else if(isFinal()){
+            String val = token.val();
+            Double d;
+            try{
+                return appendHashMap(pVars, val, Double.parseDouble(val)); 
+            } catch(NumberFormatException err){ 
+                if(pEqSys.varExist(val))
+                    for(Equation eq : pEqSys.equations())
+                        if(((TokenNode)eq.subEquations().getSD(eq.subEquations().depthS())).token.val().equals(val)){
+                            return appendHashMap(pVars, val,
+                                                 ((TokenNode)eq.subEquations().getCSD().get(1)).evalForDouble(pEqSys));
+                        }
+                switch(val) {
+                    case "e":
+                        return appendHashMap(pVars, "e", Math.E);
+                    case "pi":
+                        return appendHashMap(pVars, "pi", Math.PI);
+                    case "rand": case "random":
+                        return appendHashMap(pVars, "rand", Math.random()); // this might need work
+                    default:
+                        throw new NotDefinedException("Cannot evaluate the FinalNode '" + val + "' because there it " + 
+                            "defined as a variable, and isn't an in-built variable.");
+                }
+            }
+        } else 
+            throw new NotDefinedException("This shouldn't happen! There is no way to evaluate node: " + token.val());
+
+    }
+   public Double evalForDouble(final EquationSystem pEqSys){
+        assert token != null;
+        assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
+
         if(token.type() == FUNC || token.type() == OPER)
             if(token.val().isEmpty())
-                return ((TokenNode)elements.get(0)).eval(pEqSys);
+                return ((TokenNode)elements.get(0)).evalForDouble(pEqSys);
             else if(pEqSys.functions().get(token.val()) != null) // if it is a function
                 return pEqSys.functions().get(token.val()).exec(pEqSys, this);
             else
                 return InBuiltFunction.exec(token.val(), pEqSys, this);
-        else if (token.isGroup())
-            return ((TokenNode)get(0)).eval(pEqSys);
+        // else if (token.isGroup()) //dont think i need this anymore
+        //     return ((TokenNode)get(0)).eval(pEqSys);
         else if(isFinal()){
             String val = token.val();
             Double d;
@@ -243,8 +299,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 if(pEqSys.varExist(val))
                     for(Equation eq : pEqSys.equations())
                         if(((TokenNode)eq.subEquations().getSD(eq.subEquations().depthS())).token.val().equals(val)){
-                            d = ((TokenNode)eq.subEquations().getCSD().get(1)).eval(pEqSys);
-                            return pEqSys.checkBounds(token, d) ? d : Double.NaN;
+                            return ((TokenNode)eq.subEquations().getCSD().get(1)).evalForDouble(pEqSys);
                         }
                 switch(val) {
                     case "e":
@@ -252,7 +307,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     case "pi":
                         return Math.PI;
                     case "rand": case "random":
-                        return Math.random();
+                        return Math.random(); // this might need work
                     default:
                         throw new NotDefinedException("Cannot evaluate the FinalNode '" + val + "' because there it " + 
                             "defined as a variable, and isn't an in-built variable.");

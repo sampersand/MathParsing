@@ -173,4 +173,27 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         ret += "\n" + indentE(idtLvl + 2);
         return ret + "\n" + indentE(idtLvl + 1);
     }
+    public String toExprString(){
+        String ret = "";
+        if(token instanceof West.Math.Equation.Token){
+            West.Math.Equation.Token tok = (West.Math.Equation.Token)token;
+            ret += tok.val();
+            if(tok.type() == West.Math.Equation.Token.Type.OPER || tok.type() == West.Math.Equation.Token.Type.FUNC){
+                ret += "(";
+                for(Node n : this){
+                    ret += n.toExprString() + ", ";
+                }
+                ret = ret.substring(0, ret.length() - 2) + ")";
+            } else{
+                assert size() == 0 : "I am not a function, but I have subnodes!";
+            }
+        } else {
+            for(Node n : this){
+                ret += n.toExprString();
+                ret += " " + (token == null ? "" : token) + " ";
+            }
+            return ret.substring(0, ret.length() - 2);
+        }
+        return ret;
+    }
 }

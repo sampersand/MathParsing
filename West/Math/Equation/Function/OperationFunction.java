@@ -116,31 +116,31 @@ public class OperationFunction extends InBuiltFunction {
                            IllegalArgumentException {
         assert pNode.elements().size() != 0 : "Node size cannot be 0!";
         assert name.equals("+") || name.equals("-") || name.equals("*") || name.equals("/") || name.equals("^");
-        double ret = ((TokenNode)pNode.get(0)).eval(pEqSys);
+        double ret = ((TokenNode)pNode.get(0)).evalForDouble(pEqSys);
         switch(name) {
             case "+":
                 for(int i = 1; i < pNode.elements().size(); i++) {
-                    ret += ((TokenNode)pNode.get(i)).eval(pEqSys);
+                    ret += ((TokenNode)pNode.get(i)).evalForDouble(pEqSys);
                 }
                 break;
             case "-":
                 for(int i = 1; i < pNode.elements().size(); i++) {
-                    ret -= ((TokenNode)pNode.get(i)).eval(pEqSys);
+                    ret -= ((TokenNode)pNode.get(i)).evalForDouble(pEqSys);
                 }
                 break;
             case "*":
                 for(int i = 1; i < pNode.elements().size(); i++) {
-                    ret *= ((TokenNode)pNode.get(i)).eval(pEqSys);
+                    ret *= ((TokenNode)pNode.get(i)).evalForDouble(pEqSys);
                 }
                 break;
             case "/":
                 for(int i = 1; i < pNode.elements().size(); i++) {
-                    ret /= ((TokenNode)pNode.get(i)).eval(pEqSys);
+                    ret /= ((TokenNode)pNode.get(i)).evalForDouble(pEqSys);
                 }
                 break;
             case "^":
                 for(int i = 1; i < pNode.elements().size(); i++) {
-                    ret = Math.pow(ret, ((TokenNode)pNode.get(1)).eval(pEqSys)); // not sure this works
+                    ret = Math.pow(ret, ((TokenNode)pNode.get(1)).evalForDouble(pEqSys)); // not sure this works
                 }
                 break;
             default:

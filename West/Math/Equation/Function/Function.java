@@ -103,7 +103,7 @@ public abstract class Function implements MathObject {
                                 TokenNode pNode) {
         double[] ret = new double[pNode.size()];
         for(int i = 0; i < ret.length; i++) {
-            ret[i] = ((TokenNode)pNode.elements().get(i)).eval(pEqSys);
+            ret[i] = ((TokenNode)pNode.elements().get(i)).evalForDouble(pEqSys);
         }
         return ret;
 
