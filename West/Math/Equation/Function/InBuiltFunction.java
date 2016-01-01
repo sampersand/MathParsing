@@ -159,9 +159,9 @@ public class InBuiltFunction extends Function {
                if(a.length == 0)
                     return Integer.valueOf(new Random().nextInt(100)).doubleValue();
                 else if(a.length == 1)
-                    return Integer.valueOf(new Random().nextInt((int)a[0])).doubleValue();
+                    return Integer.valueOf(new Random().nextInt(a[0].intValue())).doubleValue();
                 else if(a.length == 2)
-                    return Integer.valueOf(new Random().nextInt((int)a[1])+a[0]).doubleValue();
+                    return Integer.valueOf(new Random().nextInt(a[1].intValue())+a[0].intValue()).doubleValue();
                 else
                     throw new NotDefinedException();
                 }
@@ -182,15 +182,14 @@ public class InBuiltFunction extends Function {
             ));
  
 
-    //         case "fac":
-    //             double ret = 1;
-    //             for(int x = 1; x <= (int)args[0]; x++)
-    //                 ret *= x;
-    //             rethm.put("**TEMP**", ret);
-    //             break;
         put("fac", new InBuiltFunction("fac", "factorial of 'A'", "fac(A)", -1,
             new Collection.Builder<Integer>().add(1).build(),
-            a -> null
+            a -> {
+                Double ret = 1D;
+                for(Double x = a[0]; x > 0; x--)
+                    ret *= x;
+                return ret;
+                }
             ));
 
         put("neg", new InBuiltFunction("negate", "'A' * -1", "neg(A)", -1,
@@ -258,110 +257,6 @@ public class InBuiltFunction extends Function {
         return FUNCTIONS.get(pName).exec(pEqSys, pNode);
     }
 
-    // @Override
-    // public HashMap<String, Double> exec(final EquationSystem pEqSys,
-    //                                     TokenNode pNode) throws
-    //                                         NotDefinedException,
-    //                                         IllegalArgumentException {
-    //     Object[] rargs = evalNode(pEqSys, pNode);
-    //     double[] args = (double[])rargs[0];
-    //     HashMap<String, Double> rethm = (HashMap<String, Double>)rargs[1];
-    //     // assert args.length == 1;
-    //     switch(name) {
-    //         case "": //used for a grouop.
-    //             assert args.length == 1;
-    //             rethm.put("**TEMP**", args[0]); break;
-    //         case "negate":
-    //             rethm.put("**TEMP**", args[0] * -1); break;
-    //         case "sin":
-    //             rethm.put("**TEMP**", Math.sin(args[0])); break;
-    //         case "cos":
-    //             rethm.put("**TEMP**", Math.cos(args[0])); break;
-    //         case "tan":
-    //             rethm.put("**TEMP**", Math.tan(args[0])); break;
-
-    //         case "csc":
-    //             rethm.put("**TEMP**", 1D / Math.sin(args[0])); break;
-    //         case "sec":
-    //             rethm.put("**TEMP**", 1D / Math.cos(args[0])); break;
-    //         case "cot":
-    //             rethm.put("**TEMP**", 1D / Math.tan(args[0])); break;
-
-
-    //         case "sinh":
-    //             rethm.put("**TEMP**", Math.sinh(args[0])); break;
-    //         case "cosh":
-    //             rethm.put("**TEMP**", Math.cosh(args[0])); break;
-    //         case "tanh":
-    //             rethm.put("**TEMP**", Math.tanh(args[0])); break;
-
-    //         case "asin":
-    //             rethm.put("**TEMP**", Math.asin(args[0])); break;
-    //         case "acos":
-    //             rethm.put("**TEMP**", Math.acos(args[0])); break;
-    //         case "atan":
-    //             rethm.put("**TEMP**", Math.atan(args[0])); break;
-
-    //         case "abs":
-    //             rethm.put("**TEMP**", Math.abs(args[0])); break;
-    //         case "ceil":
-    //             rethm.put("**TEMP**", Math.ceil(args[0])); break;
-    //         case "floor":
-    //             rethm.put("**TEMP**", Math.floor(args[0])); break;
-    //         case "hypot":
-    //             rethm.put("**TEMP**", Math.hypot(args[0], args[1])); break;
-    //         case "ln":
-    //             rethm.put("**TEMP**", Math.log(args[0])); break;
-    //         case "log":
-    //             rethm.put("**TEMP**", Math.log10(args[0])); break;
-
-    //         case "round":
-    //             rethm.put("**TEMP**", Double.parseDouble("" + Math.round(args[0]))); break;
-    //         case "sqrt":
-    //             rethm.put("**TEMP**", Math.sqrt(args[0])); break;
-    //         case "degr":
-    //             rethm.put("**TEMP**", Math.toDegrees(args[0])); break;
-    //         case "radi":
-    //             rethm.put("**TEMP**", Math.toRadians(args[0])); break;
-
-    //         case "randi": 
-    //             if(args.length == 0)
-    //                 rethm.put("**TEMP**", Double.parseDouble("" + new Random().nextInt(100)));
-    //             else if(args.length == 1)
-    //                 rethm.put("**TEMP**", Double.parseDouble("" + new Random().nextInt((int)args[0])));
-    //             else if(args.length == 2)
-    //                 rethm.put("**TEMP**", Double.parseDouble("" + new Random().nextInt((int)args[1])+args[0]));
-    //             else {
-    //                 Print.printw(name + " takes 0, 1, or 2 params. Returning 0 instead.");
-    //                 rethm.put("**TEMP**", 0D);
-    //             }
-    //             break;
-
-    //         case "randd":
-    //             if(args.length == 1)
-    //                 rethm.put("**TEMP**", new Random().nextDouble() * args [0]);
-    //             else if(args.length == 2)
-    //                 rethm.put("**TEMP**", (new Random().nextDouble() + args[0]) * args[1]);
-    //             else if(args.length == 0)
-    //                 rethm.put("**TEMP**", Math.random());
-    //             else{
-    //                 Print.printw(name + " takes 0, 1, or 2 params. Returning a random num from 0- 1 instead.");
-    //                 rethm.put("**TEMP**", 0D);
-    //             }
-    //             break;
-
-    //         case "fac":
-    //             double ret = 1;
-    //             for(int x = 1; x <= (int)args[0]; x++)
-    //                 ret *= x;
-    //             rethm.put("**TEMP**", ret);
-    //             break;
-    //         default:
-    //             throw new NotDefinedException("Cannot evaluate the InBuiltFunction '" + name + "' because it doesn't " +
-    //                                            "have a defined way to compute it!");
-    //     }
-    //     return rethm;
-    // }
 
     @Override
     public String toString() {
