@@ -218,8 +218,9 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public HashMap<String, Double> eval(final EquationSystem pEqSys){
         return (HashMap<String, Double>)eval(new HashMap<String, Double>(), pEqSys)[1];
     }
-    private HashMap<String, Double> appendHashMap(HashMap<String, Double> a, HashMap<String, Double> b){
-        a.putAll(b);
+    private HashMap<String, Double> appendHashMap(HashMap<String, Double> a, Object b){
+        if(b != null)
+        a.putAll((HashMap<String, Double>)b);
         return a;
     }
     private HashMap<String, Double> appendHashMap(HashMap<String, Double> a, String b, Double c){
@@ -231,91 +232,50 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
      * TODO: JAVADOC
      * returns Double.NaN if the result isnt in bounds
      */
-    // public HashMap<String, Double> eval(HashMap<String, Double> pVars, final EquationSystem pEqSys){
-    //     assert token != null;
-    //     assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
-
-    //     if(token.type() == FUNC || token.type() == OPER)
-    //         if(token.val().isEmpty()){
-    //             return appendHashMap(pVars, ((TokenNode)elements.get(0)).eval(pEqSys));
-    //         }
-    //         else if(pEqSys.functions().get(token.val()) != null){ // if it is a function
-    //             System.out.println("UH OH! CUSTOM FUNCTIONS AREN'T UNIQUE!");
-    //             return appendHashMap(pVars, "TODO: THIS", pEqSys.functions().get(token.val()).exec(pEqSys, this));
-    //         }
-    //         else{
-    //             System.out.println("UH OH! INBUILTFUNCTIONS ARENT UNIQUE!");
-    //             return appendHashMap(pVars, "TODO: THIS", InBuiltFunction.exec(token.val(), pEqSys, this));
-    //         }
-    //     // else if (token.isGroup()) //dont think i need this anymore
-    //     //     return ((TokenNode)get(0)).eval(pEqSys);
-    //     else if(isFinal()){
-    //         String val = token.val();
-    //         Double d;
-    //         try{
-    //             return appendHashMap(pVars, val, Double.parseDouble(val)); 
-    //         } catch(NumberFormatException err){ 
-    //             if(pEqSys.varExist(val))
-    //                 for(Equation eq : pEqSys.equations())
-    //                     if(((TokenNode)eq.subEquations().getSD(eq.subEquations().depthS())).token.val().equals(val)){
-    //                         return appendHashMap(pVars, val,
-    //                                              ((TokenNode)eq.subEquations().getCSD().get(1)).evalForDouble(pEqSys));
-    //                     }
-    //             switch(val) {
-    //                 case "e":
-    //                     return appendHashMap(pVars, "e", Math.E);
-    //                 case "pi":
-    //                     return appendHashMap(pVars, "pi", Math.PI);
-    //                 case "rand": case "random":
-    //                     return appendHashMap(pVars, "rand", Math.random()); // this might need work
-    //                 default:
-    //                     throw new NotDefinedException("Cannot evaluate the FinalNode '" + val + "' because there it " + 
-    //                         "defined as a variable, and isn't an in-built variable.");
-    //             }
-    //         }
-    //     } else 
-    //         throw new NotDefinedException("This shouldn't happen! There is no way to evaluate node: " + token.val());
-
-    // }
-    public Double evalForDouble(final EquationSystem pEqSys){
-        return (Double)eval(new HashMap<String, Double>(), pEqSys)[0];
-    }
     public Object[] eval(HashMap<String, Double> pVars, final EquationSystem pEqSys){
         assert token != null;
         assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
-        Double ret = 0D;
-        if(token.type() == FUNC || token.type() == OPER)
+        Object[] ret = new Object[]{null, null};
+        if(token.type() == FUNC || token.type() == OPER){
             if(token.val().isEmpty()){
-                Object[] temp = ((TokenNode)elements.get(0)).eval(pVars, pEqSys);
-                ret = (Double)temp[0];
-                pVars = appendHashMap(pVars, (HashMap<String, Double>)temp[1]);
+                ret = ((TokenNode)elements.get(0)).eval(pVars, pEqSys);
             }
-            else if(pEqSys.functions().get(token.val()) != null) // if it is a function
+            else if(pEqSys.functions().get(token.val()) != null){ // if it is a function
                 ret = pEqSys.functions().get(token.val()).exec(pEqSys, this);
-            else
+            }
+            else{
                 ret = InBuiltFunction.exec(token.val(), pEqSys, this);
+            }
+            ret[1] = appendHashMap(pVars, ret[1]);
+        }
         else if(isFinal()){
             String val = token.val();
+            Double d;
             try{
-                ret = Double.parseDouble(val); 
+                ret[0] = Double.parseDouble(val);
             } catch(NumberFormatException err){ 
                 if(pEqSys.varExist(val)){
-                    for(Equation eq : pEqSys.equations()){
+                    for(Equation eq : pEqSys.equations())
                         if(((TokenNode)eq.subEquations().getSD(eq.subEquations().depthS())).token.val().equals(val)){
-                            Object[] temp = ((TokenNode)eq.subEquations().getCSD().get(1)).eval(pVars, pEqSys);
-                            ret = (Double)temp[0];
-                            pVars = appendHashMap(pVars, (HashMap<String, Double>)temp[1]);
-                            pVars = appendHashMap(pVars, val, ret);
+                            ret = ((TokenNode)eq.subEquations().getCSD().get(1)).eval(pVars, pEqSys);
+                            ret[1] = appendHashMap(appendHashMap(pVars, ret[1]), val, (Double)ret[0]);
                         }
-                    }
-                } else{
+                } else {
                     switch(val) {
                         case "e":
-                            ret = Math.E; break;
+                            ret[1]= appendHashMap(pVars, "e", Math.E);
+                            ret[0] = Math.E;
+                            break;
                         case "pi":
-                            ret = Math.PI; break;
+                            ret[1] = appendHashMap(pVars, "pi", Math.PI);
+                            ret[0] = Math.PI;
+                            break;
                         case "rand": case "random":
-                            ret = Math.random(); break; // this might need work
+                            Double r = Math.random();
+                            ret[1] = appendHashMap(pVars, "rand", r); 
+                            ret[0] = r;
+                            break;
+                            // this might need work
                         default:
                             throw new NotDefinedException("Cannot evaluate the FinalNode '" + val +
                                                           "' because it isn't defined as a variable," + 
@@ -325,7 +285,58 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             }
         } else 
             throw new NotDefinedException("This shouldn't happen! There is no way to evaluate node: " + token.val());
-        return new Object[]{ret, pVars};
+        System.out.println(ret[0]+"|"+ret[1]);
+        return ret;
     }
+    public Double evalForDouble(final EquationSystem pEqSys){
+        return (Double)eval(new HashMap<String, Double>(), pEqSys)[0];
+    }
+    // public Object[] eval(HashMap<String, Double> pVars, final EquationSystem pEqSys){
+    //     assert token != null;
+    //     assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
+    //     Double ret = 0D;
+    //     if(token.type() == FUNC || token.type() == OPER)
+    //         if(token.val().isEmpty()){
+    //             Object[] temp = ((TokenNode)elements.get(0)).eval(pVars, pEqSys);
+    //             ret = (Double)temp[0];
+    //             pVars = appendHashMap(pVars, (HashMap<String, Double>)temp[1]);
+    //         }
+    //         else if(pEqSys.functions().get(token.val()) != null) // if it is a function
+    //             ret = pEqSys.functions().get(token.val()).exec(pEqSys, this);
+    //         else
+    //             ret = InBuiltFunction.exec(token.val(), pEqSys, this);
+    //     else if(isFinal()){
+    //         String val = token.val();
+    //         try{
+    //             ret = Double.parseDouble(val); 
+    //         } catch(NumberFormatException err){ 
+    //             if(pEqSys.varExist(val)){
+    //                 for(Equation eq : pEqSys.equations()){
+    //                     if(((TokenNode)eq.subEquations().getSD(eq.subEquations().depthS())).token.val().equals(val)){
+    //                         Object[] temp = ((TokenNode)eq.subEquations().getCSD().get(1)).eval(pVars, pEqSys);
+    //                         ret = (Double)temp[0];
+    //                         pVars = appendHashMap(pVars, (HashMap<String, Double>)temp[1]);
+    //                         pVars = appendHashMap(pVars, val, ret);
+    //                     }
+    //                 }
+    //             } else{
+    //                 switch(val) {
+    //                     case "e":
+    //                         ret = Math.E; break;
+    //                     case "pi":
+    //                         ret = Math.PI; break;
+    //                     case "rand": case "random":
+    //                         ret = Math.random(); break; // this might need work
+    //                     default:
+    //                         throw new NotDefinedException("Cannot evaluate the FinalNode '" + val +
+    //                                                       "' because it isn't defined as a variable," + 
+    //                                                       " and isn't an in-built variable.");
+    //                 }
+    //             }
+    //         }
+    //     } else 
+    //         throw new NotDefinedException("This shouldn't happen! There is no way to evaluate node: " + token.val());
+    //     return new Object[]{ret, pVars};
+    // }
 
 }
