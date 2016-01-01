@@ -375,7 +375,7 @@ public class EquationSystem implements MathObject, Iterable {
         if(constraints == null)
             return true;
         for(Equation eq : constraints.equations())
-            if(!((EquationNode)eq.subEquations().get(0)).isInBounds(t, pVal))
+            if(!((EquationNode)eq.subEquations().get(0)).isInBounds(t.val(), pVal))
                 return false;
         return true;
     }

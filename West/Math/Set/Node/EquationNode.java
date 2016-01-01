@@ -2,9 +2,11 @@ package West.Math.Set.Node;
 import West.Math.Set.Collection;
 import java.util.ArrayList;
 import West.Math.Equation.Equation;
+import West.Math.Equation.Token;
 import West.Math.Exception.NotDefinedException;
 import java.util.HashMap;
 import West.Math.MathObject;
+import java.lang.Comparable;
 /**
  * TODO: JAVADOC
  * 
@@ -14,7 +16,7 @@ import West.Math.MathObject;
  */
 public class EquationNode extends Node<EquationNode.Comparator, EquationNode> implements MathObject{
     interface TokenObj{
-        public Object compare(Object obj1, Object obj2);
+        public <C extends Comparable<C>> boolean isInBounds(C val1, C val2);
     }
     public static class Comparator{
         public final String SYMBOL;
@@ -68,12 +70,36 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
         token = pEquation;
     }
 
+
+    public <C extends Comparable<C>> boolean isInBounds(Token pT, double pD){ //<T extends Comparable<T>>
+    //     switch((String)token){
+    //         case "<": return val1 < val2;
+    //         case ">": return val1 > val2;
+    //         case "=": return val1 == val2;
+    //         case "≠": return val1 != val2;
+    //         case "≥": case ">=":
+    //             return val1 >= val2;
+    //         case "≤": case "<=":
+    //             return val1 <= val2;
+    //         case "|":
+    //             System.out.println("hi im here");
+    //             assert false;
+    //             // return val1 || val2;
+    //         default:
+    //             assert false; //shouldnt ever happen
+    //     }
+        if()
+        return token.TOKENOBJ.isInBounds(val1, val2);
+    }
+
     public static Comparator getBool(String s){
         return BOOLEANS.get(s);
     }
+
     public static Comparator getComp(String s){
         return COMPARATOR.get(s);
     }
+
     public void addED(EquationNode en) { // addD, but stops at a non EquationNode
         assert en != null : "Cannot addDepth null Nodes!";
         if(size() <= 0){
@@ -130,27 +156,6 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
         return true;
     }
 
-
-    public boolean isInBounds(Object val1, Object val2){ //<T extends Comparable<T>>
-    //     assert token instanceof String;
-    //     switch((String)token){
-    //         case "<": return val1 < val2;
-    //         case ">": return val1 > val2;
-    //         case "=": return val1 == val2;
-    //         case "≠": return val1 != val2;
-    //         case "≥": case ">=":
-    //             return val1 >= val2;
-    //         case "≤": case "<=":
-    //             return val1 <= val2;
-    //         case "|":
-    //             System.out.println("hi im here");
-    //             assert false;
-    //             // return val1 || val2;
-    //         default:
-    //             assert false; //shouldnt ever happen
-    //     }
-        return false;
-    }
   
     @Override
     public String toString(){
