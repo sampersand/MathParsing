@@ -84,6 +84,7 @@ public class Equation implements MathObject {
         EquationNode eqnod = new EquationNode(EquationNode.getBool(""));
         Collection<Token> prev = new Collection<Token>();
         for(Token t : tokens){
+                System.out.println(eqnod.toFancyString()+"|"+prev);
             if(isBool(t.val()) != null){
                 eqnod.addCD(TokenNode.generateMasterNode(prev));
                 eqnod.addED(new EquationNode(EquationNode.getBool(t.val())));
@@ -92,8 +93,9 @@ public class Equation implements MathObject {
                 eqnod.addBD(new EquationNode(TokenNode.generateMasterNode(prev)).
                                              setToken(EquationNode.getComp(t.val())));
                 prev.empty();
-            } else 
+            } else {
                 prev.add(t);
+            }
         }
         if(prev.size() != 0)
             eqnod.addCD(TokenNode.generateMasterNode(prev));

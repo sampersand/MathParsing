@@ -39,7 +39,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
 
     public Node(T pToken) {
         super();
-        token = pToken;
+        setToken(pToken);
     }
     public T token(){
         return token;

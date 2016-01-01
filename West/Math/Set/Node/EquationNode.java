@@ -130,7 +130,7 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
                 ((EquationNode)get(-1)).addBD(en);
         }
     }
-    public void addCD(Node en) { //addD, but stops @ a non-BOOLEAN EquationNode
+    public void addCD(Node en) { //addD, but stops @ a TokenNode
         assert en != null : "Cannot addDepth null Nodes!";
         if(size() <= 0)
             addE(en);
