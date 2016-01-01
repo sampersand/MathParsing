@@ -22,7 +22,7 @@ import West.Math.Set.Collection;
  * each other.
  * 
  * @author Sam Westerman
- * @version 0.87
+  * @version 0.89
  * @since 0.1
  */
 public class Equation implements MathObject {
@@ -110,7 +110,6 @@ public class Equation implements MathObject {
      * @return A corrected version of the expression.
      */
     public static String fixNode(String pEq) {
-        System.out.println("TODO: FIXNODE");
         if(pEq.charAt(0) == '@')
             return pEq.substring(1);
         String[] trigf = new String[]{"sec", "csc", "cot", "sinh", "cosh", "tanh", "sin", "cos", "tan"};
@@ -120,6 +119,7 @@ public class Equation implements MathObject {
 
         //# = number    A = letter   & = BOTH
         pEq = pEq.replaceAll("\\-\\(", "-1*("); // -( → -1 * (
+        pEq = pEq.replaceAll("(\\w)(.)\\-", "$1$20-"); // THIS IS JSUT THROWN TOGETHER
         pEq = pEq.replaceAll("([\\d\\w.]+)E([\\d\\w.-]+)","($1*10^(0$2))"); // &.&E-?&.& → (&.&*10^(-?&.&))
         pEq = pEq.replaceAll("([\\d.]+)(?!E)(\\(|(?:[A-Za-z]+))", "$1*$2"); // #A → #*A
         return pEq;

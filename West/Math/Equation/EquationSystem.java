@@ -17,7 +17,7 @@ import West.Math.Set.Node.TokenNode;
  * {@link CustomFunction}s (and the corresponding classes for them).
  * 
  * @author Sam Westerman
- * @version 0.87
+  * @version 0.89
  * @since 0.1
  */
 public class EquationSystem implements MathObject, Iterable {
@@ -86,7 +86,8 @@ public class EquationSystem implements MathObject, Iterable {
             Print.printi("pEqSys is null; not adding it to 'equations'.");
             return this;
         }
-        equations.addAll(pEqSys.equations());
+        for(Equation eq : pEqSys.equations())
+            add(eq);
         return this;
     }
 
@@ -287,6 +288,8 @@ public class EquationSystem implements MathObject, Iterable {
      */
     public Double eval(String toEval,
                        EquationSystem pEqSys) throws NotDefinedException {
+        assert copy().equals(copy());
+        assert !copy().equals(copy().add(pEqSys));
         return copy().add(pEqSys).eval(toEval);
     }
 
@@ -324,7 +327,7 @@ public class EquationSystem implements MathObject, Iterable {
             //     equations.prepend(equations.pop(i));
             // }
         // }
-        System.out.println("TODO: isolate");
+        // System.out.println("TODO: isolate");
         return this;
     }
 
@@ -377,7 +380,6 @@ public class EquationSystem implements MathObject, Iterable {
         return equations.size();
     }
     public Double checkBounds(HashMap<String, Double> pVars, String toEval){
-    System.out.println("checkBounds:" + pVars + " | " + toEval);
         if(!pVars.containsKey(toEval))
             return Double.NaN;
         if(constraints != null)

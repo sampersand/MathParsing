@@ -12,7 +12,7 @@ import java.lang.Comparable;
  * TODO: JAVADOC
  * 
  * @author Sam Westerman
- * @version 0.87
+  * @version 0.89
  * @since 0.75
  */
 public class EquationNode extends Node<EquationNode.Comparator, EquationNode> implements MathObject{
@@ -92,7 +92,7 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
         if(token.isBool()){
             d0 = ((EquationNode)get(0)).isInBounds(vars, toEval) ? 1D : 0D;
             d1 = ((EquationNode)get(1)).isInBounds(vars, toEval) ? 1D : 0D;
-        } else { 
+        } else {
             d0 = ((TokenNode)getCSD().get(0)).eval((EquationSystem.fromHashMap(vars))).get("**TEMP**"); 
             d1 = ((TokenNode)getCSD().get(1)).eval((EquationSystem.fromHashMap(vars))).get("**TEMP**"); 
             //its **TEMP** because every one TokenNode

@@ -8,7 +8,7 @@ import java.util.Iterator;
  * TODO: JAVADOC
  * 
  * @author Sam Westerman
- * @version 0.87
+  * @version 0.89
  * @since 0.75
  */ 
 public class Collection<E> extends java.util.ArrayList<E> implements MathObject{

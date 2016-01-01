@@ -9,7 +9,7 @@ import West.Math.Set.*;
 /**
  * A tester class for the whole equation
  * @author Sam Westerman
- * @version 0.87
+  * @version 0.89
  * @since 0.1
  */
 public class Tester {
@@ -28,22 +28,15 @@ public class Tester {
             // eqsys.add("c = pi - e");
             // eqsys.add("theta = ln(pi) - c ^ x ");
             // eqsys.add("x = e^pi");
-            eqsys.add("y = x + 100");
-            eqsys.add("x = 5");
-            eqsys.addConstraint("x < 0 ⊻ y > 100");
-            // eqsys.addConstraint("x^4 > (3 * 4)^2");
-
-            // eqsys.add("y = x0 * x1 * x2 * x3 * x4");
-            // eqsys.add("x0 = (x) * c");
-            // eqsys.add("x1 = (x - 8) * c");
-            // eqsys.add("x2 = (x - 4) * c");
-            // eqsys.add("x3 = (x + 8) * c");
-            // eqsys.add("x4 = (x + 4) * c");
-            // eqsys.add("c = 1/4");
-            // eqsys.add("x = 0");
-
-
-            // eqsys.addConstraint("x > 5 && x < 0");
+            eqsys.add("y = x0 * x1 * x2 * x3 * x4");
+            eqsys.add("x0 = (x) * c");
+            eqsys.add("x1 = (x - 8) * c");
+            eqsys.add("x2 = (x - 4) * c");
+            eqsys.add("x3 = (x + 8) * c");
+            eqsys.add("x4 = (x + 4) * c");
+            eqsys.add("c = 1/4");
+            eqsys.addConstraint("x > 4 || x < -2 || (x < 1 && x > -1)");
+            eqsys.addConstraint("y > -2");
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {
@@ -73,10 +66,10 @@ public class Tester {
         }
 
 
-        Print.printi(eqsys.toFancyString());
-        Print.printi(eqsys.toFullString());
-        // eqsys.graph();
-        Print.printi("RESULT:", eqsys.eval("y"));
+        // Print.printi(eqsys.toFancyString());
+        // Print.printi(eqsys.toFullString());
+        eqsys.graph();
+        // Print.printi("RESULT:", eqsys.eval("y"));
     }
 
 

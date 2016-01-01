@@ -1,3 +1,4 @@
+    
 package West.Math.Set.Node;
 import West.Math.Set.Collection;
 import java.util.ArrayList;
@@ -111,7 +112,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     private TokenNode fixNodes() {
         int i = 1;
         TokenNode node = copy();
-        System.out.println("TODO: fixNodes");
+        // System.out.println("TODO: fixNodes");
         // while(i < node.size()){
         //     Node n = node.get(i);
         //     assert n != null  : "no subNode can be null!"; // this should have been caught beforehand.
@@ -236,13 +237,10 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         assert token != null;
         assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
         if(token.type() == FUNC || token.type() == OPER){
-            // if(token.val().isEmpty())
-                // return ((TokenNode)elements.get(0)).eval(pVars, pEqSys);
             if(pEqSys.functions().get(token.val()) != null) // if it is a function
                 return pEqSys.functions().get(token.val()).exec(pEqSys, this);
-            else{
+            else
                 return InBuiltFunction.exec(token.val(), pEqSys, this);
-            }
         }
         else if(isFinal()){
             String val = token.val();
@@ -269,6 +267,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                         return appendHashMap(pVars, "rand", Math.random()); 
                         // this might need work
                     default:
+                        System.err.println(toFullString());
                         throw new NotDefinedException("Cannot evaluate the FinalNode '" + val +
                                                       "' because it isn't defined as a variable," + 
                                                       " and isn't an in-built variable.");

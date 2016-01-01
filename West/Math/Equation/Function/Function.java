@@ -12,7 +12,7 @@ import java.util.HashMap;
  * For example, in <code>f(x)</code>, this class would represent f.
  * 
  * @author Sam Westerman
- * @version 0.87
+  * @version 0.89
  * @since 0.1
  */
 public abstract class Function implements MathObject {
