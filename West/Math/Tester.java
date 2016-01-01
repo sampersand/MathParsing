@@ -28,6 +28,7 @@ public class Tester {
             // eqsys.add("c = pi - e");
             // eqsys.add("theta = ln(pi) - c ^ x ");
             // eqsys.add("x = e^pi");
+            
             eqsys.add("y = x0 * x1 * x2 * x3 * x4");
             eqsys.add("x0 = (x) * c");
             eqsys.add("x1 = (x - 8) * c");
