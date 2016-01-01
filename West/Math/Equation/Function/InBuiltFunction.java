@@ -18,21 +18,21 @@ public class InBuiltFunction extends Function {
      * names.
      */
     public static HashMap<String, InBuiltFunction> FUNCTIONS = new HashMap<String, InBuiltFunction>() {{
-        put("+", new OperationFunction("+", "Adds 'A' to 'B'", "+(A, B)",
+        put("+", new InBuiltFunction("+", "Adds 'A' to 'B'", "+(A, B)",
             new Collection.Builder<Integer>().add(2).build(),
-            null));
-        put("-", new OperationFunction("-", "Subtracts 'A' to 'B'", "-(A, B)",
+            a -> a[0] + a[1]));
+        put("-", new InBuiltFunction("-", "Subtracts 'A' to 'B'", "-(A, B)",
             new Collection.Builder<Integer>().add(2).build(),
-            null));
-        put("*", new OperationFunction("*", "Multiplies 'A' to 'B'", "*(A, B)",
+            a -> a[0] - a[1]));
+        put("*", new InBuiltFunction("*", "Multiplies 'A' to 'B'", "*(A, B)",
             new Collection.Builder<Integer>().add(2).build(),
-            null));
-        put("/", new OperationFunction("/", "Divides 'A' to 'B'", "/(A, B)",
+            a -> a[0] * a[1]));
+        put("/", new InBuiltFunction("/", "Divides 'A' to 'B'", "/(A, B)",
             new Collection.Builder<Integer>().add(2).build(),
-            null));
-        put("^", new OperationFunction("^", "Raises 'A' to 'B'", "^(A, B)",
+            a -> a[0] / a[1]));
+        put("^", new InBuiltFunction("^", "Raises 'A' to 'B'", "^(A, B)",
             new Collection.Builder<Integer>().add(2).build(),
-            null));
+            a -> Math.pow(a[0],a[1])));
         put("sin", new InBuiltFunction("sin", "sin of 'A'", "sin(A)",
             new Collection.Builder<Integer>().add(1).build(),
             null));
@@ -103,7 +103,7 @@ public class InBuiltFunction extends Function {
             new Collection.Builder<Integer>().add(0).add(1).add(2).build(),
             null));
         put("rd", new InBuiltFunction("randd", "random double from [0, 1), [0, 'A'), or ['A', 'B')", "rd(A, B)",
-        new Collection.Builder<Integer>().add(0).add(1).add(2).build(),
+            new Collection.Builder<Integer>().add(0).add(1).add(2).build(),
             null));
         put("fac", new InBuiltFunction("fac", "factorial of 'A'", "fac(A)",
             new Collection.Builder<Integer>().add(1).build(),

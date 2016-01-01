@@ -168,7 +168,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     @Override
     public String toString(){
         String s;
-        return (s = toExprString()).substring(1, s.length() - 1);
+        return (s = toExprString()).replaceAll("^\\((.*)\\)$", "$1");
     }
 
     @Override
@@ -256,8 +256,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                         if(((TokenNode)eq.subEquations().getSD(eq.subEquations().depthS())).token.val().equals(val)){
                             pVars = appendHashMap(pVars,
                                                  ((TokenNode)eq.subEquations().getCSD().get(1)).eval(pVars, pEqSys));
-                            appendHashMap(pVars, val, pVars.get("**TEMP**"));
-                            pVars.remove("**TEMP**"); //remove this temp thing
+                            appendHashMap(pVars, val, pVars.get(eq.subEquations().getCSD().get(1).toString()));
+                            System.out.println(val+":"+pVars);
                             return pVars;
                         }
                     }

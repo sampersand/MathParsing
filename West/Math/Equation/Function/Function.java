@@ -123,12 +123,12 @@ public abstract class Function implements MathObject {
         Double[] retd = new Double[pNode.size()];
         HashMap<String, Double> rethm = new HashMap<String, Double>();
         for(int i = 0; i < pNode.size(); i++) {
+            System.out.println((TokenNode)pNode.elements().get(i));
             HashMap<String, Double> evald = ((TokenNode)pNode.elements().get(i)).eval(pEqSys);
             rethm.putAll(evald);
-            if(evald.containsKey("**TEMP**")) //used for when passing results to equations.
-                retd[i] = evald.get("**TEMP**");
-            else
-                retd[i] = evald.get(((TokenNode)pNode.elements().get(i)).token().val());
+            System.out.println("evald:"+evald);
+            System.out.println("pNode:"+pNode);
+            retd[i] = evald.get(pNode.elements().get(i).toString());
         }
         return new Object[]{retd, rethm};
     }
@@ -149,6 +149,8 @@ public abstract class Function implements MathObject {
         Double[] args = (Double[])rargs[0];
         assert argsLength.contains(args.length) || argsLength.contains(-1);
         HashMap<String, Double> rethm = (HashMap<String, Double>)rargs[1];
+        // assert false :"\n" + rethm + "\n"+ pNode.toString() + "\n" + pNode.toFancyString() + " \nargs:" + args[0] + 
+        // "," + args[1] + "\nthis:\n"+toFancyString;
         return addArgs(rethm, pNode.toString(), funcObj.exec(args));
     }
 

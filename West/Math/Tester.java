@@ -28,15 +28,17 @@ public class Tester {
             // eqsys.add("c = pi - e");
             // eqsys.add("theta = ln(pi) - c ^ x ");
             // eqsys.add("x = e^pi");
-            
-            eqsys.add("y = x0 * x1 * x2 * x3 * x4");
-            eqsys.add("x0 = (x) * c");
-            eqsys.add("x1 = (x - 8) * c");
-            eqsys.add("x2 = (x - 4) * c");
-            eqsys.add("x3 = (x + 8) * c");
-            eqsys.add("x4 = (x + 4) * c");
-            eqsys.add("c = 1/4");
-            eqsys.addConstraint("x < pi * e && y > -1");
+            eqsys.add("y = x * 4");
+            eqsys.add("x = pi - e");
+
+            // eqsys.add("y = x0 * x1 * x2 * x3 * x4");
+            // eqsys.add("x0 = (x) * c");
+            // eqsys.add("x1 = (x - 8) * c");
+            // eqsys.add("x2 = (x - 4) * c");
+            // eqsys.add("x3 = (x + 8) * c");
+            // eqsys.add("x4 = (x + 4) * c");
+            // eqsys.add("c = 1/4");
+            // eqsys.addConstraint("x < pi * e && y > -1");
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {
