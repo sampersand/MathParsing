@@ -41,12 +41,12 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
     {{
        put("<=", new Comparator("<=", (d1, d2) -> d1 <= d2));
        put(">=", new Comparator(">=", (d1, d2) -> d1 >= d2));
-       put("!=", new Comparator("!=", (d1, d2) -> d1 != d2));
+       put("!=", new Comparator("!=", (d1, d2) -> !d1.equals(d2)));
        put("<",  new Comparator("<",  (d1, d2) -> d1 < d2));
        put(">",  new Comparator(">",  (d1, d2) -> d1 > d2));
-       put("=",  new Comparator("=",  (d1, d2) -> d1 == d2));
-       put("≣",  new Comparator("≣",  (d1, d2) -> d1 == d2)); //from here down are backups
-       put("≠",  new Comparator("≠",  (d1, d2) -> d1 != d2));
+       put("=",  new Comparator("=",  (d1, d2) -> d1.equals(d2)));
+       put("≣",  new Comparator("≣",  (d1, d2) -> d1.equals(d2))); //from here down are backups
+       put("≠",  new Comparator("≠",  (d1, d2) -> !d1.equals(d2)));
        put("≥",  new Comparator("≥",  (d1, d2) -> d1 >= d2));
        put("≤",  new Comparator("≤",  (d1, d2) -> d1 <= d2));
        // put(null, null);
