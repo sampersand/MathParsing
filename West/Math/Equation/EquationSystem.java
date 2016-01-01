@@ -377,7 +377,7 @@ public class EquationSystem implements MathObject, Iterable {
         return equations.size();
     }
     public Double checkBounds(HashMap<String, Double> pVars, String toEval){
-        assert false : pVars +" | " + toEval;
+    System.out.println("checkBounds:" + pVars + " | " + toEval);
         if(!pVars.containsKey(toEval))
             return Double.NaN;
         if(constraints != null)

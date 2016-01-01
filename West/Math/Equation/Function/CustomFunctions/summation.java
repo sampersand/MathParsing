@@ -7,7 +7,7 @@ import West.Math.Equation.Function.CustomFunction;
 
 
 import West.Math.Exception.NotDefinedException;
-
+import java.util.HashMap;
 public class summation extends CustomFunction{
     public String help() {
         return "Adds up numbers from Start to END, with STEP step. Can only be END, START + END, or START + END + STEP";
@@ -26,17 +26,20 @@ public class summation extends CustomFunction{
      * @return The summation of the numbers defined by pNode.
      */
     @Override
-    public double exec(EquationSystem pEq,
+    public HashMap<String, Double> exec(EquationSystem pEqSys,
                        TokenNode pNode) throws
                            NotDefinedException,
                            IllegalArgumentException {
-        double[] vals = evalNode(pEq, pNode);
-        if(vals.length == 0 || vals.length > 3)
+        Object[] rargs = evalNode(pEqSys, pNode);
+        double[] args = (double[])rargs[0];
+        HashMap<String, Double> rethm = (HashMap<String, Double>)rargs[1];
+        if(args.length == 0 || args.length > 3)
             throw new IllegalArgumentException("ERROR when parsing summation. Syntax: " + syntax());
-        if(vals.length == 1) { vals = new double[]{0,vals[0],1};}
-        if(vals.length == 2) { vals = new double[]{vals[0],vals[1],1};}
+        if(args.length == 1) { args = new double[]{0,args[0],1};}
+        if(args.length == 2) { args = new double[]{args[0],args[1],1};}
         double ret = 0;
-        for(double x = vals[0]; x <= vals [1]; x+= vals[2]) ret += x; 
-        return ret;
+        for(double x = args[0]; x <= args[1]; x+= args[2]) ret += x; 
+        rethm.put(pNode.token().val(), ret);
+        return rethm;
     }
 }

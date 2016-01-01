@@ -5,7 +5,7 @@ import West.Math.Equation.EquationSystem;
 import West.Math.Set.Node.TokenNode;
 import static West.Math.Declare.*;
 import West.Math.Exception.NotDefinedException;
-
+import java.util.HashMap;
 /**
  * A class that simulates both any kind of operation and any fuction in West.Math.
  * Simply put, anything that isn't a number or variable should be a function somehow.
@@ -99,13 +99,21 @@ public abstract class Function implements MathObject {
      * @return An array of doubles, with each position corresponding to the value of each Node of that position in 
      *         {@link Node#elements() pNode's elements()}.
      */
-    protected double[] evalNode(final EquationSystem pEqSys,
+    protected Object[] evalNode(final EquationSystem pEqSys,
                                 TokenNode pNode) {
-        double[] ret = new double[pNode.size()];
-        for(int i = 0; i < ret.length; i++) {
-            ret[i] = ((TokenNode)pNode.elements().get(i)).evalForDouble(pEqSys);
+        double[] retd = new double[pNode.size()];
+        HashMap<String, Double> rethm = new HashMap<String, Double>();
+        for(int i = 0; i < pNode.size(); i++) {
+            rethm.putAll(((TokenNode)pNode.elements().get(i)).eval(pEqSys));
+            if(rethm.containsKey("**TEMP**"))
+                retd[i] = rethm.get("**TEMP**");
+            else{
+                System.out.println("@ " + ((TokenNode)pNode.elements().get(i)).token().val() + " \n"+((TokenNode)pNode.elements().get(i)).toFullString());
+                System.out.println(rethm);
+                retd[i] = rethm.get(((TokenNode)pNode.elements().get(i)).token().val());
+            }
         }
-        return ret;
+        return new Object[]{retd, rethm};
 
     }
 
@@ -119,7 +127,7 @@ public abstract class Function implements MathObject {
      * @throws NotDefinedException    Thrown when the function is defined, but how to execute it isn't.
      * @throws IllegalArgumentException   Thrown when the function required parameters, and the ones passed aren't right.
      */
-    public abstract Object[] exec(final EquationSystem pEqSys,
+    public abstract HashMap<String,Double> exec(final EquationSystem pEqSys,
                                 TokenNode pNode) throws
                                     NotDefinedException,
                                     IllegalArgumentException;

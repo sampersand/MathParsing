@@ -11,7 +11,7 @@ import West.Math.Display.GraphComponents;
 import West.Math.Display.Grapher;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
 
 public class GraphFunction extends InBuiltFunction{
     public GraphFunction(){
@@ -35,7 +35,7 @@ public class GraphFunction extends InBuiltFunction{
     }
 
     @Override
-    public double exec(final EquationSystem pEqSys,
+    public HashMap<String, Double> exec(final EquationSystem pEqSys,
                        TokenNode pNode) throws
                            NotDefinedException,
                            IllegalArgumentException {
@@ -97,7 +97,7 @@ public class GraphFunction extends InBuiltFunction{
         // Grapher grapher = new Grapher(equationsToGraph, pEqSys, numcToGraph, gcomp);
         // grapher.graph();
         throw new NotDefinedException(); //TODO: THIS
-        // return 0;
+        // return new HashMap<String, Double>();
 
     }
 

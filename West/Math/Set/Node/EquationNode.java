@@ -90,8 +90,8 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
             d1 = ((EquationNode)get(0)).isInBounds(vars, toEval) ? 1D : 0D;
             d2 = ((EquationNode)get(1)).isInBounds(vars, toEval) ? 1D : 0D;
         } else { 
-            d1 = ((TokenNode)get(0)).evalForDouble(EquationSystem.fromHashMap(vars));
-            d2 = ((TokenNode)get(1)).evalForDouble(EquationSystem.fromHashMap(vars));
+            d1 = ((TokenNode)get(0)).evalDouble(EquationSystem.fromHashMap(vars));
+            d2 = ((TokenNode)get(1)).evalDouble(EquationSystem.fromHashMap(vars));
         }
         return token.TOKENOBJ.checkBounds(d1, d2);
     }

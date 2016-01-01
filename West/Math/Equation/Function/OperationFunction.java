@@ -110,43 +110,39 @@ public class OperationFunction extends InBuiltFunction {
     }
 
     @Override
-    public double exec(final EquationSystem pEqSys,
+    public HashMap<String, Double> exec(final EquationSystem pEqSys,
                        TokenNode pNode) throws 
                            NotDefinedException,
                            IllegalArgumentException {
-        assert pNode.elements().size() != 0 : "Node size cannot be 0!";
-        assert name.equals("+") || name.equals("-") || name.equals("*") || name.equals("/") || name.equals("^");
-        double ret = ((TokenNode)pNode.get(0)).evalForDouble(pEqSys);
+        assert pNode.elements().size() == 2;
+        Object[] rargs = evalNode(pEqSys, pNode);
+        HashMap<String, Double> rethm = (HashMap<String, Double>)rargs[1];
+        double[] args = (double[])rargs[0];
+        Double ret = args[0];
         switch(name) {
             case "+":
-                for(int i = 1; i < pNode.elements().size(); i++) {
-                    ret += ((TokenNode)pNode.get(i)).evalForDouble(pEqSys);
-                }
+                ret += args[1];
                 break;
             case "-":
-                for(int i = 1; i < pNode.elements().size(); i++) {
-                    ret -= ((TokenNode)pNode.get(i)).evalForDouble(pEqSys);
-                }
+                ret -= args[1];
                 break;
             case "*":
-                for(int i = 1; i < pNode.elements().size(); i++) {
-                    ret *= ((TokenNode)pNode.get(i)).evalForDouble(pEqSys);
-                }
+                ret *= args[1];
                 break;
             case "/":
-                for(int i = 1; i < pNode.elements().size(); i++) {
-                    ret /= ((TokenNode)pNode.get(i)).evalForDouble(pEqSys);
-                }
+                // assert false : args[0] + " / " + args[1];
+                ret /= args[1];
                 break;
-            case "^":
-                for(int i = 1; i < pNode.elements().size(); i++) {
-                    ret = Math.pow(ret, ((TokenNode)pNode.get(1)).evalForDouble(pEqSys)); // not sure this works
-                }
+            case "^": // not sure this works
+                ret = Math.pow(ret, args[1]);
                 break;
             default:
                 Print.printw("No known way to evaluate '" + this + "'");
         }
-        return ret;
+        // System.out.println(args[0] + " " + pNode.token().val() + " " + args[1]);
+        // assert false : rethm;
+        rethm.put("**TEMP**", ret);
+        return rethm;
     }
 
     @Override

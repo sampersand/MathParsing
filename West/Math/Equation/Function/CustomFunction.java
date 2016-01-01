@@ -9,7 +9,7 @@ import West.Math.Equation.Function.CustomFunctions.*;
 import West.Math.Exception.NotDefinedException;
 
 import java.lang.reflect.*;
-
+import java.util.HashMap;
 /**
  * A class that all user-defined functions must impliment. 
  * 
@@ -132,7 +132,7 @@ public class CustomFunction extends Function implements MathObject {
      */
     @Override
     @SuppressWarnings("unchecked") //stupid cl.getDeclaredMethod
-    public Object[] exec(final EquationSystem pEqSys,
+    public HashMap<String, Double> exec(final EquationSystem pEqSys,
                        TokenNode pNode) throws
                            NotDefinedException,
                            IllegalArgumentException {
@@ -140,7 +140,7 @@ public class CustomFunction extends Function implements MathObject {
             Class[] argType = {EquationSystem.class, TokenNode.class};
             Method execMethod = cl.getDeclaredMethod("exec",argType);
             Object[] argListForInvokedExec = new Object[]{pEqSys, pNode};
-            return (Object[])execMethod.invoke(cl.newInstance(), argListForInvokedExec);
+            return (HashMap<String, Double>)execMethod.invoke(cl.newInstance(), argListForInvokedExec);
         } catch (NoSuchMethodException err) {
             Print.printe("A NoSuchMethodException happened when attempting to execute a " +
                                "custom method in file '" + name + "'. ERROR: " + err + " | MESSAGE:  " +
@@ -162,7 +162,7 @@ public class CustomFunction extends Function implements MathObject {
                                 err.getMessage() + " | CAUSE: " + err.getCause() + " | CAUSE'S STACKTRACE:\n");
             err.getCause().printStackTrace();
         }
-        return new Object[]{null, null};
+        return null;
     }
     @Override
     public String toString() {

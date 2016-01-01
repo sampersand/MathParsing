@@ -49,6 +49,7 @@ public class InBuiltFunction extends Function {
         put("fac", new InBuiltFunction("fac", "factorial of 'A'", "fac(A)"));
         put("neg", new InBuiltFunction("negate", "'A' * -1", "neg(A)"));
         put("graph", new GraphFunction());
+        put("", new InBuiltFunction("","",""));
     }};
 
     ///** The name of the {@link #inverse()} of this funtion. The reason it's not an actual function is because of 
@@ -92,11 +93,11 @@ public class InBuiltFunction extends Function {
      * @throws NotDefinedException    Thrown when the function is defined, but how to execute it isn't.
      * @throws IllegalArgumentException   Thrown when the function required parameters, and the ones passed aren't right.
      */
-    public static double exec(String pName,
-                              final EquationSystem pEqSys,
-                              TokenNode pNode) throws
-                                  NotDefinedException,
-                                  IllegalArgumentException {
+    public static HashMap<String, Double> exec(String pName,
+                                               final EquationSystem pEqSys,
+                                               TokenNode pNode) throws
+                                                   NotDefinedException,
+                                                   IllegalArgumentException {
         if(FUNCTIONS.get(pName) == null)
             throw new NotDefinedException("Cannot execute the InBuiltFunction '" + pName +"' because it isn't defined "+
                     "in FUNCTIONS.");
@@ -104,90 +105,108 @@ public class InBuiltFunction extends Function {
     }
 
     @Override
-    public Object[] exec(final EquationSystem pEqSys,
-                       TokenNode pNode) throws
-                           NotDefinedException,
-                           IllegalArgumentException {
-        double[] args = evalNode(pEqSys, pNode);
+    public HashMap<String, Double> exec(final EquationSystem pEqSys,
+                                        TokenNode pNode) throws
+                                            NotDefinedException,
+                                            IllegalArgumentException {
+        Object[] rargs = evalNode(pEqSys, pNode);
+        double[] args = (double[])rargs[0];
+        HashMap<String, Double> rethm = (HashMap<String, Double>)rargs[1];
+        // assert args.length == 1;
         switch(name) {
-
+            case "": //used for a grouop.
+                assert args.length == 1;
+                rethm.put("**TEMP**", args[0]); break;
             case "negate":
-                return args[0] * -1;
+                rethm.put("**TEMP**", args[0] * -1); break;
             case "sin":
-                return Math.sin(args[0]);
+                rethm.put("**TEMP**", Math.sin(args[0])); break;
             case "cos":
-                return Math.cos(args[0]);
+                rethm.put("**TEMP**", Math.cos(args[0])); break;
             case "tan":
-                return Math.tan(args[0]);
+                rethm.put("**TEMP**", Math.tan(args[0])); break;
 
             case "csc":
-                return 1D / Math.sin(args[0]);
+                rethm.put("**TEMP**", 1D / Math.sin(args[0])); break;
             case "sec":
-                return 1D / Math.cos(args[0]);
+                rethm.put("**TEMP**", 1D / Math.cos(args[0])); break;
             case "cot":
-                return 1D / Math.tan(args[0]);
+                rethm.put("**TEMP**", 1D / Math.tan(args[0])); break;
 
 
             case "sinh":
-                return Math.sinh(args[0]);
+                rethm.put("**TEMP**", Math.sinh(args[0])); break;
             case "cosh":
-                return Math.cosh(args[0]);
+                rethm.put("**TEMP**", Math.cosh(args[0])); break;
             case "tanh":
-                return Math.tanh(args[0]);
+                rethm.put("**TEMP**", Math.tanh(args[0])); break;
 
             case "asin":
-                return Math.asin(args[0]);
+                rethm.put("**TEMP**", Math.asin(args[0])); break;
             case "acos":
-                return Math.acos(args[0]);
+                rethm.put("**TEMP**", Math.acos(args[0])); break;
             case "atan":
-                return Math.atan(args[0]);
+                rethm.put("**TEMP**", Math.atan(args[0])); break;
 
             case "abs":
-                return Math.abs(args[0]);
+                rethm.put("**TEMP**", Math.abs(args[0])); break;
             case "ceil":
-                return Math.ceil(args[0]);
+                rethm.put("**TEMP**", Math.ceil(args[0])); break;
             case "floor":
-                return Math.floor(args[0]);
+                rethm.put("**TEMP**", Math.floor(args[0])); break;
             case "hypot":
-                return Math.hypot(args[0], args[1]);
+                rethm.put("**TEMP**", Math.hypot(args[0], args[1])); break;
             case "ln":
-                return Math.log(args[0]);
+                rethm.put("**TEMP**", Math.log(args[0])); break;
             case "log":
-                return Math.log10(args[0]);
+                rethm.put("**TEMP**", Math.log10(args[0])); break;
 
             case "round":
-                return Math.round(args[0]);
+                rethm.put("**TEMP**", Double.parseDouble("" + Math.round(args[0]))); break;
             case "sqrt":
-                return Math.sqrt(args[0]);
+                rethm.put("**TEMP**", Math.sqrt(args[0])); break;
             case "degr":
-                return Math.toDegrees(args[0]);
+                rethm.put("**TEMP**", Math.toDegrees(args[0])); break;
             case "radi":
-                return Math.toRadians(args[0]);
+                rethm.put("**TEMP**", Math.toRadians(args[0])); break;
 
             case "randi": 
-                if(args.length == 0) return new Random().nextInt(100);
-                if(args.length == 1) return new Random().nextInt((int)args[0]);
-                if(args.length == 2) return new Random().nextInt((int)args[1]) + args[0];
-                Print.printw(name + " takes 0, 1, or 2 params. Returning 0 instead.");
-                return 0;
+                if(args.length == 0)
+                    rethm.put("**TEMP**", Double.parseDouble("" + new Random().nextInt(100)));
+                else if(args.length == 1)
+                    rethm.put("**TEMP**", Double.parseDouble("" + new Random().nextInt((int)args[0])));
+                else if(args.length == 2)
+                    rethm.put("**TEMP**", Double.parseDouble("" + new Random().nextInt((int)args[1])+args[0]));
+                else {
+                    Print.printw(name + " takes 0, 1, or 2 params. Returning 0 instead.");
+                    rethm.put("**TEMP**", 0D);
+                }
+                break;
 
             case "randd":
-                if(args.length == 1) return new Random().nextDouble() * args [0];
-                if(args.length == 2) return (new Random().nextDouble() + args[0]) * args[1];
-                if(args.length == 0) return Math.random();
-                if(args.length != 0)
+                if(args.length == 1)
+                    rethm.put("**TEMP**", new Random().nextDouble() * args [0]);
+                else if(args.length == 2)
+                    rethm.put("**TEMP**", (new Random().nextDouble() + args[0]) * args[1]);
+                else if(args.length == 0)
+                    rethm.put("**TEMP**", Math.random());
+                else{
                     Print.printw(name + " takes 0, 1, or 2 params. Returning a random num from 0- 1 instead.");
+                    rethm.put("**TEMP**", 0D);
+                }
+                break;
 
             case "fac":
                 double ret = 1;
                 for(int x = 1; x <= (int)args[0]; x++)
                     ret *= x;
-                return ret;
-
+                rethm.put("**TEMP**", ret);
+                break;
             default:
                 throw new NotDefinedException("Cannot evaluate the InBuiltFunction '" + name + "' because it doesn't " +
                                                "have a defined way to compute it!");
         }
+        return rethm;
     }
 
     @Override
