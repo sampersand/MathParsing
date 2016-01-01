@@ -99,7 +99,6 @@ public class Equation implements MathObject {
         }
         if(prev.size() != 0)
             eqnod.addCD(TokenNode.generateMasterNode(prev));
-    System.out.println(eqnod.toFancyString());
         return eqnod;
 
     }

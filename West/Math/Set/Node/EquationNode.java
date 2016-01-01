@@ -52,6 +52,9 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
        // put(null, null);
    }};
 
+   public static boolean test(Double a, Double b){
+    return false;
+   }
     public static final HashMap<String, Comparator> BOOLEANS = new HashMap<String, Comparator>()
     {{
       put("||", new Comparator("||", (d1, d2) -> d1.equals(1D) || d2.equals(1D)));
@@ -76,22 +79,6 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
 
 
     public <C extends Comparable<C>> boolean isInBounds(HashMap<String, Double> vars, String toEval){
-    //     switch((String)token){
-    //         case "<": return val1 < val2;
-    //         case ">": return val1 > val2;
-    //         case "=": return val1 == val2;
-    //         case "≠": return val1 != val2;
-    //         case "≥": case ">=":
-    //             return val1 >= val2;
-    //         case "≤": case "<=":
-    //             return val1 <= val2;
-    //         case "|":
-    //             System.out.println("hi im here");
-    //             assert false;
-    //             // return val1 || val2;
-    //         default:
-    //             assert false; //shouldnt ever happen
-    //     }
         if(token.SYMBOL.isEmpty()){
             assert size() == 1 : toFancyString();
             return ((EquationNode)get(0)).isInBounds(vars, toEval);
@@ -106,10 +93,6 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
             d1 = ((TokenNode)get(0)).evalForDouble(EquationSystem.fromHashMap(vars));
             d2 = ((TokenNode)get(1)).evalForDouble(EquationSystem.fromHashMap(vars));
         }
-        System.out.println(this.toFancyString());
-        System.out.println("d1:"+d1);
-        System.out.println("d2:"+d2);
-        System.out.println("TO:"+token.TOKENOBJ.checkBounds(d1, d2));
         return token.TOKENOBJ.checkBounds(d1, d2);
     }
 
@@ -144,7 +127,6 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
             addE(en);
         else {
             assert get(-1) instanceof EquationNode;
-            System.out.println(get(-1).toFancyString());
             if(!((Comparator)get(-1).token()).isBool())
                 addE(en);
             else

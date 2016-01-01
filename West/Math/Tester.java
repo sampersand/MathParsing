@@ -28,7 +28,7 @@ public class Tester {
             eqsys.add("theta = ln(pi) - c ^ x ");
             eqsys.add("x = pi - e");
 
-            eqsys.addConstraint("x > 0 && 2 > 1");
+            eqsys.addConstraint("x > 0");
             // eqsys.addConstraint("x^4 > (3 * 4)^2 && x < 5");
 
             // eqsys.add("y = x0 * x1 * x2 * x3 * x4");

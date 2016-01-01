@@ -377,12 +377,14 @@ public class EquationSystem implements MathObject, Iterable {
         return equations.size();
     }
     public Double checkBounds(HashMap<String, Double> pVars, String toEval){
+        assert false : pVars +" | " + toEval;
         if(!pVars.containsKey(toEval))
             return Double.NaN;
         if(constraints != null)
             for(Equation eq : constraints.equations())
                 if(!((EquationNode)eq.subEquations().get(0)).isInBounds(pVars, toEval))
                     return Double.NaN;
+
         return pVars.get(toEval);
     }
     @Override
