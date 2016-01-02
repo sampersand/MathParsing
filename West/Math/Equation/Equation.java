@@ -5,7 +5,6 @@ import West.Math.Equation.Function.InBuiltFunction;
 
 import West.Math.Set.Node.TokenNode;
 import West.Math.Set.Node.Node;
-import West.Math.Exception.NotDefinedException;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;

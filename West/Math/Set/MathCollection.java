@@ -2,7 +2,6 @@ package West.Math.Set;
 
 import West.Math.MathObject;
 import West.Print;
-import West.Math.Exception.NotDefinedException;
 import West.Math.Equation.EquationSystem;
 import java.util.ArrayList;
 /**
@@ -75,7 +74,7 @@ public class MathCollection<N extends Double> extends NumberCollection<N> {
 
     @Override
     public MathCollection copy(){
-        throw new NotDefinedException();
+        throw new NullPointerException();
         //TODO: DEFINE
         // return new MathBuilder().addAll(elements).build();
     }

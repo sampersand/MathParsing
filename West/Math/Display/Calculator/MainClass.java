@@ -1,8 +1,6 @@
 package West.Math.Display.Calculator;
 
 import West.Math.MathObject;
-import West.Math.Exception.NotDefinedException;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -116,26 +114,26 @@ public class MainClass implements MathObject {
 
     @Override
     public String toString() {
-        throw new NotDefinedException();
+        throw new NullPointerException();
     }
     
     @Override
     public String toFancyString(int idtLvl) {
-        throw new NotDefinedException();
+        throw new NullPointerException();
     }
 
     @Override
     public String toFullString(int idtLvl) {
-        throw new NotDefinedException();
+        throw new NullPointerException();
     }
 
     @Override
     public GraphDisplay copy(){
-        throw new NotDefinedException();
+        throw new NullPointerException();
     }
 
     @Override
     public boolean equals(Object pObj){
-        throw new NotDefinedException();
+        throw new NullPointerException();
     }
 }

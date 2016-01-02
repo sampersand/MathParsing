@@ -9,9 +9,6 @@ import West.Math.Exception.*;
  */
 @Deprecated
 public class Declare {
-    public Declare(){
-        throw new NotDefinedException("Cannot instatiate Declare!");
-    }
     public static void decl(boolean expr){
         decl(expr, "");
     }
@@ -22,7 +19,7 @@ public class Declare {
         decl(expr, new IllegalArgumentException(str));
     }
     public static void declND(boolean expr, String str){
-        decl(expr, new NotDefinedException(str));
+        decl(expr, new UnsupportedOperationException(str));
     }
     public static void decl(boolean expr, RuntimeException excp){
         if(!expr)

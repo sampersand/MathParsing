@@ -2,7 +2,6 @@ package West.Math.Equation;
 
 import West.Math.MathObject;
 import static West.Math.Declare.*;
-import West.Math.Exception.NotDefinedException;
 import West.Math.Set.Collection;
 import West.Math.Equation.Function.InBuiltFunction;
 

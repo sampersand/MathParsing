@@ -3,9 +3,7 @@ package West.Math.Set;
 import West.Math.MathObject;
 import West.Print;
 import West.Math.Equation.EquationSystem;
-import West.Math.Equation.Equation;
-import West.Math.Exception.NotDefinedException;
-import West.Math.Display.Grapher;
+import West.Math.Equation.Equation;import West.Math.Display.Grapher;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -86,7 +84,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
 
     public <M extends Number> NumberCollection<N> resid(NumberCollection<M> pNC, EquationSystem pEq) {
         assert size() == pNC.size();
-        throw new NotDefinedException(); //TODO: THIS
+        throw new NullPointerException(); //TODO: THIS
         // NumberCollection<N> ret = new NumberCollection<N>();
         // for(int x = 0; x < size(); x++)
         //     ret.add((N)new Double(pred(get(x), pEq) - pNC.get(x)));
@@ -101,7 +99,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         return polyReg(10, pNC);
     }
     public <M extends Number> EquationSystem polyReg(int maxPower, NumberCollection<M> pNC) {
-        throw new NotDefinedException();
+        throw new NullPointerException();
     }
     public <M extends Number> EquationSystem linReg(NumberCollection<M> pNC){
 
@@ -117,7 +115,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
 
     public <M extends Number> double r(NumberCollection<M> pNC){
         assert size() == pNC.size() : size() + " ≠ " + pNC.size();
-        throw new NotDefinedException(); //TODO: THIS
+        throw new NullPointerException(); //TODO: THIS
         // double sigZxZy = 0;
         // for(int i = 0; i < size(); i++)
         //     sigZxZy += Z(get(i)) * pNC.Z(pNC.get(i));
@@ -134,7 +132,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
 
     public NumberCollection<N> Z() {
         NumberCollection<N> ret = new NumberCollection<N>();
-        throw new NotDefinedException();//TODO: THIS
+        throw new NullPointerException();//TODO: THIS
         // for(N ele : this)
         //     ret.add((N)new Double(Z(ele)));
         // return ret;
@@ -146,7 +144,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
 
     public double mean() {
         assert size() != 0 : "cannot take the average of an empty array!";
-        throw new NotDefinedException(); //TODO: THIS
+        throw new NullPointerException(); //TODO: THIS
         // double sum = 0;
         // for(N e : this)
         //     sum += Double.parseDouble("" + e); //aha cheating
@@ -174,7 +172,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         double std = stdev(); //so it wont have to be called very time.
         double mean = mean(); //so it wont have to be called very time.
         NumberCollection<N> ret = new NumberCollection<N>();
-        throw new NotDefinedException(); //TODO: THIS
+        throw new NullPointerException(); //TODO: THIS
         // for(N e : this)
         //     if(e < mean - std * 3.0 || e > mean + std * 3.0) 
         //         ret.add(e);
@@ -191,7 +189,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
 
     public NumberCollection<N> fns() {
         assert size() > 0;
-        throw new NotDefinedException(); //TODO: THIS
+        throw new NullPointerException(); //TODO: THIS
         // NumberCollection<N> sorted = sort();
         // int size = size(); //so it wont have to be called every time.
         // return new NumberCollection<N>(){{
@@ -221,7 +219,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     public N iqr() {
         NumberCollection<N> fns = fns();
         // return fns.get(3) - fns.get(1);
-        throw new NotDefinedException();
+        throw new NullPointerException();
         //TODO: THIS
     }
 
@@ -231,7 +229,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         // TODO: BETTER SORT METHOD
         int x = -1;
         N temp;
-        throw new NotDefinedException(); //TODO: THIS
+        throw new NullPointerException(); //TODO: THIS
         // while(++x < ret.size() - 1) {
         //     if(ret.get(x) > ret.get(x + 1)) {
         //         temp = ret.get(x + 1);
@@ -297,7 +295,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         }
        // Print.print();
        */
-        throw new NotDefinedException();
+        throw new NullPointerException();
         //TODO: FIX THIS
     }
 
@@ -349,7 +347,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         //         }});
         //     }});
         // grapher.graph();
-        throw new NotDefinedException(); //TODO: THIS
+        throw new NullPointerException(); //TODO: THIS
         //TODO: FIX THIS
     }
 
@@ -370,7 +368,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     }
     @Override
     public NumberCollection copy(){
-        throw new NotDefinedException();
+        throw new NullPointerException();
         // return new NumberBuilder<N>().addAll(elements).build();
     }
 

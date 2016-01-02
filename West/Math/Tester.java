@@ -17,9 +17,9 @@ public class Tester {
     /**
      * The main function for the West.Math.package.
      * @param args The arguemnts passed in - usually through the command line
-     * @throws NotDefinedException Thrown when the first value isn't equal to "--e" of --f 
+     * @throws IllegalArgumentException Thrown when the first value isn't equal to "--e" of --f 
      */
-    public static void main(String[] args) throws NotDefinedException {
+    public static void main(String[] args) throws IllegalArgumentException {
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
             //FIXED
@@ -76,7 +76,7 @@ public class Tester {
                 int i = -1;
                 char type = ' ';
                 if(!args[0].equals("--f") && !args[0].equals("--e"))
-                    throw new NotDefinedException("first value has to be --f, or --e");
+                    throw new IllegalArgumentException("first value has to be --f, or --e");
                 while(i < args.length - 1) { //args.length is String.
                     i++;
                     if(args[i].equals("--f")) {type = 'f'; continue;}

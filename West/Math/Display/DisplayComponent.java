@@ -6,7 +6,6 @@ import West.Math.Equation.Equation;
 import West.Math.Equation.EquationSystem;
 import West.Math.Set.NumberCollection;
 import West.Math.Set.Collection;
-import West.Math.Exception.NotDefinedException;
 
 import java.util.ArrayList;
 
@@ -120,7 +119,7 @@ public class DisplayComponent extends JLabel implements MathObject {
      *
      * @param pGraphics          The graphics input that will be used to draw. Assumed to be Graphics2D.
      */
-    public void paintComponent(Graphics pGraphics) throws NotDefinedException {
+    public void paintComponent(Graphics pGraphics) {
         assert pGraphics instanceof Graphics2D : "Uh, Idek how this happened, but g has to be a Graphics2D...";
         drawer = (Graphics2D) pGraphics;
         drawer.setColor(color);
@@ -178,7 +177,6 @@ public class DisplayComponent extends JLabel implements MathObject {
   
     /** TODO: JAVADOC */
     private double[] fix(double x, double y) {
-        // throw new NotDefinedException(); //TODO: THIS
         return grapher.components().fix(x,y);
     }
 

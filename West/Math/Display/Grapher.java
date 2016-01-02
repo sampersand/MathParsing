@@ -3,7 +3,6 @@ package West.Math.Display;
 import West.Math.MathObject;
 import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Equation;
-import West.Math.Exception.NotDefinedException;
 import West.Math.Set.NumberCollection;
 import West.Math.Set.Collection;
 import West.Math.Display.GraphComponents;

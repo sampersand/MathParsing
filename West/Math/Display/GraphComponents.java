@@ -1,7 +1,6 @@
 package West.Math.Display;
 
 import West.Math.MathObject;
-import West.Math.Exception.NotDefinedException;
 
 /**
  * Keeps track of different thigns about graphing - like window sizes
@@ -143,6 +142,6 @@ public class GraphComponents implements MathObject {
 
     @Override
     public boolean equals(Object pObj){
-        throw new NotDefinedException();
+        throw new NullPointerException();
     }
 }

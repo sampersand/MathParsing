@@ -6,7 +6,6 @@ import West.Math.Equation.Function.InBuiltFunction;
 import West.Math.Equation.Token;
 import West.Math.MathObject;
 import West.Math.Equation.Equation;
-import West.Math.Exception.NotDefinedException;
 import static West.Math.Equation.Token.Type.*;
 import java.util.HashMap;
 /**
@@ -169,13 +168,13 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                         // this might need work
                     default:
                         System.err.println(toFullString());
-                        throw new NotDefinedException("Cannot evaluate the FinalNode '" + val +
+                        throw new UnsupportedOperationException("Cannot evaluate the FinalNode '" + val +
                                                       "' because it isn't defined as a variable," + 
                                                       " and isn't an in-built variable.");
                 }
             }
         } else 
-            throw new NotDefinedException("This shouldn't happen! There is no way to evaluate node: " + token.val());
+            throw new UnsupportedOperationException("This shouldn't happen! There is no way to evaluate node: " + token.val());
     }
 
     //here down are from EquationNode

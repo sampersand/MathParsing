@@ -4,7 +4,6 @@ import West.Math.MathObject;
 import West.Print;
 import static West.Math.Declare.*;
 import West.Math.Display.Grapher;
-import West.Math.Exception.NotDefinedException;
 import West.Math.Equation.Function.CustomFunction;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -285,7 +284,7 @@ public class EquationSystem implements MathObject, Iterable {
      * @return A double that represents the value of <code>toEval</code>.
      */
     public Double eval(String toEval,
-                       EquationSystem pEqSys) throws NotDefinedException {
+                       EquationSystem pEqSys) {
         assert copy().equals(copy());
         assert !copy().equals(copy().add(pEqSys));
         return copy().add(pEqSys).eval(toEval);
@@ -296,7 +295,7 @@ public class EquationSystem implements MathObject, Iterable {
      * @param toEval    The variable to solve for.
      * @return A double that represents the value of <code>toEval</code>.
      */
-    public Double eval(String toEval) throws NotDefinedException {
+    public Double eval(String toEval) {
         if(equations().size() == 0){
             Print.printw("Trying to evaluated an EquationSystem with no equations! returning 0");
             return 0D;
@@ -314,9 +313,9 @@ public class EquationSystem implements MathObject, Iterable {
      * {@link #equations()} is equal to <code>toIso</code>.
      * @param toIso     The variable name to be isolated.
      * @return An EquationSystem, where the first Equation is the isolated equation.
-     * @throws NotDefinedException  Thrown when there is no known way to isolate the variable
+     * @throws UnsupportedOperationException Thrown when there is no known way to isolate the variable
      */
-    public EquationSystem isolate(String toIso) throws NotDefinedException {
+    public EquationSystem isolate(String toIso) throws UnsupportedOperationException {
         // for(Equation eq : equations){
             // if(eq.expressions().get(0).)
         // }

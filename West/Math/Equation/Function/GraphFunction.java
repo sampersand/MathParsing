@@ -5,7 +5,6 @@ import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Equation;
 import West.Math.Set.Node.TokenNode;
 import West.Math.Equation.Function.InBuiltFunction;
-import West.Math.Exception.NotDefinedException;
 import West.Math.Set.NumberCollection;
 import West.Math.Display.GraphComponents;
 import West.Math.Display.Grapher;
@@ -37,10 +36,7 @@ public class GraphFunction extends InBuiltFunction{
     }
 
     @Override
-    public HashMap<String, Double> exec(final EquationSystem pEqSys,
-                       TokenNode pNode) throws
-                           NotDefinedException,
-                           IllegalArgumentException {
+    public HashMap<String, Double> exec(final EquationSystem pEqSys, TokenNode pNode) throws IllegalArgumentException {
         assert pNode.size() > 0 : "Cannot evaluate the node '" + pNode.token().val() + "' when it's size isn't greater"+
                                   " than 1";
         equationsToGraph = new EquationSystem();
@@ -98,7 +94,7 @@ public class GraphFunction extends InBuiltFunction{
         }
         // Grapher grapher = new Grapher(equationsToGraph, pEqSys, numcToGraph, gcomp);
         // grapher.graph();
-        throw new NotDefinedException(); //TODO: THIS
+        throw new NullPointerException(); //TODO: THIS
         // return new HashMap<String, Double>();
 
     }
@@ -133,7 +129,7 @@ public class GraphFunction extends InBuiltFunction{
         return ret;
     }
     private ArrayList<NumberCollection<Double>> getNumC(String[] vals) {
-        throw new NotDefinedException();
+        throw new NullPointerException();
         // return new NumberCollection<Double>(){{
         //     for(String val : vals)
         //         add(Double.parseDouble(val));

@@ -6,7 +6,6 @@ import West.Math.Equation.Function.Function;
 import West.Math.Set.Node.TokenNode;
 import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Function.CustomFunctions.*;
-import West.Math.Exception.NotDefinedException;
 import West.Math.Set.Collection;
 
 import java.lang.reflect.*;
@@ -106,9 +105,9 @@ public class CustomFunction extends Function implements MathObject {
             Print.printe("A IllegalAccessException occured when attempting to get '" + pFuncName + "' " +
                                "of a CustomFunction (File Name: " + name + "): " + err + " | " + err.getMessage() +
                                " | " + err.getCause());
-        } catch (NullPointerException err) {
-            throw new NotDefinedException("Cannot get the function '" + pFuncName +"' from the CustomFunction '" + name 
-                + "'' because it doesnt exist, but should!");
+        // } catch (NullPointerException err) {
+        //     throw new NotDefinedException("Cannot get the function '" + pFuncName +"' from the CustomFunction '" + name 
+        //         + "'' because it doesnt exist, but should!");
         } catch (NoSuchMethodException err) {
             Print.printe("A NoSuchMethodException occured when attempting to get '" + pFuncName + "' " +
                                "of a CustomFunction (File Name: " + name + "): " + err + " | " + err.getMessage() +
@@ -131,14 +130,12 @@ public class CustomFunction extends Function implements MathObject {
      *                      {@link Equation Equations} and {@link Function Functions} is stored.
      * @param pNode         The {@link Node} that is going to be solved.
      * @return A double representing the value of <code>pNode</code>pNode, when solved for with <code>pEqSys</code>.
-     * @throws NotDefinedException    Thrown when the function is defined, but how to execute it isn't.
      * @throws IllegalArgumentException   Thrown when the function required parameters, and the ones passed aren't right.
      */
     @Override
     @SuppressWarnings("unchecked") //stupid cl.getDeclaredMethod
     public HashMap<String, Double> exec(final EquationSystem pEqSys,
                        TokenNode pNode) throws
-                           NotDefinedException,
                            IllegalArgumentException {
         try {
             Class[] argType = {EquationSystem.class, TokenNode.class};

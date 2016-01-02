@@ -4,7 +4,6 @@ import West.Math.MathObject;
 import West.Print;
 import West.Math.Equation.EquationSystem;
 import West.Math.Set.Node.TokenNode;
-import West.Math.Exception.NotDefinedException;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -226,7 +225,7 @@ public class InBuiltFunction extends Function {
                 else if(a.length == 2)
                     return Integer.valueOf(new Random().nextInt(a[1].intValue())+a[0].intValue()).doubleValue();
                 else
-                    throw new NotDefinedException();
+                    throw new UnsupportedOperationException();
                 }
             ));
 
@@ -240,7 +239,7 @@ public class InBuiltFunction extends Function {
                 else if(a.length == 0)
                     return Math.random();
                 else
-                    throw new NotDefinedException();
+                    throw new UnsupportedOperationException();
                 }
             ));
  
@@ -310,12 +309,12 @@ public class InBuiltFunction extends Function {
      *                      by.
      * @param pNode         The {@link Node} that will be passed to <code>pName</code>.
      * @return A double representing the value of <code>pNode</code>, when solved for with <code>pEqSys</code>.
-     * @throws NotDefinedException    Thrown when the function is defined, but how to execute it isn't.
+     * @throws NullPointerException    Thrown when the function is defined, but how to execute it isn't.
      * @throws IllegalArgumentException   Thrown when the function required parameters, and the ones passed aren't right.
      */
     public static HashMap<String, Double> exec(String pName, final EquationSystem pEqSys, TokenNode pNode) {
         if(FUNCTIONS.get(pName) == null)
-            throw new NotDefinedException("Cannot execute the InBuiltFunction '" + pName +"' because it isn't defined "+
+            throw new NullPointerException("Cannot execute the InBuiltFunction '" + pName +"' because it isn't defined "+
                     "in FUNCTIONS.");
         return FUNCTIONS.get(pName).exec(pEqSys, pNode);
     }

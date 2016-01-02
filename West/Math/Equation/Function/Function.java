@@ -5,7 +5,6 @@ import West.Math.Equation.EquationSystem;
 import West.Math.Set.Node.TokenNode;
 import West.Math.Set.Collection;
 import static West.Math.Declare.*;
-import West.Math.Exception.NotDefinedException;
 import java.util.HashMap;
 /**
  * A class that simulates both any kind of operation and any fuction in West.Math.
@@ -138,7 +137,6 @@ public abstract class Function implements MathObject {
      *                      {@link Equation Equations} and {@link Function Functions} is stored.
      * @param pNode         The {@link Node} that is going to be solved.
      * @return A double representing the value of <code>pNode</code>, when solved for with <code>pEqSys</code>.
-     * @throws NotDefinedException    Thrown when the function is defined, but how to execute it isn't.
      * @throws IllegalArgumentException   Thrown when the function required parameters, and the ones passed aren't right.
      */
     public HashMap<String,Double> exec(final EquationSystem pEqSys, TokenNode pNode) {
@@ -172,11 +170,10 @@ public abstract class Function implements MathObject {
      * Gets the inverse of this function - that is, what function should be done to undo this one. <br>The inverse of 
      * <code>+</code> is <code>-</code>, and the inverse of <code>cos</code> is <code>arccos</code>.
      * @return The inverse of this function.
-     * @throws NotDefinedException  Thrown when the inverse hasn't been defined yet, or there is no known
      * @deprecated Not defined yet, will be in the future.
      */
-    public Function inverse() throws NotDefinedException{
-        throw new NotDefinedException();
+    public Function inverse() throws NullPointerException{
+        throw new NullPointerException();
     }
 
 

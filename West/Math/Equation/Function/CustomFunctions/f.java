@@ -4,7 +4,7 @@ import West.Math.Equation.EquationSystem;
 import West.Math.Set.Node.TokenNode;
 import West.Math.Equation.Function.CustomFunction;
 
-import West.Math.Exception.NotDefinedException;
+import West.Math.Exception;
 import java.util.HashMap;
 public class f extends CustomFunction{
     public String help() {
@@ -15,7 +15,8 @@ public class f extends CustomFunction{
     }
     @Override
     public HashMap<String, Double> exec(EquationSystem pEqSys, TokenNode pNode) {
-        return null;
+        // return null;
+        throw new NullPointerException();
         // Object[] rargs = evalNode(pEqSys, pNode);
         // double[] args = (double[])rargs[0];
         // HashMap<String, Double> rethm = (HashMap<String, Double>)rargs[1];

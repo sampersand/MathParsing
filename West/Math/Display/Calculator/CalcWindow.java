@@ -4,7 +4,6 @@ import West.Math.MathObject;
 import West.Print;
 import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Function.CustomFunction;
-import West.Math.Exception.NotDefinedException;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -320,7 +319,7 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
                     }
                 }
             }};
-            throw new NotDefinedException();
+            throw new NullPointerException();
             // return "" + new ((TokenNode)EquationSystem().add(split[0]).add(vars).add(funcs)).eval();
         }
         
@@ -379,26 +378,26 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
 
     @Override
     public String toString() {
-        throw new NotDefinedException();
+        throw new NullPointerException();
     }
     
     @Override
     public String toFancyString(int idtLvl) {
-        throw new NotDefinedException();
+        throw new NullPointerException();
     }
 
     @Override
     public String toFullString(int idtLvl) {
-        throw new NotDefinedException();
+        throw new NullPointerException();
     }
 
     @Override
     public CalcWindow copy(){
-        throw new NotDefinedException();
+        throw new NullPointerException();
     }
     
     @Override
     public boolean equals(Object pObj){
-        throw new NotDefinedException();
+        throw new NullPointerException();
     }
 }
