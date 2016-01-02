@@ -8,7 +8,7 @@ package West.Math.Exception;
   * @version 0.90
  * @since 0.1
  */
-public class NotDefinedException extends MathException {
+public class NotDefinedException extends RuntimeException {
 
     /**
      * Default Constructor. Just passes <code>"Define me!"</code> to
@@ -18,7 +18,6 @@ public class NotDefinedException extends MathException {
         this("Define me!");
     }
 
-    // Inherits javadoc from MathException
     public NotDefinedException(String cause) {
         super(cause);
     }

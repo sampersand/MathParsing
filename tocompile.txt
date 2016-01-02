@@ -19,7 +19,6 @@ West/Math/Equation/Function/CustomFunctions/f.java
 West/Math/Equation/Function/CustomFunctions/summation.java
 West/Math/Exception/MathException.java
 West/Math/Exception/NotDefinedException.java
-West/Math/Exception/TypeMisMatchException.java
 West/Math/Set/Collection.java
 West/Math/Set/MathCollection.java
 West/Math/Set/NumberCollection.java

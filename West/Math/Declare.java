@@ -16,7 +16,7 @@ public class Declare {
         decl(expr, "");
     }
     public static void decl(boolean expr, String str){
-        decl(expr, new MathException(str));
+        decl(expr, new RuntimeException(str));
     }
     public static void declP(boolean expr, String str){
         decl(expr, new IllegalArgumentException(str));
