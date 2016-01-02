@@ -178,7 +178,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         if(token instanceof West.Math.Equation.Token){
             West.Math.Equation.Token tok = (West.Math.Equation.Token)token;
             ret += tok.val();
-            if(tok.type() == West.Math.Equation.Token.Type.OPER || tok.type() == West.Math.Equation.Token.Type.FUNC){
+            if(tok.type() == West.Math.Equation.Token.Type.FUNC){
                 ret += "(";
                 for(Node n : this){
                     ret += n.toExprString() + ", ";

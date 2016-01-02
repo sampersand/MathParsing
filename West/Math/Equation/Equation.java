@@ -28,11 +28,7 @@ public class Equation implements MathObject {
     protected EquationNode subEquations;
     public static final HashMap<String, Object> CCHARS = new HashMap<String, Object>()
     {{
-        put("op_un_l", InBuiltFunction.UNARY_LEFT);
-        put("op_un_r", InBuiltFunction.UNARY_RIGHT);
-        put("op_bi", InBuiltFunction.BINARY);
-        put("comp", EquationNode.COMPARATOR);
-        put("bool", EquationNode.BOOLEANS);
+        put("assaign", InBuiltFunction.ASSAIGNMENT);
         put("paren_l", Token.PAREN_L);
         put("paren_r", Token.PAREN_R);
         put("delim", Token.DELIM);
@@ -82,17 +78,17 @@ public class Equation implements MathObject {
         EquationNode eqnod = new EquationNode(EquationNode.getBool(""));
         Collection<Token> prev = new Collection<Token>();
         for(Token t : tokens){
-            if(isBool(t.val()) != null){
-                eqnod.addCD(TokenNode.generateMasterNode(prev));
-                eqnod.addED(new EquationNode(EquationNode.getBool(t.val())));
-                prev.empty();
-            } else if(isComp(t.val()) != null){
-                eqnod.addBD(new EquationNode(TokenNode.generateMasterNode(prev)).
-                                             setToken(EquationNode.getComp(t.val())));
-                prev.empty();
-            } else {
+        //     if(isBool(t.val()) != null){
+        //         eqnod.addCD(TokenNode.generateMasterNode(prev));
+        //         eqnod.addED(new EquationNode(EquationNode.getBool(t.val())));
+        //         prev.empty();
+        //     } else if(isComp(t.val()) != null){
+        //         eqnod.addBD(new EquationNode(TokenNode.generateMasterNode(prev)).
+        //                                      setToken(EquationNode.getComp(t.val())));
+        //         prev.empty();
+        //     } else {
                 prev.add(t);
-            }
+        //     }
         }
         if(prev.size() != 0)
             eqnod.addCD(TokenNode.generateMasterNode(prev));
@@ -152,18 +148,10 @@ public class Equation implements MathObject {
                     tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
                 tokens.add(new Token(repl, Token.Type.PAREN));
             } else{
-                if(isBool(all) != null){
-                    repl = isBool(all);
+                if(isAssign(all) != null){
+                    repl = isAssign(all);
                     if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
-                    tokens.add(new Token(isBool(all), Token.Type.BOOL));
-                } else if(isComp(all) != null){
-                    repl = isComp(all);
-                    if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
-                    tokens.add(new Token(isComp(all), Token.Type.COMP));
-                } else if(isOper(all) != null){
-                    repl = isOper(all);
-                    if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
-                    tokens.add(new Token(isOper(all), Token.Type.OPER));
+                    tokens.add(new Token(isAssign(all), Token.Type.ASSIGN));
                 } else if(isDelim(all) != null){
                     repl = isDelim(all);
                     if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
@@ -179,33 +167,15 @@ public class Equation implements MathObject {
         return str.replaceAll("\\Q" + last + "\\E$", "");
     }
     public static boolean isControlChar(String s){
-        return isOper(s) != null || isParen(s) != null || isDelim(s) != null || isComp(s) != null || isBool(s) != null;
-    }
-    public static String isOper(String s){
-        String ret = null;
-        System.out.println("TODO: ISOPER");
-        if(true)
-            return null;
-        if((s.length() == 1 || (s.length() > 0 && s.charAt(s.length() - 1) == 'E')) &&
-                            (ret = isInLast(s,((HashMap)CCHARS.get("op_un_l")).keySet())) != null)
-            return ret;
-        if(s.length() != 1 && (ret = isInLast(s,((HashMap)CCHARS.get("op_un_r")).keySet())) != null)
-            return ret;
-        return isInLast(s, ((HashMap)CCHARS.get("op_bi")).keySet());
+        return isParen(s) != null || isDelim(s) != null || isAssign(s) != null;
     }
     
-
-    public static String isBool(String s){
-        // return null;
-        return isInLast(s, ((HashMap<String,Object>)CCHARS.get("bool")).keySet());
-    }
-    public static String isComp(String s){
-        // return null;
-        return isInLast(s, ((HashMap<String,Object>)CCHARS.get("comp")).keySet());
+    public static String isAssign(String s){
+        return isInLast(s, (Collection<String>)CCHARS.get("assaign"));
     }
 
     public static String isDelim(String s){
-        return isInLast(s,(Collection<String>)CCHARS.get("delim"));
+        return isInLast(s, (Collection<String>)CCHARS.get("delim"));
     }
 
     public static String isParen(String s){

@@ -17,9 +17,10 @@ public class InBuiltFunction extends Function {
      * or "round"), and the values are the InBuiltFunctions / {@link OperationFunction}s corresponding to the
      * names.
      */    
+
+    public static Collection<String> ASSAIGNMENT = new Collection.Builder<String>().add("=").add("⇒").add("→").build();
     public static HashMap<String, InBuiltFunction> FUNCTIONS = new HashMap<String, InBuiltFunction>() {{
 
-        //Equality testers
         put(">", new InBuiltFunction(">", "Checks if 'A' > 'B'", ">(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(),
             a -> a[0].compareTo(a[1]) == 1 ? 1D : 0D
@@ -34,7 +35,6 @@ public class InBuiltFunction extends Function {
             new Collection.Builder<Integer>().add(2).build(),
             a -> a[0].compareTo(a[1]) == 0 ? 1D : 0D
             ));
-
         put("≥", new InBuiltFunction("≥", "Checks if 'A' ≥ 'B'", "≥(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(),
             a -> a[0].compareTo(a[1]) != -1 ? 1D : 0D
@@ -270,33 +270,6 @@ public class InBuiltFunction extends Function {
             ));
 
     }};
-
-
-    public static final HashMap<String, Function> UNARY_LEFT = new HashMap<String, Function>()
-    {{
-        // put("+", null);
-        put("-", InBuiltFunction.FUNCTIONS.get("negate"));
-        put("~", null);
-    }};
-
-    public static final HashMap<String, Function> UNARY_RIGHT = new HashMap<String, Function>()
-    {{
-        put("!", InBuiltFunction.FUNCTIONS.get("fac"));
-    }};
-
-    public static final HashMap<String, Function> BINARY = new HashMap<String, Function>()
-    {{
-        put("+", InBuiltFunction.FUNCTIONS.get("+"));
-        put("-", InBuiltFunction.FUNCTIONS.get("-"));
-        put("*", InBuiltFunction.FUNCTIONS.get("*"));
-        put("/", InBuiltFunction.FUNCTIONS.get("/"));
-        put("^", InBuiltFunction.FUNCTIONS.get("^"));
-    }};
-
-    ///** The name of the {@link #inverse()} of this funtion. The reason it's not an actual function is because of 
-    // * FUNCTIONS - you cannot "get" the inverse function if it hasn't been declared yet.
-    // */
-    // String inverse;
 
     /**
      * Default constructor. Instatiates {@link #name}, {@link #help}, and {@link #syntax} as empty strings.

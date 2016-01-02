@@ -40,7 +40,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         while(pPos < pTokens.size()) {
             Token t = pTokens.get(pPos);
             assert t != null : "this should have been caught earlier.";
-            if(t.isConst() || t.isOper()){
+            if(t.isConst()){// || t.isOper()
                 node.add(new TokenNode(t));
             } else if(t.isFunc()) {
                 int paren = 0;
@@ -179,12 +179,15 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         assert pN != null : "Cannot addDepth null Nodes!";
         assert pN instanceof TokenNode;
         TokenNode n = (TokenNode)pN;
-        if(i <= 0 || size() <= 0 ||((TokenNode)get(-1)).token().isGroup()) {
+        if(i <= 0 || size() <= 0){
+            assert !((TokenNode)get(-1)).token().val().isEmpty(); //just for testing to see if it ever happens
             add(n);
         } else {
             if(i == 2 && get(-1).isFinal()) {
+                assert !((TokenNode)get(-1)).token().val().isEmpty();//just for testing to see if it ever happens
                 add(n);
             } else {
+                assert !((TokenNode)get(-1)).token().val().isEmpty();//just for testing to see if it ever happens
                 get(-1).addD(i - 1, n);
             }
         }
@@ -206,7 +209,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             }
         } else {
             assert !get(-1).isFinal(); //shouldnt happen, methinks.
-            if(((TokenNode)get(-1)).token.isGroup()) {
+            if(((TokenNode)get(-1)).token().val().isEmpty()) {
+                assert false; //just for testing to see if it ever happens
                 setN(p, n);
             } else {
                 get(-1).setD(i - 1, p, n);
@@ -242,7 +246,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public HashMap<String, Double> eval(HashMap<String, Double> pVars, final EquationSystem pEqSys){
         assert token != null;
         assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
-        if(token.type() == FUNC || token.type() == OPER){
+        if(token.type() == FUNC){
             if(pEqSys.functions().get(token.val()) != null) // if it is a function
                 return pEqSys.functions().get(token.val()).exec(pEqSys, this);
             else
@@ -285,4 +289,24 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return eval(new HashMap<String, Double>(), pEqSys).get(token.val());
     }
 
+
+    public <C extends Comparable<C>> boolean isInBounds(HashMap<String, Double> vars, String toEval){
+        if(token.SYMBOL.isEmpty()){
+            assert size() == 1 : toFancyString();
+            return ((TokenNode)get(0)).isInBounds(vars, toEval);
+        }
+        assert size() == 2;
+        assert token.isBool() || token.isComp();
+        Double d0, d1;
+        if(token.isBool()){
+            d0 = ((TokenNode)get(0)).isInBounds(vars, toEval) ? 1D : 0D;
+            d1 = ((TokenNode)get(1)).isInBounds(vars, toEval) ? 1D : 0D;
+        } else {
+            d0 = ((TokenNode)getCSD().get(0)).eval((EquationSystem.fromHashMap(vars))).get("**TEMP**"); 
+            d1 = ((TokenNode)getCSD().get(1)).eval((EquationSystem.fromHashMap(vars))).get("**TEMP**"); 
+            //its **TEMP** because every one TokenNode
+            //list starts with an empty function.
+        }
+        return token.TOKENOBJ.checkBounds(d0, d1);
+    }
 }

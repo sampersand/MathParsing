@@ -20,7 +20,7 @@ public class Token implements MathObject {
     protected Type type;
 
     public static enum Type { 
-        VAR, FUNC, PAREN, DELIM, COMP, OPER, UNI, BOOL
+        VAR, FUNC, PAREN, DELIM, ASSIGN
     }
 
     public static final Collection<String> PAREN_L = new Collection<String>()
@@ -69,16 +69,6 @@ public class Token implements MathObject {
     public boolean isFunc() {
         assert type != null;
         return type == Type.FUNC;
-    }
-
-    public boolean isGroup() {
-        assert type != null && val != null;
-        return type == Type.FUNC && val.isEmpty();
-    }
-
-    public boolean isOper() {
-        assert type != null;
-        return type == Type.OPER;
     }
 
     @Override

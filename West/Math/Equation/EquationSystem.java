@@ -304,7 +304,7 @@ public class EquationSystem implements MathObject, Iterable {
             return 0D;
         }
         isolate(toEval);
-        assert isolated();
+        assert isolated() : "I'm not isolated!:\n\n"+toFancyString();
         EquationNode n = equations().get(0).subEquations();
         HashMap<String, Double> evald = ((TokenNode)n.getCSD().get(0)).eval(copy());
         return checkBounds(evald, toEval);
@@ -340,7 +340,6 @@ public class EquationSystem implements MathObject, Iterable {
         for(Equation eq : equations){
             EquationNode eqn = eq.subEquations();
             if(!eqn.getCSD().get(0).isLone()){ //top node is comparator, second top is empty function, bottom is variable
-                System.out.println(eqn.getCSD().get(0));
                 return false;
             }
         }
