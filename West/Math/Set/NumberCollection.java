@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * in Statistics.
  * 
  * @author Sam Westerman
-  * @version 0.89
+  * @version 0.90
  * @since 0.72
  */
 public class NumberCollection<N extends Number> extends Collection<N> implements MathObject {

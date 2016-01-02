@@ -58,8 +58,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 int paren = 0;
                 int x = pPos + 1;
                 do{
-                    if(x >= pTokens.size() - 1)
-                        break;
                     if(Token.PAREN_L.contains(pTokens.get(x).val())) paren++;
                     if(Token.PAREN_R.contains(pTokens.get(x).val())) paren--;
                     x++;
@@ -193,7 +191,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     }
 
     public TokenNode getASD(){
-        assert size() != 0;
+        System.out.println(this.toFancyString());
+        assert size() != 0 : "size == 0 for '" + this+"'";
         if(token.isAssign())
             return this;
         return get(0).getASD();

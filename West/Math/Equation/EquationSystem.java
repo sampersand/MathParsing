@@ -16,7 +16,7 @@ import West.Math.Set.Node.TokenNode;
  * {@link CustomFunction}s (and the corresponding classes for them).
  * 
  * @author Sam Westerman
-  * @version 0.89
+  * @version 0.90
  * @since 0.1
  */
 public class EquationSystem implements MathObject, Iterable {
@@ -302,10 +302,9 @@ public class EquationSystem implements MathObject, Iterable {
             Print.printw("Trying to evaluated an EquationSystem with no equations! returning 0");
             return 0D;
         }
-        isolate(toEval);
+        copy().isolate(toEval);
         assert isolated() : "I'm not isolated!:\n\n"+toFancyString();
-        TokenNode n = equations().get(0).subEquations();
-        HashMap<String, Double> evald = n.eval(copy());
+        HashMap<String, Double> evald = equations().get(0).subEquations().eval(copy());
         return checkBounds(evald, toEval);
 
     }
@@ -335,7 +334,6 @@ public class EquationSystem implements MathObject, Iterable {
      * @return true if this is an {@link #isolate() isolated EquationSystem}.
      */
     public boolean isolated(){
-        // System.out.println("TODO: isolated");
         for(Equation eq : equations){
             TokenNode tkn = eq.subEquations();
             if(!tkn.getASD().get(0).isLone()){ //top node is comparator, second top is empty function, bottom is variable
@@ -478,10 +476,7 @@ public class EquationSystem implements MathObject, Iterable {
 
     @Override
     public EquationSystem copy() {
-        return new EquationSystem(new Collection<Equation>(){{
-            for(Equation eq : equations())
-                add(eq.copy());
-            }},functions, constraints == null ? null : constraints.copy());
+        return new EquationSystem(equations, functions, constraints == null ? null : constraints.copy());
     }
 
     /**

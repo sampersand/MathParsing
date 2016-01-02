@@ -53,7 +53,7 @@ public class InBuiltFunction extends Function {
             a -> a[0].compareTo(a[1]) != 0 ? 1D : 0D
             ));
 
-        put("compareTo", new InBuiltFunction("compareTo", "See Double.compare(A, B)", "compareTo(A, B)", 3,
+        put("compare", new InBuiltFunction("compare", "See Double.compare(A, B)", "compare(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(),
             a -> new Double(a[0].compareTo(a[1]))
             ));

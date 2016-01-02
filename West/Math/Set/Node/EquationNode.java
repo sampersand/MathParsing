@@ -12,7 +12,7 @@
 //  * TODO: JAVADOC
 //  * 
 //  * @author Sam Westerman
-//   * @version 0.89
+//   * @version 0.90
 //  * @since 0.75
 //  */
 // public class EquationNode extends Node<EquationNode.Comparator, EquationNode> implements MathObject{
