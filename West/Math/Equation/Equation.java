@@ -5,7 +5,6 @@ import West.Math.Equation.Function.InBuiltFunction;
 
 import West.Math.Set.Node.TokenNode;
 import West.Math.Set.Node.Node;
-import West.Math.Exception.TypeMisMatchException;
 import West.Math.Exception.NotDefinedException;
 
 import java.util.HashMap;
@@ -101,7 +100,7 @@ public class Equation implements MathObject {
      * @return An Collection of tokens, each representing a different chunk of the expression. 
      * @see Token
      */
-    public static Collection<Token> parseTokens(String rEq) throws TypeMisMatchException{
+    public static Collection<Token> parseTokens(String rEq) {
         rEq = fixNode(rEq.trim().replaceAll(" ","")); //remove all spaces
         Collection<Token> tokens = new Collection<Token>();
         String all = "", s;

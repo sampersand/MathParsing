@@ -4,7 +4,6 @@ import West.Math.MathObject;
 import West.Print;
 import static West.Math.Declare.*;
 import West.Math.Display.Grapher;
-import West.Math.Exception.TypeMisMatchException;
 import West.Math.Exception.NotDefinedException;
 import West.Math.Equation.Function.CustomFunction;
 import java.util.HashMap;
