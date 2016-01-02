@@ -1,7 +1,7 @@
 package West.Math.Equation.Function;
 
 import West.Math.MathObject;
-import West.Math.Print;
+import West.Print;
 import West.Math.Equation.EquationSystem;
 import West.Math.Set.Node.TokenNode;
 import West.Math.Exception.NotDefinedException;

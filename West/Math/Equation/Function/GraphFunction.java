@@ -1,6 +1,6 @@
 package West.Math.Equation.Function;
 
-import West.Math.Print;
+import West.Print;
 import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Equation;
 import West.Math.Set.Node.TokenNode;

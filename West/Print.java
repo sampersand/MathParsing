@@ -1,4 +1,4 @@
-package West.Math;
+package West;
 
 /**
  * A class that handles all printing to the console done by the West.Math.package.

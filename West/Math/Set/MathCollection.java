@@ -1,7 +1,7 @@
 package West.Math.Set;
 
 import West.Math.MathObject;
-import West.Math.Print;
+import West.Print;
 import West.Math.Exception.NotDefinedException;
 import West.Math.Equation.EquationSystem;
 import java.util.ArrayList;

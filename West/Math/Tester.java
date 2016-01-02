@@ -4,7 +4,7 @@ import West.Math.Exception.*;
 import West.Math.Equation.*;
 import West.Math.Equation.Function.*;
 import West.Math.Set.*;
-
+import West.*;
 
 /**
  * A tester class for the whole equation

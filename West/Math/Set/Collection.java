@@ -106,7 +106,6 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
     
     public void prepend(E obj){
         elements = new ArrayList<E>(){{add(obj); addAll(elements);}};
-        // elements.remove(pPos);
     }
 
     public Collection<E> empty(){
@@ -151,6 +150,7 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
                 add(i);
         }};
     }
+
     public boolean contains(Object obj){
         return elements.contains(obj);
     }
@@ -158,6 +158,7 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
     public Iterator<E> iterator() {
         return (Iterator<E>) new Iter();
     }
+
     private class Iter implements Iterator<E> {
         private int i = 0;
 
@@ -173,7 +174,7 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
 
     @Override
     public String toString() {
-        return "Collection: elements = " + elements;
+        return elements.toString();
     }
 
     @Override

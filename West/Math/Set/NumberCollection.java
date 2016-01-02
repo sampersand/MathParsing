@@ -1,7 +1,7 @@
 package West.Math.Set;
 
 import West.Math.MathObject;
-import West.Math.Print;
+import West.Print;
 import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Equation;
 import West.Math.Exception.NotDefinedException;

@@ -1,6 +1,5 @@
 West/Math/Declare.java
 West/Math/MathObject.java
-West/Math/Print.java
 West/Math/Tester.java
 West/Math/Display/DisplayComponent.java
 West/Math/Display/GraphComponents.java
@@ -25,6 +24,5 @@ West/Math/Set/Collection.java
 West/Math/Set/MathCollection.java
 West/Math/Set/NumberCollection.java
 West/Math/Set/SetTester.java
-West/Math/Set/Node/EquationNode.java
 West/Math/Set/Node/Node.java
 West/Math/Set/Node/TokenNode.java

@@ -1,7 +1,7 @@
 package West.Math.Display.Calculator;
 
 import West.Math.MathObject;
-import West.Math.Print;
+import West.Print;
 import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Function.CustomFunction;
 import West.Math.Exception.NotDefinedException;

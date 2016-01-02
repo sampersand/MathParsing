@@ -1,7 +1,7 @@
 package West.Math.Equation;
 
 import West.Math.MathObject;
-import West.Math.Print;
+import West.Print;
 import static West.Math.Declare.*;
 import West.Math.Display.Grapher;
 import West.Math.Exception.TypeMisMatchException;

@@ -6,10 +6,11 @@ import West.Math.Equation.Token;
 import West.Math.Equation.EquationSystem;
 import java.util.HashMap;
 import java.util.ArrayList;
-
+import West.Unused;
 /**
  * TODO: JAVADOC
  * LOL i'm going to have to figure out how to spell 'token' correctly XD
+ * There is a reason this isn't merge with {@link TokenNode}. It's incase I want to use this later on in another project
  * 
  * @author Sam Westerman
   * @version 0.90
@@ -20,10 +21,10 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
 
     protected T token; // its an object so functions can also use this
 
-    public Node(){
-        super();
-        token = null;
-    }
+    // public Node(){
+    //     super();
+    //     token = null;
+    // }
 
     public Node(ArrayList<Node<?, ?>> pElements){
         super();
@@ -46,23 +47,6 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         return token;
     }
 
-
-    public Node<T, N> addN(N pN){ // add Node
-        super.add(pN);
-        // new Node<Object, N>(){{
-        //     add(pN);
-        // }});
-        return this;
-    }
-
-    public Node<T, N> getN(int pos){ // get Node
-        return (Node<T, N>)super.get(pos);
-    }
-
-    public void setN(int pos, N pN){ // set Node
-        super.set(pos, pN);
-    }
-
     public Node<T, N> addAllN(ArrayList<Node<?, ? extends Node>> pNs){ // add Node
         assert pNs != null;
         if(pNs.size() == 0)
@@ -71,6 +55,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
             addE(n);
         return this;
     }
+
     public Node<T, N> setToken(T pToken){
         token = pToken;
         return this;
@@ -91,6 +76,8 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         return size() == 0 ? 1 : 1 + get(0).depthS();
     }
 
+
+    @Unused
     public Node getD(int i) {
         if(i <= 0 || size() == 0) {
             return this;
@@ -107,18 +94,18 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         }
     }
 
-    public void addD(int i, Node<?, ?> n) {
-        assert n != null : "Cannot addDepth null Nodes!";
-        if(i <= 0 || size() <= 0){
-            addE(n);
-        } else {
-            if(i == 2 && get(-1).isFinal()) {
-                addE(n);
-            } else {
-                getN(size() - 1).addD(i - 1, n);
-            }
-        }
-    }
+    // public void addD(int i, Node<?, ?> n) {
+    //     assert n != null : "Cannot addDepth null Nodes!";
+    //     if(i <= 0 || size() <= 0){
+    //         addE(n);
+    //     } else {
+    //         if(i == 2 && get(-1).isFinal()) {
+    //             addE(n);
+    //         } else {
+    //             get(size() - 1).addD(i - 1, n);
+    //         }
+    //     }
+    // }
 
     public void setD(int i, int p, Node<?, ?> n) {
         assert n != null : "Cannot setDepth null Nodes!";

@@ -100,11 +100,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     }
 
     @Override
-    public TokenNode getD(int i) {
-        return (TokenNode)super.getD(i);
-    }
-
-    @Override
     public String toString(){
         return toExprString().replaceAll("^\\((.*)\\)$", "$1");
     }
@@ -115,25 +110,25 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             return this;
         return get(0).getASD();
     }
-    @Override
-    public void addD(int i, Node pN) {
-        assert pN != null : "Cannot addDepth null Nodes!";
-        assert pN instanceof TokenNode;
-        TokenNode n = (TokenNode)pN;
-        if(i <= 0 || size() <= 0){
-            assert !get(-1).token().val().isEmpty(); //just for testing to see if it ever happens
-            add(n);
-        } else {
-            if(i == 2 && get(-1).isFinal()) {
-                assert !get(-1).token().val().isEmpty();//just for testing to see if it ever happens
-                add(n);
-            } else {
-                assert !get(-1).token().val().isEmpty();//just for testing to see if it ever happens
-                get(-1).addD(i - 1, n);
-            }
-        }
+    // @Override
+    // public void addD(int i, Node pN) {
+    //     assert pN != null : "Cannot addDepth null Nodes!";
+    //     assert pN instanceof TokenNode;
+    //     TokenNode n = (TokenNode)pN;
+    //     if(i <= 0 || size() <= 0){
+    //         assert !get(-1).token().val().isEmpty(); //just for testing to see if it ever happens
+    //         add(n);
+    //     } else {
+    //         if(i == 2 && get(-1).isFinal()) {
+    //             assert !get(-1).token().val().isEmpty();//just for testing to see if it ever happens
+    //             add(n);
+    //         } else {
+    //             assert !get(-1).token().val().isEmpty();//just for testing to see if it ever happens
+    //             get(-1).addD(i - 1, n);
+    //         }
+    //     }
 
-    }
+    // }
 
     @Override
     public void setD(int i, int p, Node pN) {
@@ -144,15 +139,15 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             assert size() > 0;
             assert size() > p && (p >= 0 || p == -1);
             if(p == - 1) {
-                setN(size() - 1,n);
+                set(size() - 1,n);
             } else {
-                setN(p, n);
+                set(p, n);
             }
         } else {
             assert !get(-1).isFinal(); //shouldnt happen, methinks.
             if(((TokenNode)get(-1)).token().val().isEmpty()) {
                 assert false; //just for testing to see if it ever happens
-                setN(p, n);
+                set(p, n);
             } else {
                 get(-1).setD(i - 1, p, n);
             }
