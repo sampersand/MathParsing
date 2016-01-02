@@ -18,6 +18,46 @@ public class InBuiltFunction extends Function {
      * names.
      */    
     public static HashMap<String, InBuiltFunction> FUNCTIONS = new HashMap<String, InBuiltFunction>() {{
+
+        //Equality testers
+        put(">", new InBuiltFunction(">", "Checks if 'A' > 'B'", ">(A, B)", 3,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> a[0].compareTo(a[1]) == 1 ? 1D : 0D
+            ));
+
+        put("<", new InBuiltFunction("<", "Checks if 'A' < 'B'", "<(A, B)", 3,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> a[0].compareTo(a[1]) == -1 ? 1D : 0D
+            ));
+
+        put("≣", new InBuiltFunction("≣", "Checks if 'A' == 'B'", "≣(A, B)", 3,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> a[0].compareTo(a[1]) == 0 ? 1D : 0D
+            ));
+
+        put("≥", new InBuiltFunction("≥", "Checks if 'A' ≥ 'B'", "≥(A, B)", 3,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> a[0].compareTo(a[1]) != -1 ? 1D : 0D
+            ));
+
+        put("≤", new InBuiltFunction("≤", "Checks if 'A' ≤ 'B'", "≤(A, B)", 3,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> a[0].compareTo(a[1]) != 1 ? 1D : 0D
+            ));
+
+        put("≠", new InBuiltFunction("≠", "Checks if 'A' ≠ 'B'", "≠(A, B)", 3,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> a[0].compareTo(a[1]) != 0 ? 1D : 0D
+            ));
+
+        put("compareTo", new InBuiltFunction("compareT", "See Double.compare(A, B)", "compareTo(A, B)", 3,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> a[0].compareTo(a[1]) != 0 ? 1D : 0D
+            ));
+
+
+
+        // Standard math operators
         put("+", new InBuiltFunction("+", "Adds 'A' to 'B'", "+(A, B)", 0, 
             new Collection.Builder<Integer>().add(2).build(),
             a -> a[0] + a[1]
@@ -43,6 +83,7 @@ public class InBuiltFunction extends Function {
             a -> Math.pow(a[0],a[1])
             ));
 
+        //Trigonometric functions
         put("sin", new InBuiltFunction("sin", "sin of 'A'", "sin(A)", -1,
             new Collection.Builder<Integer>().add(1).build(),
             a -> Math.sin(a[0])
@@ -103,6 +144,7 @@ public class InBuiltFunction extends Function {
             a -> Math.atan(a[0])
             ));
 
+        //Misc math functions
         put("abs", new InBuiltFunction("abs", "absolute value of 'A'", "abs(A)", -1,
             new Collection.Builder<Integer>().add(1).build(),
             a -> Math.abs(a[0])
@@ -227,6 +269,11 @@ public class InBuiltFunction extends Function {
         put("/", InBuiltFunction.FUNCTIONS.get("/"));
         put("^", InBuiltFunction.FUNCTIONS.get("^"));
     }};
+
+    ///** The name of the {@link #inverse()} of this funtion. The reason it's not an actual function is because of 
+    // * FUNCTIONS - you cannot "get" the inverse function if it hasn't been declared yet.
+    // */
+    // String inverse;
 
     /**
      * Default constructor. Instatiates {@link #name}, {@link #help}, and {@link #syntax} as empty strings.

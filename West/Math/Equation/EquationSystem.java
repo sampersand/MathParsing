@@ -339,8 +339,10 @@ public class EquationSystem implements MathObject, Iterable {
         // System.out.println("TODO: isolated");
         for(Equation eq : equations){
             EquationNode eqn = eq.subEquations();
-            if(!eqn.getCSD().get(0).isLone()) //top node is comparator, second top is empty function, bottom is variable
+            if(!eqn.getCSD().get(0).isLone()){ //top node is comparator, second top is empty function, bottom is variable
+                System.out.println(eqn.getCSD().get(0));
                 return false;
+            }
         }
         return true;
     }

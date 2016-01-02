@@ -196,9 +196,11 @@ public class Equation implements MathObject {
     
 
     public static String isBool(String s){
+        // return null;
         return isInLast(s, ((HashMap<String,Object>)CCHARS.get("bool")).keySet());
     }
     public static String isComp(String s){
+        // return null;
         return isInLast(s, ((HashMap<String,Object>)CCHARS.get("comp")).keySet());
     }
 

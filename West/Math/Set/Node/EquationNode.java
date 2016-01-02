@@ -39,17 +39,17 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
 
     public static final HashMap<String, Comparator> COMPARATOR = new HashMap<String, Comparator>()
     {{
-       put("<=", new Comparator("<=", (d1, d2) -> d1 <= d2));
-       put(">=", new Comparator(">=", (d1, d2) -> d1 >= d2));
-       put("!=", new Comparator("!=", (d1, d2) -> !d1.equals(d2)));
-       put("<",  new Comparator("<",  (d1, d2) -> d1 < d2));
-       put(">",  new Comparator(">",  (d1, d2) -> d1 > d2));
+       // put("<=", new Comparator("<=", (d1, d2) -> d1 <= d2));
+       // put(">=", new Comparator(">=", (d1, d2) -> d1 >= d2));
+       // put("!=", new Comparator("!=", (d1, d2) -> !d1.equals(d2)));
+       // put("<",  new Comparator("<",  (d1, d2) -> d1 < d2));
+       // put(">",  new Comparator(">",  (d1, d2) -> d1 > d2));
        put("=",  new Comparator("=",  (d1, d2) -> d1.equals(d2)));
-       put("≣",  new Comparator("≣",  (d1, d2) -> d1.equals(d2))); //from here down are backups
-       put("≠",  new Comparator("≠",  (d1, d2) -> !d1.equals(d2)));
-       put("≥",  new Comparator("≥",  (d1, d2) -> d1 >= d2));
-       put("≤",  new Comparator("≤",  (d1, d2) -> d1 <= d2));
-       // put(null, null);
+       // put("≣",  new Comparator("≣",  (d1, d2) -> d1.equals(d2))); //from here down are backups
+       // put("≠",  new Comparator("≠",  (d1, d2) -> !d1.equals(d2)));
+       // put("≥",  new Comparator("≥",  (d1, d2) -> d1 >= d2));
+       // put("≤",  new Comparator("≤",  (d1, d2) -> d1 <= d2));
+       // // put(null, null);
    }};
 
    public static boolean test(Double a, Double b){
@@ -57,13 +57,13 @@ public class EquationNode extends Node<EquationNode.Comparator, EquationNode> im
    }
     public static final HashMap<String, Comparator> BOOLEANS = new HashMap<String, Comparator>()
     {{
-      put("||", new Comparator("||", (d1, d2) -> d1.equals(1D) || d2.equals(1D)));
-      put("&&", new Comparator("&&", (d1, d2) -> d1.equals(1D) && d2.equals(1D)));
-      put("^^", new Comparator("^^", (d1, d2) -> d1.equals(1D) ^  d2.equals(1D)));
-      put("∨", new Comparator("∨", (d1, d2) -> d1.equals(1D) ||  d2.equals(1D))); //backup, OR
-      put("∧", new Comparator("∧", (d1, d2) -> d1.equals(1D) &&  d2.equals(1D))); //backup, AND
-      put("⊻", new Comparator("⊻", (d1, d2) -> d1.equals(1D) ^  d2.equals(1D))); //backup, XOR
-      put("", new Comparator("", (d1, d2) -> true)); //this one should just say go on to the next one
+      // put("||", new Comparator("||", (d1, d2) -> d1.equals(1D) || d2.equals(1D)));
+      // put("&&", new Comparator("&&", (d1, d2) -> d1.equals(1D) && d2.equals(1D)));
+      // put("^^", new Comparator("^^", (d1, d2) -> d1.equals(1D) ^  d2.equals(1D)));
+      // put("∨", new Comparator("∨", (d1, d2) -> d1.equals(1D) ||  d2.equals(1D))); //backup, OR
+      // put("∧", new Comparator("∧", (d1, d2) -> d1.equals(1D) &&  d2.equals(1D))); //backup, AND
+      // put("⊻", new Comparator("⊻", (d1, d2) -> d1.equals(1D) ^  d2.equals(1D))); //backup, XOR
+      // put("", new Comparator("", (d1, d2) -> true)); //this one should just say go on to the next one
     }};
 
     public EquationNode(){
