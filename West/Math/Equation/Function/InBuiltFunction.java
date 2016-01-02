@@ -20,9 +20,9 @@ public class InBuiltFunction extends Function {
 
     public static Collection<String> ASSIGNMENT = new Collection.Builder<String>().add("*=").add("⇒").add("→").build();
     public static HashMap<String, InBuiltFunction> FUNCTIONS = new HashMap<String, InBuiltFunction>() {{
-        put("=", new InBuiltFunction("=","","", -1,
-            new Collection.Builder<Integer>().add(1).build(),
-            a -> a[0]
+        put("=", new InBuiltFunction("=","Sets 'A' to 'B'","=(A, B)", 4,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> null //doesnt matter
             ));
         put(">", new InBuiltFunction(">", "Checks if 'A' > 'B'", ">(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(),

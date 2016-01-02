@@ -56,6 +56,7 @@ public class Equation implements MathObject {
 
     public Equation add(String pStr){
         subEquations.add(TokenNode.generateMasterNode(parseTokens(pStr)));
+        subEquations = subEquations.removeExtraFuncs();
         return this;
     }
 

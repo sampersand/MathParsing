@@ -27,13 +27,13 @@ public class Tester {
             // eqsys.add("=(y,+(1,+(sin(/(+(9.45,^(^(e,pi),-(ln(pi),^(^(pi,-(0,e)),^(e,pi))))),2)),^(pi,-(0,e)))))");
 
                 //FIXED SIN THING
-            // eqsys.add("y = +(1,+(sin(alpha),c))");
-            // eqsys.add("alpha = /(+(9.45,^(x,theta)),2)");
-            // eqsys.add("c = ^(pi,-(0,e))");
-            // eqsys.add("theta = -(ln(pi),^(c,x)) ");
-            // eqsys.add("x = ^(e,pi)");
+            eqsys.add("=(y, +(1,+(sin(alpha),c)))");
+            eqsys.add("=(alpha, /(+(9.45,^(x,theta)),2))");
+            eqsys.add("=(c, ^(pi,-(0,e)))");
+            eqsys.add("=(theta, -(ln(pi),^(c,x)))");
+            eqsys.add("=(x, ^(e,pi))");
 
-            eqsys.add("=(y,0)");
+            // eqsys.add("=(y,2)");
             // eqsys.add("y = ≥(0, compareTo(a, b))");
             // eqsys.add("a = 1");
             // eqsys.add("b = 1");

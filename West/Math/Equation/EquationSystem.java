@@ -385,7 +385,7 @@ public class EquationSystem implements MathObject, Iterable {
             return Double.NaN;
         if(constraints != null)
             for(Equation eq : constraints.equations())
-                if(!((TokenNode)eq.subEquations().get(0)).isInBounds(pVars, toEval))
+                if(!eq.subEquations().get(0).isInBounds(pVars, toEval))
                     return Double.NaN;
 
         return pVars.get(toEval);
