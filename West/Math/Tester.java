@@ -22,9 +22,9 @@ public class Tester {
     public static void main(String[] args) throws NotDefinedException {
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
-                //ONE EQUATION SIN THING
-            // eqsys.add("y = 1 + sin((9.45 + (e^pi) ^ (ln(pi) - pi^(-e) ^ (e^pi))) / 2) +pi^(-e)");
-            // eqsys.add("=(y,+(1,+(sin(/(+(9.45,^(^(e,pi),-(ln(pi),^(^(pi,-(0,e)),^(e,pi))))),2)),^(pi,-(0,e)))))");
+            //FIXED
+
+            // eqsys.add("=(y,+(1,+(sin(/(+(9.45,^(^(e,pi),-(ln(pi),^(-(pi,e),^(e,pi))))),2)),-(pi,e)))))");
 
                 //FIXED SIN THING
             // eqsys.add("=(y, +(1,+(sin(alpha),c)))");
@@ -33,8 +33,22 @@ public class Tester {
             // eqsys.add("=(theta, -(ln(pi),^(c,x)))");
             // eqsys.add("=(x, ^(e,pi))");
 
-            eqsys.add("=(y, ^(x, compare(x, 0))");
-            eqsys.addConstraint("⊻(>(x, y),<(0, x))");
+            // eqsys.add("=(y, ^(x, compare(x, 0))");
+            // eqsys.addConstraint("⊻(>(x, y),<(0, x))");
+
+
+            eqsys.add("=(y, *(x0, *(x1, *(x2, *(x3, x4)))))");
+            eqsys.add("=(x0, *(x, c)");
+            eqsys.add("=(x1, *(-(x, 8), c)");
+            eqsys.add("=(x2, *(-(x, 4), c)");
+            eqsys.add("=(x3, *(+(x, 8), c)");
+            eqsys.add("=(x4, *(+(x, 4), c)");
+            eqsys.add("=(c, /(1,4))");
+
+            //UNFIXED
+
+            // eqsys.add("y = 1 + sin((9.45 + (e^pi) ^ (ln(pi) - (pi - e) ^ (e^pi))) / 2) + (pi - e)");
+
                 //SIN THING
             // eqsys.add("y = 1 + sin(alpha) + c");
             // eqsys.add("alpha = (9.45 + x ^ theta) / 2");

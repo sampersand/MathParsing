@@ -144,11 +144,15 @@ public class DisplayComponent extends JLabel implements MathObject {
             double cStep = grapher.components().cStep();
             for(double x = dispBounds[0]; x < dispBounds[2]; x += cStep) {
                 drawl(x,
-                      equationsys.eval("y",new EquationSystem().add("=(x," + x + ")")), 
+                      equationsys.eval("y",new EquationSystem().add("=(x, " +x+ ")")), 
                       // equationsys.eval("y",new EquationSystem().add("=(x," + (x < 0 ? "-(0, " + -1*x+ ")" : x)+")")), 
                       x + cStep, //TODO: CHANGE THIS BACK WHEN OPERATORS ARE WORKING NORMALLY
-                      equationsys.eval("y", new EquationSystem().add("=(x, " +
-                            (x + cStep < 0 ? "-(0, " + (x + cStep) + ")": x + cStep)+")")));
+                      equationsys.eval("y", new EquationSystem().add("=(x, " + (x + cStep)+")")));
+                      // equationsys.eval("y",new EquationSystem().add("=(x," + (x < 0 ? "-(0, " + (-1*x) + ")" : x) + ")")), 
+                      // // equationsys.eval("y",new EquationSystem().add("=(x," + (x < 0 ? "-(0, " + -1*x+ ")" : x)+")")), 
+                      // x + cStep, //TODO: CHANGE THIS BACK WHEN OPERATORS ARE WORKING NORMALLY
+                      // equationsys.eval("y", new EquationSystem().add("=(x, " +
+                      //       (x + cStep < 0 ? "-(0, " + (x + cStep) + ")": x + cStep)+")")));
             }
         }
         else {
