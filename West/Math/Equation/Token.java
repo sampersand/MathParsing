@@ -1,7 +1,6 @@
 package West.Math.Equation;
 
 import West.Math.MathObject;
-import static West.Math.Declare.*;
 import West.Math.Set.Collection;
 import West.Math.Equation.Function.InBuiltFunction;
 
@@ -47,8 +46,8 @@ public class Token implements MathObject {
     }
 
     public Token(String pVal, Type pType) {
-        declP(pVal != null, "Cannot instatiate a Token with a null pVal!");
-        declP(pType != null, "Cannot instatiate a Token with a null pType!");
+        assert pVal != null : "Cannot instatiate a Token with a null pVal!";
+        assert pType != null :"Cannot instatiate a Token with a null pType!";
         val = pVal;
         type = pType;
     }

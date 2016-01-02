@@ -247,34 +247,6 @@ public class EquationSystem implements MathObject, Iterable {
         return equations;
     }
 
-    /**
-     * Sets {@link #equations} to <code>pEqs</code>, and then returns this class.
-     * @param pEqs      The Collection of {@link Equation}s to set {@link #equations} to.
-     * @return This class after {@link #equations} is set to <code>pEqs</code>.
-     */
-    public EquationSystem setEquations(Collection<Equation> pEqs) {
-        if(pEqs == null){
-            Print.printi("pEqs is null; not setting 'equations' to it.");
-            return this;
-        }
-        equations = pEqs;
-        return this;
-    }
-
-
-    /**
-     * Sets {@link #functions} to <code>pFuncs</code>, and then returns this class.
-     * @param pFuncs      The Collection of {@link Function}s to set {@link #functions} to.
-     * @return This class after {@link #functions} is set to <code>pFuncs</code>.
-     */
-    public EquationSystem setFunctions(HashMap<String, CustomFunction> pFuncs) {
-        if(pFuncs == null){
-            Print.printi("pFuncs is null; not setting 'equations' to it.");
-            return this;
-        }
-        functions = pFuncs;
-        return this;
-    }
 
     /**
      * Evaluates the variable <code>toEval</code>, using {@link EquationSystem#equations() the equations of pEqSys}

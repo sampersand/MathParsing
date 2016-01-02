@@ -83,7 +83,7 @@ public class Equation implements MathObject {
         for(String trig : trigf) {
             pEq = pEq.replaceAll("()" + trig + "(?!h)([A-za-z]+)","$1" + trig + "($2)");
         }
-
+        //TODO: fixNODE
         //# = number    A = letter   & = BOTH
         // pEq = pEq.replaceAll("\\-\\(", "*(-1,"); // -( → -1 * (
         // pEq = pEq.replaceAll("^(\\w)(.)\\-", "$1$20-"); // THIS IS JSUT THROWN TOGETHER
@@ -121,34 +121,27 @@ public class Equation implements MathObject {
                 if(isInLast(s,(Collection<String>)CCHARS.get("paren_r")) != null && !replLast(all, repl).isEmpty())
                     tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
                 tokens.add(new Token(repl, Token.Type.PAREN));
-            } else{
-                // if(isAssign(all) != null){
-                //     repl = isAssign(all);
-                //     if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
-                //     tokens.add(new Token(isAssign(all), Token.Type.ASSIGN));
-                // } else 
-                if(isDelim(all) != null){
-                    repl = isDelim(all);
-                    if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
-                    tokens.add(new Token(isDelim(all), Token.Type.DELIM));
-                } else
-                    assert false;
+            } else if(isDelim(all) != null){
+                repl = isDelim(all);
+                if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                tokens.add(new Token(isDelim(all), Token.Type.DELIM));
+            } else {
+                assert false;
             }
+
             all = "";
         }
         return tokens;
     }
+
     private static String replLast(String str, String last){
         return str.replaceAll("\\Q" + last + "\\E$", "");
     }
+
     public static boolean isControlChar(String s){
-        return isParen(s) != null || isDelim(s) != null || isAssign(s) != null;
+        return isParen(s) != null || isDelim(s) != null;
     }
     
-    public static String isAssign(String s){
-        return isInLast(s, (Collection<String>)CCHARS.get("assign"));
-    }
-
     public static String isDelim(String s){
         return isInLast(s, (Collection<String>)CCHARS.get("delim"));
     }
@@ -160,7 +153,7 @@ public class Equation implements MathObject {
         return isInLast(s, (Collection<String>)CCHARS.get("paren_r"));
     }
     private static String isInLast(String pStr, java.util.Collection<String> pList){
-        if(pStr.isEmpty())
+        if(pStr.isEmpty()) //just makes it faster so it doesnt have to iterate thru everything
             return null;
         for(String s : pList){
             if(pStr.replaceAll("\\Q" + s + "\\E$","").length() != pStr.length())
@@ -195,19 +188,14 @@ public class Equation implements MathObject {
         ret += indent(idtLvl + 2) + subEquations.token() + "\n";
         ret += indent(idtLvl + 1) + "Raw Equation:\n" + indentE(idtLvl + 2) + exprstoStr() + "\n";
         ret += indent(idtLvl + 1) + "Expressions:\n";
-        for(Node<?, ?> tkn : subEquations){
+        for(Node<?, ?> tkn : subEquations)
             ret += ((TokenNode)tkn).toFullString(idtLvl + 2) + "\n";
-            // ret += "\n" + indent(idtLvl + 3) + "Comparator:" + "\n" + indentE(idtLvl + 4) + cc.token();
-            // ret += "\n" + indent(idtLvl + 3) + "TokenNodes:";
-            // for(TokenNode n : cc)
-            //     ret += "\n" + n.toFullString(idtLvl + 4);
-        }
         return ret + indentE(idtLvl + 2) + "\n" + indentE(idtLvl + 1);
     }
 
     @Override
     public Equation copy(){
-        return new Equation("" + subEquations.token()).add(subEquations);
+        return new Equation(subEquations.token().toString()).add(subEquations);
     }
 
     @Override
