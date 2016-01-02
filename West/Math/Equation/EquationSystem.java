@@ -428,7 +428,7 @@ public class EquationSystem implements MathObject, Iterable {
         ret += "\n" + indent(idtLvl + 1) + "Constraints:";
         if(constraints != null)
             ret += "\n" + constraints.toFancyString(idtLvl + 2);
-        ret += "\n" + indentE(idtLvl + 2);
+        ret += "\n" + indentE(idtLvl + 2) + "\n" + indentE(idtLvl + 1);
 
         return ret;
     }

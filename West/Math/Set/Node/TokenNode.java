@@ -61,13 +61,13 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             } 
             pPos++;
         }
-        System.out.println("node to fancy string:" +node.toFancyString());
         return new Object[]{pPos, node};
     }
 
     protected TokenNode completeNodes() {
-        if(true)
-            return this;
+        // THE REST OF THIS FUNCTION IS ONLY NEEDED WHEN OPERATORS ARE WORKING NORMALLY, HOWEVER, THEY ARENT ATM.
+        return this;
+        /*
         if(isFinal())
             return this;
         TokenNode node = copy();
@@ -103,16 +103,14 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 }
 
             } else if(n.token.isFunc()) {
-                System.out.println("n is func:\n"+n.toFancyString());
-                System.out.println("e with n:\n"+e.toFancyString());
                 e.addD(e.depth(), n.completeNodes());
             } else {
                 throw new NotDefinedException("Cannot complete the node '" + n + "' because there is no known way to!");
             }
             i++;
         }
-        System.out.println("e to fancy string:\n" + e.toFancyString());
         return e;
+        */
     }
 
     private TokenNode fixNodes() {
