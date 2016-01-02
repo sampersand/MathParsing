@@ -3,9 +3,8 @@ package West.Math.Equation.Function.CustomFunctions;
 import West.Math.Equation.EquationSystem;
 import West.Math.Set.Node.TokenNode;
 import West.Math.Equation.Function.CustomFunction;
-
-import West.Math.Exception;
 import java.util.HashMap;
+
 public class f extends CustomFunction{
     public String help() {
         return "Adds up the reciprocal of each argument";

@@ -62,11 +62,12 @@ public class SetTester {
                     }
                 }
                 x++;
-                bestfit[x] = NumberCollection.from(ar1).R2(NumberCollection.from(ar2));
-                System.out.println(NumberCollection.from(ar1).R2(NumberCollection.from(ar2) * 100 + "= R2 for " + header.get(h1) + " vs " + header.get(h2)));
+                bestfit[x] = new NumberCollection().addAllE(ar1).R2(new NumberCollection().addAllE(ar2));
+System.out.println(new NumberCollection().addAllE(ar1).R2(new NumberCollection().addAllE(ar2))    * 100 + "= R2 for " + header.get(h1) + " vs " + header.get(h2));
             }
         }
-        bestfit = NumberCollection.from(bestfit).sort().elements().toArray();
+        if(true) throw new NullPointerException("TODO: THIS");
+        // bestfit = (Double[])new NumberCollection().addAllE(bestfit).sort().elements().toArray();
         for(double d : bestfit)
             System.out.println(d*100);
 

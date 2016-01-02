@@ -57,7 +57,17 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
 
 
     }
+    @Override
+    public NumberCollection<N> addAllE(Object pObj){
+        addAll(pObj);
+        return this;
+    }
 
+    @Override
+    public NumberCollection<N> addE(N pObj){
+        add(pObj);
+        return this;
+    }
     public double pred(double pVal) { //might not have to be double, not sure.
         return pred(pVal, linReg());
     }
