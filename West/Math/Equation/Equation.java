@@ -55,9 +55,7 @@ public class Equation implements MathObject {
     }
 
     public Equation add(String pStr){
-        Collection<Token> tokens = parseTokens(pStr);
-        TokenNode tkn = segmentTokens(tokens);
-        subEquations.add(tkn);
+        subEquations.add(TokenNode.generateMasterNode(parseTokens(pStr)));
         return this;
     }
 
@@ -71,29 +69,6 @@ public class Equation implements MathObject {
      */
     public TokenNode subEquations() {
         return subEquations;
-    }
-
-   private TokenNode segmentTokens(Collection<Token> tokens){
-        // TokenNode tkn = new TokenNode(TokenNode.getBool(""));
-        // Collection<Token> prev = new Collection<Token>();
-        // for(Token t : tokens){
-        //     if(isBool(t.val()) != null){
-        //         tkn.addCD(TokenNode.generateMasterNode(prev));
-        //         tkn.addED(new TokenNode(TokenNode.getBool(t.val())));
-        //         prev.empty();
-        //     } else if(isComp(t.val()) != null){
-        //         tkn.addBD(new TokenNode(TokenNode.generateMasterNode(prev)).
-        //                                      setToken(TokenNode.getComp(t.val())));
-        //         prev.empty();
-        //     } else {
-                // prev.add(t);
-        //     }
-        // }
-        // if(prev.size() != 0)
-            // tkn.addCD(TokenNode.generateMasterNode(prev));
-        System.out.println("TODO: REMOVE SEGMENTTOKENS");
-        return TokenNode.generateMasterNode(tokens);//tkn;
-
     }
 
     /**
@@ -148,11 +123,12 @@ public class Equation implements MathObject {
                     tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
                 tokens.add(new Token(repl, Token.Type.PAREN));
             } else{
-                if(isAssign(all) != null){
-                    repl = isAssign(all);
-                    if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
-                    tokens.add(new Token(isAssign(all), Token.Type.ASSIGN));
-                } else if(isDelim(all) != null){
+                // if(isAssign(all) != null){
+                //     repl = isAssign(all);
+                //     if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                //     tokens.add(new Token(isAssign(all), Token.Type.ASSIGN));
+                // } else 
+                if(isDelim(all) != null){
                     repl = isDelim(all);
                     if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
                     tokens.add(new Token(isDelim(all), Token.Type.DELIM));

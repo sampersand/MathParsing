@@ -144,7 +144,7 @@ public abstract class Function implements MathObject {
     public HashMap<String,Double> exec(final EquationSystem pEqSys, TokenNode pNode) {
         Object[] rargs = evalNode(pEqSys, pNode);
         Double[] args = (Double[])rargs[0];
-        assert argsLength.contains(args.length) || argsLength.contains(-1);
+        assert argsLength.contains(args.length) || argsLength.contains(-1) : argsLength + "!=" + args.length;
         HashMap<String, Double> rethm = (HashMap<String, Double>)rargs[1];
         // assert false :"\n" + rethm + "\n"+ pNode.toString() + "\n" + pNode.toFancyString() + " \nargs:" + args[0] + 
         // "," + args[1] + "\nthis:\n"+toFancyString;

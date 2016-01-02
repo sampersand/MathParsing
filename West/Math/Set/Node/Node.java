@@ -179,7 +179,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         if(token instanceof Token){
             Token tok = (Token)token;
             ret += tok.val();
-            if(tok.type() == Token.Type.FUNC || tok.type() == Token.Type.ASSIGN){
+            if(tok.type() == Token.Type.FUNC){
                 ret += "(";
                 for(Node n : this){
                     ret += n.toExprString() + ", ";

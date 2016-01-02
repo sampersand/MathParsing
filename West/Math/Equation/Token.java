@@ -4,6 +4,7 @@ import West.Math.MathObject;
 import static West.Math.Declare.*;
 import West.Math.Exception.NotDefinedException;
 import West.Math.Set.Collection;
+import West.Math.Equation.Function.InBuiltFunction;
 
 /**
  * A single item from an equation String.
@@ -20,7 +21,7 @@ public class Token implements MathObject {
     protected Type type;
 
     public static enum Type { 
-        VAR, FUNC, PAREN, DELIM, ASSIGN
+        VAR, FUNC, PAREN, DELIM
     }
 
     public static final Collection<String> PAREN_L = new Collection<String>()
@@ -66,11 +67,9 @@ public class Token implements MathObject {
         return type == Type.VAR;
     }
 
-    public boolean isAssign() {
-        assert type != null;
-        return type == Type.ASSIGN;
+    public boolean isAssign(){
+        return InBuiltFunction.FUNCTIONS.containsKey(val);
     }
-
     public boolean isFunc() {
         assert type != null;
         return type == Type.FUNC;

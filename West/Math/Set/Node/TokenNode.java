@@ -38,25 +38,31 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         assert checkForNullTokens(pTokens);
         TokenNode node = copy();
         while(pPos < pTokens.size()) {
-            System.out.println(node);
             Token t = pTokens.get(pPos);
             assert t != null : "this should have been caught earlier.";
-            if (t.isAssign()){
-                Collection<Token> passTokens = new Collection<Token>();
-                for(Token tk : pTokens.subList(pPos + 1, -1))
-                    passTokens.add(tk);
-                Object[] temp = new TokenNode().condeseNodes(0, passTokens);
-                pPos += (int)temp[0];
-                TokenNode nod = (TokenNode)temp[1];
-                if(!nod.isFinal())
-                    nod = (TokenNode)nod.get(0);
-                node.add((TokenNode)new TokenNode(t).addE(node.pop(-1)).addE(nod));
-            } else if(t.isConst()){// || t.isOper()
+            // if (t.isAssign()){
+            //     Collection<Token> passTokens = new Collection<Token>();
+            //     for(Token tk : pTokens.subList(pPos + 1, -1))
+            //         passTokens.add(tk);
+            //     Object[] temp = new TokenNode().condeseNodes(0, passTokens);
+            //     pPos += (int)temp[0];
+            //     TokenNode nod = (TokenNode)temp[1];
+            //     if(!nod.isFinal())
+            //         nod = (TokenNode)nod.get(0);
+            //     assert node.size() == 1 : "node size != 1\n" + node.toFancyString() + "\nnod:\n"+nod.toFancyString();
+            //     node = (TokenNode)new TokenNode(t).addE(node.pop(-1)).addE(nod);
+            // } else 
+            if(t.isConst()){// || t.isOper()
                 node.add(new TokenNode(t));
             } else if(t.isFunc()) {
+                System.out.println(pTokens);
                 int paren = 0;
                 int x = pPos + 1;
                 do{
+                    if(x >= pTokens.size() - 1){
+                        System.out.println("x is pTokens.size()");
+                        break;
+                    }
                     if(Token.PAREN_L.contains(pTokens.get(x).val())) paren++;
                     if(Token.PAREN_R.contains(pTokens.get(x).val())) paren--;
                     x++;
@@ -70,10 +76,15 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             } 
             pPos++;
         }
-        System.out.println("node:\n"+node);
-        return new Object[]{pPos, node};
+        return new Object[]{pPos, node.removeExtraFuncs()};
     }
 
+    public TokenNode removeExtraFuncs(){
+        if(!token.val().isEmpty())
+            return this;
+        assert size() == 1;
+        return ((TokenNode)get(0)).removeExtraFuncs();
+    }
     protected TokenNode completeNodes() {
         // THE REST OF THIS FUNCTION IS ONLY NEEDED WHEN OPERATORS ARE WORKING NORMALLY, HOWEVER, THEY ARENT ATM.
         return this;
@@ -182,6 +193,12 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return toExprString().replaceAll("^\\((.*)\\)$", "$1");
     }
 
+    public TokenNode getASD(){
+        assert size() != 0;
+        if(token.isAssign())
+            return this;
+        return ((TokenNode)get(0)).getASD();
+    }
     @Override
     public void addD(int i, Node pN) {
         assert pN != null : "Cannot addDepth null Nodes!";
@@ -254,13 +271,18 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public HashMap<String, Double> eval(HashMap<String, Double> pVars, final EquationSystem pEqSys){
         assert token != null;
         assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
+
         if(token.type() == FUNC){
             if(pEqSys.functions().containsKey(token.val())) // if it is a function
                 return pEqSys.functions().get(token.val()).exec(pEqSys, this);
             else
                 return InBuiltFunction.exec(token.val(), pEqSys, this);
-        }
-        else if(isFinal()){
+        } else if (token.isAssign()){
+            assert size() == 2; // a = b
+            assert false : appendHashMap(pVars, ((TokenNode)get(1)).eval(pVars, pEqSys));
+            return null;
+            // return appendHashMap(pVars, token.val(), ((TokenNode)get(1)).eval(pVars, pEqSys));
+        } else if(isFinal()){
             String val = token.val();
             Double d;
             try{
@@ -270,7 +292,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     for(Equation eq : pEqSys.equations()){
                         if(((TokenNode)eq.subEquations().getSD(eq.subEquations().depthS())).token.val().equals(val)){
                             pVars = appendHashMap(pVars,
-                                                 ((TokenNode)eq.subEquations().get(1)).eval(pVars, pEqSys));
+                                                 ((TokenNode)eq.subEquations().getASD().get(1)).eval(pVars, pEqSys));
                             appendHashMap(pVars, val, pVars.get(eq.subEquations().get(1).toString()));
                             return pVars;
                         }
