@@ -94,19 +94,21 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         }
     }
 
-    // public void addD(int i, Node<?, ?> n) {
-    //     assert n != null : "Cannot addDepth null Nodes!";
-    //     if(i <= 0 || size() <= 0){
-    //         addE(n);
-    //     } else {
-    //         if(i == 2 && get(-1).isFinal()) {
-    //             addE(n);
-    //         } else {
-    //             get(size() - 1).addD(i - 1, n);
-    //         }
-    //     }
-    // }
+    @Unused
+    public void addD(int i, Node<?, ?> n) {
+        assert n != null : "Cannot addDepth null Nodes!";
+        if(i <= 0 || size() <= 0){
+            addE(n);
+        } else {
+            if(i == 2 && get(-1).isFinal()) {
+                addE(n);
+            } else {
+                get(size() - 1).addD(i - 1, n);
+            }
+        }
+    }
 
+    @Unused
     public void setD(int i, int p, Node<?, ?> n) {
         assert n != null : "Cannot setDepth null Nodes!";
         if(i == 0) {
@@ -161,6 +163,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         ret += "\n" + indentE(idtLvl + 2);
         return ret + "\n" + indentE(idtLvl + 1);
     }
+    
     public String toExprString(){
         String ret = "";
         if(token instanceof Token){

@@ -131,29 +131,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     // }
 
     @Override
-    public void setD(int i, int p, Node pN) {
-        assert pN != null : "Cannot setDepth null Nodes!";
-        assert pN instanceof TokenNode;
-        TokenNode n = (TokenNode)pN;
-        if(i == 0) {
-            assert size() > 0;
-            assert size() > p && (p >= 0 || p == -1);
-            if(p == - 1) {
-                set(size() - 1,n);
-            } else {
-                set(p, n);
-            }
-        } else {
-            assert !get(-1).isFinal(); //shouldnt happen, methinks.
-            if(((TokenNode)get(-1)).token().val().isEmpty()) {
-                assert false; //just for testing to see if it ever happens
-                set(p, n);
-            } else {
-                get(-1).setD(i - 1, p, n);
-            }
-        }
-    }
-    @Override
     public String toFancyString(){
         return super.toFancyString().replaceFirst("Node", "TokenNode");
     }
@@ -165,6 +142,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public HashMap<String, Double> eval(final EquationSystem pEqSys){
         return eval(new HashMap<String, Double>(), pEqSys);
     }
+
     private HashMap<String, Double> appendHashMap(HashMap<String, Double> a, Object b){
         if(b != null)
         a.putAll((HashMap<String, Double>)b);
@@ -223,24 +201,18 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         } else 
             throw new NotDefinedException("This shouldn't happen! There is no way to evaluate node: " + token.val());
     }
-    public Double evalDouble(final EquationSystem pEqSys){
-        return eval(new HashMap<String, Double>(), pEqSys).get(token.val());
-    }
 
     //here down are from EquationNode
+    @Depreciated
     public <C extends Comparable<C>> boolean isInBounds(HashMap<String, Double> vars, String toEval){
         if(token.val().isEmpty()){
             assert size() == 1 : toFancyString();
             return get(0).isInBounds(vars, toEval);
         }
         assert size() == 2;
-        // assert token.isBool() || token.isComp();
         Double d0, d1;
         d0 = get(0).eval((EquationSystem.fromHashMap(vars))).get(get(0).toString()); 
         d1 = get(1).eval((EquationSystem.fromHashMap(vars))).get(get(0).toString()); 
         return InBuiltFunction.FUNCTIONS.get(toString()).funcObj().exec(new Double[]{d0, d1}) == 1;
     }
-    // public TokenNode setToken(String pStr){
-    //     return (TokenNode)super.setToken(InBuiltFunction.FUNCTIONS.get(pStr));
-    // }
 }
