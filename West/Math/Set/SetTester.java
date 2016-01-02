@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import West.Math.Set.NumberCollection;
 import java.util.Scanner;
 import West.Math.Exception.NotDefinedException;
-import West.Unused;
 /**
  * This is just a hacked up thing I used to find the correlation values of data in <code>West.Math.Set/data.csv</code>.
  * 
@@ -14,7 +13,7 @@ import West.Unused;
   * @version 0.90
  * @since 0.65
  */
-@Unused
+@Deprecated
 public class SetTester {
     public File file;
     public ArrayList<String[]> lines;

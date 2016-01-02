@@ -1,6 +1,5 @@
 package West.Math;
 import West.Math.Exception.*;
-import West.Unused;
 /**
  * assert, but isn't removed at compile-time. Use these when the error might be caused by a user, and use 
  * <code>assert</code> when it might be caused by a bug.
@@ -8,7 +7,7 @@ import West.Unused;
  * @author Sam Westerman
  * @version 0.1
  */
-@Unused
+@Deprecated
 public class Declare {
     public Declare(){
         throw new NotDefinedException("Cannot instatiate Declare!");

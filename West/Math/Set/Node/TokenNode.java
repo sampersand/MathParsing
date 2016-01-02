@@ -203,7 +203,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     }
 
     //here down are from EquationNode
-    @Depreciated
+    @Deprecated
     public <C extends Comparable<C>> boolean isInBounds(HashMap<String, Double> vars, String toEval){
         if(token.val().isEmpty()){
             assert size() == 1 : toFancyString();

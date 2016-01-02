@@ -6,7 +6,6 @@ import West.Math.Equation.Token;
 import West.Math.Equation.EquationSystem;
 import java.util.HashMap;
 import java.util.ArrayList;
-import West.Unused;
 /**
  * TODO: JAVADOC
  * LOL i'm going to have to figure out how to spell 'token' correctly XD
@@ -76,8 +75,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         return size() == 0 ? 1 : 1 + get(0).depthS();
     }
 
-
-    @Unused
+    @Deprecated
     public Node getD(int i) {
         if(i <= 0 || size() == 0) {
             return this;
@@ -94,7 +92,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         }
     }
 
-    @Unused
+    @Deprecated
     public void addD(int i, Node<?, ?> n) {
         assert n != null : "Cannot addDepth null Nodes!";
         if(i <= 0 || size() <= 0){
@@ -108,7 +106,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         }
     }
 
-    @Unused
+    @Deprecated
     public void setD(int i, int p, Node<?, ?> n) {
         assert n != null : "Cannot setDepth null Nodes!";
         if(i == 0) {
