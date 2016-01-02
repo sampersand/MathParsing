@@ -3,7 +3,6 @@ package West.Math.Equation;
 import West.Math.MathObject;
 import West.Math.Equation.Function.InBuiltFunction;
 
-import West.Math.Set.Node.EquationNode;
 import West.Math.Set.Node.TokenNode;
 import West.Math.Set.Node.Node;
 import West.Math.Exception.TypeMisMatchException;
@@ -25,7 +24,7 @@ import West.Math.Set.Collection;
 public class Equation implements MathObject {
 
     /** This classe's list of subEquations that are equal to eachother. */
-    protected EquationNode subEquations;
+    protected TokenNode subEquations;
     public static final HashMap<String, Object> CCHARS = new HashMap<String, Object>()
     {{
         put("assaign", InBuiltFunction.ASSAIGNMENT);
@@ -39,10 +38,10 @@ public class Equation implements MathObject {
      * The default constructor. This just instantiates {@link #subEquations} as an empty Collection.
      */
     public Equation() {
-        subEquations = new EquationNode();
+        subEquations = new TokenNode();
     }
     public Equation(String comp) {
-        subEquations = new EquationNode().setToken(comp);
+        subEquations = new TokenNode().setToken(new Token(comp, Token.Type.FUNC));
     }
 
     /**
@@ -50,49 +49,50 @@ public class Equation implements MathObject {
      * @param pCol    An Collection of {@link Node}s that will be added to {@link #subEquations}.
      * @return This class, with <code>pCol</code> added.
      */
-    public Equation add(EquationNode pCol) {
+    public Equation add(TokenNode pCol) {
         subEquations.add(pCol);
         return this;
     }
 
     public Equation add(String pStr){
         Collection<Token> tokens = parseTokens(pStr);
-        EquationNode eqn = segmentTokens(tokens);
+        TokenNode eqn = segmentTokens(tokens);
         subEquations.add(eqn);
         return this;
     }
 
     public Equation setToken(String comp) {
-        subEquations.setToken(comp);
+        subEquations.setToken(new Token(comp, Token.Type.FUNC));
         return this;
     }
     /**
      * Returns the {@link #subEquations} that this class defines.
      * @return {@link #subEquations}
      */
-    public EquationNode subEquations() {
+    public TokenNode subEquations() {
         return subEquations;
     }
 
-   private EquationNode segmentTokens(Collection<Token> tokens){
-        EquationNode eqnod = new EquationNode(EquationNode.getBool(""));
-        Collection<Token> prev = new Collection<Token>();
-        for(Token t : tokens){
+   private TokenNode segmentTokens(Collection<Token> tokens){
+        // TokenNode eqnod = new TokenNode(TokenNode.getBool(""));
+        // Collection<Token> prev = new Collection<Token>();
+        // for(Token t : tokens){
         //     if(isBool(t.val()) != null){
         //         eqnod.addCD(TokenNode.generateMasterNode(prev));
-        //         eqnod.addED(new EquationNode(EquationNode.getBool(t.val())));
+        //         eqnod.addED(new TokenNode(TokenNode.getBool(t.val())));
         //         prev.empty();
         //     } else if(isComp(t.val()) != null){
-        //         eqnod.addBD(new EquationNode(TokenNode.generateMasterNode(prev)).
-        //                                      setToken(EquationNode.getComp(t.val())));
+        //         eqnod.addBD(new TokenNode(TokenNode.generateMasterNode(prev)).
+        //                                      setToken(TokenNode.getComp(t.val())));
         //         prev.empty();
         //     } else {
-                prev.add(t);
+                // prev.add(t);
         //     }
-        }
-        if(prev.size() != 0)
-            eqnod.addCD(TokenNode.generateMasterNode(prev));
-        return eqnod;
+        // }
+        // if(prev.size() != 0)
+            // eqnod.addCD(TokenNode.generateMasterNode(prev));
+        System.out.println("TODO: REMOVE SEGMENTTOKENS");
+        return TokenNode.generateMasterNode(tokens);//eqnod;
 
     }
 
@@ -223,8 +223,8 @@ public class Equation implements MathObject {
         for(Node<?, ?> eqn : subEquations){
             ret += eqn.toFullString(idtLvl + 2) + "\n";
             // ret += "\n" + indent(idtLvl + 3) + "Comparator:" + "\n" + indentE(idtLvl + 4) + cc.token();
-            // ret += "\n" + indent(idtLvl + 3) + "EquationNodes:";
-            // for(EquationNode n : cc)
+            // ret += "\n" + indent(idtLvl + 3) + "TokenNodes:";
+            // for(TokenNode n : cc)
             //     ret += "\n" + n.toFullString(idtLvl + 4);
         }
         return ret + indentE(idtLvl + 2) + "\n" + indentE(idtLvl + 1);

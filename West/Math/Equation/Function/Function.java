@@ -17,7 +17,7 @@ import java.util.HashMap;
  * @since 0.1
  */
 public abstract class Function implements MathObject {
-    interface FuncObj{
+    public interface FuncObj{
         public Double exec(Double[] args);
     }
     /**

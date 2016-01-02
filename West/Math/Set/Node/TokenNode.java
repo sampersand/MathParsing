@@ -262,8 +262,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     for(Equation eq : pEqSys.equations()){
                         if(((TokenNode)eq.subEquations().getSD(eq.subEquations().depthS())).token.val().equals(val)){
                             pVars = appendHashMap(pVars,
-                                                 ((TokenNode)eq.subEquations().getCSD().get(1)).eval(pVars, pEqSys));
-                            appendHashMap(pVars, val, pVars.get(eq.subEquations().getCSD().get(1).toString()));
+                                                 ((TokenNode)eq.subEquations().get(1)).eval(pVars, pEqSys));
+                            appendHashMap(pVars, val, pVars.get(eq.subEquations().get(1).toString()));
                             return pVars;
                         }
                     }
@@ -289,24 +289,20 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return eval(new HashMap<String, Double>(), pEqSys).get(token.val());
     }
 
-
+    //here down are from EquationNode
     public <C extends Comparable<C>> boolean isInBounds(HashMap<String, Double> vars, String toEval){
-        if(token.SYMBOL.isEmpty()){
+        if(token.val().isEmpty()){
             assert size() == 1 : toFancyString();
             return ((TokenNode)get(0)).isInBounds(vars, toEval);
         }
         assert size() == 2;
-        assert token.isBool() || token.isComp();
+        // assert token.isBool() || token.isComp();
         Double d0, d1;
-        if(token.isBool()){
-            d0 = ((TokenNode)get(0)).isInBounds(vars, toEval) ? 1D : 0D;
-            d1 = ((TokenNode)get(1)).isInBounds(vars, toEval) ? 1D : 0D;
-        } else {
-            d0 = ((TokenNode)getCSD().get(0)).eval((EquationSystem.fromHashMap(vars))).get("**TEMP**"); 
-            d1 = ((TokenNode)getCSD().get(1)).eval((EquationSystem.fromHashMap(vars))).get("**TEMP**"); 
-            //its **TEMP** because every one TokenNode
-            //list starts with an empty function.
-        }
-        return token.TOKENOBJ.checkBounds(d0, d1);
+        d0 = ((TokenNode)get(0)).eval((EquationSystem.fromHashMap(vars))).get(get(0).toString()); 
+        d1 = ((TokenNode)get(1)).eval((EquationSystem.fromHashMap(vars))).get(get(0).toString()); 
+        return InBuiltFunction.FUNCTIONS.get(toString()).funcObj().exec(new Double[]{d0, d1}) == 1;
     }
+    // public TokenNode setToken(String pStr){
+    //     return (TokenNode)super.setToken(InBuiltFunction.FUNCTIONS.get(pStr));
+    // }
 }

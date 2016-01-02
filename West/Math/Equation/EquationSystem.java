@@ -10,7 +10,6 @@ import West.Math.Equation.Function.CustomFunction;
 import java.util.HashMap;
 import java.util.Iterator;
 import West.Math.Set.Collection;
-import West.Math.Set.Node.EquationNode;
 import West.Math.Set.Node.TokenNode;
 /**
  * The main class for all equation-related things. It keeps track of different equations, and of names of 
@@ -305,8 +304,8 @@ public class EquationSystem implements MathObject, Iterable {
         }
         isolate(toEval);
         assert isolated() : "I'm not isolated!:\n\n"+toFancyString();
-        EquationNode n = equations().get(0).subEquations();
-        HashMap<String, Double> evald = ((TokenNode)n.getCSD().get(0)).eval(copy());
+        TokenNode n = equations().get(0).subEquations();
+        HashMap<String, Double> evald = n.eval(copy());
         return checkBounds(evald, toEval);
 
     }
@@ -338,8 +337,9 @@ public class EquationSystem implements MathObject, Iterable {
     public boolean isolated(){
         // System.out.println("TODO: isolated");
         for(Equation eq : equations){
-            EquationNode eqn = eq.subEquations();
-            if(!eqn.getCSD().get(0).isLone()){ //top node is comparator, second top is empty function, bottom is variable
+            TokenNode tkn = eq.subEquations();
+            if(!tkn.get(0).isLone()){ //top node is comparator, second top is empty function, bottom is variable
+                System.out.println("not isolated because of:\n" + tkn.get(0).toFancyString());
                 return false;
             }
         }
@@ -351,11 +351,11 @@ public class EquationSystem implements MathObject, Iterable {
      */
     public boolean varExist(String pVar){
         for(Equation eq : equations){
-            EquationNode eqn = eq.subEquations();
-            if(eqn.size() ==0)
+            TokenNode tkn = eq.subEquations();
+            if(tkn.size() ==0)
                 continue;
-            assert eqn.getSD(eqn.depthS()) instanceof TokenNode;
-            if(((TokenNode)eqn.getSD(eqn.depthS())).token().val().equals(pVar))
+            assert tkn.getSD(tkn.depthS()) instanceof TokenNode;
+            if(((TokenNode)tkn.getSD(tkn.depthS())).token().val().equals(pVar))
                 return true;
         }
         return false;
@@ -385,7 +385,7 @@ public class EquationSystem implements MathObject, Iterable {
             return Double.NaN;
         if(constraints != null)
             for(Equation eq : constraints.equations())
-                if(!((EquationNode)eq.subEquations().get(0)).isInBounds(pVars, toEval))
+                if(!((TokenNode)eq.subEquations().get(0)).isInBounds(pVars, toEval))
                     return Double.NaN;
 
         return pVars.get(toEval);
