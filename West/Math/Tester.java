@@ -33,8 +33,8 @@ public class Tester {
             // eqsys.add("=(theta, -(ln(pi),^(c,x)))");
             // eqsys.add("=(x, ^(e,pi))");
 
-            // eqsys.add("=(y,2)");
             eqsys.add("=(y, ^(x, compare(x, 0))");
+            eqsys.addConstraint("⊻(>(x, y),<(0, x))");
                 //SIN THING
             // eqsys.add("y = 1 + sin(alpha) + c");
             // eqsys.add("alpha = (9.45 + x ^ theta) / 2");

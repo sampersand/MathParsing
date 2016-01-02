@@ -110,7 +110,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     }
 
     public TokenNode getASD(){
-        System.out.println(this.toFancyString());
         assert size() != 0 : "size == 0 for '" + this+"'";
         if(token.isAssign())
             return this;
