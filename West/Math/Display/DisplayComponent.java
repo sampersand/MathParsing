@@ -95,11 +95,6 @@ public class DisplayComponent extends JLabel implements MathObject {
         grapher = pGrapher;
         equation = pEquation;
         equationsys = pEqSys;
-        if(equationsys != null){
-            // equationsys = equationsys.copy();
-            // equationsys.equations().add(0, equation);
-            System.out.println("why is this even here?");
-        } 
         numc = pNC;
         assert numc == null || numc.size() == 2;
         assert numc == null || numc.get(0).size() == numc.get(1).size() : 

@@ -40,19 +40,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         while(pPos < pTokens.size()) {
             Token t = pTokens.get(pPos);
             assert t != null : "this should have been caught earlier.";
-            // if (t.isAssign()){
-            //     Collection<Token> passTokens = new Collection<Token>();
-            //     for(Token tk : pTokens.subList(pPos + 1, -1))
-            //         passTokens.add(tk);
-            //     Object[] temp = new TokenNode().condeseNodes(0, passTokens);
-            //     pPos += (int)temp[0];
-            //     TokenNode nod = (TokenNode)temp[1];
-            //     if(!nod.isFinal())
-            //         nod = (TokenNode)nod.get(0);
-            //     assert node.size() == 1 : "node size != 1\n" + node.toFancyString() + "\nnod:\n"+nod.toFancyString();
-            //     node = (TokenNode)new TokenNode(t).addE(node.pop(-1)).addE(nod);
-            // } else 
-            if(t.isConst()){// || t.isOper()
+            if(t.isConst()) {
                 node.add(new TokenNode(t));
             } else if(t.isFunc()) {
                 int paren = 0;
@@ -67,7 +55,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                      passTokens.add(tk);
                 Object[] temp = new TokenNode(t).condeseNodes(0, passTokens);
                 pPos += (int)temp[0];
-                node.add(((TokenNode)temp[1]).fixNodes());
+                node.add((TokenNode)temp[1]);
             } 
             pPos++;
         }
@@ -80,83 +68,14 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         assert size() == 1;
         return get(0).removeExtraFuncs();
     }
-    protected TokenNode completeNodes() {
-        // THE REST OF THIS FUNCTION IS ONLY NEEDED WHEN OPERATORS ARE WORKING NORMALLY, HOWEVER, THEY ARENT ATM.
-        return this;
-        /*
-        if(isFinal())
-            return this;
-        TokenNode node = copy();
-        TokenNode e = new TokenNode(token);
-        int i = 0;
-        while(i < node.size()) {
-            TokenNode n = (TokenNode)node.get(i);
-            assert n != null : "no subNode can be null!";
-            if(n.isFinal() && !Equation.isControlChar(n.token().val())) {
-                e.addD(e.depth(), n);
-            } else if(n.token.isOper()) {
-                for(int depth = 1; depth < e.depth(); depth++) {
-                    TokenNode nD = e.getD(depth);
-                    assert nD != null : "elements cannot be null!";
-                    if(nD.isFinal()) {
-                        n.add(nD);
-                        e.setD(depth - 1, -1, n); //depth is a final node.
-                        break;
-                    } else if(InBuiltFunction.FUNCTIONS.get(n.token().val()).priority() < 
-                              InBuiltFunction.FUNCTIONS.get(n.token().val()).priority()){
-                        n.add(nD);
-                        n.add(((TokenNode)node.get(i + 1)).completeNodes());
-                        i++;
-                        e.setD(depth - 1, -1, n);
-                        break;
-                    } else if (nD.token.isFunc()) {
-                        n.add(nD);
-                        n.add(((TokenNode)node.get(i + 1)).completeNodes());
-                        i++;
-                        e.setD(depth - 1, -1, n);
-                        break;
-                    }
-                }
 
-            } else if(n.token.isFunc()) {
-                e.addD(e.depth(), n.completeNodes());
-            } else {
-                throw new NotDefinedException("Cannot complete the node '" + n + "' because there is no known way to!");
-            }
-            i++;
-        }
-        return e;
-        */
-    }
-    private TokenNode fixNodes() {
-        int i = 1;
-        TokenNode node = copy();
-        // System.out.println("TODO: fixNodes");
-        // while(i < node.size()){
-        //     Node n = node.get(i);
-        //     assert n != null  : "no subNode can be null!"; // this should have been caught beforehand.
-        //     if(n.token.type() == OPER && n.token.val().equals("-") && node.get(i - 1).token.type() == OPER &&
-        //                            (node.get(i - 1).token.val().equals("/") ||
-        //                             node.get(i - 1).token.val().equals("*") ||
-        //                             node.get(i - 1).token.val().equals("^"))) {
-        //         Node n2 = new Node(new Token("", FUNC));
-        //         n2.add(new FinalNode(new Token("0", NUM)));
-        //         n2.add(n);
-        //         n2.add(node.get(i + 1));
-        //         node.rem(i + 1);
-        //         node.set(i, n2);
-        //         i++;
-        //     }
-        //     i++;
-        // }
-        return node;
-    }
     public TokenNode get(int pPos){
         return (TokenNode)super.get(pPos);
     }
+
     public static TokenNode generateMasterNode(ArrayList<Token> pTokens) {
         assert checkForNullTokens(pTokens);
-        return ((TokenNode)(new TokenNode().condeseNodes(0, pTokens))[1]).completeNodes().fixNodes();
+        return ((TokenNode)(new TokenNode().condeseNodes(0, pTokens))[1]);
     }
 
     private static boolean checkForNullTokens(ArrayList<Token> pTokens){
@@ -275,11 +194,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 return pEqSys.functions().get(token.val()).exec(pEqSys, this);
             else
                 return InBuiltFunction.exec(token.val(), pEqSys, this);
-        } else if (token.isAssign()){
-            assert size() == 2; // a = b
-            assert false : appendHashMap(pVars, get(1).eval(pVars, pEqSys));
-            return null;
-            // return appendHashMap(pVars, token.val(), ((TokenNode)get(1)).eval(pVars, pEqSys));
         } else if(isFinal()){
             String val = token.val();
             Double d;
