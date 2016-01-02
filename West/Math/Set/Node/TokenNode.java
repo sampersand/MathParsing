@@ -22,13 +22,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         token = new Token("",FUNC);
     }
 
-    public TokenNode(ArrayList<Token> pElements){
-        super();
-        add(generateMasterNode(pElements));
-    }
-    public TokenNode(TokenNode pCollection) {
-        super(pCollection);
-    }
     public TokenNode(Token pToken) {
         super(pToken);
     }

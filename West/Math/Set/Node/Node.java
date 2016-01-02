@@ -31,17 +31,11 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         token = null;
     }
 
-
-    public Node(Node<?, ?> pCollection) {
-        super();
-        add(pCollection);
-        token = null;
-    }
-
     public Node(T pToken) {
         super();
         setToken(pToken);
     }
+    
     public T token(){
         return token;
     }
