@@ -210,11 +210,13 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     }
                 switch(val) {
                     case "e":
-                        return appendHashMap(pVars, "e", Math.E);
+                        return appendHashMap(pVars, val, Math.E);
                     case "pi":
-                        return appendHashMap(pVars, "pi", Math.PI);
+                        return appendHashMap(pVars, val, Math.PI);
+                    case "NaN": case "nan":
+                        return appendHashMap(pVars, val, Double.NaN);
                     case "rand": case "random":
-                        return appendHashMap(pVars, "rand", Math.random()); 
+                        return appendHashMap(pVars, val, Math.random()); 
                         // this might need work
                     default:
                         System.err.println(toFullString());
