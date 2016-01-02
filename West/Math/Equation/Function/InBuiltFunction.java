@@ -26,31 +26,31 @@ public class InBuiltFunction extends Function {
             ));
         put(">", new InBuiltFunction(">", "Checks if 'A' > 'B'", ">(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(),
-            a -> a[0].compareTo(a[1]) == 1 ? 1D : 0D
+            a -> a[0].compareTo(a[1]) == 1 ? 1D : Double.NaN
             ));
 
         put("<", new InBuiltFunction("<", "Checks if 'A' < 'B'", "<(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(),
-            a -> a[0].compareTo(a[1]) == -1 ? 1D : 0D
+            a -> a[0].compareTo(a[1]) == -1 ? 1D : Double.NaN
             ));
 
         put("≣", new InBuiltFunction("≣", "Checks if 'A' == 'B'", "≣(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(),
-            a -> a[0].compareTo(a[1]) == 0 ? 1D : 0D
+            a -> a[0].compareTo(a[1]) == 0 ? 1D : Double.NaN
             ));
         put("≥", new InBuiltFunction("≥", "Checks if 'A' ≥ 'B'", "≥(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(),
-            a -> a[0].compareTo(a[1]) != -1 ? 1D : 0D
+            a -> a[0].compareTo(a[1]) != -1 ? 1D : Double.NaN
             ));
 
         put("≤", new InBuiltFunction("≤", "Checks if 'A' ≤ 'B'", "≤(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(),
-            a -> a[0].compareTo(a[1]) != 1 ? 1D : 0D
+            a -> a[0].compareTo(a[1]) != 1 ? 1D : Double.NaN
             ));
 
         put("≠", new InBuiltFunction("≠", "Checks if 'A' ≠ 'B'", "≠(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(),
-            a -> a[0].compareTo(a[1]) != 0 ? 1D : 0D
+            a -> a[0].compareTo(a[1]) != 0 ? 1D : Double.NaN
             ));
 
         put("compare", new InBuiltFunction("compare", "See Double.compare(A, B)", "compare(A, B)", 3,
@@ -60,16 +60,16 @@ public class InBuiltFunction extends Function {
 
         put("∧", new InBuiltFunction("∧", "Checks if 'A' ∧ 'B'", "∧(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(),
-            a -> a[0].compareTo(0D) == 1 && a[1].compareTo(0D) == 1 ? 1D : 0D
+            a -> a[0].compareTo(0D) == 1 && a[1].compareTo(0D) == 1 ? 1D : Double.NaN
             ));
 
         put("∨", new InBuiltFunction("∨", "Checks if 'A' ∨ 'B'", "∨(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(),
-            a -> a[0].compareTo(0D) == 1 || a[1].compareTo(0D) == 1 ? 1D : 0D
+            a -> a[0].compareTo(0D) == 1 || a[1].compareTo(0D) == 1 ? 1D : Double.NaN
             ));
         put("⊻", new InBuiltFunction("⊻", "Checks if 'A' ⊻ 'B'", "⊻(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(),
-            a -> a[0].compareTo(0D) == 1 ^ a[1].compareTo(0D) == 1 ? 1D : 0D
+            a -> a[0].compareTo(0D) == 1 ^ a[1].compareTo(0D) == 1 ? 1D : Double.NaN
             ));
 
 
