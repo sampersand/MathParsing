@@ -21,10 +21,10 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
 
     protected T token; // its an object so functions can also use this
 
-    // public Node(){
-    //     super();
-    //     token = null;
-    // }
+    public Node(){
+        super();
+        token = null;
+    }
 
     public Node(ArrayList<Node<?, ?>> pElements){
         super();

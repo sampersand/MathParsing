@@ -99,7 +99,7 @@ public class Tester {
 
         Print.print(eqsys.toFancyString());
         // Print.printi(eqsys.toFullString());
-        eqsys.graph();
+         // eqsys.graph();
         // Print.printi("RESULT:", eqsys.eval("y"));
     }
 
