@@ -23,12 +23,23 @@ public class Tester {
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
             // eqsys.add("y = 1 + sin((9.45 + (e^pi) ^ (ln(pi) - (pi - e) ^ (e^pi))) / 2) + pi - e");
-            eqsys.add("y = 1 + sin(alpha) + c");
-            eqsys.add("alpha = (9.45 + x ^ theta) / 2");
-            eqsys.add("c = pi^(0-e)");
-            eqsys.add("theta = ln(pi) - c ^ x ");
+            eqsys.add("y = +(1,+(sin(/(+(9.45,^(^(e,pi),-(ln(pi),^(^(pi,-(0,e)),^(e,pi))))),2)),^(pi,-(0,e))))");
+
+                //FIXED SIN THING
+            // eqsys.add("y = +(1,+(sin(alpha),c))");
+            // eqsys.add("alpha = /(+(9.45,^(x,theta)),2)");
+            // eqsys.add("c = ^(pi,-(0,e))");
+            // eqsys.add("theta = -(ln(pi),^(c,x)) ");
+            // eqsys.add("x = ^(e,pi)");
+
+                //SIN THING
+            // eqsys.add("y = 1 + sin(alpha) + c");
+            // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
+            // eqsys.add("c = pi^(0-e)");
+            // eqsys.add("theta = ln(pi) - c ^ x ");
             // eqsys.add("x = e^pi");
 
+                //TWISTY THING
             // eqsys.add("y = x0 * x1 * x2 * x3 * x4");
             // eqsys.add("x0 = (x) * c");
             // eqsys.add("x1 = (x - 8) * c");
@@ -36,6 +47,7 @@ public class Tester {
             // eqsys.add("x3 = (x + 8) * c");
             // eqsys.add("x4 = (x + 4) * c");
             // eqsys.add("c = 1/4");
+
             // eqsys.addConstraint("x < pi * e && y > -1");
         } else {
             eqsys = new EquationSystem();
@@ -66,10 +78,10 @@ public class Tester {
         }
 
 
-        // Print.printi(eqsys.toFancyString());
+        Print.printi(eqsys.toFancyString());
         // Print.printi(eqsys.toFullString());
-        eqsys.graph();
-        // Print.printi("RESULT:", eqsys.eval("y"));
+        // eqsys.graph();
+        Print.printi("RESULT:", eqsys.eval("y"));
     }
 
 

@@ -61,10 +61,13 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             } 
             pPos++;
         }
+        System.out.println("node to fancy string:" +node.toFancyString());
         return new Object[]{pPos, node};
     }
 
     protected TokenNode completeNodes() {
+        if(true)
+            return this;
         if(isFinal())
             return this;
         TokenNode node = copy();
@@ -100,12 +103,15 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 }
 
             } else if(n.token.isFunc()) {
+                System.out.println("n is func:\n"+n.toFancyString());
+                System.out.println("e with n:\n"+e.toFancyString());
                 e.addD(e.depth(), n.completeNodes());
             } else {
                 throw new NotDefinedException("Cannot complete the node '" + n + "' because there is no known way to!");
             }
             i++;
         }
+        System.out.println("e to fancy string:\n" + e.toFancyString());
         return e;
     }
 
@@ -136,7 +142,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public static TokenNode generateMasterNode(ArrayList<Token> pTokens) {
         assert checkForNullTokens(pTokens);
         return ((TokenNode)(new TokenNode().condeseNodes(0, pTokens))[1]).completeNodes().fixNodes();
-        // return ((TokenNode)(new TokenNode(new Token("", FUNC)).condeseNodes(0, pTokens))[1]).completeNodes().fixNodes();
     }
 
     private static boolean checkForNullTokens(ArrayList<Token> pTokens){
