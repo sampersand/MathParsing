@@ -50,11 +50,24 @@ public class InBuiltFunction extends Function {
             a -> a[0].compareTo(a[1]) != 0 ? 1D : 0D
             ));
 
-        put("compareTo", new InBuiltFunction("compareT", "See Double.compare(A, B)", "compareTo(A, B)", 3,
+        put("compareTo", new InBuiltFunction("compareTo", "See Double.compare(A, B)", "compareTo(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(),
-            a -> a[0].compareTo(a[1]) != 0 ? 1D : 0D
+            a -> new Double(a[0].compareTo(a[1]))
             ));
 
+        put("∧", new InBuiltFunction("∧", "Checks if 'A' ∧ 'B'", "∧(A, B)", 3,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> a[0].compareTo(0D) == 1 && a[1].compareTo(0D) == 1 ? 1D : 0D
+            ));
+
+        put("∨", new InBuiltFunction("∨", "Checks if 'A' ∨ 'B'", "∨(A, B)", 3,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> a[0].compareTo(0D) == 1 || a[1].compareTo(0D) == 1 ? 1D : 0D
+            ));
+        put("⊻", new InBuiltFunction("⊻", "Checks if 'A' ⊻ 'B'", "⊻(A, B)", 3,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> a[0].compareTo(0D) == 1 ^ a[1].compareTo(0D) == 1 ? 1D : 0D
+            ));
 
 
         // Standard math operators
@@ -78,6 +91,10 @@ public class InBuiltFunction extends Function {
             a -> a[0] / a[1]
             ));
 
+        put("%", new InBuiltFunction("%", "'A' Modulo 'B'", "%(A, B)", 1,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> a[0] % a[1]
+            ));
         put("^", new InBuiltFunction("^", "Raises 'A' to 'B'", "^(A, B)", 2,
             new Collection.Builder<Integer>().add(2).build(),
             a -> Math.pow(a[0],a[1])
@@ -145,6 +162,7 @@ public class InBuiltFunction extends Function {
             ));
 
         //Misc math functions
+
         put("abs", new InBuiltFunction("abs", "absolute value of 'A'", "abs(A)", -1,
             new Collection.Builder<Integer>().add(1).build(),
             a -> Math.abs(a[0])
@@ -237,6 +255,11 @@ public class InBuiltFunction extends Function {
         put("neg", new InBuiltFunction("negate", "'A' * -1", "neg(A)", -1,
             new Collection.Builder<Integer>().add(1).build(),
             a -> -1 * a[0]
+            ));
+
+        put("sign", new InBuiltFunction("sign", "1 if 'A' > 0, -1 if 'A' < 0, and 0 if 'A' == 0", "neg(A)", -1,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> Integer.valueOf(a[0].compareTo(0D)).doubleValue()
             ));
 
         put("graph", new GraphFunction());
