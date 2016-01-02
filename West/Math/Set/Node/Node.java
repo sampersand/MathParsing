@@ -1,10 +1,7 @@
 package West.Math.Set.Node;
-import West.Math.Exception.NotDefinedException;
 import West.Math.MathObject;
 import West.Math.Set.Collection;
 import West.Math.Equation.Token;
-import West.Math.Equation.EquationSystem;
-import java.util.HashMap;
 import java.util.ArrayList;
 /**
  * TODO: JAVADOC
@@ -35,18 +32,9 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         super();
         setToken(pToken);
     }
-    
+
     public T token(){
         return token;
-    }
-
-    public Node<T, N> addAllN(ArrayList<Node<?, ? extends Node>> pNs){ // add Node
-        assert pNs != null;
-        if(pNs.size() == 0)
-            return this;
-        for(Node n : pNs)
-            addE(n);
-        return this;
     }
 
     public Node<T, N> setToken(T pToken){
@@ -155,28 +143,5 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         ret += "\n" + indentE(idtLvl + 2);
         return ret + "\n" + indentE(idtLvl + 1);
     }
-    
-    public String toExprString(){
-        String ret = "";
-        if(token instanceof Token){
-            Token tok = (Token)token;
-            ret += tok.val();
-            if(tok.type() == Token.Type.FUNC){
-                ret += "(";
-                for(Node n : this){
-                    ret += n.toExprString() + ", ";
-                }
-                ret = (size() == 0 ? ret : ret.substring(0, ret.length() - 2)) + ")";
-            } else{
-                assert size() == 0 : "I am not a function, but I have subnodes!";
-            }
-        } else {
-            for(Node n : this){
-                ret += n.toExprString();
-                ret += " " + (token == null ? "" : token) + " ";
-            }
-            return ret.substring(0, ret.length() - 2);
-        }
-        return ret;
-    }
+
 }

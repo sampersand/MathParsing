@@ -90,6 +90,10 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
 
 
     public ArrayList<E> elements(){ return elements; }
+    public Collection setElements(ArrayList<E> pElements){
+        elements = pElements;
+        return this;
+    }
     public int size(){ return elements.size();}
     public E get(int pPos){ return elements.get(stdPos(pPos));}
     public E set(int pPos, E pEle){

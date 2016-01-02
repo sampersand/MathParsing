@@ -174,7 +174,7 @@ public class Equation implements MathObject {
         return exprstoStr(subEquations);
     }
 
-    public String exprstoStr(Node<?, ?> node){
+    public String exprstoStr(TokenNode node){
         return node.toExprString();
     }
 
@@ -198,7 +198,7 @@ public class Equation implements MathObject {
         ret += indent(idtLvl + 1) + "Raw Equation:\n" + indentE(idtLvl + 2) + exprstoStr() + "\n";
         ret += indent(idtLvl + 1) + "Expressions:\n";
         for(Node<?, ?> tkn : subEquations){
-            ret += tkn.toFullString(idtLvl + 2) + "\n";
+            ret += ((TokenNode)tkn).toFullString(idtLvl + 2) + "\n";
             // ret += "\n" + indent(idtLvl + 3) + "Comparator:" + "\n" + indentE(idtLvl + 4) + cc.token();
             // ret += "\n" + indent(idtLvl + 3) + "TokenNodes:";
             // for(TokenNode n : cc)

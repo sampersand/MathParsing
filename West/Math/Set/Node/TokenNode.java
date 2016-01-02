@@ -17,6 +17,7 @@ import java.util.HashMap;
 * @since 0.75
 */
 public class TokenNode extends Node<Token, TokenNode> implements MathObject {
+
     public TokenNode(){
         super();
         token = new Token("",FUNC);
@@ -62,6 +63,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return get(0).removeExtraFuncs();
     }
 
+    @Override
     public TokenNode get(int pPos){
         return (TokenNode)super.get(pPos);
     }
@@ -82,7 +84,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     @Override
     public TokenNode copy(){
         assert elements != null;
-        return (TokenNode)new TokenNode(token).addAllN(elements);
+        return (TokenNode)new TokenNode(token).setElements(elements);
     }
 
     @Override
@@ -103,25 +105,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             return this;
         return get(0).getASD();
     }
-    // @Override
-    // public void addD(int i, Node pN) {
-    //     assert pN != null : "Cannot addDepth null Nodes!";
-    //     assert pN instanceof TokenNode;
-    //     TokenNode n = (TokenNode)pN;
-    //     if(i <= 0 || size() <= 0){
-    //         assert !get(-1).token().val().isEmpty(); //just for testing to see if it ever happens
-    //         add(n);
-    //     } else {
-    //         if(i == 2 && get(-1).isFinal()) {
-    //             assert !get(-1).token().val().isEmpty();//just for testing to see if it ever happens
-    //             add(n);
-    //         } else {
-    //             assert !get(-1).token().val().isEmpty();//just for testing to see if it ever happens
-    //             get(-1).addD(i - 1, n);
-    //         }
-    //     }
-
-    // }
 
     @Override
     public String toFancyString(){
@@ -196,7 +179,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     }
 
     //here down are from EquationNode
-    @Deprecated
     public <C extends Comparable<C>> boolean isInBounds(HashMap<String, Double> vars, String toEval){
         if(token.val().isEmpty()){
             assert size() == 1 : toFancyString();
@@ -207,5 +189,29 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         d0 = get(0).eval((EquationSystem.fromHashMap(vars))).get(get(0).toString()); 
         d1 = get(1).eval((EquationSystem.fromHashMap(vars))).get(get(0).toString()); 
         return InBuiltFunction.FUNCTIONS.get(toString()).funcObj().exec(new Double[]{d0, d1}) == 1;
+    }
+
+    public String toExprString(){
+        String ret = "";
+        if(token instanceof Token){
+            Token tok = (Token)token;
+            ret += tok.val();
+            if(tok.type() == Token.Type.FUNC){
+                ret += "(";
+                for(Node n : this){
+                    ret += ((TokenNode)n).toExprString() + ", ";
+                }
+                ret = (size() == 0 ? ret : ret.substring(0, ret.length() - 2)) + ")";
+            } else{
+                assert size() == 0 : "I am not a function, but I have subnodes!";
+            }
+        } else {
+            for(Node n : this){
+                ret += ((TokenNode)n).toExprString();
+                ret += " " + (token == null ? "" : token) + " ";
+            }
+            return ret.substring(0, ret.length() - 2);
+        }
+        return ret;
     }
 }
