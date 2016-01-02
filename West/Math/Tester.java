@@ -37,7 +37,7 @@ public class Tester {
             // eqsys.addConstraint("⊻(>(x, y),<(0, x))");
 
 
-            eqsys.add("=(y, *(z, ⊻(>(x,0),<(z,0))))");
+            eqsys.add("=[y, *[z, ⊻[>[x,0],<[z,0]]]]");
             eqsys.add("=(z, *(x0, *(x1, *(x2, *(x3, x4)))))");
             eqsys.add("=(x0, *(x, c)");
             eqsys.add("=(x1, *(-(x, 8), c)");
