@@ -42,24 +42,20 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             Token t = pTokens.get(pPos);
             assert t != null : "this should have been caught earlier.";
             if (t.isAssign()){
-                System.out.println("im an assignment!:" + t);
-                System.out.println("b4:\n"+node.toFullString());
-
                 Collection<Token> passTokens = new Collection<Token>();
                 for(Token tk : pTokens.subList(pPos + 1, -1))
                     passTokens.add(tk);
                 Object[] temp = new TokenNode().condeseNodes(0, passTokens);
                 pPos += (int)temp[0];
-                node.add((TokenNode)new TokenNode(t).addE(node.pop(-1)).addE(((TokenNode)temp[1]).get(0)));
-
-
-                System.out.println("l8:\n"+node.toFullString());
+                TokenNode nod = (TokenNode)temp[1];
+                if(!nod.isFinal())
+                    nod = (TokenNode)nod.get(0);
+                node.add((TokenNode)new TokenNode(t).addE(node.pop(-1)).addE(nod));
             } else if(t.isConst()){// || t.isOper()
                 node.add(new TokenNode(t));
             } else if(t.isFunc()) {
                 int paren = 0;
                 int x = pPos + 1;
-
                 do{
                     if(Token.PAREN_L.contains(pTokens.get(x).val())) paren++;
                     if(Token.PAREN_R.contains(pTokens.get(x).val())) paren--;
@@ -74,6 +70,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             } 
             pPos++;
         }
+        System.out.println("node:\n"+node);
         return new Object[]{pPos, node};
     }
 
@@ -125,7 +122,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return e;
         */
     }
-
     private TokenNode fixNodes() {
         int i = 1;
         TokenNode node = copy();
