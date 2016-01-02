@@ -18,9 +18,9 @@ public class InBuiltFunction extends Function {
      * names.
      */    
 
-    public static Collection<String> ASSAIGNMENT = new Collection.Builder<String>().add("=").add("⇒").add("→").build();
+    public static Collection<String> ASSIGNMENT = new Collection.Builder<String>().add("=").add("⇒").add("→").build();
     public static HashMap<String, InBuiltFunction> FUNCTIONS = new HashMap<String, InBuiltFunction>() {{
-
+        // put("=", null);
         put(">", new InBuiltFunction(">", "Checks if 'A' > 'B'", ">(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(),
             a -> a[0].compareTo(a[1]) == 1 ? 1D : 0D

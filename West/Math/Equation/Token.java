@@ -66,6 +66,11 @@ public class Token implements MathObject {
         return type == Type.VAR;
     }
 
+    public boolean isAssign() {
+        assert type != null;
+        return type == Type.ASSIGN;
+    }
+
     public boolean isFunc() {
         assert type != null;
         return type == Type.FUNC;

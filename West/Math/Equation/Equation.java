@@ -27,7 +27,7 @@ public class Equation implements MathObject {
     protected TokenNode subEquations;
     public static final HashMap<String, Object> CCHARS = new HashMap<String, Object>()
     {{
-        put("assaign", InBuiltFunction.ASSAIGNMENT);
+        put("assign", InBuiltFunction.ASSIGNMENT);
         put("paren_l", Token.PAREN_L);
         put("paren_r", Token.PAREN_R);
         put("delim", Token.DELIM);
@@ -56,8 +56,8 @@ public class Equation implements MathObject {
 
     public Equation add(String pStr){
         Collection<Token> tokens = parseTokens(pStr);
-        TokenNode eqn = segmentTokens(tokens);
-        subEquations.add(eqn);
+        TokenNode tkn = segmentTokens(tokens);
+        subEquations.add(tkn);
         return this;
     }
 
@@ -74,15 +74,15 @@ public class Equation implements MathObject {
     }
 
    private TokenNode segmentTokens(Collection<Token> tokens){
-        // TokenNode eqnod = new TokenNode(TokenNode.getBool(""));
+        // TokenNode tkn = new TokenNode(TokenNode.getBool(""));
         // Collection<Token> prev = new Collection<Token>();
         // for(Token t : tokens){
         //     if(isBool(t.val()) != null){
-        //         eqnod.addCD(TokenNode.generateMasterNode(prev));
-        //         eqnod.addED(new TokenNode(TokenNode.getBool(t.val())));
+        //         tkn.addCD(TokenNode.generateMasterNode(prev));
+        //         tkn.addED(new TokenNode(TokenNode.getBool(t.val())));
         //         prev.empty();
         //     } else if(isComp(t.val()) != null){
-        //         eqnod.addBD(new TokenNode(TokenNode.generateMasterNode(prev)).
+        //         tkn.addBD(new TokenNode(TokenNode.generateMasterNode(prev)).
         //                                      setToken(TokenNode.getComp(t.val())));
         //         prev.empty();
         //     } else {
@@ -90,9 +90,9 @@ public class Equation implements MathObject {
         //     }
         // }
         // if(prev.size() != 0)
-            // eqnod.addCD(TokenNode.generateMasterNode(prev));
+            // tkn.addCD(TokenNode.generateMasterNode(prev));
         System.out.println("TODO: REMOVE SEGMENTTOKENS");
-        return TokenNode.generateMasterNode(tokens);//eqnod;
+        return TokenNode.generateMasterNode(tokens);//tkn;
 
     }
 
@@ -171,7 +171,7 @@ public class Equation implements MathObject {
     }
     
     public static String isAssign(String s){
-        return isInLast(s, (Collection<String>)CCHARS.get("assaign"));
+        return isInLast(s, (Collection<String>)CCHARS.get("assign"));
     }
 
     public static String isDelim(String s){
@@ -220,8 +220,8 @@ public class Equation implements MathObject {
         ret += indent(idtLvl + 2) + subEquations.token() + "\n";
         ret += indent(idtLvl + 1) + "Raw Equation:\n" + indentE(idtLvl + 2) + exprstoStr() + "\n";
         ret += indent(idtLvl + 1) + "Expressions:\n";
-        for(Node<?, ?> eqn : subEquations){
-            ret += eqn.toFullString(idtLvl + 2) + "\n";
+        for(Node<?, ?> tkn : subEquations){
+            ret += tkn.toFullString(idtLvl + 2) + "\n";
             // ret += "\n" + indent(idtLvl + 3) + "Comparator:" + "\n" + indentE(idtLvl + 4) + cc.token();
             // ret += "\n" + indent(idtLvl + 3) + "TokenNodes:";
             // for(TokenNode n : cc)

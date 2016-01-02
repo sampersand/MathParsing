@@ -2,6 +2,7 @@ package West.Math.Set.Node;
 import West.Math.Exception.NotDefinedException;
 import West.Math.MathObject;
 import West.Math.Set.Collection;
+import West.Math.Equation.Token;
 import West.Math.Equation.EquationSystem;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -175,15 +176,15 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
     }
     public String toExprString(){
         String ret = "";
-        if(token instanceof West.Math.Equation.Token){
-            West.Math.Equation.Token tok = (West.Math.Equation.Token)token;
+        if(token instanceof Token){
+            Token tok = (Token)token;
             ret += tok.val();
-            if(tok.type() == West.Math.Equation.Token.Type.FUNC){
+            if(tok.type() == Token.Type.FUNC || tok.type() == Token.Type.ASSIGN){
                 ret += "(";
                 for(Node n : this){
                     ret += n.toExprString() + ", ";
                 }
-                ret = ret.substring(0, ret.length() - 2) + ")";
+                ret = (size() == 0 ? ret : ret.substring(0, ret.length() - 2)) + ")";
             } else{
                 assert size() == 0 : "I am not a function, but I have subnodes!";
             }

@@ -100,6 +100,10 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
     public E pop(int pPos){return remove(pPos);}
     public E remove(int pPos){ return elements.remove(stdPos(pPos)); }
 
+    public List<E> subList(int start, int end){
+        return elements.subList(stdPos(start), stdPos(end));
+    }
+    
     public void prepend(E obj){
         elements = new ArrayList<E>(){{add(obj); addAll(elements);}};
         // elements.remove(pPos);
@@ -150,9 +154,7 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
     public boolean contains(Object obj){
         return elements.contains(obj);
     }
-    public List<E> subList(int start, int end){
-        return elements.subList(start,end);
-    }
+
     public Iterator<E> iterator() {
         return (Iterator<E>) new Iter();
     }

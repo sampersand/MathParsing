@@ -38,9 +38,23 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         assert checkForNullTokens(pTokens);
         TokenNode node = copy();
         while(pPos < pTokens.size()) {
+            System.out.println(node);
             Token t = pTokens.get(pPos);
             assert t != null : "this should have been caught earlier.";
-            if(t.isConst()){// || t.isOper()
+            if (t.isAssign()){
+                System.out.println("im an assignment!:" + t);
+                System.out.println("b4:\n"+node.toFullString());
+
+                Collection<Token> passTokens = new Collection<Token>();
+                for(Token tk : pTokens.subList(pPos + 1, -1))
+                    passTokens.add(tk);
+                Object[] temp = new TokenNode().condeseNodes(0, passTokens);
+                pPos += (int)temp[0];
+                node.add((TokenNode)new TokenNode(t).addE(node.pop(-1)).addE(((TokenNode)temp[1]).get(0)));
+
+
+                System.out.println("l8:\n"+node.toFullString());
+            } else if(t.isConst()){// || t.isOper()
                 node.add(new TokenNode(t));
             } else if(t.isFunc()) {
                 int paren = 0;
@@ -56,8 +70,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                      passTokens.add(tk);
                 Object[] temp = new TokenNode(t).condeseNodes(0, passTokens);
                 pPos += (int)temp[0];
-                TokenNode o;
-                node.add(o = ((TokenNode)temp[1]).fixNodes());
+                node.add(((TokenNode)temp[1]).fixNodes());
             } 
             pPos++;
         }
@@ -170,8 +183,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
     @Override
     public String toString(){
-        String s;
-        return (s = toExprString()).replaceAll("^\\((.*)\\)$", "$1");
+        return toExprString().replaceAll("^\\((.*)\\)$", "$1");
     }
 
     @Override
@@ -247,7 +259,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         assert token != null;
         assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
         if(token.type() == FUNC){
-            if(pEqSys.functions().get(token.val()) != null) // if it is a function
+            if(pEqSys.functions().containsKey(token.val())) // if it is a function
                 return pEqSys.functions().get(token.val()).exec(pEqSys, this);
             else
                 return InBuiltFunction.exec(token.val(), pEqSys, this);
