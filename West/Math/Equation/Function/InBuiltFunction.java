@@ -17,6 +17,27 @@ public class InBuiltFunction extends Function {
      * or "round"), and the values are the InBuiltFunctions / {@link OperationFunction}s corresponding to the
      * names.
      */
+    public static final HashMap<String, Function> UNARY_LEFT = new HashMap<String, Function>()
+    {{
+        // put("+", null);
+        put("-", InBuiltFunction.FUNCTIONS.get("negate"));
+        put("~", null);
+    }};
+
+    public static final HashMap<String, Function> UNARY_RIGHT = new HashMap<String, Function>()
+    {{
+        put("!", InBuiltFunction.FUNCTIONS.get("fac"));
+    }};
+
+    public static final HashMap<String, Function> BINARY = new HashMap<String, Function>()
+    {{
+        put("+", InBuiltFunction.FUNCTIONS.get("+"));
+        put("-", InBuiltFunction.FUNCTIONS.get("-"));
+        put("*", InBuiltFunction.FUNCTIONS.get("*"));
+        put("/", InBuiltFunction.FUNCTIONS.get("/"));
+        put("^", InBuiltFunction.FUNCTIONS.get("^"));
+    }};
+    
     public static HashMap<String, InBuiltFunction> FUNCTIONS = new HashMap<String, InBuiltFunction>() {{
         put("+", new InBuiltFunction("+", "Adds 'A' to 'B'", "+(A, B)", 0, 
             new Collection.Builder<Integer>().add(2).build(),

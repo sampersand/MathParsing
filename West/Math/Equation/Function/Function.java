@@ -41,28 +41,6 @@ public abstract class Function implements MathObject {
 
     protected FuncObj funcObj;
 
-
-    public static final HashMap<String, Function> UNARY_LEFT = new HashMap<String, Function>()
-    {{
-        // put("+", null);
-        put("-", InBuiltFunction.FUNCTIONS.get("negate"));
-        put("~", null);
-    }};
-
-    public static final HashMap<String, Function> UNARY_RIGHT = new HashMap<String, Function>()
-    {{
-        put("!", InBuiltFunction.FUNCTIONS.get("fac"));
-    }};
-
-    public static final HashMap<String, Function> BINARY = new HashMap<String, Function>()
-    {{
-        put("+", InBuiltFunction.FUNCTIONS.get("+"));
-        put("-", InBuiltFunction.FUNCTIONS.get("-"));
-        put("*", InBuiltFunction.FUNCTIONS.get("*"));
-        put("/", InBuiltFunction.FUNCTIONS.get("/"));
-        put("^", InBuiltFunction.FUNCTIONS.get("^"));
-    }};
-
     /**
      * The default constructor for the Function class. Instatiates {@link #name}, {@link #help}, and {@link #syntax} as
      * empty strings.

@@ -27,12 +27,14 @@ public class Tester {
             // eqsys.add("y = +(1,+(sin(/(+(9.45,^(^(e,pi),-(ln(pi),^(^(pi,-(0,e)),^(e,pi))))),2)),^(pi,-(0,e))))");
 
                 //FIXED SIN THING
-            eqsys.add("y = +(1,+(sin(alpha),c))");
-            eqsys.add("alpha = /(+(9.45,^(x,theta)),2)");
-            eqsys.add("c = ^(pi,-(0,e))");
-            eqsys.add("theta = -(ln(pi),^(c,x)) ");
+            // eqsys.add("y = +(1,+(sin(alpha),c))");
+            // eqsys.add("alpha = /(+(9.45,^(x,theta)),2)");
+            // eqsys.add("c = ^(pi,-(0,e))");
+            // eqsys.add("theta = -(ln(pi),^(c,x)) ");
             // eqsys.add("x = ^(e,pi)");
 
+            eqsys.add("y = >(x, 5)");
+            eqsys.add("x = 6");
                 //SIN THING
             // eqsys.add("y = 1 + sin(alpha) + c");
             // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
@@ -81,7 +83,7 @@ public class Tester {
 
         Print.print(eqsys.toFancyString());
         // Print.printi(eqsys.toFullString());
-        eqsys.graph();
+        // eqsys.graph();
         Print.printi("RESULT:", eqsys.eval("y"));
     }
 

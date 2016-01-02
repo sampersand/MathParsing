@@ -1,7 +1,7 @@
 package West.Math.Equation;
 
 import West.Math.MathObject;
-import West.Math.Equation.Function.Function;
+import West.Math.Equation.Function.InBuiltFunction;
 
 import West.Math.Set.Node.EquationNode;
 import West.Math.Set.Node.TokenNode;
@@ -28,9 +28,9 @@ public class Equation implements MathObject {
     protected EquationNode subEquations;
     public static final HashMap<String, Object> CCHARS = new HashMap<String, Object>()
     {{
-        put("op_un_l", Function.UNARY_LEFT);
-        put("op_un_r", Function.UNARY_RIGHT);
-        put("op_bi", Function.BINARY);
+        put("op_un_l", InBuiltFunction.UNARY_LEFT);
+        put("op_un_r", InBuiltFunction.UNARY_RIGHT);
+        put("op_bi", InBuiltFunction.BINARY);
         put("comp", EquationNode.COMPARATOR);
         put("bool", EquationNode.BOOLEANS);
         put("paren_l", Token.PAREN_L);
