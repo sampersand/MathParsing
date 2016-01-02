@@ -63,7 +63,7 @@ public class SetTester {
                 }
                 x++;
                 bestfit[x] = new NumberCollection().addAllE(ar1).R2(new NumberCollection().addAllE(ar2));
-System.out.println(new NumberCollection().addAllE(ar1).R2(new NumberCollection().addAllE(ar2))    * 100 + "= R2 for " + header.get(h1) + " vs " + header.get(h2));
+                System.out.println(new NumberCollection().addAllE(ar1).R2(new NumberCollection().addAllE(ar2))    * 100 + "= R2 for " + header.get(h1) + " vs " + header.get(h2));
             }
         }
         if(true) throw new NullPointerException("TODO: THIS");

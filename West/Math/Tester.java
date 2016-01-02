@@ -1,6 +1,4 @@
 package West.Math;
-
-import West.Math.Exception.*;
 import West.Math.Equation.*;
 import West.Math.Equation.Function.*;
 import West.Math.Set.*;

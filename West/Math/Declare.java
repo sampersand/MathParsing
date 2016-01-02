@@ -1,5 +1,4 @@
 package West.Math;
-import West.Math.Exception.*;
 /**
  * assert, but isn't removed at compile-time. Use these when the error might be caused by a user, and use 
  * <code>assert</code> when it might be caused by a bug.
