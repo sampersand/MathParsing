@@ -16,28 +16,7 @@ public class InBuiltFunction extends Function {
      * A Hashmap containing all the different InBuiltFunctions and their names. The keys are the names (like "+", "cos",
      * or "round"), and the values are the InBuiltFunctions / {@link OperationFunction}s corresponding to the
      * names.
-     */
-    public static final HashMap<String, Function> UNARY_LEFT = new HashMap<String, Function>()
-    {{
-        // put("+", null);
-        put("-", InBuiltFunction.FUNCTIONS.get("negate"));
-        put("~", null);
-    }};
-
-    public static final HashMap<String, Function> UNARY_RIGHT = new HashMap<String, Function>()
-    {{
-        put("!", InBuiltFunction.FUNCTIONS.get("fac"));
-    }};
-
-    public static final HashMap<String, Function> BINARY = new HashMap<String, Function>()
-    {{
-        put("+", InBuiltFunction.FUNCTIONS.get("+"));
-        put("-", InBuiltFunction.FUNCTIONS.get("-"));
-        put("*", InBuiltFunction.FUNCTIONS.get("*"));
-        put("/", InBuiltFunction.FUNCTIONS.get("/"));
-        put("^", InBuiltFunction.FUNCTIONS.get("^"));
-    }};
-    
+     */    
     public static HashMap<String, InBuiltFunction> FUNCTIONS = new HashMap<String, InBuiltFunction>() {{
         put("+", new InBuiltFunction("+", "Adds 'A' to 'B'", "+(A, B)", 0, 
             new Collection.Builder<Integer>().add(2).build(),
@@ -227,10 +206,27 @@ public class InBuiltFunction extends Function {
 
     }};
 
-    ///** The name of the {@link #inverse()} of this funtion. The reason it's not an actual function is because of 
-    // * FUNCTIONS - you cannot "get" the inverse function if it hasn't been declared yet.
-    // */
-    // String inverse;
+
+    public static final HashMap<String, Function> UNARY_LEFT = new HashMap<String, Function>()
+    {{
+        // put("+", null);
+        put("-", InBuiltFunction.FUNCTIONS.get("negate"));
+        put("~", null);
+    }};
+
+    public static final HashMap<String, Function> UNARY_RIGHT = new HashMap<String, Function>()
+    {{
+        put("!", InBuiltFunction.FUNCTIONS.get("fac"));
+    }};
+
+    public static final HashMap<String, Function> BINARY = new HashMap<String, Function>()
+    {{
+        put("+", InBuiltFunction.FUNCTIONS.get("+"));
+        put("-", InBuiltFunction.FUNCTIONS.get("-"));
+        put("*", InBuiltFunction.FUNCTIONS.get("*"));
+        put("/", InBuiltFunction.FUNCTIONS.get("/"));
+        put("^", InBuiltFunction.FUNCTIONS.get("^"));
+    }};
 
     /**
      * Default constructor. Instatiates {@link #name}, {@link #help}, and {@link #syntax} as empty strings.
