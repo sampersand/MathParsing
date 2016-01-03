@@ -17,7 +17,7 @@ import West.Math.Set.Node.TokenNode;
   * @version 0.90
  * @since 0.1
  */
-public class EquationSystem implements MathObject, Iterable {
+public class EquationSystem implements MathObject{
 
     /**
      * An Collection of all {@link Equation}s that are related to this class. The "main" Equation is the first one in the
@@ -247,7 +247,6 @@ public class EquationSystem implements MathObject, Iterable {
         return equations;
     }
 
-
     /**
      * Evaluates the variable <code>toEval</code>, using {@link EquationSystem#equations() the equations of pEqSys}
      * before checking {@link #equations this class's equations}.
@@ -421,27 +420,6 @@ public class EquationSystem implements MathObject, Iterable {
             ret += "\n" + constraints.toFullString(idtLvl + 2);
         ret += "\n" + indentE(idtLvl + 2);
         return ret + "\n" + indentE(idtLvl + 1);
-    }
-
-    /**
-     * Ok, currently, this can only be used as the following:
-     * <code>for(Object obj : eqsys) {obj = (Equation)obj</code>.<br>
-     * <code>for(Equation eq : eqsys{}</code> will crash ;(
-     * @return An {@link java.util.Iterator Iterator} for equations. used in for Each loop
-     */
-    public Iterator<Equation> iterator() {
-        return (Iterator<Equation>)(new EqSysIterator());
-    }
-    public class EqSysIterator<E> implements Iterator<E> {
-        private int i = 0;
-
-        public boolean hasNext() {
-            return i < EquationSystem.this.equations.size();
-        }
-        public E next() {
-            assert hasNext() : "there should be a next one.";
-            return (E) EquationSystem.this.equations().get(i++);
-        }
     }
 
     @Override
