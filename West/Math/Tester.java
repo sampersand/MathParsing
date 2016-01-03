@@ -31,7 +31,7 @@ public class Tester {
             // eqsys.add("=(theta, -(ln(pi),^(c,x)))");
             // eqsys.add("=(x, ^(e,pi))");
 
-            eqsys.add("=(y, 2)");
+            eqsys.add("y = 4");
 
 
             // eqsys.add("=(y, *(z, ⊻(>(x,0),<(z,2)))");

@@ -19,7 +19,7 @@ public class Token implements MathObject {
     protected Type type;
 
     public static enum Type { 
-        VAR, FUNC, PAREN, DELIM
+        VAR, FUNC, PAREN, DELIM, BINOPER
     }
 
     public static final Collection<String> PAREN_L = new Collection<String>()

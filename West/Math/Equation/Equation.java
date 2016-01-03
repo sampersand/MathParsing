@@ -28,6 +28,7 @@ public class Equation implements MathObject {
         put("paren_l", Token.PAREN_L);
         put("paren_r", Token.PAREN_R);
         put("delim", Token.DELIM);
+        put("binoper", InBuiltFunction.BINOPER);
     }};
 
 
@@ -120,6 +121,10 @@ public class Equation implements MathObject {
                 if(isInLast(s,(Collection<String>)CCHARS.get("paren_r")) != null && !replLast(all, repl).isEmpty())
                     tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
                 tokens.add(new Token(repl, Token.Type.PAREN));
+            } else if(isBinOper(all) != null){
+                repl = isBinOper(all);
+                if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                tokens.add(new Token(isBinOper(all), Token.Type.BINOPER));
             } else if(isDelim(all) != null){
                 repl = isDelim(all);
                 if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
@@ -138,11 +143,15 @@ public class Equation implements MathObject {
     }
 
     public static boolean isControlChar(String s){
-        return isParen(s) != null || isDelim(s) != null;
+        return isParen(s) != null || isDelim(s) != null || isBinOper(s) != null;
     }
     
     public static String isDelim(String s){
         return isInLast(s, (Collection<String>)CCHARS.get("delim"));
+    }
+
+    public static String isBinOper(String s){
+        return isInLast(s, (Collection<String>)CCHARS.get("binoper"));
     }
 
     public static String isParen(String s){

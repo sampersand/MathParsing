@@ -69,6 +69,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
     public static TokenNode generateMasterNode(ArrayList<Token> pTokens) {
         assert checkForNullTokens(pTokens);
+        System.out.println(pTokens);
         return ((TokenNode)(new TokenNode().condeseNodes(0, pTokens))[1]);
     }
 
@@ -79,39 +80,11 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return true;
     }
 
-
-    @Override
-    public TokenNode copy(){
-        assert elements != null;
-        return (TokenNode)new TokenNode(token).setElements(elements);
-    }
-
     @Override
     public TokenNode setToken(Token pToken){
         assert pToken != null;
         token = pToken;
         return this;
-    }
-
-    @Override
-    public String toString(){
-        return toExprString().replaceAll("^\\((.*)\\)$", "$1");
-    }
-
-    public TokenNode getASD(){
-        assert size() != 0 : "size == 0 for '" + this+"'";
-        if(token.isAssign())
-            return this;
-        return get(0).getASD();
-    }
-
-    @Override
-    public String toFancyString(){
-        return super.toFancyString().replaceFirst("Node", "TokenNode");
-    }
-    @Override
-    public String toFullString(){
-        return super.toFullString().replaceFirst("Node", "TokenNode");
     }
 
     public HashMap<String, Double> eval(final EquationSystem pEqSys){
@@ -212,5 +185,32 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             return ret.substring(0, ret.length() - 2);
         }
         return ret;
+    }
+
+    @Override
+    public TokenNode copy(){
+        assert elements != null;
+        return (TokenNode)new TokenNode(token).setElements(elements);
+    }
+
+    @Override
+    public String toString(){
+        return toExprString().replaceAll("^\\((.*)\\)$", "$1");
+    }
+
+    public TokenNode getASD(){
+        assert size() != 0 : "size == 0 for '" + this+"'";
+        if(token.isAssign())
+            return this;
+        return get(0).getASD();
+    }
+
+    @Override
+    public String toFancyString(){
+        return super.toFancyString().replaceFirst("Node", "TokenNode");
+    }
+    @Override
+    public String toFullString(){
+        return super.toFullString().replaceFirst("Node", "TokenNode");
     }
 }

@@ -16,12 +16,30 @@ public class InBuiltFunction extends Function {
      * or "round"), and the values are the InBuiltFunctions / {@link OperationFunction}s corresponding to the
      * names.
      */    
-
+    public static Collection<String> BINOPER = new Collection<String>(){{
+        //assignment
+        add("=");
+        //Comparisons
+        add("≣");add("≠");
+        add(">");add("<");
+        add("≥");add("≤");
+        add("∧");add("∨");add("⊻");
+        //Math opers
+        add("+");add("-");add("*");add("/");add("^");
+        //ETC
+        add("_nCr_");add("_nPr_");
+        add("≫");add("≪");
+    }};
     public static HashMap<String, InBuiltFunction> FUNCTIONS = new HashMap<String, InBuiltFunction>() {{
         put("=", new InBuiltFunction("=","Sets 'A' to 'B'","=(A, B)", 4,
             new Collection.Builder<Integer>().add(2).build(),
             a -> null //doesnt matter
             ));
+
+
+        //Comparators
+
+            //Normal Comparators
         put(">", new InBuiltFunction(">", "Checks if 'A' > 'B'", ">(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(),
             a -> a[0].compareTo(a[1]) == 1 ? 1D : Double.NaN
@@ -56,6 +74,8 @@ public class InBuiltFunction extends Function {
             a -> new Double(a[0].compareTo(a[1]))
             ));
 
+
+            //Boolean Comparators
         put("∧", new InBuiltFunction("∧", "Checks if 'A' ∧ 'B'", "∧(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(),
             a -> a[0].compareTo(0D) == 1 && a[1].compareTo(0D) == 1 ? 1D : Double.NaN
@@ -65,10 +85,21 @@ public class InBuiltFunction extends Function {
             new Collection.Builder<Integer>().add(2).build(),
             a -> a[0].compareTo(0D) == 1 || a[1].compareTo(0D) == 1 ? 1D : Double.NaN
             ));
+
         put("⊻", new InBuiltFunction("⊻", "Checks if 'A' ⊻ 'B'", "⊻(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(),
             a -> a[0].compareTo(0D) == 1 ^ a[1].compareTo(0D) == 1 ? 1D : Double.NaN
             ));
+
+        put("⊼", new InBuiltFunction("⊼", "Checks if 'A' ⊼ 'B'", "⊼(A, B)", 3,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> !(a[0].compareTo(0D) == 1 && a[1].compareTo(0D) == 1) ? 1D : Double.NaN
+            ));
+        put("⊽", new InBuiltFunction("⊻", "Checks if 'A' ⊻ 'B'", "⊻(A, B)", 3,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> !(a[0].compareTo(0D) == 1 || a[1].compareTo(0D) == 1) ? 1D : Double.NaN
+            ));
+
 
 
         // Standard math operators
@@ -100,6 +131,8 @@ public class InBuiltFunction extends Function {
             new Collection.Builder<Integer>().add(2).build(),
             a -> Math.pow(a[0],a[1])
             ));
+
+
 
         //Trigonometric functions
         put("sin", new InBuiltFunction("sin", "sin of 'A'", "sin(A)", -1,
@@ -162,8 +195,21 @@ public class InBuiltFunction extends Function {
             a -> Math.atan(a[0])
             ));
 
-        //Misc math functions
 
+
+        //Shifting
+        put("≫", new InBuiltFunction("≫", "'A' Shifted to the right 'B' bits", "≫(A, B)", -1,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> Integer.valueOf(a[0].intValue() >> a[1].intValue()).doubleValue()
+            ));
+        put("≪", new InBuiltFunction("≪", "'A' Shifted to the left 'B' bits", "≪(A, B)", -1,
+            new Collection.Builder<Integer>().add(2).build(),
+            a -> Integer.valueOf(a[0].intValue() << a[1].intValue()).doubleValue()
+            ));
+
+
+
+        //Misc math functions
         put("abs", new InBuiltFunction("abs", "absolute value of 'A'", "abs(A)", -1,
             new Collection.Builder<Integer>().add(1).build(),
             a -> Math.abs(a[0])
