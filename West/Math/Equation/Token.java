@@ -68,9 +68,15 @@ public class Token implements MathObject {
     public boolean isAssign(){
         return InBuiltFunction.FUNCTIONS.containsKey(val);
     }
+
+    public boolean isBinOper() {
+        assert type != null;
+        return type == Type.BINOPER;
+    }
+
     public boolean isFunc() {
         assert type != null;
-        return type == Type.FUNC;
+        return type == Type.FUNC || type == Type.BINOPER;
     }
 
     @Override

@@ -33,7 +33,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         while(pPos < pTokens.size()) {
             Token t = pTokens.get(pPos);
             assert t != null : "this should have been caught earlier.";
-            if(t.isConst()) {
+            if(t.isConst() || t.isBinOper()) {
                 node.add(new TokenNode(t));
             } else if(t.isFunc()) {
                 int paren = 0;
@@ -52,9 +52,13 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             } 
             pPos++;
         }
-        return new Object[]{pPos, node.removeExtraFuncs()};
+        return new Object[]{pPos, node};
     }
 
+    private TokenNode condense(){
+        System.out.println(toFancyString());
+        return this;
+    }
     public TokenNode removeExtraFuncs(){
         if(!token.val().isEmpty())
             return this;
@@ -70,7 +74,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public static TokenNode generateMasterNode(ArrayList<Token> pTokens) {
         assert checkForNullTokens(pTokens);
         System.out.println(pTokens);
-        return ((TokenNode)(new TokenNode().condeseNodes(0, pTokens))[1]);
+        return ((TokenNode)(new TokenNode().condeseNodes(0, pTokens))[1]).condense().removeExtraFuncs();
     }
 
     private static boolean checkForNullTokens(ArrayList<Token> pTokens){
