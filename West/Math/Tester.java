@@ -7,7 +7,7 @@ import West.*;
 /**
  * A tester class for the whole equation
  * @author Sam Westerman
-  * @version 0.90
+ * @version 0.90
  * @since 0.1
  */
 public class Tester {
@@ -31,19 +31,17 @@ public class Tester {
             // eqsys.add("=(theta, -(ln(pi),^(c,x)))");
             // eqsys.add("=(x, ^(e,pi))");
 
-            // eqsys.add("=(y, ^(x, compare(x, 0))");
-            // eqsys.addConstraint("⊻(>(x, y),<(0, x))");
+            eqsys.add("=(y, 2)");
 
 
             // eqsys.add("=(y, *(z, ⊻(>(x,0),<(z,2)))");
-            eqsys.add("=(y, *(z, <(z,2)))");
-            eqsys.add("=(z, *(x0, *(x1, *(x2, *(x3, x4)))))");
-            eqsys.add("=(x0, *(x, c)");
-            eqsys.add("=(x1, *(-(x, 8), c)");
-            eqsys.add("=(x2, *(-(x, 4), c)");
-            eqsys.add("=(x3, *(+(x, 8), c)");
-            eqsys.add("=(x4, *(+(x, 4), c)");
-            eqsys.add("=(c, /(1,4))");
+            // eqsys.add("=(z, *(x0, *(x1, *(x2, *(x3, x4)))))");
+            // eqsys.add("=(x0, *(x, c)");
+            // eqsys.add("=(x1, *(-(x, 8), c)");
+            // eqsys.add("=(x2, *(-(x, 4), c)");
+            // eqsys.add("=(x3, *(+(x, 8), c)");
+            // eqsys.add("=(x4, *(+(x, 4), c)");
+            // eqsys.add("=(c, /(1,4))");
 
             //UNFIXED
 
@@ -98,7 +96,7 @@ public class Tester {
         Print.print(eqsys.toFancyString());
         // Print.printi(eqsys.toFullString());
          // eqsys.graph();
-        // Print.printi("RESULT:", eqsys.eval("y"));
+        Print.printi("RESULT:", eqsys.eval("y"));
     }
 
 

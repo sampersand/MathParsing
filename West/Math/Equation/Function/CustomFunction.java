@@ -14,7 +14,7 @@ import java.util.HashMap;
  * A class that all user-defined functions must impliment. 
  * 
  * @author Sam Westerman
-  * @version 0.90
+ * @version 0.90
  * @since 0.1
  */
 public class CustomFunction extends Function implements MathObject {

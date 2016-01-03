@@ -16,7 +16,7 @@ import West.Math.Set.Collection;
  * each other.
  * 
  * @author Sam Westerman
-  * @version 0.90
+ * @version 0.90
  * @since 0.1
  */
 public class Equation implements MathObject {
@@ -25,7 +25,6 @@ public class Equation implements MathObject {
     protected TokenNode subEquations;
     public static final HashMap<String, Object> CCHARS = new HashMap<String, Object>()
     {{
-        put("assign", InBuiltFunction.ASSIGNMENT);
         put("paren_l", Token.PAREN_L);
         put("paren_r", Token.PAREN_R);
         put("delim", Token.DELIM);

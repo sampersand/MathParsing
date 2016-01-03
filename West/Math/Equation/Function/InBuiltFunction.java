@@ -17,7 +17,6 @@ public class InBuiltFunction extends Function {
      * names.
      */    
 
-    public static Collection<String> ASSIGNMENT = new Collection.Builder<String>().add("*=").add("⇒").add("→").build();
     public static HashMap<String, InBuiltFunction> FUNCTIONS = new HashMap<String, InBuiltFunction>() {{
         put("=", new InBuiltFunction("=","Sets 'A' to 'B'","=(A, B)", 4,
             new Collection.Builder<Integer>().add(2).build(),
