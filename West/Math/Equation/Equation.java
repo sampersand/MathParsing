@@ -84,7 +84,7 @@ public class Equation implements MathObject {
         //# = number    A = letter   & = BOTH
         // pEq = pEq.replaceAll("\\-\\(", "*(-1,"); // -( → -1 * (
         // pEq = pEq.replaceAll("^(\\w)(.)\\-", "$1$20-"); // THIS IS JSUT THROWN TOGETHER
-        // pEq = pEq.replaceAll("([\\d\\w.]+)E([\\d\\w.-]+)","($1*10^(0$2))"); // &.&E-?&.& → (&.&*10^(-?&.&))
+        pEq = pEq.replaceAll("([\\d\\w.]+)E([\\d\\w.-]+)","($1*10^(0$2))"); // &.&E-?&.& → (&.&*10^(-?&.&))
         // pEq = pEq.replaceAll("([\\d.]+)(?!E)(\\(|(?:[A-Za-z]+))", "$1*$2"); // #A → #*A
         return pEq;
     }
