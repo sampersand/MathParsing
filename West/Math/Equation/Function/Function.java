@@ -19,8 +19,12 @@ import java.util.Random;
  */
 public class Function implements MathObject {
     public static enum Type{
-        UN_L, UN_R, BIN, NORM   
-    };
+        UN_L,
+        UN_R,
+        BIN,
+        ASSIGN,
+        NORM
+    } //Assign extends Bin
 
     public interface FuncObj{
         public Double exec(Double[] args);
@@ -314,15 +318,21 @@ public class Function implements MathObject {
     }};
 
     public static String isBinOper(String s){
-        assert false;
-        return null;
-        // return Equaiton.isInLast(s, b);
+        //TODO: Don't generate a new list every time.
+        return Equaiton.isInLast(s, new Collection<String>(){{
+            for(Function f : FUNCTIONS)
+                if(f.type() == Type.BIN || f.type() == Type.ASSIGN)
+                    add(f.name());
+        }});
     }
 
     public static String isAssign(String s){
-        // return Equaiton.isInLast(s);
-        assert false;
-        return null;
+        //TODO: Don't generate a new list every time.
+        return Equaiton.isInLast(s, new Collection<String>(){{
+            for(Function f : FUNCTIONS)
+                if(f.type() == Type.ASSIGN)
+                    add(f.name());
+        }});
     }
     /**
      * A String that holds either the function name ({@link Function}) or the file name ({@link CustomFunction}).
