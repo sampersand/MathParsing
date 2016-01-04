@@ -142,9 +142,9 @@ public class DisplayComponent extends JLabel implements MathObject {
             double cStep = grapher.components().cStep();
             for(double x = dispBounds[0]; x < dispBounds[2]; x += cStep) {
                 drawl(x,
-                      equationsys.eval("y",new EquationSystem().add("=(x, " +x+ ")")), 
+                      equationsys.eval("y",new EquationSystem().add("x = " + x)), 
                       x + cStep,
-                      equationsys.eval("y", new EquationSystem().add("=(x, " + (x + cStep)+")")));
+                      equationsys.eval("y", new EquationSystem().add("x = " + (x + cStep))));
             }
         }
         else {

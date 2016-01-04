@@ -41,7 +41,7 @@ public class Tester {
             // eqsys.add("=(c, /(1,4))");
 
             //UNFIXED
-            eqsys.add("y = 1 + sin(x)");
+            // eqsys.add("y = 1 + sin(x)");
                 //SIN THING
             // eqsys.add("y = 1 + sin(alpha) + c");
             // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
