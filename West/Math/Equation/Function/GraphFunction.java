@@ -4,7 +4,6 @@ import West.Print;
 import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Equation;
 import West.Math.Set.Node.TokenNode;
-import West.Math.Equation.Function.InBuiltFunction;
 import West.Math.Set.NumberCollection;
 import West.Math.Display.GraphComponents;
 import West.Math.Display.Grapher;
@@ -12,7 +11,7 @@ import West.Math.Set.Collection;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class GraphFunction extends InBuiltFunction{
+public class GraphFunction extends Function{
     public GraphFunction(){
         super("graph", "graph the arguments", "graph(A, B, ... )", 
               -1, new Collection.Builder<Integer>().add(-1).build(),

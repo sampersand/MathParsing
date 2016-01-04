@@ -2,7 +2,6 @@ package West.Math.Equation;
 
 import West.Math.MathObject;
 import West.Math.Set.Collection;
-import West.Math.Equation.Function.InBuiltFunction;
 
 /**
  * A single item from an equation String.
@@ -63,10 +62,6 @@ public class Token implements MathObject {
     public boolean isConst() {
         assert type != null;
         return type == Type.VAR;
-    }
-
-    public boolean isAssign(){
-        return InBuiltFunction.FUNCTIONS.containsKey(val);
     }
 
     public boolean isBinOper() {

@@ -2,7 +2,7 @@ package West.Math.Set.Node;
 import West.Math.Set.Collection;
 import java.util.ArrayList;
 import West.Math.Equation.EquationSystem;
-import West.Math.Equation.Function.InBuiltFunction;
+import West.Math.Equation.Function.Function;
 import West.Math.Equation.Token;
 import West.Math.MathObject;
 import West.Math.Equation.Equation;
@@ -62,7 +62,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         if(token.isConst())
             return -2; // -1 is unknown priroity 
         assert token.isFunc();
-        InBuiltFunction i = InBuiltFunction.FUNCTIONS.get(token.val());
+        Function i = Function.FUNCTIONS.get(token.val());
         return i == null ? -1 : i.priority();
     }
     private static int firstHighPriority(Collection<TokenNode> peles){
@@ -101,7 +101,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             if(n.token().isConst()){
                 e.addD(n);
             } else if(n.isOper()){
-                InBuiltFunction nibf = InBuiltFunction.get(n.token().val());
+                Function nibf = Function.get(n.token().val());
                 assert nibf != null;
                 System.out.println("n is an oper!");
                 for(int depth = 1; depth < e.depth(); depth++){
@@ -112,7 +112,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                         e.setD(depth - 1, n); //depth is a final node.
                         break;
                     }
-                    InBuiltFunction nDibf = InBuiltFunction.get(nD.token().val());
+                    Function nDibf = Function.get(nD.token().val());
                     if(nDibf == null){
                         System.out.println("nDibf is null!");
                         continue;
@@ -237,7 +237,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             if(pEqSys.functions().containsKey(token.val())) // if it is a function
                 return pEqSys.functions().get(token.val()).exec(pEqSys, this);
             else
-                return InBuiltFunction.exec(token.val(), pEqSys, this);
+                return Function.exec(token.val(), pEqSys, this);
         } else if(isFinal()){
             String val = token.val();
             Double d;
@@ -284,7 +284,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         Double d0, d1;
         d0 = get(0).eval((EquationSystem.fromHashMap(vars))).get(get(0).toString()); 
         d1 = get(1).eval((EquationSystem.fromHashMap(vars))).get(get(0).toString()); 
-        return InBuiltFunction.FUNCTIONS.get(toString()).funcObj().exec(new Double[]{d0, d1}) == 1;
+        return Function.FUNCTIONS.get(toString()).funcObj().exec(new Double[]{d0, d1}) == 1;
     }
 
     public String toExprString(){

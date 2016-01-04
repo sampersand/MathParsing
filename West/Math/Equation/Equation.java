@@ -1,7 +1,7 @@
 package West.Math.Equation;
 
 import West.Math.MathObject;
-import West.Math.Equation.Function.InBuiltFunction;
+import West.Math.Equation.Function.Function;
 
 import West.Math.Set.Node.TokenNode;
 import West.Math.Set.Node.Node;
@@ -28,7 +28,7 @@ public class Equation implements MathObject {
         put("paren_l", Token.PAREN_L);
         put("paren_r", Token.PAREN_R);
         put("delim", Token.DELIM);
-        put("binoper", InBuiltFunction.BINOPER);
+        put("binoper", Function.BINOPER);
     }};
 
 
