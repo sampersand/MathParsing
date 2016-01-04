@@ -2,6 +2,7 @@ package West.Math.Equation.Function;
 
 import West.Math.MathObject;
 import West.Math.Equation.EquationSystem;
+import West.Math.Equation.Equation;
 import West.Math.Set.Node.TokenNode;
 import West.Math.Set.Collection;
 import static West.Math.Declare.*;
@@ -311,6 +312,9 @@ public class Function implements MathObject {
             a -> a[0]
             ));
     }};
+    public static String isBinOper(String s){
+        return Equaiton.isInLast(s);
+    }
     /**
      * A String that holds either the function name ({@link Function}) or the file name ({@link CustomFunction}).
      */
@@ -443,9 +447,12 @@ public class Function implements MathObject {
         assert argsLength.contains(args.length) || argsLength.contains(-1) :
         "'" +name+ "' got incorrect args. Allowed args: " + argsLength + ", inputted args = '"+pNode + "'("+args.length+")";
         HashMap<String, Double> rethm = (HashMap<String, Double>)rargs[1];
-        // assert false :"\n" + rethm + "\n"+ pNode.toString() + "\n" + pNode.toFancyString() + " \nargs:" + args[0] + 
-        // "," + args[1] + "\nthis:\n"+toFancyString;
         return addArgs(rethm, pNode.toString(), funcObj.exec(args));
+    }
+
+    public static HashMap<String,Double> exec(String pStr, final EquationSystem pEqSys, TokenNode pNode) {
+        Function f;
+        assert f = FUNCTIONS.get(f)
     }
 
     public HashMap<String, Double> addArgs(HashMap<String, Double> hm, String key, Double val){

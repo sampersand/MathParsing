@@ -23,15 +23,12 @@ public class Equation implements MathObject {
 
     /** This classe's list of subEquations that are equal to eachother. */
     protected TokenNode subEquations;
-    public static final HashMap<String, Object> CCHARS = new HashMap<String, Object>()
-    {{
-        put("paren_l", Token.PAREN_L);
-        put("paren_r", Token.PAREN_R);
-        put("delim", Token.DELIM);
-        put("binoper", Function.BINOPER);
-    }};
-
-
+    // public static final HashMap<String, Object> CCHARS = new HashMap<String, Object>()
+    // {{
+    //     put("paren_l", Token.PAREN_L);
+    //     put("paren_r", Token.PAREN_R);
+    //     put("delim", Token.DELIM);
+    // }};
     /**
      * The default constructor. This just instantiates {@link #subEquations} as an empty Collection.
      */
@@ -114,19 +111,20 @@ public class Equation implements MathObject {
                 continue;
             }
             String repl;
-            if(isParen(all) != null){
-                repl = isParen(all);
-                if(isInLast(s,(Collection<String>)CCHARS.get("paren_l")) != null) //if its a left paren, make function
+            if((repl = isParenL(all)) != null){
+                if(isInLast(s,Token.PAREN_L) != null) //if its a left paren, make function
                     tokens.add(new Token(replLast(all, repl), Token.Type.FUNC));
-                if(isInLast(s,(Collection<String>)CCHARS.get("paren_r")) != null && !replLast(all, repl).isEmpty())
+                else if(!replLast(all, repl).isEmpty())
                     tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
                 tokens.add(new Token(repl, Token.Type.PAREN));
-            } else if(isBinOper(all) != null){
-                repl = isBinOper(all);
+            }
+            else if((repl = isParenR(all)) != null){
+                if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                tokens.add(new Token(repl, Token.Type.PAREN));
+            } else if((repl = isBinOper(all)) != null){
                 if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
                 tokens.add(new Token(isBinOper(all), Token.Type.BINOPER));
-            } else if(isDelim(all) != null){
-                repl = isDelim(all);
+            } else if((repl = isDelim(all)) != null){
                 if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
                 tokens.add(new Token(isDelim(all), Token.Type.DELIM));
             } else {
@@ -143,24 +141,25 @@ public class Equation implements MathObject {
     }
 
     public static boolean isControlChar(String s){
-        return isParen(s) != null || isDelim(s) != null || isBinOper(s) != null;
+        return isParenL(s) != null || isParenR(s) != null || isDelim(s) != null || isBinOper(s) != null;
     }
     
     public static String isDelim(String s){
-        return isInLast(s, (Collection<String>)CCHARS.get("delim"));
+        return Token.isDelim(s);
     }
 
     public static String isBinOper(String s){
-        return isInLast(s, (Collection<String>)CCHARS.get("binoper"));
+        return Function.isBinOper(s);
     }
 
-    public static String isParen(String s){
-        String ret;
-        if((ret = isInLast(s, (Collection<String>)CCHARS.get("paren_l"))) != null)
-            return ret;
-        return isInLast(s, (Collection<String>)CCHARS.get("paren_r"));
+    public static String isParenR(String s){
+        return Token.isParenR(s);
     }
-    private static String isInLast(String pStr, java.util.Collection<String> pList){
+
+    public static String isParenL(String s){
+        return Token.isParenL(s);
+    }
+    public static String isInLast(String pStr, java.util.Collection<String> pList){
         if(pStr.isEmpty()) //just makes it faster so it doesnt have to iterate thru everything
             return null;
         for(String s : pList){

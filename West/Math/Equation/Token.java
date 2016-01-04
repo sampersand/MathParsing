@@ -2,6 +2,7 @@ package West.Math.Equation;
 
 import West.Math.MathObject;
 import West.Math.Set.Collection;
+import West.Math.Equation.Equation;
 
 /**
  * A single item from an equation String.
@@ -28,6 +29,10 @@ public class Token implements MathObject {
         add("{");
     }};
 
+    public static String isParenL(String s){
+        return Equation.isInLast(s);
+    }
+
     public static final Collection<String> PAREN_R = new Collection<String>()
     {{
         add(")");
@@ -35,11 +40,21 @@ public class Token implements MathObject {
         add("}");
     }};
 
+    public static String isParenR(String s){
+        return Equation.isInLast(s);
+    }
+
     public static final Collection<String> DELIM = new Collection<String>()
     {{
         add(",");
         add(":");
+        add("|");
     }};
+
+    public static String isDelim(String s){
+        return Equation.isInLast(s);
+    }
+
     public Token() {
         this("", Type.VAR);
     }
