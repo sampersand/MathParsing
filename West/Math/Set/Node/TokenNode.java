@@ -54,13 +54,10 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return new Object[]{pPos, node};
     }
 
-    // public boolean isOper(){
-    //     return token.isBinOper();
-    // }
 
     private int priority(){
         if(token.isConst())
-            return Function.DEFAULT_PRIORITY + 1; // -1 is unknown priroity 
+            return Function.DEFAULT_PRIORITY + 1;
         assert token.isFunc();
         Function i = Function.FUNCTIONS.get(token.val());
         return i == null ? Function.DEFAULT_PRIORITY : i.priority();
@@ -68,27 +65,39 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     private static int firstHighPriority(Collection<TokenNode> peles){
         int pos = 0, priority = Function.DEFAULT_PRIORITY;
         for(int i = 0; i < peles.size(); i++){
-            System.out.print(peles.get(i).token().val() + "("+peles.get(i).priority()+")");
-            if(peles.get(i).priority() <= priority){ //i swapped them
+            // System.out.print(peles.get(i).token().val() + "("+peles.get(i).priority()+")");
+            if(peles.get(i).priority() < priority){ //i swapped them
                 priority = peles.get(i).priority();
                 pos = i;
-                System.out.print("<");
+                // System.out.print("<");
             }
-            else System.out.print("≥");
-            System.out.println("("+priority+") [" + pos + "]");
+            // else System.out.print("≥");
+            // System.out.println("("+priority+") [" + pos + "]");
         }
         return pos;
     }
+    public static int testing = -1;
     private static TokenNode condense(Collection<TokenNode> peles){
         if(peles.size() == 0)
             return null;
         if(peles.size() == 1)
-            return peles.get(0);
+            if(peles.get(0).size() == 0)
+                return peles.get(0);
+            else{
+                return new TokenNode(peles.get(0).token()){{
+                    add(condense(new Collection.Builder<TokenNode>().addAll(peles.get(0).elements()).build()));
+                }};
+            }
+        int t = ++testing;
+        System.out.println("peles:"+peles);
         int fhp = firstHighPriority(peles);
-        System.out.println(fhp + "|");
-        TokenNode u = peles.get(fhp); //new node has same token because condense is just reorganizing subnodes.
+        // System.out.println();
+        TokenNode u = condense(new Collection.Builder<TokenNode>().add(peles.get(fhp)).build());
+        System.out.println("u"+t+":"+u);
         TokenNode s = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(0, fhp)).build());
+        System.out.println("s"+t+":"+s);
         TokenNode e = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(fhp + 1)).build());
+        System.out.println("e"+t+":"+e);
         if(s != null)
             u.add(s);
         if(e != null)
@@ -99,18 +108,14 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     @Override
     public void addD(int i, Node<?, ?> n) {
         assert n != null : "Cannot addDepth null Nodes!";
-        System.out.println("addD in TokenNode might not work");
         if(i <= 0 || size() <= 0){
             addE(n);
         } else {
-            if(i == 2 && get(-1).token().isConst()) {
-                System.out.println("im here in adDD TokenNode!\n"+get(-1).toFancyString());
-                addE(n);
-            } else {
-                System.out.println(i + " | " + get(-1) + " | " + get(-1).token().isConst());
-                System.out.println("going down a level:\n"+toFancyString()+"\nto add:\n"+n.toFancyString()+"\n\n\n");
+            // if(i == 2 && get(-1).token().isConst()) {
+            //     addE(n);
+            // } else {
                 get(size() - 1).addD(i - 1, n);
-            }
+            // }
         }
     }
 
@@ -143,7 +148,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         System.out.println(pTokens);
         TokenNode tn = (TokenNode)new TokenNode().condeseNodes(0, pTokens)[1];
         TokenNode tn2 = condense(new Collection.Builder<TokenNode>().addAll(tn.elements()).build());
-        System.out.println(tn2.toFullString());
+        System.out.println(tn2.toFancyString());
         return tn2.removeExtraFuncs();
     }
 
@@ -240,13 +245,13 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public String toExprString(){
         String ret = "";
         if(token.isFunc() && !token.isBinOper()){
-            ret += token + "(";
+            ret += token.val() + "(";
             for(Node n : this)
                 ret += ((TokenNode)n).toExprString() + ", ";
             ret = (size() == 0 ? ret : ret.substring(0, ret.length() - 2)) + ")";
         } else if(token.isBinOper()){
-            assert size() == 2 : "size != 2 for BinOper: "+ elements + ", and token:" + token + ", size:"+size();
-            // if(size() == 0) return "["+token+", size == 0!]";
+            // assert size() == 2 : "size != 2 for BinOper: "+ elements + ", and token:" + token + ", size:"+size();
+            if(size() == 0) return token.val();
             for(Node n : this){
                 ret += ((TokenNode)n).toExprString();
                 ret += " " + (token == null ? "" : token.val()) + " ";
@@ -256,6 +261,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         else if(token.isConst()){
             ret += token.val();
         }
+        else
+            assert false;
         return ret;
     }
 

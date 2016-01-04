@@ -184,7 +184,7 @@ public class Equation implements MathObject {
     @Override
     public String toFancyString(int idtLvl) {
         String ret = indent(idtLvl) + "Equation:\n";
-        ret += indentE(idtLvl + 1) + "Expressions:" + exprstoStr();
+        ret += indentE(idtLvl + 1) + "Expressions: " + exprstoStr();
         return ret;
     }
 

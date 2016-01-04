@@ -30,7 +30,7 @@ public class Function implements MathObject {
         public Double exec(Double[] args);
     }
 
-    public static final int DEFAULT_PRIORITY = 6;
+    public static final int DEFAULT_PRIORITY = 7;
     public static HashMap<String, Function> FUNCTIONS = new HashMap<String, Function>() {{
         // =                : 0
         // ()               : 1
@@ -43,7 +43,7 @@ public class Function implements MathObject {
             new Collection.Builder<Integer>().add(2).build(), Type.ASSIGN, 
             a -> null //doesnt matter
             ));
-        put("", new Function("","","", 1,
+        put("", new Function("","","", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> a[0]
             ));
@@ -473,7 +473,7 @@ public class Function implements MathObject {
         Object[] rargs = evalNode(pEqSys, pNode);
         Double[] args = (Double[])rargs[0];
         assert argsLength.contains(args.length) || argsLength.contains(-1) :
-        "'" +name+ "' got incorrect args. Allowed args: " + argsLength + ", inputted args = '"+pNode + "'("+args.length+")";
+        "'" +name+ "' got incorrect args. Allowed args: " + argsLength + ", inputted args = '"+ pNode + "'("+args.length+")";
         HashMap<String, Double> rethm = (HashMap<String, Double>)rargs[1];
         return addArgs(rethm, pNode.toString(), funcObj.exec(args));
     }
