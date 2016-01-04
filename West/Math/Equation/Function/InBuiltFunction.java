@@ -318,8 +318,10 @@ public class InBuiltFunction extends Function {
 
     }};
 
-    public static InBuiltFunction get(String s){
-        return FUNCTIONS.get(s);
+    public static boolean isBinOper(String s){
+        if(FUNCTIONS.get(s) == null)
+            return false;
+        return FUNCTIONS.get(s).isBinOper());
     }
     /**
      * Default constructor. Instatiates {@link #name}, {@link #help}, and {@link #syntax} as empty strings.

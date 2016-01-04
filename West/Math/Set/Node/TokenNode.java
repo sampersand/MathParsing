@@ -62,7 +62,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         if(token.isConst())
             return -2; // -1 is unknown priroity 
         assert token.isFunc();
-        InBuiltFunction i = InBuiltFunction.get(token.val());
+        InBuiltFunction i = InBuiltFunction.FUNCTIONS.get(token.val());
         return i == null ? -1 : i.priority();
     }
     private static int firstHighPriority(Collection<TokenNode> peles){
