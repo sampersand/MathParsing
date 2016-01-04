@@ -45,7 +45,7 @@ public class CustomFunction extends Function implements MathObject {
      * @throws IllegalArgumentException When either name, help, and / or syntax is null.
      */
     public CustomFunction(String pName) throws IllegalArgumentException{
-        super(pName, null, null, -1, new Collection.Builder<Integer>().add(0).build(), null);
+        super(pName, null, null, -1, new Collection.Builder<Integer>().add(0).build(), null, null);
     }
 
     /**
@@ -60,8 +60,9 @@ public class CustomFunction extends Function implements MathObject {
                           String pSyntax,
                           int pPriroity,
                           Collection<Integer> pArgsLength,
+                          Type pType,
                           FuncObj pFuncObj) throws IllegalArgumentException{
-        super(pName, pHelp, pSyntax, pPriroity, pArgsLength, pFuncObj);
+        super(pName, pHelp, pSyntax, pPriroity, pArgsLength, pType, pFuncObj);
         try {
             if(pName.isEmpty()) {
                 Print.printe("Instantiating a CustomFunction without a function associated!");
@@ -185,11 +186,12 @@ public class CustomFunction extends Function implements MathObject {
         ret += indent(idtLvl + 1) + "Help:\n" + indentE(idtLvl + 2) + help + "\n";
         ret += indent(idtLvl + 1) + "Syntax:\n" + indentE(idtLvl + 2) + syntax + "\n";
         ret += indent(idtLvl + 1) + "Class:\n" + indentE(idtLvl + 2) + cl;
+        System.err.println("TODO: UPDATE ME");
         return ret + "\n" + indentE(idtLvl + 1);
     }
     @Override
     public CustomFunction copy(){
-        return new CustomFunction(name, help, syntax, priority, argsLength, funcObj);
+        return new CustomFunction(name, help, syntax, priority, argsLength, type, funcObj);
     }
 
 }
