@@ -6,7 +6,6 @@ import West.Math.Equation.Function.InBuiltFunction;
 import West.Math.Equation.Token;
 import West.Math.MathObject;
 import West.Math.Equation.Equation;
-import static West.Math.Equation.Token.Type.*;
 import java.util.HashMap;
 /**
 * TODO: JAVADOC
@@ -19,7 +18,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
     public TokenNode(){
         super();
-        token = new Token("",FUNC);
+        token = new Token("",Token.Type.FUNC);
     }
 
     public TokenNode(Token pToken) {
@@ -234,7 +233,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         assert token != null;
         assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
 
-        if(token.type() == FUNC){
+        if(token.isFunc()){
             if(pEqSys.functions().containsKey(token.val())) // if it is a function
                 return pEqSys.functions().get(token.val()).exec(pEqSys, this);
             else
