@@ -77,19 +77,13 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return pos;
     }
     private static TokenNode condense(Collection<TokenNode> peles){
-        // if(priority() == -2) // cannot condense a constant node.
-            // return this;
         if(peles.size() == 0)
             return null;
-        // assert peles.size() != 0: peles;
         if(peles.size() == 1)
             return peles.get(0);
         int fhp = firstHighPriority(peles);
         TokenNode u = peles.get(fhp); //new node has same token because condense is just reorganizing subnodes.
-        System.out.println(peles + " | " + fhp + " <-fhp");
-        System.out.println(peles.subList(0, fhp) + " | " + u + " | " + peles.subList(fhp + 1));
         TokenNode s = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(0, fhp)).build());
-        // System.out.println(fhp + " | " + peles.size() + " | " + peles);
         TokenNode e = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(fhp + 1)).build());
         if(s != null)
             u.add(s);
@@ -296,25 +290,22 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
     public String toExprString(){
         String ret = "";
-        if(token instanceof Token){
-            Token tok = (Token)token;
-            ret += token.val();
-            if(tok.isFunc()){
-                ret += "(";
-                for(Node n : this){
-                    ret += ((TokenNode)n).toExprString() + ", ";
-                }
-                ret = (size() == 0 ? ret : ret.substring(0, ret.length() - 2)) + ")";
-            } else{
-                assert size() == 0 : "I am not a function, but I have subnodes!";
+        if(token.isFunc() && !token.isBinOper()){
+            ret += token + "(";
+            for(Node n : this)
+                ret += ((TokenNode)n).toExprString() + ", ";
+            ret = (size() == 0 ? ret : ret.substring(0, ret.length() - 2)) + ")";
+        } else if(token.isBinOper()){
+            assert size() == 2 : "size != 2 for BinOper: "+ elements + ", and token:" + token + ", size:"+size();
+            // if(size() == 0) return "["+token+", size == 0!]";
+            for(Node n : this){
+                ret += ((TokenNode)n).toExprString();
+                ret += " " + (token == null ? "" : token.val()) + " ";
             }
-        } else {
-            assert false;
-            // for(Node n : this){
-            //     ret += ((TokenNode)n).toExprString();
-            //     ret += " " + (token == null ? "" : token) + " ";
-            // }
-            // return ret.substring(0, ret.length() - 2);
+            ret = ret.substring(0, ret.length() - 2);
+        }
+        else if(token.isConst()){
+            ret += token.val();
         }
         return ret;
     }
