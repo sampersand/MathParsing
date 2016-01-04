@@ -18,6 +18,7 @@ import java.util.Random;
  * @since 0.1
  */
 public class Function implements MathObject {
+    public static final boolean USING_BIN_OPERS = false;
     public static enum Type{
         UN_L,
         UN_R,
@@ -326,6 +327,8 @@ public class Function implements MathObject {
 
     public static String isBinOper(String s){
         //TODO: Don't generate a new list every time.
+        if(!USING_BIN_OPERS)
+            return null;
         return Equation.isInLast(s, new Collection<String>(){{
             for(Function f : FUNCTIONS.values())
                 if(f.type() == Type.BIN || f.type() == Type.ASSIGN)
@@ -335,6 +338,8 @@ public class Function implements MathObject {
 
     public static String isAssign(String s){
         //TODO: Don't generate a new list every time.
+        if(!USING_BIN_OPERS)
+            return null;
         return Equation.isInLast(s, new Collection<String>(){{
             for(Function f : FUNCTIONS.values())
                 if(f.type() == Type.ASSIGN)
