@@ -44,7 +44,8 @@ public class Tester {
 
             // eqsys.add("y = 1 + sin((9.45 + (e^pi) ^ (ln(pi) - (pi - e) ^ (e^pi))) / 2) + (pi - e)");
 
-            eqsys.add("y = (1-e)");
+            eqsys.add("y = 1 + 2");
+            // eqsys.add("y = (1-e)");
                 //SIN THING
             // eqsys.add("y = 1 + sin(alpha) + c");
             // eqsys.add("alpha = (9.45 + x ^ theta) / 2");

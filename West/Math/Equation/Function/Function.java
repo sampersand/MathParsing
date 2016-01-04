@@ -30,12 +30,23 @@ public class Function implements MathObject {
         public Double exec(Double[] args);
     }
 
+    public static final int DEFAULT_PRIORITY = 6;
     public static HashMap<String, Function> FUNCTIONS = new HashMap<String, Function>() {{
-        put("=", new Function("=","Sets 'A' to 'B'","=(A, B)", 4,
+        // =                : 0
+        // ()               : 1
+        // ∧, ∨, ⊻, ⊼, ⊽   : 2
+        // >, <, ≣, ≥, ≤, ≠ : 3
+        // ^                : 4
+        // *, /, %          : 5
+        // +, -             : 6
+        put("=", new Function("=","Sets 'A' to 'B'","=(A, B)", 0,
             new Collection.Builder<Integer>().add(2).build(), Type.ASSIGN, 
             a -> null //doesnt matter
             ));
-
+        put("", new Function("","","", 1,
+            new Collection.Builder<Integer>().add(1).build(), Type.NORM,
+            a -> a[0]
+            ));
 
         //Comparators
 
@@ -54,6 +65,7 @@ public class Function implements MathObject {
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> a[0].compareTo(a[1]) == 0 ? 1D : Double.NaN
             ));
+
         put("≥", new Function("≥", "Checks if 'A' ≥ 'B'", "≥(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> a[0].compareTo(a[1]) != -1 ? 1D : Double.NaN
@@ -69,33 +81,33 @@ public class Function implements MathObject {
             a -> a[0].compareTo(a[1]) != 0 ? 1D : Double.NaN
             ));
 
-        put("compare", new Function("compare", "See Double.compare(A, B)", "compare(A, B)", 3,
+        put("compare", new Function("compare", "See Double.compare(A, B)", "compare(A, B)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> new Double(a[0].compareTo(a[1]))
             ));
 
 
             //Boolean Comparators
-        put("∧", new Function("∧", "Checks if 'A' ∧ 'B'", "∧(A, B)", 3,
+        put("∧", new Function("∧", "Checks if 'A' ∧ 'B'", "∧(A, B)", 2,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> a[0].compareTo(0D) == 1 && a[1].compareTo(0D) == 1 ? 1D : Double.NaN
             ));
 
-        put("∨", new Function("∨", "Checks if 'A' ∨ 'B'", "∨(A, B)", 3,
+        put("∨", new Function("∨", "Checks if 'A' ∨ 'B'", "∨(A, B)", 2,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> a[0].compareTo(0D) == 1 || a[1].compareTo(0D) == 1 ? 1D : Double.NaN
             ));
 
-        put("⊻", new Function("⊻", "Checks if 'A' ⊻ 'B'", "⊻(A, B)", 3,
+        put("⊻", new Function("⊻", "Checks if 'A' ⊻ 'B'", "⊻(A, B)", 2,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> a[0].compareTo(0D) == 1 ^ a[1].compareTo(0D) == 1 ? 1D : Double.NaN
             ));
 
-        put("⊼", new Function("⊼", "Checks if 'A' ⊼ 'B'", "⊼(A, B)", 3,
+        put("⊼", new Function("⊼", "Checks if 'A' ⊼ 'B'", "⊼(A, B)", 2,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> !(a[0].compareTo(0D) == 1 && a[1].compareTo(0D) == 1) ? 1D : Double.NaN
             ));
-        put("⊽", new Function("⊻", "Checks if 'A' ⊻ 'B'", "⊻(A, B)", 3,
+        put("⊽", new Function("⊻", "Checks if 'A' ⊻ 'B'", "⊻(A, B)", 2,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> !(a[0].compareTo(0D) == 1 || a[1].compareTo(0D) == 1) ? 1D : Double.NaN
             ));
@@ -103,31 +115,31 @@ public class Function implements MathObject {
 
 
         // Standard math operators
-        put("+", new Function("+", "Adds 'A' to 'B'", "+(A, B)", 0, 
+        put("+", new Function("+", "Adds 'A' to 'B'", "+(A, B)", 6, 
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> a[0] + a[1]
             ));
 
-        put("-", new Function("-", "Subtracts 'A' to 'B'", "-(A, B)", 0,
+        put("-", new Function("-", "Subtracts 'A' to 'B'", "-(A, B)", 6,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> a[0] - a[1]
             ));
 
-        put("*", new Function("*", "Multiplies 'A' to 'B'", "*(A, B)", 1,
+        put("*", new Function("*", "Multiplies 'A' to 'B'", "*(A, B)", 5,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> a[0] * a[1]
             ));
 
-        put("/", new Function("/", "Divides 'A' to 'B'", "/(A, B)", 1,
+        put("/", new Function("/", "Divides 'A' to 'B'", "/(A, B)", 5,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> a[0] / a[1]
             ));
 
-        put("%", new Function("%", "'A' Modulo 'B'", "%(A, B)", 1,
+        put("%", new Function("%", "'A' Modulo 'B'", "%(A, B)", 5,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> a[0] % a[1]
             ));
-        put("^", new Function("^", "Raises 'A' to 'B'", "^(A, B)", 2,
+        put("^", new Function("^", "Raises 'A' to 'B'", "^(A, B)", 4,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> Math.pow(a[0],a[1])
             ));
@@ -135,62 +147,62 @@ public class Function implements MathObject {
 
 
         //Trigonometric functions
-        put("sin", new Function("sin", "sin of 'A'", "sin(A)", -1,
+        put("sin", new Function("sin", "sin of 'A'", "sin(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM, 
             a -> Math.sin(a[0])
             ));
 
-        put("cos", new Function("cos", "cos of 'A'", "cos(A)", -1,
+        put("cos", new Function("cos", "cos of 'A'", "cos(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> Math.cos(a[0])
             ));
 
-        put("tan", new Function("tan", "tan of 'A'", "tan(A)", -1,
+        put("tan", new Function("tan", "tan of 'A'", "tan(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> Math.tan(a[0])
             ));
 
-        put("csc", new Function("csc", "csc of 'A'", "csc(A)", -1,
+        put("csc", new Function("csc", "csc of 'A'", "csc(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> 1D / Math.sin(a[0])
             ));
 
-        put("sec", new Function("sec", "sec of 'A'", "sec(A)", -1,
+        put("sec", new Function("sec", "sec of 'A'", "sec(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> 1D / Math.cos(a[0])
             ));
 
-        put("cot", new Function("cot", "cot of 'A'", "cot(A)", -1,
+        put("cot", new Function("cot", "cot of 'A'", "cot(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> 1D / Math.tan(a[0])
             ));
 
-        put("sinh", new Function("sinh", "sinh of 'A'", "sinh(A)", -1,
+        put("sinh", new Function("sinh", "sinh of 'A'", "sinh(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> Math.sinh(a[0])
             ));
 
-        put("cosh", new Function("cosh", "cosh of 'A'", "cosh(A)", -1,
+        put("cosh", new Function("cosh", "cosh of 'A'", "cosh(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> Math.cosh(a[0])
             ));
 
-        put("tanh", new Function("tanh", "tanh of 'A'", "tanh(A)", -1,
+        put("tanh", new Function("tanh", "tanh of 'A'", "tanh(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> Math.tanh(a[0])
             ));
 
-        put("asin", new Function("asin", "asin of 'A'", "asin(A)", -1,
+        put("asin", new Function("asin", "asin of 'A'", "asin(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> Math.asin(a[0])
             ));
 
-        put("acos", new Function("acos", "acos of 'A'", "acos(A)", -1,
+        put("acos", new Function("acos", "acos of 'A'", "acos(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> Math.acos(a[0])
             ));
 
-        put("atan", new Function("atan", "atan of 'A'", "atan(A)", -1,
+        put("atan", new Function("atan", "atan of 'A'", "atan(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> Math.atan(a[0])
             ));
@@ -198,11 +210,11 @@ public class Function implements MathObject {
 
 
         //Shifting
-        put("≫", new Function("≫", "'A' Shifted to the right 'B' bits", "≫(A, B)", -1,
+        put("≫", new Function("≫", "'A' Shifted to the right 'B' bits", "≫(A, B)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(2).build(), Type.NORM,
             a -> Integer.valueOf(a[0].intValue() >> a[1].intValue()).doubleValue()
             ));
-        put("≪", new Function("≪", "'A' Shifted to the left 'B' bits", "≪(A, B)", -1,
+        put("≪", new Function("≪", "'A' Shifted to the left 'B' bits", "≪(A, B)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(2).build(), Type.NORM,
             a -> Integer.valueOf(a[0].intValue() << a[1].intValue()).doubleValue()
             ));
@@ -210,57 +222,57 @@ public class Function implements MathObject {
 
 
         //Misc math functions
-        put("abs", new Function("abs", "absolute value of 'A'", "abs(A)", -1,
+        put("abs", new Function("abs", "absolute value of 'A'", "abs(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> Math.abs(a[0])
             ));
 
-        put("ceil", new Function("ceil", "closest integer greater than 'A'", "ceil(A)", -1,
+        put("ceil", new Function("ceil", "closest integer greater than 'A'", "ceil(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> Math.ceil(a[0])
             ));
 
-        put("floor", new Function("floor", "closest integer less than 'A'", "floor(A)", -1,
+        put("floor", new Function("floor", "closest integer less than 'A'", "floor(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> Math.floor(a[0])
             ));
 
-        put("hypot", new Function("hypot", "hypotenuse of 'A' and 'B' ( √[A² + B²] )", "hypot(A, B)", -1,
+        put("hypot", new Function("hypot", "hypotenuse of 'A' and 'B' ( √[A² + B²] )", "hypot(A, B)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(2).build(), Type.NORM,
             a -> Math.hypot(a[0], a[1])
             ));
 
-        put("ln", new Function("ln", "natural log of 'A'", "ln(A)", -1,
+        put("ln", new Function("ln", "natural log of 'A'", "ln(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> Math.log(a[0])
             ));
 
-        put("log", new Function("log", "log base 10 of 'A'", "log(A)", -1,
+        put("log", new Function("log", "log base 10 of 'A'", "log(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> Math.log10(a[0])
             ));
 
-        put("round", new Function("round", "rounds 'A' to the nearest integer", "round(A)", -1,
+        put("round", new Function("round", "rounds 'A' to the nearest integer", "round(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> Long.valueOf(Math.round(a[0])).doubleValue()
             ));
 
-        put("sqrt", new Function("sqrt", "the square root (√) of 'A'", "sqrt(A)", -1,
+        put("sqrt", new Function("sqrt", "the square root (√) of 'A'", "sqrt(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> Math.sqrt(a[0])
             ));
 
-        put("degrees", new Function("degr", "turns 'A' into degrees (from radians)", "degrees(A)", -1,
+        put("degrees", new Function("degr", "turns 'A' into degrees (from radians)", "degrees(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> Math.toDegrees(a[0])
             ));
 
-        put("radians", new Function("radi", "turns 'A' into radians (from degrees)", "radians(A)", -1,
+        put("radians", new Function("radi", "turns 'A' into radians (from degrees)", "radians(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> Math.toRadians(a[0])
             ));
 
-        put("ri", new Function("randi", "random integer from [0, 100], [0, 'A'], or ['A', 'B']", "ri(A, B)", -1,
+        put("ri", new Function("randi", "random integer from [0, 100], [0, 'A'], or ['A', 'B']", "ri(A, B)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(0).add(1).add(2).build(), Type.NORM,
             a -> {
                if(a.length == 0)
@@ -274,7 +286,7 @@ public class Function implements MathObject {
                 }
             ));
 
-        put("rd", new Function("randd", "random double from [0, 1), [0, 'A'), or ['A', 'B')", "rd(A, B)", -1,
+        put("rd", new Function("randd", "random double from [0, 1), [0, 'A'), or ['A', 'B')", "rd(A, B)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(0).add(1).add(2).build(), Type.NORM,
             a -> {
                 if(a.length == 1)
@@ -289,7 +301,7 @@ public class Function implements MathObject {
             ));
  
 
-        put("fac", new Function("fac", "factorial of 'A'", "fac(A)", -1,
+        put("fac", new Function("fac", "factorial of 'A'", "fac(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> {
                 Double ret = 1D;
@@ -299,22 +311,17 @@ public class Function implements MathObject {
                 }
             ));
 
-        put("neg", new Function("negate", "'A' * -1", "neg(A)", -1,
+        put("neg", new Function("negate", "'A' * -1", "neg(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> -1 * a[0]
             ));
 
-        put("sign", new Function("sign", "1 if 'A' > 0, -1 if 'A' < 0, and 0 if 'A' == 0", "neg(A)", -1,
+        put("sign", new Function("sign", "1 if 'A' > 0, -1 if 'A' < 0, and 0 if 'A' == 0", "neg(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> Integer.valueOf(a[0].compareTo(0D)).doubleValue()
             ));
 
         put("graph", new GraphFunction());
-
-        put("", new Function("","","", 3,
-            new Collection.Builder<Integer>().add(1).build(), Type.NORM,
-            a -> a[0]
-            ));
     }};
 
     public static String isBinOper(String s){

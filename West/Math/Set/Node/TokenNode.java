@@ -60,18 +60,22 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
     private int priority(){
         if(token.isConst())
-            return -2; // -1 is unknown priroity 
+            return Function.DEFAULT_PRIORITY + 1; // -1 is unknown priroity 
         assert token.isFunc();
         Function i = Function.FUNCTIONS.get(token.val());
-        return i == null ? -1 : i.priority();
+        return i == null ? Function.DEFAULT_PRIORITY : i.priority();
     }
     private static int firstHighPriority(Collection<TokenNode> peles){
-        int pos = 0, priority = -2;
+        int pos = 0, priority = Function.DEFAULT_PRIORITY;
         for(int i = 0; i < peles.size(); i++){
-            if(peles.get(i).priority() > priority){
+            System.out.print(peles.get(i).token().val() + "("+peles.get(i).priority()+")");
+            if(peles.get(i).priority() <= priority){ //i swapped them
                 priority = peles.get(i).priority();
                 pos = i;
+                System.out.print("<");
             }
+            else System.out.print("≥");
+            System.out.println("("+priority+") [" + pos + "]");
         }
         return pos;
     }
@@ -81,6 +85,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         if(peles.size() == 1)
             return peles.get(0);
         int fhp = firstHighPriority(peles);
+        System.out.println(fhp + "|");
         TokenNode u = peles.get(fhp); //new node has same token because condense is just reorganizing subnodes.
         TokenNode s = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(0, fhp)).build());
         TokenNode e = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(fhp + 1)).build());
@@ -90,7 +95,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             u.add(e);
         return u;
     }
-
 
     @Override
     public void addD(int i, Node<?, ?> n) {
@@ -139,7 +143,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         System.out.println(pTokens);
         TokenNode tn = (TokenNode)new TokenNode().condeseNodes(0, pTokens)[1];
         TokenNode tn2 = condense(new Collection.Builder<TokenNode>().addAll(tn.elements()).build());
-        System.err.println(tn2.toFullString());
+        System.out.println(tn2.toFullString());
         return tn2.removeExtraFuncs();
     }
 
