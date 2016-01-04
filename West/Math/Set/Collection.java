@@ -23,17 +23,9 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
             return this;
         }
         public <K extends C> Builder addAll(Object pObj) throws IllegalArgumentException{
-            if(pObj instanceof Collection){
-                elements.addAll(((Collection<K>)pObj).elements());
-                return this;
-            }
-            if(pObj instanceof ArrayList){
-                elements.addAll((ArrayList<K>)pObj);
-                return this;
-            }
-            if(pObj instanceof Object[]){
-                for(K obj : (K[])pObj)
-                    elements.add(pObj);
+            if(pObj instanceof java.lang.Iterable){
+                for(Object obj : (java.lang.Iterable)pObj)
+                    elements.add((K)obj);
                 return this;
             }
             throw new IllegalArgumentException("no known way to addAll pObj (type = " + pObj.getClass() +
@@ -104,6 +96,9 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
     public E pop(int pPos){return remove(pPos);}
     public E remove(int pPos){ return elements.remove(stdPos(pPos)); }
 
+    public List<E> subList(int start){
+        return subList(start, size());
+    }
     public List<E> subList(int start, int end){
         return elements.subList(stdPos(start), stdPos(end));
     }

@@ -55,11 +55,49 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return new Object[]{pPos, node};
     }
 
-    public boolean isOper(){
-        return token.isBinOper();
-    }
+    // public boolean isOper(){
+    //     return token.isBinOper();
+    // }
 
-    private TokenNode condense(){
+    private int priority(){
+        if(token.isConst())
+            return -2; // -1 is unknown priroity 
+        assert token.isFunc();
+        InBuiltFunction i = InBuiltFunction.get(token.val());
+        return i == null ? -1 : i.priority();
+    }
+    private static int firstHighPriority(Collection<TokenNode> peles){
+        int pos = 0, priority = -2;
+        for(int i = 0; i < peles.size(); i++){
+            if(peles.get(i).priority() > priority){
+                priority = peles.get(i).priority();
+                pos = i;
+            }
+        }
+        return pos;
+    }
+    private static TokenNode condense(Collection<TokenNode> peles){
+        // if(priority() == -2) // cannot condense a constant node.
+            // return this;
+        if(peles.size() == 0)
+            return null;
+        // assert peles.size() != 0: peles;
+        if(peles.size() == 1)
+            return peles.get(0);
+        int fhp = firstHighPriority(peles);
+        TokenNode u = peles.get(fhp); //new node has same token because condense is just reorganizing subnodes.
+        System.out.println(peles + " | " + fhp + " <-fhp");
+        System.out.println(peles.subList(0, fhp) + " | " + u + " | " + peles.subList(fhp + 1));
+        TokenNode s = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(0, fhp)).build());
+        // System.out.println(fhp + " | " + peles.size() + " | " + peles);
+        TokenNode e = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(fhp + 1)).build());
+        if(s != null)
+            u.add(s);
+        if(e != null)
+            u.add(e);
+        return u;
+    }
+    /* private TokenNode condense(){
         System.out.println(toFancyString());
         if(this.isFinal())
             return this;      
@@ -114,7 +152,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         }
         System.out.println("condensed:\n"+e.toFancyString());
         return e;
-    }
+    } */
 
     @Override
     public void addD(int i, Node<?, ?> n) {
@@ -161,7 +199,9 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public static TokenNode generateMasterNode(ArrayList<Token> pTokens) {
         assert checkForNullTokens(pTokens);
         System.out.println(pTokens);
-        return ((TokenNode)(new TokenNode().condeseNodes(0, pTokens))[1]).condense().removeExtraFuncs();
+        TokenNode tn = (TokenNode)new TokenNode().condeseNodes(0, pTokens)[1];
+        TokenNode tn2 = condense(new Collection.Builder<TokenNode>().addAll(tn.elements()).build());
+        return tn2.removeExtraFuncs();
     }
 
     private static boolean checkForNullTokens(ArrayList<Token> pTokens){
@@ -258,8 +298,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         String ret = "";
         if(token instanceof Token){
             Token tok = (Token)token;
-            ret += tok.val();
-            if(tok.type() == Token.Type.FUNC){
+            ret += token.val();
+            if(tok.isFunc()){
                 ret += "(";
                 for(Node n : this){
                     ret += ((TokenNode)n).toExprString() + ", ";
@@ -269,11 +309,12 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 assert size() == 0 : "I am not a function, but I have subnodes!";
             }
         } else {
-            for(Node n : this){
-                ret += ((TokenNode)n).toExprString();
-                ret += " " + (token == null ? "" : token) + " ";
-            }
-            return ret.substring(0, ret.length() - 2);
+            assert false;
+            // for(Node n : this){
+            //     ret += ((TokenNode)n).toExprString();
+            //     ret += " " + (token == null ? "" : token) + " ";
+            // }
+            // return ret.substring(0, ret.length() - 2);
         }
         return ret;
     }
