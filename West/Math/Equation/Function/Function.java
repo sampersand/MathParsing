@@ -478,14 +478,9 @@ public class Function implements MathObject {
                syntax.equals(((Function)pObj).syntax());
     }
 
-    /**
-     * Gets the inverse of this function - that is, what function should be done to undo this one. <br>The inverse of 
-     * <code>+</code> is <code>-</code>, and the inverse of <code>cos</code> is <code>arccos</code>.
-     * @return The inverse of this function.
-     * @deprecated Not defined yet, will be in the future.
-     */
-    public Function inverse() throws NullPointerException{
-        throw new NullPointerException();
+    @Override
+    public Function copy(){
+        return new Function(name, help, syntax, priority, argsLength, type, funcObj);
     }
 
 

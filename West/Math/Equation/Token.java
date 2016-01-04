@@ -30,7 +30,7 @@ public class Token implements MathObject {
     }};
 
     public static String isParenL(String s){
-        return Equation.isInLast(s);
+        return Equation.isInLast(s, PAREN_L);
     }
 
     public static final Collection<String> PAREN_R = new Collection<String>()
@@ -41,7 +41,7 @@ public class Token implements MathObject {
     }};
 
     public static String isParenR(String s){
-        return Equation.isInLast(s);
+        return Equation.isInLast(s, PAREN_R);
     }
 
     public static final Collection<String> DELIM = new Collection<String>()
@@ -52,7 +52,7 @@ public class Token implements MathObject {
     }};
 
     public static String isDelim(String s){
-        return Equation.isInLast(s);
+        return Equation.isInLast(s, DELIM);
     }
 
     public Token() {
