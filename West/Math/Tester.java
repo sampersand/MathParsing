@@ -40,8 +40,8 @@ public class Tester {
             // eqsys.add("=(x4, *(+(x, 4), c)");
             // eqsys.add("=(c, /(1,4))");
 
+            eqsys.add("y=1+sin((9.45+x^(ln(pi)-(pi-e)^x))/2)+(pi-e)");
             //UNFIXED
-            // eqsys.add("y = 1 + sin(x)");
                 //SIN THING
             // eqsys.add("y = 1 + sin(alpha) + c");
             // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
@@ -50,13 +50,13 @@ public class Tester {
             // eqsys.add("x = e^pi");
 
                 //TWISTY THING
-            eqsys.add("y = x0 * x1 * x2 * x3 * x4");
-            eqsys.add("x0 = (x) * c");
-            eqsys.add("x1 = (x - 8) * c");
-            eqsys.add("x2 = (x - 4) * c");
-            eqsys.add("x3 = (x + 8) * c");
-            eqsys.add("x4 = (x + 4) * c");
-            eqsys.add("c = 1/4");
+            // eqsys.add("y = x0 * x1 * x2 * x3 * x4");
+            // eqsys.add("x0 = (x) * c");
+            // eqsys.add("x1 = (x - 8) * c");
+            // eqsys.add("x2 = (x - 4) * c");
+            // eqsys.add("x3 = (x + 8) * c");
+            // eqsys.add("x4 = (x + 4) * c");
+            // eqsys.add("c = 1/4");
 
             // eqsys.addConstraint("x < pi * e && y > -1");
         } else {
