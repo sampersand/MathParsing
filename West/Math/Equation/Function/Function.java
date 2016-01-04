@@ -121,8 +121,8 @@ public class Function implements MathObject {
             ));
 
         put("-", new Function("-", "Subtracts 'A' to 'B'", "-(A, B)", 6,
-            new Collection.Builder<Integer>().add(2).build(), Type.BIN,
-            a -> a[0] - a[1]
+            new Collection.Builder<Integer>().add(1).add(2).build(), Type.BIN,
+            a -> a.length == 1 ? 0 - a[0] : a[0] - a[1]
             ));
 
         put("*", new Function("*", "Multiplies 'A' to 'B'", "*(A, B)", 5,
