@@ -321,8 +321,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     }
 
     public TokenNode getASD(){
-        assert size() != 0 : "size == 0 for '" + this+"'";
-        if(token.isAssign())
+        assert size() != 0; 
+        if(Function.isAssign(token.val()) != null)
             return this;
         return get(0).getASD();
     }

@@ -312,7 +312,12 @@ public class Function implements MathObject {
             a -> a[0]
             ));
     }};
+
     public static String isBinOper(String s){
+        return Equaiton.isInLast(s);
+    }
+
+    public static String isAssign(String s){
         return Equaiton.isInLast(s);
     }
     /**
@@ -452,7 +457,9 @@ public class Function implements MathObject {
 
     public static HashMap<String,Double> exec(String pStr, final EquationSystem pEqSys, TokenNode pNode) {
         Function f;
-        assert f = FUNCTIONS.get(f)
+        if(f = FUNCTIONS.get(pStr) == null)
+            return null;
+        return f.exec(pEqSys, pNode);
     }
 
     public HashMap<String, Double> addArgs(HashMap<String, Double> hm, String key, Double val){
