@@ -90,62 +90,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             u.add(e);
         return u;
     }
-    /* private TokenNode condense(){
-        System.out.println(toFancyString());
-        if(this.isFinal())
-            return this;      
-        TokenNode e = new TokenNode(token);
-        int i = 0;
-        while(i < size()){
-            TokenNode n = get(i);
-            if(n.token().isConst()){
-                e.addD(n);
-            } else if(n.isOper()){
-                Function nibf = Function.get(n.token().val());
-                assert nibf != null;
-                System.out.println("n is an oper!");
-                for(int depth = 1; depth < e.depth(); depth++){
-                    TokenNode nD = e.getD(depth);
-                    if(!nD.isOper()){
-                        System.out.println(nD + " ! an oper");
-                        n.add(nD);
-                        e.setD(depth - 1, n); //depth is a final node.
-                        break;
-                    }
-                    Function nDibf = Function.get(nD.token().val());
-                    if(nDibf == null){
-                        System.out.println("nDibf is null!");
-                        continue;
-                    }  
-                    if(nibf.priority() <= nDibf.priority()){
-                        System.out.println(n+"'s priority = "+nibf.priority()+", and "+nD+"'s = " + nDibf.priority());
-                        n.add(nD);
-                        n.add(get(i + 1).condense());
-                        i++;
-                        e.setD(depth - 1, n);
-                        break;
-                    }
-                    // else if (nD.token().isGroup()){
-                    //     n.add(nD);
-                    //     n.add(get(i + 1).condense());
-                    //     i++;
-                    //     e.setD(depth - 1, n);
-                    //     break;
-                    // }
-                }
 
-            }
-            // else if(n.token.isGroup()){
-            //     e.addD(e.depth(), n.condense(), false);
-            // }
-            else{
-                throw new NullPointerException("There is no known way to complete the node '" + n + "'.");
-            }
-            i++;
-        }
-        System.out.println("condensed:\n"+e.toFancyString());
-        return e;
-    } */
 
     @Override
     public void addD(int i, Node<?, ?> n) {
