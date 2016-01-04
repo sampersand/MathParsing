@@ -55,10 +55,97 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return new Object[]{pPos, node};
     }
 
+    public boolean isOper(){
+        return token.isBinOper();
+    }
+
     private TokenNode condense(){
         System.out.println(toFancyString());
-        return this;
+        if(this.isFinal())
+            return this;      
+        TokenNode e = new TokenNode(token);
+        int i = 0;
+        while(i < size()){
+            TokenNode n = get(i);
+            if(n.token().isConst()){
+                e.addD(n);
+            } else if(n.isOper()){
+                InBuiltFunction nibf = InBuiltFunction.get(n.token().val());
+                assert nibf != null;
+                System.out.println("n is an oper!");
+                for(int depth = 1; depth < e.depth(); depth++){
+                    TokenNode nD = e.getD(depth);
+                    if(!nD.isOper()){
+                        System.out.println(nD + " ! an oper");
+                        n.add(nD);
+                        e.setD(depth - 1, n); //depth is a final node.
+                        break;
+                    }
+                    InBuiltFunction nDibf = InBuiltFunction.get(nD.token().val());
+                    if(nDibf == null){
+                        System.out.println("nDibf is null!");
+                        continue;
+                    }  
+                    if(nibf.priority() <= nDibf.priority()){
+                        System.out.println(n+"'s priority = "+nibf.priority()+", and "+nD+"'s = " + nDibf.priority());
+                        n.add(nD);
+                        n.add(get(i + 1).condense());
+                        i++;
+                        e.setD(depth - 1, n);
+                        break;
+                    }
+                    // else if (nD.token().isGroup()){
+                    //     n.add(nD);
+                    //     n.add(get(i + 1).condense());
+                    //     i++;
+                    //     e.setD(depth - 1, n);
+                    //     break;
+                    // }
+                }
+
+            }
+            // else if(n.token.isGroup()){
+            //     e.addD(e.depth(), n.condense(), false);
+            // }
+            else{
+                throw new NullPointerException("There is no known way to complete the node '" + n + "'.");
+            }
+            i++;
+        }
+        System.out.println("condensed:\n"+e.toFancyString());
+        return e;
     }
+
+    @Override
+    public void addD(int i, Node<?, ?> n) {
+        assert n != null : "Cannot addDepth null Nodes!";
+        System.out.println("addD in TokenNode might not work");
+        if(i <= 0 || size() <= 0){
+            addE(n);
+        } else {
+            if(i == 2 && get(-1).token().isConst()) {
+                System.out.println("im here in adDD TokenNode!\n"+get(-1).toFancyString());
+                addE(n);
+            } else {
+                System.out.println(i + " | " + get(-1) + " | " + get(-1).token().isConst());
+                System.out.println("going down a level:\n"+toFancyString()+"\nto add:\n"+n.toFancyString()+"\n\n\n");
+                get(size() - 1).addD(i - 1, n);
+            }
+        }
+    }
+
+    private void addD(TokenNode n){
+        super.addD(depth(), n);
+    }
+
+    public TokenNode getD(int depth){
+        return (TokenNode) super.getD(depth);
+    }
+
+    private void setD(int depth, TokenNode n){
+        super.setD(depth, -1, n);
+    }
+
     public TokenNode removeExtraFuncs(){
         if(!token.val().isEmpty())
             return this;

@@ -77,15 +77,10 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
     @Deprecated
     public void addD(int i, Node<?, ?> n) {
         assert n != null : "Cannot addDepth null Nodes!";
-        if(i <= 0 || size() <= 0){
+        if(i <= 0 || size() <= 0)
             addE(n);
-        } else {
-            if(i == 2 && get(-1).isFinal()) {
-                addE(n);
-            } else {
-                get(size() - 1).addD(i - 1, n);
-            }
-        }
+        else 
+            get(size() - 1).addD(i - 1, n);
     }
 
     @Deprecated
@@ -94,11 +89,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         if(i == 0) {
             assert size() > 0;
             assert size() > p && (p >= 0 || p == -1);
-            if(p == - 1) {
-                set(size() - 1, n);
-            } else {
-                set(p, n);
-            }
+            set(p, n);
         } else {
             assert !get(-1).isFinal(); //shouldnt happen, methinks.
             get(-1).setD(i - 1, p, n);

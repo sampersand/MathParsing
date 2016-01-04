@@ -318,6 +318,9 @@ public class InBuiltFunction extends Function {
 
     }};
 
+    public static InBuiltFunction get(String s){
+        return FUNCTIONS.get(s);
+    }
     /**
      * Default constructor. Instatiates {@link #name}, {@link #help}, and {@link #syntax} as empty strings.
      * @throws IllegalArgumentException When either name, help, and / or syntax is null, should never happen as these
