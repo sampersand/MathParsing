@@ -52,7 +52,6 @@ public class Equation implements MathObject {
     public Equation add(String pStr){
         subEquations.add(TokenNode.generateMasterNode(parseTokens(pStr)));
         subEquations = subEquations.removeExtraFuncs();
-        System.out.println(subEquations.get(-1).toFancyString());
         return this;
     }
 
@@ -188,8 +187,11 @@ public class Equation implements MathObject {
     @Override
     public String toFancyString(int idtLvl) {
         String ret = indent(idtLvl) + "Equation:\n";
-        ret += indentE(idtLvl + 1) + "Expressions: " + exprstoStr();
-        return ret;
+        ret += indent(idtLvl + 1) + "Expression Str: " + exprstoStr()+"\n";
+        ret += indent(idtLvl + 1) + "Expressions:\n";
+        for(Node<?, ?> tkn : subEquations)
+            ret += ((TokenNode)tkn).toFancyString(idtLvl + 2) + "\n";
+        return ret + indentE(idtLvl + 2) + "\n" + indentE(idtLvl + 1);
     }
 
     @Override

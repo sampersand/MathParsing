@@ -45,8 +45,8 @@ public class Tester {
             // eqsys.add("y=1+sin((9.45+x^(ln(pi)-(pi-e)^x))/2)+(pi-e)");
                 //SIN THING
 
-            eqsys.add("y = e*pi^4.5"); //~469.3198
-            eqsys.add("x = e ^ pi * 4.5");//~104.1331
+            // eqsys.add("y = e * pi ^ 4.5"); //~469.3198
+            // eqsys.add("x = e ^ pi * 4.5");//~104.1331
             // eqsys.add("y = 1 + sin(alpha) + c");
             // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
             // eqsys.add("c = pi^(0-e)");
@@ -95,7 +95,7 @@ public class Tester {
         Print.print(eqsys.toFancyString());
         // Print.printi(eqsys.toFullString());
          // eqsys.graph();
-        Print.printi("RESULT (x):", eqsys.eval("y"));
+        Print.printi("RESULT (y):", eqsys.eval("y"));
         Print.printi("RESULT (x):", eqsys.eval("x"));
     }
 

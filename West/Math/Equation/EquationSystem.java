@@ -256,8 +256,6 @@ public class EquationSystem implements MathObject{
      */
     public Double eval(String toEval,
                        EquationSystem pEqSys) {
-        assert copy().equals(copy());
-        assert !copy().equals(copy().add(pEqSys));
         return copy().add(pEqSys).eval(toEval);
     }
 
@@ -271,10 +269,10 @@ public class EquationSystem implements MathObject{
             Print.printw("Trying to evaluated an EquationSystem with no equations! returning 0");
             return 0D;
         }
-        copy().isolate(toEval);
-        assert isolated() : "I'm not isolated!:\n\n"+toFancyString();
-        HashMap<String, Double> evald = equations().get(0).subEquations().eval(copy());
-        return checkBounds(evald, toEval);
+        EquationSystem eqsys = copy().isolate(toEval);
+        assert eqsys.isolated() : "I'm not isolated!:\n\n"+eqsys.toFancyString();
+        HashMap<String, Double> evald = eqsys.equations().get(0).subEquations().eval(eqsys);
+        return eqsys.checkBounds(evald, toEval);
 
     }
 
@@ -287,14 +285,12 @@ public class EquationSystem implements MathObject{
      * @throws UnsupportedOperationException Thrown when there is no known way to isolate the variable
      */
     public EquationSystem isolate(String toIso) throws UnsupportedOperationException {
-        // for(Equation eq : equations){
-            // if(eq.expressions().get(0).)
-        // }
-            // if(equations.get(i).subEquations().get(0).get(0).token().val().equals(toIso)){
-            //     equations.prepend(equations.pop(i));
-            // }
-        // }
-        // System.out.println("TODO: isolate");
+        for(int i = 0; i < equations.size(); i++){
+            if(equations.get(i).subEquations().getASD().get(0).token().val().equals(toIso)){
+                equations.prepend(equations.pop(i));
+                break;
+            }
+        }
         return this;
     }
 
