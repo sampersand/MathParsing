@@ -31,8 +31,6 @@ public class Tester {
             // eqsys.add("=(theta, -(ln(pi),^(c,x)))");
             // eqsys.add("=(x, ^(e,pi))");
 
-            eqsys.add("y = 4 + 5");
-
             // eqsys.add("=(y, *(z, ⊻(>(x,0),<(z,2)))");
             // eqsys.add("=(z, *(x0, *(x1, *(x2, *(x3, x4)))))");
             // eqsys.add("=(x0, *(x, c)");
@@ -46,6 +44,7 @@ public class Tester {
 
             // eqsys.add("y = 1 + sin((9.45 + (e^pi) ^ (ln(pi) - (pi - e) ^ (e^pi))) / 2) + (pi - e)");
 
+            eqsys.add("y = pi^(0-e)");
                 //SIN THING
             // eqsys.add("y = 1 + sin(alpha) + c");
             // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
