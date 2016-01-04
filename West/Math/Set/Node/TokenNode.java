@@ -194,6 +194,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         System.out.println(pTokens);
         TokenNode tn = (TokenNode)new TokenNode().condeseNodes(0, pTokens)[1];
         TokenNode tn2 = condense(new Collection.Builder<TokenNode>().addAll(tn.elements()).build());
+        System.err.println(tn2.toFullString());
         return tn2.removeExtraFuncs();
     }
 

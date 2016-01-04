@@ -311,7 +311,7 @@ public class Function implements MathObject {
 
         put("graph", new GraphFunction());
 
-        put("", new Function("","","", -1,
+        put("", new Function("","","", 3,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> a[0]
             ));
