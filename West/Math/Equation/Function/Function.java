@@ -18,7 +18,7 @@ import java.util.Random;
  * @since 0.1
  */
 public class Function implements MathObject {
-    public static final boolean USING_BIN_OPERS = false;
+    public static final boolean USING_BIN_OPERS = true;
     public static enum Type{
         UN_L,
         UN_R,
@@ -140,7 +140,7 @@ public class Function implements MathObject {
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> a[0] % a[1]
             ));
-        put("^", new Function("^", "Raises 'A' to 'B'", "^(A, B)", 4,
+        put("^", new Function("^", "Raises 'A' to 'B'", "^(A, B)",4,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> Math.pow(a[0],a[1])
             ));

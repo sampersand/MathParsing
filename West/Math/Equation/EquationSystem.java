@@ -306,6 +306,7 @@ public class EquationSystem implements MathObject{
         for(Equation eq : equations){
             TokenNode tkn = eq.subEquations();
             if(!tkn.getASD().get(0).isLone()){ //top node is comparator, second top is empty function, bottom is variable
+                
                 System.out.println("not isolated because of:\n" + tkn.getASD().get(0).toFancyString());
                 return false;
             }

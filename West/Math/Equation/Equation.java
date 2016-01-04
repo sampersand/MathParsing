@@ -52,6 +52,7 @@ public class Equation implements MathObject {
     public Equation add(String pStr){
         subEquations.add(TokenNode.generateMasterNode(parseTokens(pStr)));
         subEquations = subEquations.removeExtraFuncs();
+        System.out.println(subEquations.get(-1).toFancyString());
         return this;
     }
 
@@ -83,7 +84,7 @@ public class Equation implements MathObject {
         //TODO: fixNODE
         //# = number    A = letter   & = BOTH
         // pEq = pEq.replaceAll("\\-\\(", "*(-1,"); // -( → -1 * (
-        pEq = pEq.replaceAll("([\\d\\w.]+)E([\\d\\w.-]+)","($1*10^(0$2))"); // &.&E-?&.& → (&.&*10^(-?&.&))
+        pEq = pEq.replaceAll("([\\d\\w.-]+)E([\\d\\w.-]+)","($1*10^$2)"); // &.&E-?&.& → (&.&*10^(-?&.&))
         // pEq = pEq.replaceAll("([\\d.]+)(?!E)(\\(|(?:[A-Za-z]+))", "$1*$2"); // #A → #*A
         if(!Function.USING_BIN_OPERS){
             pEq = pEq.replaceAll("^x=-(.+)$","=(x,-(0,$1))");

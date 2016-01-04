@@ -65,39 +65,27 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     private static int firstHighPriority(Collection<TokenNode> peles){
         int pos = 0, priority = Function.DEFAULT_PRIORITY;
         for(int i = 0; i < peles.size(); i++){
-            // System.out.print(peles.get(i).token().val() + "("+peles.get(i).priority()+")");
             if(peles.get(i).priority() < priority){ //i swapped them
                 priority = peles.get(i).priority();
                 pos = i;
-                // System.out.print("<");
             }
-            // else System.out.print("≥");
-            // System.out.println("("+priority+") [" + pos + "]");
         }
         return pos;
     }
-    public static int testing = -1;
     private static TokenNode condense(Collection<TokenNode> peles){
         if(peles.size() == 0)
             return null;
         if(peles.size() == 1)
             if(peles.get(0).size() == 0)
                 return peles.get(0);
-            else{
+            else
                 return new TokenNode(peles.get(0).token()){{
                     add(condense(new Collection.Builder<TokenNode>().addAll(peles.get(0).elements()).build()));
                 }};
-            }
-        int t = ++testing;
-        System.out.println("peles:"+peles);
         int fhp = firstHighPriority(peles);
-        // System.out.println();
         TokenNode u = condense(new Collection.Builder<TokenNode>().add(peles.get(fhp)).build());
-        System.out.println("u"+t+":"+u);
         TokenNode s = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(0, fhp)).build());
-        System.out.println("s"+t+":"+s);
         TokenNode e = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(fhp + 1)).build());
-        System.out.println("e"+t+":"+e);
         if(s != null)
             u.add(s);
         if(e != null)
@@ -145,10 +133,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
     public static TokenNode generateMasterNode(ArrayList<Token> pTokens) {
         assert checkForNullTokens(pTokens);
-        System.out.println(pTokens);
-        TokenNode tn = (TokenNode)new TokenNode().condeseNodes(0, pTokens)[1];
+        TokenNode tn = (TokenNode)new TokenNode().condeseNodes(0, pTokens)[1]; //just to make it easier to read.
         TokenNode tn2 = condense(new Collection.Builder<TokenNode>().addAll(tn.elements()).build());
-        System.out.println(tn2.toFancyString());
         return tn2.removeExtraFuncs();
     }
 
@@ -250,13 +236,15 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 ret += ((TokenNode)n).toExprString() + ", ";
             ret = (size() == 0 ? ret : ret.substring(0, ret.length() - 2)) + ")";
         } else if(token.isBinOper()){
-            // assert size() == 2 : "size != 2 for BinOper: "+ elements + ", and token:" + token + ", size:"+size();
-            if(size() == 0) return token.val();
-            for(Node n : this){
-                ret += ((TokenNode)n).toExprString();
-                ret += " " + (token == null ? "" : token.val()) + " ";
+            if(size() == 1) // TODO: FIX THIS
+                ret += token.val() + " " + ((TokenNode)get(0)).toExprString();
+            else{
+                for(Node n : this){
+                    ret += ((TokenNode)n).toExprString();
+                    ret += " " + (token == null ? "" : token.val()) + " ";
+                }
+                ret = ret.substring(0, ret.length() - 2);
             }
-            ret = ret.substring(0, ret.length() - 2);
         }
         else if(token.isConst()){
             ret += token.val();
@@ -280,6 +268,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public TokenNode getASD(){
         assert size() != 0; 
         if(Function.isAssign(token.val()) != null)
+            return this;
+        if(!Function.USING_BIN_OPERS && token.val().equals("="))
             return this;
         return get(0).getASD();
     }
