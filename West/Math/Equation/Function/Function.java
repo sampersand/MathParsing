@@ -349,6 +349,8 @@ public class Function implements MathObject {
         //TODO: Don't generate a new list every time.
         if(!USING_BIN_OPERS)
             return null;
+        if(s.matches(".*E[-\\d.]*$"))
+            return null;
         return Equation.isInLast(s, new Collection<String>(){{
             for(Function f : FUNCTIONS.values())
                 if(f.type() == Type.BIN || f.type() == Type.ASSIGN)

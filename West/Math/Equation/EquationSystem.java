@@ -38,16 +38,12 @@ public class EquationSystem implements MathObject{
      */
     protected HashMap<String, CustomFunction> functions;
 
-    /** TODO: JAVADOC */
-    
-    protected EquationSystem constraints;
-
     /**
      * The default constructor for this class. Just passes an empty Collection and HashMap to 
      * {@link #EquationSystem(Collection,HashMap) the main EquationSystem constructor}.
      */
     public EquationSystem() {
-        this(new Collection<Equation>(), new HashMap<String, CustomFunction>(), null);
+        this(new Collection<Equation>(), new HashMap<String, CustomFunction>());
     }
 
     /**
@@ -55,15 +51,12 @@ public class EquationSystem implements MathObject{
      * <code>pEqs</code> and <code>pFuncs</code>, respectively.
      * @param pEqs      An Collection of {@link Equation}s, used to instiate {@link #equations}.
      * @param pFuncs    An Collection of {@link CustomFunction}s, used to instatiate {@link #functions}.
-     * @param pConstraints   TODO: JAVADOC
      */
     public EquationSystem(Collection<Equation> pEqs,
-                          HashMap<String, CustomFunction> pFuncs,
-                          EquationSystem pConstraints) {
+                          HashMap<String, CustomFunction> pFuncs) {
         equations = new Collection.Builder<Equation>().addAll(pEqs).build();
         functions = new HashMap<String, CustomFunction>();
         functions.putAll(pFuncs);
-        constraints = pConstraints;
     }
 
     public static <K,V> EquationSystem fromHashMap(HashMap<K, V> hm){
@@ -182,29 +175,6 @@ public class EquationSystem implements MathObject{
     }
 
     /**
-     * TODO: JAVADOC
-     */ 
-
-    public EquationSystem setConstraints(EquationSystem pConstraints){
-        constraints = pConstraints;
-        return this;
-    }
-
-    /**
-     * TODO: JAVADOC
-     */
-    public EquationSystem constraints(){
-        return constraints;
-    }
-    public EquationSystem addConstraint(String equation){
-        if(constraints == null)
-            constraints = new EquationSystem();
-        constraints.add(equation);
-        return this;
-
-    }
-
-    /**
      * Returns {@link #functions}. {@link #functions} is a HashMap with the String as the key, and 
      * {@link CustomFunction}. <br>Note: The key is what should be used when defining equations.
      * <br>Example: {@link #functions} might be defined as (pseudocode) <code>functions = {"fac",
@@ -249,8 +219,7 @@ public class EquationSystem implements MathObject{
         assert equations.size() != 0 : "Cannot evaluate an EquationSystem with no equations!";
         EquationSystem eqsys = copy().isolate(toEval);
         assert eqsys.isolated() : "I'm not isolated!:\n\n"+eqsys.toFancyString();
-        HashMap<String, Double> evald = eqsys.equations().get(0).subEquations().eval(eqsys);
-        return eqsys.checkBounds(evald, toEval);
+        return eqsys.equations().get(0).subEquations().eval(eqsys).get(toEval);
 
     }
 
@@ -322,16 +291,7 @@ public class EquationSystem implements MathObject{
     public int size() {
         return equations.size();
     }
-    public Double checkBounds(HashMap<String, Double> pVars, String toEval){
-        if(!pVars.containsKey(toEval))
-            return Double.NaN;
-        if(constraints != null)
-            for(Equation eq : constraints.equations())
-                if(!eq.subEquations().get(0).isInBounds(pVars, toEval))
-                    return Double.NaN;
 
-        return pVars.get(toEval);
-    }
     @Override
     public String toString() {
         String ret = "EquationSystem: Equations = (";
@@ -367,10 +327,6 @@ public class EquationSystem implements MathObject{
         for(Object key : functions.keySet().toArray()) {
             ret += "\n" + indent(idtLvl + 2) + "'" + key + "' = " + functions.get("" + key).name();
         }
-        ret += "\n" + indentE(idtLvl + 2);
-        ret += "\n" + indent(idtLvl + 1) + "Constraints:";
-        if(constraints != null)
-            ret += "\n" + constraints.toFancyString(idtLvl + 2);
         ret += "\n" + indentE(idtLvl + 2) + "\n" + indentE(idtLvl + 1);
 
         return ret;
@@ -390,16 +346,12 @@ public class EquationSystem implements MathObject{
             ret += functions.get("" + key).toFullString(idtLvl + 3);
             ret += "\n" + indentE(idtLvl + 3);
         }
-        ret += "\n" + indent(idtLvl + 1) + "Constraints:";
-        if(constraints != null)
-            ret += "\n" + constraints.toFullString(idtLvl + 2);
-        ret += "\n" + indentE(idtLvl + 2);
         return ret + "\n" + indentE(idtLvl + 1);
     }
 
     @Override
     public EquationSystem copy() {
-        return new EquationSystem(equations, functions, constraints == null ? null : constraints.copy());
+        return new EquationSystem(equations, functions);
     }
 
     /**
@@ -415,19 +367,9 @@ public class EquationSystem implements MathObject{
         EquationSystem peqsys = (EquationSystem)pObj;
         if(peqsys.size() != size())
             return false;
-        if((constraints == null) != (peqsys.constraints() == null))
-            return false;
         for(int i = 0; i < size(); i++){
             if(!equations.get(i).equals(peqsys.equations().get(i)))
                 return false;
-        }
-        if(constraints != null){
-            if(peqsys.constraints().size() != constraints.size())
-                return false;
-            for(int i = 0; i < constraints.size(); i++){
-                if(!constraints.equations().get(i).equals(peqsys.constraints().equations().get(i)))
-                    return false;
-            }
         }
         return true;
     }

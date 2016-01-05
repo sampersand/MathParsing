@@ -109,8 +109,8 @@ public class MathCollection<N extends Double> extends NumberCollection<N> {
         pSetNot = pSetNot.split(":")[1];
         pSetNot = pSetNot.replaceAll(",", "∧");
         String[] equations = pSetNot.split("∧");
-        EquationSystem constraints = new EquationSystem().add(vars.split(","));
-        return new EquationSystem().add(firstVar + " = firstVar ").add(equations).setConstraints(constraints);
+        // EquationSystem constraints = new EquationSystem().add(vars.split(","));
+        return new EquationSystem().add(firstVar + " = firstVar ").add(equations);//.setConstraints(constraints);
     }
 
 }
