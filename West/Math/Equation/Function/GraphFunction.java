@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GraphFunction extends Function{
+    
     public GraphFunction(){
         super("graph", "graph the arguments", "graph(A, B, ... )", 
               -1, new Collection.Builder<Integer>().add(-1).build(), Type.NORM,

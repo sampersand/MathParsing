@@ -52,7 +52,7 @@ public class Tester {
 
             //UNFIXED
 
-            eqsys.add("y=1+sin((9.45+x^(ln(pi)-(pi-e)^x))/2)+(pi-e)");
+            // eqsys.add("y=1+sin((9.45+x^(ln(pi)-(pi-e)^x))/2)+(pi-e)");
                 //SIN THING
 
             // eqsys.add("y = e * pi ^ 4.5"); //~469.3198
