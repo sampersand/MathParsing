@@ -18,7 +18,8 @@ import java.util.Random;
  * @since 0.1
  */
 public class Function implements MathObject {
-    public static final boolean USING_BIN_OPERS = false;
+    private static Double NaN = Double.NaN;
+    public static final boolean USING_BIN_OPERS = true;
     public static enum Type{
         UN_L,
         UN_R,
@@ -32,6 +33,7 @@ public class Function implements MathObject {
     }
 
     public static final int DEFAULT_PRIORITY = 7;
+
     public static HashMap<String, Function> FUNCTIONS = new HashMap<String, Function>() {{
         // =                : 0
         // ()               : 1
@@ -53,33 +55,39 @@ public class Function implements MathObject {
 
             //Normal Comparators
         put(">", new Function(">", "Checks if 'A' > 'B'", ">(A, B)", 3,
-            new Collection.Builder<Integer>().add(2).build(), Type.BIN, 
-            a -> a[0].compareTo(a[1]) == 1 ? 1D : Double.NaN
+            new Collection.Builder<Integer>().add(2).build(), Type.BIN,
+            a -> /*!a[0].isNaN() && !a[1].isNaN() &&*/
+                  a[0].compareTo(a[1]) == 1 ? 1D : NaN
             ));
 
         put("<", new Function("<", "Checks if 'A' < 'B'", "<(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
-            a -> a[0].compareTo(a[1]) == -1 ? 1D : Double.NaN
+            a -> /*!a[0].isNaN() && !a[1].isNaN() &&*/
+                  a[0].compareTo(a[1]) == -1 ? 1D : NaN
             ));
 
         put("≣", new Function("≣", "Checks if 'A' == 'B'", "≣(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
-            a -> a[0].compareTo(a[1]) == 0 ? 1D : Double.NaN
+            a -> /*!a[0].isNaN() && !a[1].isNaN() &&*/
+                  a[0].compareTo(a[1]) == 0 ? 1D : NaN
             ));
 
         put("≥", new Function("≥", "Checks if 'A' ≥ 'B'", "≥(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
-            a -> a[0].compareTo(a[1]) != -1 ? 1D : Double.NaN
+            a -> /*!a[0].isNaN() && !a[1].isNaN() &&*/
+                  a[0].compareTo(a[1]) != -1 ? 1D : NaN
             ));
 
         put("≤", new Function("≤", "Checks if 'A' ≤ 'B'", "≤(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
-            a -> a[0].compareTo(a[1]) != 1 ? 1D : Double.NaN
+            a -> /*!a[0].isNaN() && !a[1].isNaN() &&*/
+                  a[0].compareTo(a[1]) != 1 ? 1D : NaN
             ));
 
         put("≠", new Function("≠", "Checks if 'A' ≠ 'B'", "≠(A, B)", 3,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
-            a -> a[0].compareTo(a[1]) != 0 ? 1D : Double.NaN
+            a -> /*!a[0].isNaN() && !a[1].isNaN() &&*/
+                  a[0].compareTo(a[1]) != 0 ? 1D : NaN
             ));
 
         put("compare", new Function("compare", "See Double.compare(A, B)", "compare(A, B)", DEFAULT_PRIORITY,
@@ -91,26 +99,39 @@ public class Function implements MathObject {
             //Boolean Comparators
         put("∧", new Function("∧", "Checks if 'A' ∧ 'B'", "∧(A, B)", 2,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
-            a -> (a[0].compareTo(0D) == 1) && (a[1].compareTo(0D) == 1) ? 1D : Double.NaN
+            a -> !a[0].isNaN() && !a[1].isNaN() &&
+                  a[0].compareTo(0D) == 1 && a[1].compareTo(0D) == 1 ? 1D : NaN
             ));
 
         put("∨", new Function("∨", "Checks if 'A' ∨ 'B'", "∨(A, B)", 2,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
-            a -> a[0].compareTo(0D) == 1 || a[1].compareTo(0D) == 1 ? 1D : Double.NaN
+            a -> 
+            // {
+            //     System.out.print("0: "+a[0]+", 1:" + a[1]);
+            //     System.out.println(" ans: " + (
+            //     !a[0].isNaN() && !a[1].isNaN() &&
+            //       (a[0].compareTo(0D) == 1 || a[1].compareTo(0D) == 1) ? 1D : NaN));
+            //     return NaN;
+            // }
+                !(a[0].isNaN() && a[1].isNaN()) &&
+                  (a[0].compareTo(0D) == 1 || a[1].compareTo(0D) == 1) ? 1D : NaN
             ));
 
         put("⊻", new Function("⊻", "Checks if 'A' ⊻ 'B'", "⊻(A, B)", 2,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
-            a -> a[0].compareTo(0D) == 1 ^ a[1].compareTo(0D) == 1 ? 1D : Double.NaN
+            a -> !a[0].isNaN() && !a[1].isNaN() &&
+                  a[0].compareTo(0D) == 1 ^ a[1].compareTo(0D) == 1 ? 1D : NaN
             ));
 
         put("⊼", new Function("⊼", "Checks if 'A' ⊼ 'B'", "⊼(A, B)", 2,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
-            a -> !(a[0].compareTo(0D) == 1 && a[1].compareTo(0D) == 1) ? 1D : Double.NaN
+            a -> !a[0].isNaN() && !a[1].isNaN() &&
+                 a[0].compareTo(0D) != 1 && a[1].compareTo(0D) != 1 ? 1D : NaN
             ));
         put("⊽", new Function("⊻", "Checks if 'A' ⊻ 'B'", "⊻(A, B)", 2,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
-            a -> !(a[0].compareTo(0D) == 1 || a[1].compareTo(0D) == 1) ? 1D : Double.NaN
+            a -> !a[0].isNaN() && !a[1].isNaN() &&
+                  a[0].compareTo(0D) != 1 && a[1].compareTo(0D) != 1 ? 1D : NaN
             ));
 
 

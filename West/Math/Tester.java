@@ -4,6 +4,8 @@ import West.Math.Equation.Function.*;
 import West.Math.Set.*;
 import West.*;
 
+import java.util.List;
+import java.util.ArrayList;
 /**
  * A tester class for the whole equation
  * @author Sam Westerman
@@ -12,12 +14,18 @@ import West.*;
  */
 public class Tester {
 
+
+    interface Test{
+        public String execute(String x);
+    }
+
     /**
      * The main function for the West.Math.package.
      * @param args The arguemnts passed in - usually through the command line
      * @throws IllegalArgumentException Thrown when the first value isn't equal to "--e" of --f 
      */
     public static void main(String[] args) throws IllegalArgumentException {
+
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
             //FIXED
@@ -56,32 +64,17 @@ public class Tester {
 
             // eqsys.add("x = e^pi");
 
+            eqsys.add("y = e*pi + 9.9");
+            eqsys.add("x = e + 9.9*pi");
                 //TWISTY THING
-            // eqsys.add("y = x0 * x1 * x2 * x3 * x4");
+            // eqsys.add("z = x0 * x1 * x2 * x3 * x4");
             // eqsys.add("x0 = (x) * c");
             // eqsys.add("x1 = (x - 8) * c");
             // eqsys.add("x2 = (x - 4) * c");
             // eqsys.add("x3 = (x + 8) * c");
             // eqsys.add("x4 = (x + 4) * c");
-            // eqsys.add("c = 1/4");
-
-            eqsys.add("=(z,sin(x))");
-            eqsys.add("=(xg0,>(x,0)");
-            // eqsys.add("=(y,∧(xg0,z)");
-            eqsys.add("=(y,∧(>(x,0),compare(z,0))");
-            // eqsys.add("=(y,"+
-            //             "*("+
-            //               "z,"+
-            //               "∧("+
-            //                  ">("+
-            //                     "x,"+
-            //                     "5"+
-            //                    "),"+
-            //                  ","+
-            //                "1" +
-            //                ")"+
-            //               ")"+
-            //             ")");
+            // eqsys.add("c = 1/4"); 
+            // eqsys.add("y = z * (x%2 > 1 ∨ x%2 < -1)");
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {
@@ -113,8 +106,8 @@ public class Tester {
 
         Print.print(eqsys.toFancyString());
         // Print.printi(eqsys.toFullString());
-         eqsys.graph();
-        // Print.printi("RESULT (y):", eqsys.eval("y"));
+        Print.printi("RESULT (y):", eqsys.eval("y"));
+        Print.printi("RESULT (x):", eqsys.eval("x"));
     }
 
 
