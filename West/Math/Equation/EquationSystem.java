@@ -39,6 +39,7 @@ public class EquationSystem implements MathObject{
     protected HashMap<String, CustomFunction> functions;
 
     /** TODO: JAVADOC */
+    
     protected EquationSystem constraints;
 
     /**
