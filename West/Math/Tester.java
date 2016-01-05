@@ -27,53 +27,27 @@ public class Tester {
     public static void main(String[] args) throws IllegalArgumentException {
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
-            //FIXED
-
-            // eqsys.add("=(y,+(1,+(sin(/(+(9.45,^(^(e,pi),-(ln(pi),^(-(pi,e),^(e,pi))))),2)),-(pi,e)))))");
-
-                // eqsys.add("=(y,*(x,2))");
-                // eqsys.add("=(x,4)");
-                //FIXED SIN THING
-            // eqsys.add("=(y, +(1,+(sin(alpha),c)))");
-            // eqsys.add("=(alpha, /(+(9.45,^(x,theta)),2))");
-            // eqsys.add("=(c, ^(pi,-(0,e)))");
-            // eqsys.add("=(theta, -(ln(pi),^(c,x)))");
-            // eqsys.add("=(x, ^(e,pi))");
-
-            // eqsys.add("=(y, *(z, ⊻(>(x,0),<(z,2)))");
-            // eqsys.add("=(z, *(x0, *(x1, *(x2, *(x3, x4)))))");
-            // eqsys.add("=(x0, *(x, c)");
-            // eqsys.add("=(x1, *(-(x, 8), c)");
-            // eqsys.add("=(x2, *(-(x, 4), c)");
-            // eqsys.add("=(x3, *(+(x, 8), c)");
-            // eqsys.add("=(x4, *(+(x, 4), c)");
-            // eqsys.add("=(c, /(1,4))");
-
-            //UNFIXED
-
             // eqsys.add("y=1+sin((9.45+x^(ln(pi)-(pi-e)^x))/2)+(pi-e)");
+
                 //SIN THING
 
-            // eqsys.add("y = e * pi ^ 4.5"); //~469.3198
-            // eqsys.add("x = e ^ pi * 4.5");//~104.1331
             // eqsys.add("y = 1 + sin(alpha) + c");
             // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
             // eqsys.add("c = pi^(0-e)");
             // eqsys.add("theta = ln(pi) - c ^ x ");
 
-            // eqsys.add("x = e^pi");
 
-            // eqsys.add("y = e*pi + 9.9");
-            // eqsys.add("x = e + 9.9*pi");
+            eqsys.add("y = sign(rand-.5)*x*(x-2)*(x+2)");//√(5^2 - X^2)");
+            eqsys.add("X = x");
                 //TWISTY THING
-            eqsys.add("z = x0 * x1 * x2 * x3 * x4");
-            eqsys.add("x0 = (x) * c");
-            eqsys.add("x1 = (x - 8) * c");
-            eqsys.add("x2 = (x - 4) * c");
-            eqsys.add("x3 = (x + 8) * c");
-            eqsys.add("x4 = (x + 4) * c");
-            eqsys.add("c = 1/4"); 
-            eqsys.add("y = z * (x%2 > 1 ∨ x%2 < -1)");
+            // eqsys.add("z = x0 * x1 * x2 * x3 * x4");
+            // eqsys.add("x0 = (x) * c");
+            // eqsys.add("x1 = (x - 8) * c");
+            // eqsys.add("x2 = (x - 4) * c");
+            // eqsys.add("x3 = (x + 8) * c");
+            // eqsys.add("x4 = (x + 4) * c");
+            // eqsys.add("c = 1/4"); 
+            // eqsys.add("y = z * (x%2 > 1 ∨ x%2 < -1)");
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {

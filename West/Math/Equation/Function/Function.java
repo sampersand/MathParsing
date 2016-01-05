@@ -151,6 +151,15 @@ public class Function implements MathObject {
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> a[0] * a[1]
             ));
+        put("·", new Function("·", "Multiplies 'A' to 'B'", "·(A, B)", 5,
+            new Collection.Builder<Integer>().add(2).build(), Type.BIN,
+            a -> a[0] * a[1]
+            ));
+
+        put("×", new Function("·", "Multiplies 'A' to 'B'", "·(A, B)", 5,
+            new Collection.Builder<Integer>().add(2).build(), Type.BIN,
+            a -> a[0] * a[1]
+            ));
 
         put("/", new Function("/", "Divides 'A' to 'B'", "/(A, B)", 5,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
@@ -280,6 +289,11 @@ public class Function implements MathObject {
             ));
 
         put("sqrt", new Function("sqrt", "the square root (√) of 'A'", "sqrt(A)", DEFAULT_PRIORITY,
+            new Collection.Builder<Integer>().add(1).build(), Type.NORM,
+            a -> Math.sqrt(a[0])
+            ));
+
+        put("√", new Function("√", "the square root (√) of 'A'", "√(A)", DEFAULT_PRIORITY,
             new Collection.Builder<Integer>().add(1).build(), Type.NORM,
             a -> Math.sqrt(a[0])
             ));

@@ -142,6 +142,12 @@ public class GraphComponents implements MathObject {
 
     @Override
     public boolean equals(Object pObj){
-        throw new NullPointerException();
+        if(pObj == null || !(pObj instanceof GraphComponents))
+            return false;
+        if(this == pObj)
+            return true;
+        GraphComponents pgc = (GraphComponents)pObj;
+        return winBounds.equals(pgc) && dispBounds.equals(pgc) && step == pgc.step;
+
     }
 }
