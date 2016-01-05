@@ -3,6 +3,7 @@ import West.Math.MathObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
+import java.util.function.Consumer;
 
 /**
  * TODO: JAVADOC
@@ -23,13 +24,13 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
             return this;
         }
         public <K extends C> Builder addAll(Object pObj) throws IllegalArgumentException{
-            if(pObj instanceof java.lang.Iterable){
-                for(Object obj : (java.lang.Iterable)pObj)
-                    elements.add((K)obj);
+            assert pObj instanceof java.lang.Iterable;
+            // if(pObj instanceof java.lang.Iterable){
+                ((java.lang.Iterable)pObj).forEach(elements::add);
                 return this;
-            }
-            throw new IllegalArgumentException("no known way to addAll pObj (type = " + pObj.getClass() +
-                                               ") to the Collection Builder!");
+            // }
+            // throw new IllegalArgumentException("no known way to addAll pObj (type = " + pObj.getClass() +
+            //                                    ") to the Collection Builder!");
         }
         public Collection build(){
             return new Collection<C>(this);
@@ -154,9 +155,17 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
         return elements.contains(obj);
     }
 
+    @Override
     public Iterator<E> iterator() {
         return (Iterator<E>) new Iter();
     }
+
+    @Override
+    public void forEach(Consumer<? super E> action){
+        for(E e : elements)
+            action.accept(e);
+    }
+
 
     private class Iter implements Iterator<E> {
         private int i = 0;

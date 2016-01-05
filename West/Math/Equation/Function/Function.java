@@ -18,7 +18,7 @@ import java.util.Random;
  * @since 0.1
  */
 public class Function implements MathObject {
-    public static final boolean USING_BIN_OPERS = false;
+    public static final boolean USING_BIN_OPERS = true;
     public static enum Type{
         UN_L,
         UN_R,

@@ -95,13 +95,7 @@ public class EquationSystem implements MathObject{
      * @return This class, but with <code>pEqs</code> added to {@link #equations}.
      */
     public EquationSystem add(Equation... pEqs) {
-        for(Equation eq : pEqs) {
-            if(eq == null){
-                Print.printi("A passed Equation is null; not adding it to 'equations'.");
-                continue;
-            }
-            equations.add(eq);
-        }
+        equations.addAll(pEqs); //doesnt check for null
         return this;
     }
 
@@ -115,10 +109,7 @@ public class EquationSystem implements MathObject{
      */
     public EquationSystem add(String... pEqStrings) {
         for(String eq : pEqStrings) {
-            if(eq == null){
-                Print.printi("A passed String is null; not adding it to 'equations'.");
-                continue;
-            }
+            assert eq != null;
             equations.add(new Equation().add(eq));
         }
         return this;
@@ -131,10 +122,7 @@ public class EquationSystem implements MathObject{
      * @return This class, but with <code>pEqs</code> added to {@link #equations}.
      */
     public EquationSystem add(Collection<Equation> pEqs) {
-        if(pEqs == null){
-            Print.printi("pEqs is null; not adding it to 'equations'.");
-            return this;
-        }
+        assert pEqs != null;
         equations.addAll(pEqs);
         return this;
     }
@@ -172,10 +160,7 @@ public class EquationSystem implements MathObject{
      * @return This class, but with <code>pFuncs</code> added to {@link #equations}.
      */
     public EquationSystem add(HashMap<String, CustomFunction> pFuncs) {
-        if(pFuncs == null){
-            Print.printi("pFuncs is null; not adding it to 'functions'.");
-            return this;
-        }
+        assert pFuncs != null;
         functions.putAll(pFuncs);
         return this;
     }
@@ -189,13 +174,8 @@ public class EquationSystem implements MathObject{
      */
     public EquationSystem add(String pName,
                               CustomFunction pFunc) {
-        if(pName == null){
-            Print.printi("pName is null; not adding pFunc to 'functions'.");
-            return this;
-        } else if(pFunc == null){
-            Print.printi("pFunc is null; not adding it to 'functions'.");
-            return this;
-        }
+        assert pName != null;
+        assert pFunc != null;
         functions.put(pName, pFunc);
         return this;
     }
@@ -265,10 +245,7 @@ public class EquationSystem implements MathObject{
      * @return A double that represents the value of <code>toEval</code>.
      */
     public Double eval(String toEval) {
-        if(equations().size() == 0){
-            Print.printw("Trying to evaluated an EquationSystem with no equations! returning 0");
-            return 0D;
-        }
+        assert equations.size() != 0 : "Cannot evaluate an EquationSystem with no equations!";
         EquationSystem eqsys = copy().isolate(toEval);
         assert eqsys.isolated() : "I'm not isolated!:\n\n"+eqsys.toFancyString();
         HashMap<String, Double> evald = eqsys.equations().get(0).subEquations().eval(eqsys);

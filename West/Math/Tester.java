@@ -24,6 +24,8 @@ public class Tester {
 
             // eqsys.add("=(y,+(1,+(sin(/(+(9.45,^(^(e,pi),-(ln(pi),^(-(pi,e),^(e,pi))))),2)),-(pi,e)))))");
 
+                // eqsys.add("=(y,*(x,2))");
+                // eqsys.add("=(x,4)");
                 //FIXED SIN THING
             // eqsys.add("=(y, +(1,+(sin(alpha),c)))");
             // eqsys.add("=(alpha, /(+(9.45,^(x,theta)),2))");
@@ -56,13 +58,14 @@ public class Tester {
 
                 //TWISTY THING
             // eqsys.add("y = x0 * x1 * x2 * x3 * x4");
-            // eqsys.add("x0 = (x) * c");
-            // eqsys.add("x1 = (x - 8) * c");
-            // eqsys.add("x2 = (x - 4) * c");
-            // eqsys.add("x3 = (x + 8) * c");
-            // eqsys.add("x4 = (x + 4) * c");
-            // eqsys.add("c = 1/4");
-
+            eqsys.add("qq = x0 * x1 * x2 * x3 * x4");
+            eqsys.add("y = qq*(qq > 1)");
+            eqsys.add("x0 = (x) * c");
+            eqsys.add("x1 = (x - 8) * c");
+            eqsys.add("x2 = (x - 4) * c");
+            eqsys.add("x3 = (x + 8) * c");
+            eqsys.add("x4 = (x + 4) * c");
+            eqsys.add("c = 1/4");
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {
@@ -94,9 +97,8 @@ public class Tester {
 
         Print.print(eqsys.toFancyString());
         // Print.printi(eqsys.toFullString());
-         // eqsys.graph();
-        Print.printi("RESULT (y):", eqsys.eval("y"));
-        Print.printi("RESULT (x):", eqsys.eval("x"));
+         eqsys.graph();
+        // Print.printi("RESULT (y):", eqsys.eval("y"));
     }
 
 
