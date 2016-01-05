@@ -37,7 +37,7 @@ public class Function implements MathObject {
     public static HashMap<String, Function> FUNCTIONS = new HashMap<String, Function>() {{
         // =                : 0
         // ()               : 1
-        // ∧, ∨, ⊻, ⊼, ⊽   : 2
+        // ∧, ∨, ⊻, ⊼, ⊽    : 2
         // >, <, ≣, ≥, ≤, ≠ : 3
         // ^                : 4
         // *, /, %          : 5
@@ -137,12 +137,12 @@ public class Function implements MathObject {
 
 
         // Standard math operators
-        put("+", new Function("+", "Adds 'A' to 'B'", "+(A, B)", 6, 
+        put("+", new Function("+", "Adds 'A' to 'B'", "+(A, B)", 4, 
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> a[0] + a[1]
             ));
 
-        put("-", new Function("-", "Subtracts 'A' to 'B'", "-(A, B)", 6,
+        put("-", new Function("-", "Subtracts 'A' to 'B'", "-(A, B)", 4,
             new Collection.Builder<Integer>().add(1).add(2).build(), Type.BIN,
             a -> a.length == 1 ? 0 - a[0] : a[0] - a[1]
             ));
@@ -161,7 +161,7 @@ public class Function implements MathObject {
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> a[0] % a[1]
             ));
-        put("^", new Function("^", "Raises 'A' to 'B'", "^(A, B)",4,
+        put("^", new Function("^", "Raises 'A' to 'B'", "^(A, B)", 6,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
             a -> Math.pow(a[0],a[1])
             ));
