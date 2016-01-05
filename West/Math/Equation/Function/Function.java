@@ -343,7 +343,6 @@ public class Function implements MathObject {
             a -> Integer.valueOf(a[0].compareTo(0D)).doubleValue()
             ));
 
-        put("graph", new GraphFunction());
     }};
 
     public static String isBinOper(String s){
