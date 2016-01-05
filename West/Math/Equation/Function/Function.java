@@ -18,7 +18,7 @@ import java.util.Random;
  * @since 0.1
  */
 public class Function implements MathObject {
-    public static final boolean USING_BIN_OPERS = true;
+    public static final boolean USING_BIN_OPERS = false;
     public static enum Type{
         UN_L,
         UN_R,
@@ -91,7 +91,7 @@ public class Function implements MathObject {
             //Boolean Comparators
         put("∧", new Function("∧", "Checks if 'A' ∧ 'B'", "∧(A, B)", 2,
             new Collection.Builder<Integer>().add(2).build(), Type.BIN,
-            a -> a[0].compareTo(0D) == 1 && a[1].compareTo(0D) == 1 ? 1D : Double.NaN
+            a -> (a[0].compareTo(0D) == 1) && (a[1].compareTo(0D) == 1) ? 1D : Double.NaN
             ));
 
         put("∨", new Function("∨", "Checks if 'A' ∨ 'B'", "∨(A, B)", 2,

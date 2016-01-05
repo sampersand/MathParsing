@@ -340,8 +340,6 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         NumberCollection<Double> nc2 = new NumberCollection<Double>();
         for(Number n : pNC) nc1.add(Double.parseDouble("" + n));
         for(Number n : this) nc2.add(Double.parseDouble("" + n));
-        // System.out.println(nc1);
-        // System.out.println(nc2);
         new Grapher(nc1, nc2).graph();
     }
 

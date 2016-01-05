@@ -25,12 +25,8 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
         }
         public <K extends C> Builder addAll(Object pObj) throws IllegalArgumentException{
             assert pObj instanceof java.lang.Iterable;
-            // if(pObj instanceof java.lang.Iterable){
-                ((java.lang.Iterable)pObj).forEach(elements::add);
-                return this;
-            // }
-            // throw new IllegalArgumentException("no known way to addAll pObj (type = " + pObj.getClass() +
-            //                                    ") to the Collection Builder!");
+            ((java.lang.Iterable)pObj).forEach(elements::add);
+            return this;
         }
         public Collection build(){
             return new Collection<C>(this);
@@ -166,6 +162,13 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
             action.accept(e);
     }
 
+    public Collection<E> sort(){
+        assert size() > 0;
+        assert get(0) instanceof java.lang.Comparable;
+        E[] ele = (E[])elements.toArray();
+        java.util.Arrays.sort(ele);
+        return new Collection.Builder<E>().addAll(ele).build();
+    }
 
     private class Iter implements Iterator<E> {
         private int i = 0;
