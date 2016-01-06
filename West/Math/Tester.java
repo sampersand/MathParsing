@@ -38,8 +38,8 @@ public class Tester {
 
 
             eqsys.add("y = x * z");
-            eqsys.add("x = (z = 10) * 99");
-            eqsys.add("z = 1");
+            eqsys.add("x = (z = pi) * 99");
+            // eqsys.add("z = 1");
                 //TWISTY THING
             // eqsys.add("z = x0 * x1 * x2 * x3 * x4");
             // eqsys.add("x0 = (x) * c");

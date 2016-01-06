@@ -188,7 +188,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public HashMap<String, Double> eval(HashMap<String, Double> pVars, final EquationSystem pEqSys){
         assert token != null;
         assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
-
         if(token.isFunc()){
             if(pEqSys.functions().containsKey(token.val())) // if it is a function
                 return pEqSys.functions().get(token.val()).exec(pEqSys, this);
@@ -208,8 +207,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                             System.out.println("tkn:"+tkn);
                             System.out.println(pVars);
                             appendHashMap(pVars,
-                                          tkn.toString(),
-                                          // Function.isAssign(tkn.token().val()) != null ? 
+                                          val,
                                           pVars.get(tkn.toString()));
                             return pVars;
                         }
@@ -225,13 +223,14 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                         return appendHashMap(pVars, val, Math.random()); 
                         // this might need work
                     default:
-                        System.err.println(toFullString());
-                        throw new UnsupportedOperationException("Cannot evaluate the FinalNode '" + val +
-                                                      "' because it isn't defined as a variable," + 
-                                                      " and isn't an in-built variable.");
+                        System.err.println(val + " doesn't exist, but returning NaN anyways");
+                        return appendHashMap(pVars, val, 10D);//Double.NaN);
+                        // throw new UnsupportedOperationException("Cannot evaluate the FinalNode '" + val +
+                        //                               "' because it isn't defined as a variable," + 
+                        //                               " and isn't an in-built variable.");
                 }
             }
-        } else 
+        } else
             throw new UnsupportedOperationException("This shouldn't happen! There is no way to evaluate node: " + token.val());
     }
 

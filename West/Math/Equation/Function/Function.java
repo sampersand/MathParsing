@@ -47,8 +47,7 @@ public class Function implements MathObject {
             0,
             Type.ASSIGN,
             new Collection.Builder<Integer>().add(2).build(), 
-            a -> a[1] //__does__ matter
-            
+            a -> a[0] //doesnt matter
             ));
         add(new Function(new Collection<String>(){{add("");}},
             "Parenthesis, literallY: ('A')", "(A)",
@@ -636,6 +635,10 @@ public class Function implements MathObject {
      *         {@link Node#elements() pNode's elements()}.
      */
     public Object[] evalNode(final EquationSystem pEqSys, TokenNode pNode) {
+        if(get(pNode.toString()).type == Type.ASSIGN){
+            assert pNode.size() == 2 : "size != 2: " + pNode;
+            // return new Object[]{null, pNode.}
+        }
         Double[] retd = new Double[pNode.size()];
         HashMap<String, Double> rethm = new HashMap<String, Double>();
         for(int i = 0; i < pNode.size(); i++) {
@@ -659,18 +662,15 @@ public class Function implements MathObject {
         Object[] rargs = evalNode(pEqSys, pNode);
         Double[] args = (Double[])rargs[0];
         assert argsLength.contains(args.length) || argsLength.contains(-1) :
-                        "'" + names + "' got incorrect args. Allowed args: "
-                        + argsLength + ", inputted args = '" 
-                        + pNode + "'(" + args.length + ")";
-        return addArgs((HashMap<String, Double>)rargs[1],
-                        type != Type.ASSIGN ? pNode.toString() : pNode.get(0).toString(), //used to allow for assign in equations
-                        funcObj.exec(args));
+        "'" +names+ "' got incorrect args. Allowed args: " + argsLength + ", inputted args = '"+ pNode + "'("+args.length+")";
+        return addArgs((HashMap<String, Double>)rargs[1], pNode.toString(), funcObj.exec(args));
     }
 
     public static HashMap<String,Double> exec(String pStr, final EquationSystem pEqSys, TokenNode pNode) {
-        if(!FUNCTIONS.contains(pStr))
+        Function f;
+        if((f = get(pStr)) == null)
             return null;
-        return get(pStr).exec(pEqSys, pNode);
+        return f.exec(pEqSys, pNode);
     }
 
     public HashMap<String, Double> addArgs(HashMap<String, Double> hm, String key, Double val){
