@@ -255,10 +255,8 @@ public class EquationSystem implements MathObject{
         Print.printi("Currently, solve isn't very good. Oh well.");
         new Grapher(this, new EquationSystem().add(
                     new Collection<Equation>(){{
-                        for(String e : pGComp.depVars()){
+                        for(String e : pGComp.depVars())
                             add(getEq(e));
-                            System.out.println("E:"+e+","+getEq(e));
-                        }
                     }}), null, pGComp).graph();
 
     }

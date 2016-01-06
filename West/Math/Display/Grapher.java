@@ -53,12 +53,12 @@ public class Grapher extends JPanel implements MathObject {
 
     /** TODO: JAVADOC */
     public Grapher() {
-        this(null, null, null, new GraphComponents());
+        this(null, null, new GraphComponents());
     }
 
     /** TODO: JAVADOC */
     public Grapher(NumberCollection<Double> pnumc1, NumberCollection<Double> pnumc2) {
-        this(null, null, new Collection<Collection<NumberCollection<Double>>>(){{
+        this(null, new Collection<Collection<NumberCollection<Double>>>(){{
             add(new Collection<NumberCollection<Double>>());
             get(-1).add(pnumc1);
             get(-1).add(pnumc2);
@@ -67,7 +67,6 @@ public class Grapher extends JPanel implements MathObject {
 
     /** TODO: JAVADOC */
     public Grapher(final EquationSystem pEqSysToGraph,
-                   final EquationSystem pEqSysToUse,
                    Collection<Collection<NumberCollection<Double>>> pNumberCollections,
                    GraphComponents pGraph) {
         numcs = pNumberCollections;
