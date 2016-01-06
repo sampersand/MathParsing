@@ -68,15 +68,15 @@ public class MathCollection<N extends Double> extends NumberCollection<N> {
             elements.add(pEle);
             return false;
         }
-        elements.add(pEle);
-        return true;
+        return elements.add(pEle);
     }
 
     @Override
-    public MathCollection copy(){
-        throw new NullPointerException();
-        //TODO: DEFINE
-        // return new MathBuilder().addAll(elements).build();
+    public MathCollection<N> copy(){
+        return new MathCollection<N>(){{
+            for (N ele : elements)
+                add(ele);
+        }};
     }
 
     public String notation(){
