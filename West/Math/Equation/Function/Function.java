@@ -117,7 +117,7 @@ public class Function implements MathObject {
         add(new Function(new Collection<String>(){{add("compare");}},
             "See Double.compare(A, B)", "compare(A, B)",
             DEFAULT_PRIORITY,
-            Type.BIN,
+            Type.NORM,
             new Collection.Builder<Integer>().add(2).build(),
             a -> new Double(a[0].compareTo(a[1]))
             ));
@@ -187,30 +187,14 @@ public class Function implements MathObject {
             a -> a.length == 1 ? 0 - a[0] : a[0] - a[1]
             ));
 
-        add(new Function(new Collection<String>(){{add("*");}},
+        add(new Function(new Collection<String>(){{add("*");add("·");add("×");}},
             "Multiplies 'A' to 'B'", "*(A, B)",
             5,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
             a -> a[0] * a[1]
             ));
-        add(new Function(new Collection<String>(){{add("·");}},
-            "Multiplies 'A' to 'B'", "·(A, B)",
-            5,
-            Type.BIN,
-            new Collection.Builder<Integer>().add(2).build(),
-            a -> a[0] * a[1]
-            ));
-
-        add(new Function(new Collection<String>(){{add("·");}},
-            "Multiplies 'A' to 'B'", "·(A, B)",
-            5,
-            Type.BIN,
-            new Collection.Builder<Integer>().add(2).build(),
-            a -> a[0] * a[1]
-            ));
-
-        add(new Function(new Collection<String>(){{add("/");}},
+        add(new Function(new Collection<String>(){{add("/");add("÷");}},
             "Divides 'A' to 'B'", "/(A, B)",
             5,
             Type.BIN,
@@ -506,28 +490,32 @@ public class Function implements MathObject {
 
     }};
 
+    public static Collection<String> BIN_OPERS = new Collection<String>(){{
+            for(Function f : FUNCTIONS)
+                if(f.type() == Type.BIN || f.type() == Type.ASSIGN)
+                    for(String name : f.names())
+                        add(name);
+        }};
+    public static Collection<String> ASSIGN_OPERS = new Collection<String>(){{
+            for(Function f : FUNCTIONS)
+                if(f.type() == Type.ASSIGN)
+                    for(String name : f.names())
+                        add(name);
+        }};
     public static String isBinOper(String s){
         //TODO: Don't generate a new list every time.
         if(!USING_BIN_OPERS)
             return null;
         if(s.matches(".*E[-\\d.]*$"))
             return null;
-        return Equation.isInLast(s, new Collection<String>(){{
-            for(Function f : FUNCTIONS)
-                if(f.type() == Type.BIN || f.type() == Type.ASSIGN)
-                    addAll(f.names());
-        }});
+        return Equation.isInLast(s, BIN_OPERS);
     }
 
     public static String isAssign(String s){
         //TODO: Don't generate a new list every time.
         if(!USING_BIN_OPERS)
             return null;
-        return Equation.isInLast(s, new Collection<String>(){{
-            for(Function f : FUNCTIONS)
-                if(f.type() == Type.ASSIGN)
-                    addAll(f.names());
-        }});
+        return Equation.isInLast(s, ASSIGN_OPERS);
     }
 
     public static Function get(String name){
