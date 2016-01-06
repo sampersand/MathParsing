@@ -231,10 +231,10 @@ public class EquationSystem implements MathObject{
      */
     public EquationSystem isolate(String toIso) throws UnsupportedOperationException {
         for(int i = 0; i < equations.size(); i++){
-            // if(equations.get(i).subEquations().getASD().get(0).token().val().equals(toIso)){
-                // equations.prepend(equations.pop(i));
-                // break;
-            // }}
+            if(equations.get(i).getVar().equals(toIso)){
+                equations.prepend(equations.pop(i));
+                break;
+            }
         }
         return this;
     }
