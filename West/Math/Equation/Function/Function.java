@@ -28,6 +28,7 @@ public class Function implements MathObject {
         NORM
     } //Assign extends Bin
 
+    @FunctionalInterface
     public interface FuncObj{
         public Double exec(Double[] args);
     }
@@ -661,18 +662,21 @@ public class Function implements MathObject {
     public HashMap<String,Double> exec(HashMap<String, Double> ret, final EquationSystem pEqSys, TokenNode pNode) {
         if(type == Type.ASSIGN){
             assert pNode.size() == 2;
-            System.out.println("im assign:"+pNode);
             ret.putAll(pNode.get(1).eval(ret, pEqSys));
             ret.put(pNode.get(0).toString(),ret.get(pNode.get(1).toString()));
         }
         else
             for(West.Math.Set.Node.Node<?, ?> n : pNode)
                 ret.putAll(((TokenNode)n).eval(ret, pEqSys));
+
         Double[] args = new Double[pNode.size()];
+
         for(int i = 0; i < args.length; i++)
             args[i] = ret.get(pNode.get(i).toString());
+
         assert argsLength.contains(args.length) || argsLength.contains(-1) :
-        "'" +names+ "' got incorrect args. Allowed args: " + argsLength + ", inputted args = '"+ pNode + "'("+args.length+")";
+        "'" +names+ "' got bad args. Allowed args: " + argsLength + ", inputted args = '"+ pNode + "'("+args.length+")";
+
         return addArgs(ret, pNode.toString(), funcObj.exec(args));
     }
 

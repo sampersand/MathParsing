@@ -191,10 +191,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         if(token.isFunc()){
             if(pEqSys.functions().containsKey(token.val())) // if it is a function
                 return pEqSys.functions().get(token.val()).exec(pVars, pEqSys, this); //no work
-            else{
-                assert !token.toString().contains("pi");
-                return Function.exec(pVars, token.val(), pEqSys, this);
-            }
+            return Function.exec(pVars, token.val(), pEqSys, this); //no else needed
         } else if(isFinal()){
             String val = token.val();
             Double d;
@@ -223,12 +220,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     default:
                         if(pVars.containsKey(val))
                             return pVars;
-                        System.out.println(pVars +" | " + val);
                         System.err.println(val + " doesn't exist, but returning NaN anyways");
                         return appendHashMap(pVars, val, Double.NaN);
-                        // throw new UnsupportedOperationException("Cannot evaluate the FinalNode '" + val +
-                        //                               "' because it isn't defined as a variable," + 
-                        //                               " and isn't an in-built variable.");
                 }
             }
         } else

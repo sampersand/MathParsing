@@ -14,11 +14,6 @@ import java.util.ArrayList;
  */
 public class Tester {
 
-
-    interface Test{
-        public String execute(String x);
-    }
-
     /**
      * The main function for the West.Math.package.
      * @param args The arguemnts passed in - usually through the command line
