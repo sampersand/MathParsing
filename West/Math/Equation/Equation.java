@@ -70,7 +70,8 @@ public class Equation implements MathObject {
 
 
 
-    private static String[] TRIG = {"sec", "csc", "cot", "sin", "cos", "tan"};
+    private static String[] TRIG = {"sec", "csc", "cot", "asin", "acos", "atan", 
+                                    "sinh", "cosh", "tanh", "sin", "cos", "tan"};
     private static String[] FRAC8 = {"⅛", "¼", "⅜", "½", "⅝", "¾", "⅞"};
     private static String[] FRAC5 = {"⅕", "⅖", "⅗", "⅘"};
     private static String[] FRAC6 = {"⅙", "⅓", "⅗", "⅔", "⅚"};
@@ -83,9 +84,6 @@ public class Equation implements MathObject {
     public static String fixNode(String pEq) {
         if(pEq.charAt(0) == '@')
             return pEq.substring(1);
-        for(String trig : TRIG) {
-            pEq = pEq.replaceAll("(?!<a)" + trig + "(?!h)([A-za-z]+)","$1" + trig + "($2)");
-        }
         if(Function.USING_BIN_OPERS){
             pEq = pEq.replaceAll("²", "^2");
             pEq = pEq.replaceAll("³", "^3");
@@ -100,6 +98,9 @@ public class Equation implements MathObject {
             pEq = pEq.replaceAll("⅑","1/9");
             pEq = pEq.replaceAll("⅒","1/10");
             pEq = pEq.replaceAll("⅟","1/");
+        }
+        for(String trig : TRIG) {
+            pEq = pEq.replaceAll(trig + "(\\^[\\d.-]+)?([\\w\\d]+)","("+trig + "($2))$1");
         }
         if(!Function.USING_BIN_OPERS){
             pEq = pEq.replaceAll("([\\d\\w.-]+)E([\\d\\w.-]+)","*($1,^(10,$2))"); // &.&E-?&.& → (&.&*10^(-?&.&))
