@@ -240,25 +240,6 @@ public class EquationSystem implements MathObject{
     }
 
     /**
-     * Checks to see if this is an isolate EquationSystem.
-     * @return true if this is an {@link #isolate() isolated EquationSystem}.
-     */
-    /**
-     * Sees if <code>pVar</code> is defined on the left-hand side of any equation.
-     */
-    public boolean varExist(String pVar){
-        for(Equation eq : equations){
-            TokenNode tkn = eq.subEquations();
-            if(tkn.size() ==0)
-                continue;
-            assert tkn.getSD(tkn.depthS()) instanceof TokenNode;
-            if(((TokenNode)tkn.getSD(tkn.depthS())).token().val().equals(pVar))
-                return true;
-        }
-        return false;
-    }
-
-    /**
      * Graphs the first equation in {@link #equations} using {@link West.Math.Display.Grapher}.
      */
     public void graph(double xmin, double ymin, double xmax, double ymax, double step, String indep, String... dep) {
@@ -266,7 +247,12 @@ public class EquationSystem implements MathObject{
     }
     public void graph(GraphComponents pGComp){
         Print.printi("Currently, solve isn't very good. Oh well.");
-        new Grapher(this, null, null, pGComp).graph();
+        new Grapher(this, new EquationSystem().add(
+                    new Collection<Equation>(){{
+                        for(String e : pGComp.depVars()){
+                            // assert varExist()
+                        }
+                    }}), null, pGComp).graph();
 
     }
     public void graph(String indep, String... dep) { //graphs the thing with independent being "x" and dependant being "y"

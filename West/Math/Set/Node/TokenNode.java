@@ -198,7 +198,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             try{
                 return appendHashMap(pVars, val, Double.parseDouble(val));
             } catch(NumberFormatException err){ 
-                if(pEqSys.varExist(val))
                     for(Equation eq : pEqSys.equations()){
                         if(((TokenNode)eq.subEquations().getSD(eq.subEquations().depthS())).token.val().equals(val)){
                             TokenNode tkn = eq.subEquations().findVar(val).get(1);
