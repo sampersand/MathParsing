@@ -35,7 +35,7 @@ public class Tester {
             // eqsys.add("y=3x-2x⁰");
 
             eqsys.add("y = tanx");
-            eqsys.add("z = sec²x");
+            eqsys.add("qq = sec²x");
             // eqsys.add("y = 4 * qwertyuip$");
             // eqsys.add("qwertyuip$ = (z = pi) * f/e");
             // eqsys.add("f = z * 1/x");
@@ -81,7 +81,7 @@ public class Tester {
         // MathCollection g3 = new MathCollection("{y | y = √(x³)}", -10, 10, 1);
         // g3.graph();
         // Print.print(eqsys.toFancyString());   
-        eqsys.graph(-20, -20, 20, 20);
+        eqsys.graph(-20, -20, 20, 20, 250, "y", "qq");
         // Print.printi("RESULT (y):", eqsys.eval("y"));
         // Print.printi("RESULT (x):", eqsys.eval("x"));
     }

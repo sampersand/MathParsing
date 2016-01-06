@@ -261,17 +261,16 @@ public class EquationSystem implements MathObject{
     /**
      * Graphs the first equation in {@link #equations} using {@link West.Math.Display.Grapher}.
      */
-    public void graph(double xmin, double ymin, double xmax, double ymax) {
-        graph(xmin, ymin, xmax, ymax, 250);
+    public void graph(double xmin, double ymin, double xmax, double ymax, double step, String... toGraph) {
+        graph(new GraphComponents(new int[]{1250, 750}, new double[]{xmin, ymin, xmax, ymax}, step), toGraph);
     }
-    public void graph(double xmin, double ymin, double xmax, double ymax, double step) {
+    public void graph(GraphComponents pGComp, String... toGraph){
         Print.printi("Currently, solve isn't very good. Oh well.");
-        new Grapher(this, new GraphComponents(
-                    new int[]{1250, 750}, new double[]{xmin, ymin, xmax, ymax}, step)).graph();
+        new Grapher(this, null, null, pGComp).graph();
+
     }
-    public void graph(String val) {
-        Print.printi("Currently, solve isn't very good. Oh well.");
-        new Grapher(isolate(val)).graph();
+    public void graph(String... toGraph) { //graphs the thing with independent being "x" and dependant being "y"
+        graph(new GraphComponents(), toGraph);
     }
 
     /**

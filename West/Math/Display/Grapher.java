@@ -53,43 +53,16 @@ public class Grapher extends JPanel implements MathObject {
 
     /** TODO: JAVADOC */
     public Grapher() {
-        this(new GraphComponents());
+        this(null, null, null, new GraphComponents());
     }
 
     /** TODO: JAVADOC */
     public Grapher(NumberCollection<Double> pnumc1, NumberCollection<Double> pnumc2) {
-        this(null, new Collection<Collection<NumberCollection<Double>>>(){{
+        this(null, null, new Collection<Collection<NumberCollection<Double>>>(){{
             add(new Collection<NumberCollection<Double>>());
             get(-1).add(pnumc1);
             get(-1).add(pnumc2);
-        }});
-    }
-
-    /** TODO: JAVADOC */
-    public Grapher(final EquationSystem pEqSys) {
-        this(pEqSys, new GraphComponents());
-    }
-
-    /** TODO: JAVADOC */
-    public Grapher(GraphComponents pComponents) {
-        this(null, null, pComponents);
-    }
-
-    /** TODO: JAVADOC */
-    public Grapher(final EquationSystem pEqSys,
-                   Collection<Collection<NumberCollection<Double>>> pNumberCollections) {
-        this(pEqSys, pNumberCollections, new GraphComponents());
-    }
-    public Grapher(final EquationSystem pEqSys,
-                   GraphComponents pGComp){
-        this(new EquationSystem().add(pEqSys.equations().get(0)), pEqSys, null, pGComp);
-    }
-    
-    /** TODO: JAVADOC */
-    public Grapher(final EquationSystem pEqSys,
-                   Collection<Collection<NumberCollection<Double>>> pNumberCollections,
-                   GraphComponents pGraph) {
-        this(pEqSys, new EquationSystem(), pNumberCollections, pGraph);
+        }}, new GraphComponents());
     }
 
     /** TODO: JAVADOC */
@@ -265,7 +238,7 @@ public class Grapher extends JPanel implements MathObject {
 
     @Override
     public Grapher copy(){
-        return new Grapher(equationsToGraph, numcs, components);
+        return new Grapher(equationsToGraph, equationsToUse, numcs, components);
 
     }
 
