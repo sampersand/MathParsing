@@ -141,7 +141,6 @@ public class DisplayComponent extends JLabel implements MathObject {
         } else if(equation != null) {
             double cStep = grapher.components().cStep();
             for(double x = dispBounds[0]; x < dispBounds[2]; x += cStep) {
-                System.out.println("my Equation:"+equation + " | dep:" + equation.getVar() + " | indep:" + grapher.components().indepVar());
                 drawl(x,
                       equationsys.eval(equation.getVar(), new EquationSystem().add(grapher.components().indepVar()
                                             + "=" + x)), 

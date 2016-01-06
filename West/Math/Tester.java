@@ -26,22 +26,20 @@ public class Tester {
 
                 //SIN THING
 
+            eqsys.add("y = sin(x^2)");
+            eqsys.add("x = 2");
             // eqsys.add("y = 1 + sin(alpha) + c");
             // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
-            // eqsys.add("c = pi^(0-e)");
+            // eqsys.add("c = pi^-e");
             // eqsys.add("theta = ln(pi) - c ^ x ");
 
 
-            // eqsys.add("y=3x-2x⁰");
-            
-            eqsys.add("y = tanx");
-            eqsys.add("qq = sec²x");
+            // eqsys.add("y = 1 + sin(alpha)/c");
+            // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
+            // eqsys.add("c = √atanx * pi≪x^(-e)");
+            // eqsys.add("theta = ln(pi) - c ^ x ");
 
 
-            // eqsys.add("y = 4 * qwertyuip$");
-            // eqsys.add("qwertyuip$ = (z = pi) * f/e");
-            // eqsys.add("f = z * 1/x");
-            // eqsys.add("z = 0");
                 //TWISTY THING
             // eqsys.add("y = z * (x%2 > 1 ∨ x%2 < -1)");
             // eqsys.add("z = x0 * x1 * x2 * x3 * x4");
@@ -83,7 +81,7 @@ public class Tester {
         // MathCollection g3 = new MathCollection("{y | y = √(x³)}", -10, 10, 1);
         // g3.graph();
         // Print.print(eqsys.toFancyString());   
-        eqsys.graph(-20, -20, 20, 20, 250, "x", "y", "qq");
+        eqsys.graph(-20, -20, 20, 20, 250, "x", "y");
         // Print.printi("RESULT (y):", eqsys.eval("y"));
         // Print.printi("RESULT (x):", eqsys.eval("x"));
     }

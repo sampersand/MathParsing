@@ -40,7 +40,7 @@ public class Function implements MathObject {
         // ()               : 1
         // ∧, ∨, ⊻, ⊼, ⊽    : 2
         // >, <, ≣, ≥, ≤, ≠ : 3
-        // ^                : 4
+        // ^, ≫, ≪          : 4
         // *, /, %          : 5
         // +, -             : 6
         add(new Function(new Collection<String>(){{add("=");}},
@@ -322,15 +322,15 @@ public class Function implements MathObject {
         //Shifting
         add(new Function(new Collection<String>(){{add("≫");}},
             "'A' Shifted to the right 'B' bits", "≫(A, B)",
-            DEFAULT_PRIORITY,
-            Type.NORM,
+            5,
+        Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
             a -> Integer.valueOf(a[0].intValue() >> a[1].intValue()).doubleValue()
             ));
         add(new Function(new Collection<String>(){{add("≪");}},
             "'A' Shifted to the left 'B' bits", "≪(A, B)",
-            DEFAULT_PRIORITY,
-            Type.NORM,
+            5,
+        Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
             a -> Integer.valueOf(a[0].intValue() << a[1].intValue()).doubleValue()
             ));

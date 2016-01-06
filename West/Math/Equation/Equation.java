@@ -102,11 +102,15 @@ public class Equation implements MathObject {
             pEq = pEq.replaceAll("⅑","1/9");
             pEq = pEq.replaceAll("⅒","1/10");
             pEq = pEq.replaceAll("⅟","1/");
-        }
-        for(String trig : TRIG) {
-            pEq = pEq.replaceAll(trig + "(\\^[\\d.-]+)?([\\w\\d]+)","("+trig + "($2))$1");
+            for(String trig : TRIG)
+                pEq = pEq.replaceAll("(?!<a)" + trig + "(?!=h)(\\^[\\d.-]+)?([\\w\\d]+)","("+trig + "($2))$1");
+            pEq = pEq.replaceAll("√([A-z\\d.]+)","√($1)"); // &.&E-?&.& → (&.&*10^(-?&.&))
         }
         if(!Function.USING_BIN_OPERS){
+        for(String trig : TRIG) {
+            System.out.println(pEq);
+            pEq = pEq.replaceAll("(?!<a)" + trig + "(?!=h)(\\^[\\d.-]+)?([\\w\\d]+)","("+trig + "($2))$1");
+        }
             pEq = pEq.replaceAll("([\\d\\w.-]+)E([\\d\\w.-]+)","*($1,^(10,$2))"); // &.&E-?&.& → (&.&*10^(-?&.&))
             pEq = pEq.replaceAll("^x=-(.+)$","=(x,-(0,$1))");
             pEq = pEq.replaceAll("^x=(.+)$", "=(x,$1)"); // Used for graphing
