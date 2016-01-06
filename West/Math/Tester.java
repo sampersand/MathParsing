@@ -37,7 +37,9 @@ public class Tester {
             // eqsys.add("theta = ln(pi) - c ^ x ");
 
 
-            eqsys.add("y = (z = x * 4) * x");
+            eqsys.add("y = x * z");
+            eqsys.add("x = (z = 10) * 99");
+            eqsys.add("z = 1");
                 //TWISTY THING
             // eqsys.add("z = x0 * x1 * x2 * x3 * x4");
             // eqsys.add("x0 = (x) * c");
@@ -78,8 +80,8 @@ public class Tester {
 
         Print.print(eqsys.toFancyString());
         // Print.printi(eqsys.toFullString());
-        eqsys.graph();
-        // Print.printi("RESULT (y):", eqsys.eval("y"));
+        // eqsys.graph();
+        Print.printi("RESULT (y):", eqsys.eval("y"));
         // Print.printi("RESULT (x):", eqsys.eval("x"));
     }
 

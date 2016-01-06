@@ -47,7 +47,7 @@ public class Function implements MathObject {
             0,
             Type.ASSIGN,
             new Collection.Builder<Integer>().add(2).build(), 
-            a -> null //doesnt matter
+            a -> a[0] //doesnt matter
             ));
         add(new Function(new Collection<String>(){{add("");}},
             "Parenthesis, literallY: ('A')", "(A)",
@@ -192,7 +192,11 @@ public class Function implements MathObject {
             5,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            a -> a[0] * a[1]
+            a ->{
+                System.out.println(a[0]+ " | " + a[1]);
+                return a[0] * a[1];
+            } 
+            //a[0] * a[1]
             ));
         add(new Function(new Collection<String>(){{add("/");add("÷");}},
             "Divides 'A' to 'B'", "/(A, B)",
@@ -496,13 +500,14 @@ public class Function implements MathObject {
                     for(String name : f.names())
                         add(name);
         }};
+
     public static Collection<String> ASSIGN_OPERS = new Collection<String>(){{
             for(Function f : FUNCTIONS)
                 if(f.type() == Type.ASSIGN)
                     for(String name : f.names())
                         add(name);
         }};
-        
+
     public static String isBinOper(String s){
         //TODO: Don't generate a new list every time.
         if(!USING_BIN_OPERS)
@@ -659,6 +664,7 @@ public class Function implements MathObject {
         assert argsLength.contains(args.length) || argsLength.contains(-1) :
         "'" +names+ "' got incorrect args. Allowed args: " + argsLength + ", inputted args = '"+ pNode + "'("+args.length+")";
         HashMap<String, Double> rethm = (HashMap<String, Double>)rargs[1];
+        System.out.println(pNode.toFancyString());
         return addArgs(rethm, pNode.toString(), funcObj.exec(args));
     }
 
