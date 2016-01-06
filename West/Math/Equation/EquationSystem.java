@@ -250,7 +250,7 @@ public class EquationSystem implements MathObject{
         new Grapher(this, new EquationSystem().add(
                     new Collection<Equation>(){{
                         for(String e : pGComp.depVars()){
-                            // assert varExist()
+                            for()
                         }
                     }}), null, pGComp).graph();
 
