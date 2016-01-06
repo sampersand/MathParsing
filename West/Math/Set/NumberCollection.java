@@ -169,11 +169,11 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     //             }
     //         }
     //     } catch(InstantiationException err){
-    //         System.out.println(err);
+    //         System.err.println(err);
     //     } catch(IllegalAccessException err){
-    //         System.out.println(err);
+    //         System.err.println(err);
     //     } catch(java.lang.reflect.InvocationTargetException err){
-    //         System.out.println(err);
+    //         System.err.println(err);
     //     }
     //     return null;
     // }

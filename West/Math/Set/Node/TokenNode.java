@@ -167,6 +167,20 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return a;
     }
 
+    public TokenNode findVar(String val){
+        if(token.val().equals(val))
+            return this;
+        assert size() > 0;
+        for(int i = 0; i < size(); i++){
+            TokenNode n = get(i);
+            if(n != null)
+                if(n.token().val().equals(val))
+                    return this;
+                else
+                    return n;
+        }
+        return null;
+    }
     /**
      * TODO: JAVADOC
      * returns Double.NaN if the result isnt in bounds
@@ -189,9 +203,14 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 if(pEqSys.varExist(val))
                     for(Equation eq : pEqSys.equations()){
                         if(((TokenNode)eq.subEquations().getSD(eq.subEquations().depthS())).token.val().equals(val)){
-                            pVars = appendHashMap(pVars,
-                                                 eq.subEquations().getASD().get(1).eval(pVars, pEqSys));
-                            appendHashMap(pVars, val, pVars.get(eq.subEquations().getASD().get(1).toString()));
+                            TokenNode tkn = eq.subEquations().findVar(val).get(1);
+                            pVars = appendHashMap(pVars, tkn.eval(pVars, pEqSys));
+                            System.out.println("tkn:"+tkn);
+                            System.out.println(pVars);
+                            appendHashMap(pVars,
+                                          tkn.toString(),
+                                          // Function.isAssign(tkn.token().val()) != null ? 
+                                          pVars.get(tkn.toString()));
                             return pVars;
                         }
                     }
@@ -264,15 +283,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     @Override
     public String toString(){
         return toExprString().replaceAll("^\\((.*)\\)$", "$1");
-    }
-
-    public TokenNode getASD(){
-        assert size() != 0; 
-        if(Function.isAssign(token.val()) != null)
-            return this;
-        if(!Function.USING_BIN_OPERS && token.val().equals("="))
-            return this;
-        return get(0).getASD();
     }
 
     @Override

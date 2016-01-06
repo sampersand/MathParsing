@@ -219,7 +219,8 @@ public class EquationSystem implements MathObject{
     public Double eval(String toEval) {
         assert equations.size() != 0 : "Cannot evaluate an EquationSystem with no equations!";
         EquationSystem eqsys = copy().isolate(toEval);
-        assert eqsys.isolated() : "I'm not isolated!:\n\n"+eqsys.toFancyString();
+        // assert eqsys.isolated() : "I'm not isolated!:\n\n"+eqsys.toFancyString();
+        System.out.println(eqsys.equations().get(0).subEquations().eval(eqsys));
         return eqsys.equations().get(0).subEquations().eval(eqsys).get(toEval);
 
     }
@@ -234,10 +235,10 @@ public class EquationSystem implements MathObject{
      */
     public EquationSystem isolate(String toIso) throws UnsupportedOperationException {
         for(int i = 0; i < equations.size(); i++){
-            if(equations.get(i).subEquations().getASD().get(0).token().val().equals(toIso)){
-                equations.prepend(equations.pop(i));
-                break;
-            }
+            // if(equations.get(i).subEquations().getASD().get(0).token().val().equals(toIso)){
+                // equations.prepend(equations.pop(i));
+                // break;
+            // }}
         }
         return this;
     }
@@ -246,18 +247,6 @@ public class EquationSystem implements MathObject{
      * Checks to see if this is an isolate EquationSystem.
      * @return true if this is an {@link #isolate() isolated EquationSystem}.
      */
-    public boolean isolated(){
-        for(Equation eq : equations){
-            TokenNode tkn = eq.subEquations();
-            if(!tkn.getASD().get(0).isLone()){ //top node is comparator, second top is empty function, bottom is variable
-                
-                System.out.println("not isolated because of:\n" + tkn.getASD().get(0).toFancyString());
-                return false;
-            }
-        }
-        return true;
-    }
-
     /**
      * Sees if <code>pVar</code> is defined on the left-hand side of any equation.
      */
