@@ -141,7 +141,6 @@ public class DisplayComponent extends JLabel implements MathObject {
         } else if(equation != null) {
             double cStep = grapher.components().cStep();
             for(double x = dispBounds[0]; x < dispBounds[2]; x += cStep) {
-
                 drawl(x,
                       equationsys.eval("y", new EquationSystem().add("x = " + x)), 
                       x + cStep,
@@ -169,7 +168,9 @@ public class DisplayComponent extends JLabel implements MathObject {
  
     /** TODO: JAVADOC */
     private void drawl(Double x, Double y, Double X, Double Y) {
-        if(y.equals(Double.NaN) || Y.equals(Double.NaN) || x.equals(Double.NaN) || X.equals(Double.NaN))
+        assert y != null;
+        assert Y != null;
+        if(y.equals(Double.NaN) || Y.equals(Double.NaN))
             return;
        double[] xy=fix(x, y);
        double[] XY=fix(X, Y);
@@ -273,9 +274,9 @@ public class DisplayComponent extends JLabel implements MathObject {
             return false;
         if((equationsys == null) ^ (pdisp.equationsys() == null)) //TODO: ENCORPERATE --> || !equationsys.equals(pdisp.equationsys()))
             return false;
-        if((numc == null) != (pdisp.numc() == null) || !numc.equals(pdisp.numc()))
+        if(!((numc == null) && (pdisp.numc() == null) || numc.equals(pdisp.numc())))
             return false;
-        if((color == null) != (pdisp.color() == null) || !color.equals(pdisp.color()))
+        if(!((color == null) && (pdisp.color() == null) || color.equals(pdisp.color())))
             return false;
         return true;
  

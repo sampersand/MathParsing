@@ -67,7 +67,7 @@ public class Grapher extends JPanel implements MathObject {
 
     /** TODO: JAVADOC */
     public Grapher(final EquationSystem pEqSys) {
-        this(new EquationSystem().add(pEqSys.equations().get(0)), pEqSys, null, new GraphComponents());
+        this(pEqSys, new GraphComponents());
     }
 
     /** TODO: JAVADOC */
@@ -80,7 +80,11 @@ public class Grapher extends JPanel implements MathObject {
                    Collection<Collection<NumberCollection<Double>>> pNumberCollections) {
         this(pEqSys, pNumberCollections, new GraphComponents());
     }
-
+    public Grapher(final EquationSystem pEqSys,
+                   GraphComponents pGComp){
+        this(new EquationSystem().add(pEqSys.equations().get(0)), pEqSys, null, pGComp);
+    }
+    
     /** TODO: JAVADOC */
     public Grapher(final EquationSystem pEqSys,
                    Collection<Collection<NumberCollection<Double>>> pNumberCollections,

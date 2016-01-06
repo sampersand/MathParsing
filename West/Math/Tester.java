@@ -36,7 +36,7 @@ public class Tester {
 
             eqsys.add("y = 4 * qwertyuip$");
             eqsys.add("qwertyuip$ = (z = pi) * f/e");
-            eqsys.add("f = z * 1/2");
+            eqsys.add("f = z * 1/x");
             // eqsys.add("z = 0");
                 //TWISTY THING
             // eqsys.add("y = z * (x%2 > 1 ∨ x%2 < -1)");
@@ -79,7 +79,7 @@ public class Tester {
         // MathCollection g3 = new MathCollection("{y | y = √(x³)}", -10, 10, 1);
         // g3.graph();
         // Print.print(eqsys.toFancyString());   
-        eqsys.graph();
+        eqsys.graph(-00, -50, 50, 50);
         // Print.printi("RESULT (y):", eqsys.eval("y"));
         // Print.printi("RESULT (x):", eqsys.eval("x"));
     }

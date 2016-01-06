@@ -4,6 +4,7 @@ import West.Math.MathObject;
 import West.Print;
 import static West.Math.Declare.*;
 import West.Math.Display.Grapher;
+import West.Math.Display.GraphComponents;
 import West.Math.Equation.Function.CustomFunction;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -73,12 +74,8 @@ public class EquationSystem implements MathObject{
      * @return This class, but with <code>pEqSys</code>'s {@link #equations() equations} added.
      */
     public EquationSystem add(EquationSystem pEqSys) {
-        if(pEqSys == null){
-            Print.printi("pEqSys is null; not adding it to 'equations'.");
-            return this;
-        }
-        for(Equation eq : pEqSys.equations())
-            add(eq);
+        assert pEqSys != null;
+        pEqSys.equations().forEach(this::add);
         return this;
     }
 
@@ -220,7 +217,6 @@ public class EquationSystem implements MathObject{
         assert equations.size() != 0 : "Cannot evaluate an EquationSystem with no equations!";
         EquationSystem eqsys = copy().isolate(toEval);
         // assert eqsys.isolated() : "I'm not isolated!:\n\n"+eqsys.toFancyString();
-        // System.out.println(eqsys.equations().get(0).subEquations().eval(eqsys));
         return eqsys.equations().get(0).subEquations().eval(eqsys).get(toEval);
 
     }
@@ -265,9 +261,13 @@ public class EquationSystem implements MathObject{
     /**
      * Graphs the first equation in {@link #equations} using {@link West.Math.Display.Grapher}.
      */
-    public void graph() {
+    public void graph(double xmin, double ymin, double xmax, double ymax) {
+        graph(xmin, ymin, xmax, ymax, 250);
+    }
+    public void graph(double xmin, double ymin, double xmax, double ymax, double step) {
         Print.printi("Currently, solve isn't very good. Oh well.");
-        new Grapher(this).graph();
+        new Grapher(this, new GraphComponents(
+                    new int[]{1250, 750}, new double[]{xmin, ymin, xmax, ymax}, step)).graph();
     }
     public void graph(String val) {
         Print.printi("Currently, solve isn't very good. Oh well.");
