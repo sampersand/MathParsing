@@ -47,16 +47,51 @@ public class MathCollection<N extends Double> extends NumberCollection<N> {
             compress();
         }
     }
+    private MathCollection(final EquationSystem pEqSys, double min, double max, double cStep) {
+        super(pEqSys, min, max, cStep);
+    }
 
+    private static String minregex = "(^\\{.*\\}.*)min:([-.\\d]+)(.*)";
+    private static String maxregex = "(^\\{.*\\}.*)max:([-.\\d]+)(.*)";
+    private static String stepregex ="(^\\{.*\\}.*)(?:step|cStep|points):([-.\\d]+)(.*)";
     public static MathCollection<Double> fromSetNotation(String pSetNot){
-        MathCollection<Double> ret = new MathCollection<Double>(eqFromSetNotation(pSetNot));
-        ret.setNotation(pSetNot);
-        return ret;
+        double min = -10, max = 10, step = 25;
+        pSetNot = pSetNot.replaceAll(" ","");
+        if(pSetNot.matches(minregex)){
+            min = Double.parseDouble(pSetNot.replaceAll(minregex,"$2"));
+            pSetNot = pSetNot.replaceAll(minregex, "$1$3");
+        }
+        if(pSetNot.matches(maxregex)){
+            max = Double.parseDouble(pSetNot.replaceAll(maxregex,"$2"));
+            pSetNot = pSetNot.replaceAll(maxregex, "$1$3");
+        }
+        if(pSetNot.matches(stepregex)){
+            step = Double.parseDouble(pSetNot.replaceAll(stepregex,"$2"));
+            pSetNot = pSetNot.replaceAll(stepregex, "$1$3");
+        }
+            // max = Double.parseDouble(pSetNot.replaceAll("^\{.*\}.*max:([-\\d.])","$1"));
+            // step = Double.parseDouble(pSetNot.replaceAll("^\{.*\}.*(?:step|step|points):([-\\d.])","$1"));
+        if(pSetNot.charAt(0) == '{' && pSetNot.charAt(pSetNot.length() - 1) == '}')
+            pSetNot = pSetNot.substring(1, pSetNot.length() - 1);
+
+        pSetNot = pSetNot.replaceAll("\\|", ":"); // {x : ...} OR {x | ...}, not both.
+        assert pSetNot.replaceAll("[^:]","").length() == 1 : pSetNot; // only can be 1 ":"
+        String vars = pSetNot.split(":")[0];
+        String firstVar = vars.replaceAll("^[^A-z]*([A-z]+).*$","$1");
+        pSetNot = pSetNot.split(":")[1];
+        pSetNot = pSetNot.replaceAll(",", "∧");
+        String[] equations = pSetNot.split("∧");
+        return new MathCollection(new EquationSystem().add("firstVar = " + firstVar).add(equations),
+                                  min,
+                                  max,
+                                  step).setNotation(pSetNot);
     }
-    public static MathCollection<Double> enumerateSetNotation(String pSetNot){
-        MathCollection<Double> ret = new MathCollection<Double>(eqFromSetNotation(pSetNot));
-        return ret;
-    }
+
+
+    // public static MathCollection<Double> enumerateSetNotation(String pSetNot){
+    //     MathCollection<Double> ret = new MathCollection<Double>(eqFromSetNotation(pSetNot));
+    //     return ret;
+    // }
 
     /**
      * TODO: JAVADOC
@@ -82,8 +117,9 @@ public class MathCollection<N extends Double> extends NumberCollection<N> {
     public String notation(){
         return notation;
     }
-    void setNotation(String pSetNot){
+    MathCollection setNotation(String pSetNot){
         notation = pSetNot;
+        return this;
     }
     public void compress(){
         for(int i = 0; i < size(); i++)
@@ -92,25 +128,6 @@ public class MathCollection<N extends Double> extends NumberCollection<N> {
                     remove(j);
                     break;
                 }
-    }
-    /**
-     * currently doesnt work with funtions that use commas, lol.
-     * TODO: JAVADOC
-     */
-    private static EquationSystem eqFromSetNotation(String pSetNot){
-        pSetNot = pSetNot.replaceAll(" ","");
-        if(pSetNot.charAt(0) == '{' && pSetNot.charAt(pSetNot.length() - 1) == '}')
-            pSetNot = pSetNot.substring(1, pSetNot.length() - 1);
-
-        pSetNot = pSetNot.replaceAll("\\|", ":"); // {x : ...} OR {x | ...}, not both.
-        assert pSetNot.replaceAll("[^:]","").length() == 1; // only can be 1 ":"
-        String vars = pSetNot.split(":")[0];
-        String firstVar = vars.replaceAll("^[^A-z]*([A-z]+).*$","$1");
-        pSetNot = pSetNot.split(":")[1];
-        pSetNot = pSetNot.replaceAll(",", "∧");
-        String[] equations = pSetNot.split("∧");
-        // EquationSystem constraints = new EquationSystem().add(vars.split(","));
-        return new EquationSystem().add(firstVar + " = firstVar ").add(equations);//.setConstraints(constraints);
     }
 
 }

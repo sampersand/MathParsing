@@ -20,8 +20,6 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.*;
 
-import java.util.ArrayList;
-
 
 /**
  * Define
@@ -39,7 +37,7 @@ public class Grapher extends JPanel implements MathObject {
     protected JLayeredPane layeredPane;
 
     /** TODO: JAVADOC */
-    protected ArrayList<Collection<NumberCollection<Double>>> numcs;
+    protected Collection<Collection<NumberCollection<Double>>> numcs;
 
     /** TODO: JAVADOC */
     protected EquationSystem equationsToGraph;
@@ -51,7 +49,7 @@ public class Grapher extends JPanel implements MathObject {
     protected GraphComponents components;
 
     /** TODO: JAVADOC */
-    protected ArrayList<DisplayComponent> displays;
+    protected Collection<DisplayComponent> displays;
 
     /** TODO: JAVADOC */
     public Grapher() {
@@ -60,7 +58,7 @@ public class Grapher extends JPanel implements MathObject {
 
     /** TODO: JAVADOC */
     public Grapher(NumberCollection<Double> pnumc1, NumberCollection<Double> pnumc2) {
-        this(null, new ArrayList<Collection<NumberCollection<Double>>>(){{
+        this(null, new Collection<Collection<NumberCollection<Double>>>(){{
             add(new Collection<NumberCollection<Double>>());
             get(-1).add(pnumc1);
             get(-1).add(pnumc2);
@@ -79,13 +77,13 @@ public class Grapher extends JPanel implements MathObject {
 
     /** TODO: JAVADOC */
     public Grapher(final EquationSystem pEqSys,
-                   ArrayList<Collection<NumberCollection<Double>>> pNumberCollections) {
+                   Collection<Collection<NumberCollection<Double>>> pNumberCollections) {
         this(pEqSys, pNumberCollections, new GraphComponents());
     }
 
     /** TODO: JAVADOC */
     public Grapher(final EquationSystem pEqSys,
-                   ArrayList<Collection<NumberCollection<Double>>> pNumberCollections,
+                   Collection<Collection<NumberCollection<Double>>> pNumberCollections,
                    GraphComponents pGraph) {
         this(pEqSys, new EquationSystem(), pNumberCollections, pGraph);
     }
@@ -93,7 +91,7 @@ public class Grapher extends JPanel implements MathObject {
     /** TODO: JAVADOC */
     public Grapher(final EquationSystem pEqSysToGraph,
                    final EquationSystem pEqSysToUse,
-                   ArrayList<Collection<NumberCollection<Double>>> pNumberCollections,
+                   Collection<Collection<NumberCollection<Double>>> pNumberCollections,
                    GraphComponents pGraph) {
         numcs = pNumberCollections;
         equationsToGraph = pEqSysToGraph;
@@ -103,9 +101,9 @@ public class Grapher extends JPanel implements MathObject {
         if(pEqSysToUse == null)
             equationsToUse = pEqSysToGraph;
         if(pNumberCollections == null)
-            numcs = new ArrayList<Collection<NumberCollection<Double>>>();
+            numcs = new Collection<Collection<NumberCollection<Double>>>();
         components = pGraph;
-        displays = new ArrayList<DisplayComponent>();
+        displays = new Collection<DisplayComponent>();
         displays.add(new DisplayComponent(this)); //adds axis
         for(int i = 0; i < equationsToGraph.size(); i++)
             displays.add(new DisplayComponent(this, equationsToGraph.equations().get(i),
@@ -180,7 +178,7 @@ public class Grapher extends JPanel implements MathObject {
     }
 
     /** TODO: JAVADOC */
-    public ArrayList<Collection<NumberCollection<Double>>> numcs() { return numcs; }
+    public Collection<Collection<NumberCollection<Double>>> numcs() { return numcs; }
 
     /** TODO: JAVADOC */
     public EquationSystem equationsToGraph() { return equationsToGraph; }

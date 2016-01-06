@@ -32,8 +32,10 @@ public class Tester {
             // eqsys.add("theta = ln(pi) - c ^ x ");
 
 
-            eqsys.add("y = x * z");
-            eqsys.add("x = (z = pi) * 99");
+            // eqsys.add("y=3x-2x⁰");
+
+            // eqsys.add("y = x * 4");
+            // eqsys.add("x = (z = pi) * 99");
             // eqsys.add("z = 1");
                 //TWISTY THING
             // eqsys.add("z = x0 * x1 * x2 * x3 * x4");
@@ -73,10 +75,11 @@ public class Tester {
         }
 
 
-        Print.print(eqsys.toFancyString());
-        // Print.printi(eqsys.toFullString());
-        // eqsys.graph();
-        Print.printi("RESULT (y):", eqsys.eval("y"));
+        MathCollection<Double> g3 = MathCollection.fromSetNotation("{y : y = x} min:-10 max:10 step:1");
+        g3.graph();
+        // Print.print(eqsys.toFancyString());   
+        eqsys.graph();
+        // Print.printi("RESULT (y):", eqsys.eval("y"));
         // Print.printi("RESULT (x):", eqsys.eval("x"));
     }
 

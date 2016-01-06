@@ -38,7 +38,6 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
 
     public NumberCollection(final EquationSystem pEqSys, double min, double max, double cStep) {
         super();
-        String firstVar;
         // if( pEqSys.equations().size() > 0 &&
         //     pEqSys.equations().get(0).subEquations().size() == 2 && 
         //     pEqSys.equations().get(0).subEquations().get(1).equals("firstVar")){ //used for what value to
@@ -47,25 +46,22 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         // }
         // else
         //     firstVar = "y";
-        assert false;
         double i = min;
-        // System.out.println(pEqSys);
-        // while(i < max) {
-        //     add((N)new ((TokenNode)Double(pEqSys).eval(firstVar, new EquationSystem().add("x = " + i))));//will add a NaN to the list
-        //     i += (max - min) / cStep;
-        // }
+        while(i < max) {
+            add((N) pEqSys.eval("firstVar", new EquationSystem().add("x = " + (i+=cStep))));
+            // i+=(max - min) / cStep;
+        }
 
 
     }
     @Override
     public NumberCollection<N> addAllE(Object pObj){
-        addAll(pObj);
+        super.addAllE(pObj);
         return this;
     }
 
-    @Override
-    public NumberCollection<N> addE(N pObj){
-        add(pObj);
+    public NumberCollection<N> addE(Object pObj){
+        super.addE(pObj);
         return this;
     }
     public double pred(double pVal) { //might not have to be double, not sure.
@@ -361,7 +357,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
 
     @Override
     public NumberCollection<Integer> enumeration(){ //should be integer, but its this so it works with other things.
-        return (NumberCollection<Integer>)super.enumeration();
+        return new NumberCollection<Integer>().addAllE(super.enumeration());
     }
     @Override
     public String toString() {

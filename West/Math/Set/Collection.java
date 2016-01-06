@@ -45,8 +45,8 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
     }
 
     //returns a Collection
-    public Collection addE(E pObj){
-        add(pObj);
+    public Collection addE(Object pObj){
+        add((E)pObj);
         return this;
     }
 
@@ -61,20 +61,13 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
     }
 
     public boolean addAll(Object pObj){
-        if(pObj instanceof Collection){
-            return addAll(((Collection<E>)pObj).elements());
-        }
-        if(pObj instanceof ArrayList){
-            return elements.addAll((ArrayList<E>)pObj);
-        }
-        if(pObj instanceof Object[]){
-            for(E obj : (E[])pObj)
-                if(!elements.add(obj))
-                    return false;
-            return true;
-        }
-        throw new IllegalArgumentException("no known way to add element type '" + pObj.getClass() +
-                                           "' to the Collection!");
+        assert pObj instanceof java.lang.Iterable || pObj instanceof Object[]: "Cannot addAll:" +pObj.getClass();
+        if(pObj instanceof Object[])
+            for(E ele : (E[])pObj)
+                addE(ele);
+        else
+            ((java.lang.Iterable)pObj).forEach(this::addE);
+        return true;
     }
 
 
