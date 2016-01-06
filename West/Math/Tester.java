@@ -81,7 +81,7 @@ public class Tester {
         // MathCollection g3 = new MathCollection("{y | y = √(x³)}", -10, 10, 1);
         // g3.graph();
         // Print.print(eqsys.toFancyString());   
-        eqsys.graph(-20, -20, 20, 20, 250, "y", "qq");
+        eqsys.graph(-20, -20, 20, 20, 250, "x", "y");
         // Print.printi("RESULT (y):", eqsys.eval("y"));
         // Print.printi("RESULT (x):", eqsys.eval("x"));
     }

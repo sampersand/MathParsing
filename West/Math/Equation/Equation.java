@@ -59,6 +59,10 @@ public class Equation implements MathObject {
         subEquations.setToken(new Token(comp, Token.Type.FUNC));
         return this;
     }
+
+    public String getVar(){
+        return ((Token)subEquations.getSD(subEquations.depthS()).token()).val();
+    }
     /**
      * Returns the {@link #subEquations} that this class defines.
      * @return {@link #subEquations}

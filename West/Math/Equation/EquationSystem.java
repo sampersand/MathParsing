@@ -114,7 +114,7 @@ public class EquationSystem implements MathObject{
      */
     public EquationSystem add(Collection<Equation> pEqs) {
         assert pEqs != null;
-        equations.addAll(pEqs);
+        pEqs.forEach(this::add);
         return this;
     }
 
@@ -241,7 +241,7 @@ public class EquationSystem implements MathObject{
 
     public Equation getEq(String var){ //gets an equation that starts with 'var'
         for(Equation eq : equations)
-            if(((Token)eq.subEquations().getSD(eq.subEquations().depthS()).token()).val().equals(var))
+            if(eq.getVar().equals(var))
                 return eq;
         return null;
     }
@@ -253,11 +253,11 @@ public class EquationSystem implements MathObject{
     }
     public void graph(GraphComponents pGComp){
         Print.printi("Currently, solve isn't very good. Oh well.");
-        new Grapher(this, new EquationSystem().add(
+        new Grapher(new EquationSystem().add(
                     new Collection<Equation>(){{
                         for(String e : pGComp.depVars())
-                            add(getEq(e));
-                    }}), null, pGComp).graph();
+                            this.addE(getEq(e));
+                    }}), this, null, pGComp).graph();
 
     }
     public void graph(String indep, String... dep) { //graphs the thing with independent being "x" and dependant being "y"

@@ -33,6 +33,9 @@ public class DisplayComponent extends JLabel implements MathObject {
     protected Grapher grapher;
 
     /** TODO: JAVADOC */
+    protected Equation equation;
+
+    /** TODO: JAVADOC */
     protected EquationSystem equationsys;
 
     /** TODO: JAVADOC */
@@ -44,8 +47,6 @@ public class DisplayComponent extends JLabel implements MathObject {
     /** The element that draws the lines. */
     public Graphics2D drawer;   
  
-    protected static String varToGraph;
-
     /** TODO: JAVADOC */
     public DisplayComponent() {
         throw new IllegalArgumentException("Cannot instantiate an empty DisplayComponent!" +
@@ -77,20 +78,20 @@ public class DisplayComponent extends JLabel implements MathObject {
      * I draw an equation
      * TODO: JAVADOC
      */
-    public DisplayComponent(Grapher pGrapher, String pVar, final EquationSystem pEqSys) {
-        this(pGrapher, pVar, pEqSys, Color.BLUE);
+    public DisplayComponent(Grapher pGrapher, Equation pEquation, final EquationSystem pEqSys) {
+        this(pGrapher, pEquation, pEqSys, Color.BLUE);
     }
 
     /** TODO: JAVADOC */
-    public DisplayComponent(Grapher pGrapher, String pVar, final EquationSystem pEqSys, Color pColor) {
-        this(pGrapher, pVar, pEqSys, null, pColor);
+    public DisplayComponent(Grapher pGrapher, Equation pEquation, final EquationSystem pEqSys, Color pColor) {
+        this(pGrapher, pEquation, pEqSys, null, pColor);
     }
 
     /** TODO: JAVADOC */
-    private DisplayComponent(Grapher pGrapher, String pVar, final EquationSystem pEqSys,
+    private DisplayComponent(Grapher pGrapher, Equation pEquation, final EquationSystem pEqSys,
                              Collection<NumberCollection<Double>> pNC, Color pColor) {
         grapher = pGrapher;
-        varToGraph= pVar;
+        equation = pEquation;
         equationsys = pEqSys;
         numc = pNC;
         assert numc == null || numc.size() == 2;
@@ -99,7 +100,6 @@ public class DisplayComponent extends JLabel implements MathObject {
                 "\nnumc1 (" + numc.get(1).size() + "): \n\t" + numc.get(1);
         color = pColor;
         this.createToolTip();
-        // if(varToGraph!= null)
         // setPreferredSize(new Dimension(grapher.components().winBounds()[0], grapher.components().winBounds()[1]));
     }
     
@@ -125,7 +125,6 @@ public class DisplayComponent extends JLabel implements MathObject {
         drawer.setColor(color);
 
         double[] dispBounds = grapher.components().dispBounds();
-        // dep = ((West.Math.Equation.Token)equation.subEquations().getSD(equation.subEquations().depthS()).token()).val();
 
         if(numc != null) {
             assert numc.size() == 2;
@@ -139,15 +138,15 @@ public class DisplayComponent extends JLabel implements MathObject {
                     Print.printi("d2 is " + d2 + ". Not graphing (" + d1 + ", " + d2 + ").");
                 drawp(d1, d2);
             }
-        } else if(varToGraph!= null) {
+        } else if(equation != null) {
             double cStep = grapher.components().cStep();
             for(double x = dispBounds[0]; x < dispBounds[2]; x += cStep) {
-                System.out.println("@x"+x);
+                System.out.println("my Equation:"+equation + " | dep:" + equation.getVar() + " | indep:" + grapher.components().indepVar());
                 drawl(x,
-                      equationsys.eval(varToGraph, new EquationSystem().add(grapher.components().indepVar()
+                      equationsys.eval(equation.getVar(), new EquationSystem().add(grapher.components().indepVar()
                                             + "=" + x)), 
                       x + cStep,
-                      equationsys.eval(varToGraph, new EquationSystem().add(grapher.components().indepVar()
+                      equationsys.eval(equation.getVar(), new EquationSystem().add(grapher.components().indepVar()
                                             + "=" + (x + cStep))));
             }
         }
@@ -192,8 +191,8 @@ public class DisplayComponent extends JLabel implements MathObject {
     }
 
     /** TODO: JAVADOC */
-    public String varToGraph(){
-        return varToGraph;
+    public Equation equation(){
+        return equation;
     }
 
     /** TODO: JAVADOC */
@@ -214,8 +213,8 @@ public class DisplayComponent extends JLabel implements MathObject {
 
     @Override
     public String toString() {
-        return "Display of " + (numc == null ? varToGraph== null ? "Axis" : varToGraph: numc +
-            (varToGraph!= null ? " && " + varToGraph: ""));
+        return "Display of " + (numc == null ? equation == null ? "Axis" : equation : numc +
+            (equation != null ? " && " + equation : ""));
     } 
 
     @Override
@@ -223,8 +222,8 @@ public class DisplayComponent extends JLabel implements MathObject {
         String ret = indent(idtLvl) + "DisplayComponent:";
         ret += "\n" + indent(idtLvl + 1) + "EquationSystem for Graphing:\n";
         ret += equationsys == null ? indent(idtLvl + 2) + "null" : equationsys.toFancyString(idtLvl + 2);
-        ret += "\n" + indent(idtLvl + 1) + "Var to Graph:\n";
-        ret += indent(idtLvl + 2) + varToGraph;
+        ret += "\n" + indent(idtLvl + 1) + "Equation to Graph:\n";
+        ret += equation == null ? indent(idtLvl + 2) + "null" : equation.toFancyString(idtLvl + 2);
 
         ret += "\n" + indent(idtLvl + 1) + "NumberCollection to Graph:\n";
         assert numc.size() == 2;
@@ -242,8 +241,8 @@ public class DisplayComponent extends JLabel implements MathObject {
         ret += "\n" + indent(idtLvl + 1) + "EquationSystem for Graphing:\n";
         ret += equationsys == null ? indent(idtLvl + 2) + "null" : equationsys.toFullString(idtLvl + 2);
 
-        ret += "\n" + indent(idtLvl + 1) + "Var to Graph:\n";
-        ret += indent(idtLvl + 2) + varToGraph;
+        ret += "\n" + indent(idtLvl + 1) + "Equation to Graph:\n";
+        ret += equation == null ? indent(idtLvl + 2) + "null" : equation.toFullString(idtLvl + 2);
 
         ret += "\n" + indent(idtLvl + 1) + "NumberCollection to Graph:\n";
         assert numc.size() == 2;
@@ -257,7 +256,7 @@ public class DisplayComponent extends JLabel implements MathObject {
 
     @Override
     public DisplayComponent copy(){
-        return new DisplayComponent(grapher, varToGraph, equationsys, numc, color);
+        return new DisplayComponent(grapher, equation, equationsys, numc, color);
     }
 
     /**
@@ -274,7 +273,7 @@ public class DisplayComponent extends JLabel implements MathObject {
         if(!grapher.equals(pdisp.grapher()))
             return false;
 
-        if((varToGraph== null) ^ (pdisp.varToGraph() == null))// TODO: ENCORPERATE -->|| !equation.equals(pdisp.equation()))
+        if((equation == null) ^ (pdisp.equation() == null))// TODO: ENCORPERATE -->|| !equation.equals(pdisp.equation()))
             return false;
         if((equationsys == null) ^ (pdisp.equationsys() == null)) //TODO: ENCORPERATE --> || !equationsys.equals(pdisp.equationsys()))
             return false;
