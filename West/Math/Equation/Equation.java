@@ -90,16 +90,16 @@ public class Equation implements MathObject {
             pEq = pEq.replaceAll("²", "^2");
             pEq = pEq.replaceAll("³", "^3");
             pEq = pEq.replaceAll("⁴", "^4");
-            // String[]
-            // for(int i = 0; i < )
-            // ⅐⅑⅒⅓⅔⅙⅚⅟
-            // ½ 
-            // for(String p : new String[]{"⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"}){
-            //     int val = p.codePointAt(0);
-            //     if(val > 8304)
-            //         val = val - 8304;
-            //     // peq = pEq.replaceAll(p,"^")
-            // }
+            for(int i = 0; i < FRAC8.length; i++)
+                pEq = pEq.replaceAll(FRAC8[i], (i + 1) + "/8");
+            for(int i = 0; i < FRAC6.length; i++)
+                pEq = pEq.replaceAll(FRAC6[i], (i + 1) + "/6");
+            for(int i = 0; i < FRAC5.length; i++)
+                pEq = pEq.replaceAll(FRAC5[i], (i + 1) + "/5");
+            pEq = pEq.replaceAll("⅐","1/7");
+            pEq = pEq.replaceAll("⅑","1/9");
+            pEq = pEq.replaceAll("⅒","1/10");
+            pEq = pEq.replaceAll("⅟","1/");
         }
         if(!Function.USING_BIN_OPERS){
             pEq = pEq.replaceAll("([\\d\\w.-]+)E([\\d\\w.-]+)","*($1,^(10,$2))"); // &.&E-?&.& → (&.&*10^(-?&.&))
