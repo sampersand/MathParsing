@@ -239,18 +239,25 @@ public class EquationSystem implements MathObject{
         return this;
     }
 
+    public Equation getEq(String var){ //gets an equation that starts with 'var'
+        for(Equation eq : equations)
+            if(((Token)eq.subEquations().getSD(eq.subEquations().depthS()).token()).val().equals(var))
+                return eq;
+        return null;
+    }
     /**
      * Graphs the first equation in {@link #equations} using {@link West.Math.Display.Grapher}.
      */
     public void graph(double xmin, double ymin, double xmax, double ymax, double step, String indep, String... dep) {
-        graph(new GraphComponents(new int[]{1250, 750}, new double[]{xmin, ymin, xmax, ymax}, step, indep));
+        graph(new GraphComponents(new int[]{1250, 750}, new double[]{xmin, ymin, xmax, ymax}, step, indep, dep));
     }
     public void graph(GraphComponents pGComp){
         Print.printi("Currently, solve isn't very good. Oh well.");
         new Grapher(this, new EquationSystem().add(
                     new Collection<Equation>(){{
                         for(String e : pGComp.depVars()){
-                            for()
+                            add(getEq(e));
+                            System.out.println("E:"+e+","+getEq(e));
                         }
                     }}), null, pGComp).graph();
 

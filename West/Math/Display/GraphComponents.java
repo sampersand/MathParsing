@@ -39,9 +39,9 @@ public class GraphComponents implements MathObject {
      * TODO: JAVADOC
      */
     public GraphComponents() {
-        this("x");
+        this("x", new String[]{"y"});
     }
-    public GraphComponents(String indep, String... dep){
+    public GraphComponents(String indep, String[] dep){
         this(new int[]{1250, 750}, new double[]{-10, -10, 10, 10}, 250, indep, dep);
     }
     /**
@@ -51,7 +51,7 @@ public class GraphComponents implements MathObject {
                            double[] pDispBounds,
                            double pStep,
                            String indep,
-                           String... dep)
+                           String[] dep)
                             throws IllegalArgumentException{
         if(pWinBounds.length != 2)
             throw new IllegalArgumentException("Cannot instantiate GraphComponents! pWinBounds must be in format (X, Y)!");
@@ -65,7 +65,16 @@ public class GraphComponents implements MathObject {
         dispBounds = pDispBounds;
         step = pStep;
         indepVar = indep;
+        assert indepVar != null;
+        // if(indepVar == null)
+        //     indepVar = "x";
         depVars = dep;
+        assert depVars != null;
+        // if(depVars == null)
+        //     depVars = new String[]{"y"};
+        assert indepVar != null;
+        assert depVars != null;
+        
     }
 
     /** TODO: JAVADOC */
