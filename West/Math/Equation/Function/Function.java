@@ -626,27 +626,27 @@ public class Function implements MathObject {
         return funcObj;
     }
 
-    /**
-     * This thing takes a {@link Node} (usually the node from {@link #exec(EquationSystem,Node) exec}), and returns an
-     * array of the numerical values of each {@link Node#elements() subNode}.
-     * @param pEqSys        The {@link EquationSystem} that will be used when evaluating <code>pNode</code>.
-     * @param pNode         The node to be evaluated.
-     * @return An array of doubles, with each position corresponding to the value of each Node of that position in 
-     *         {@link Node#elements() pNode's elements()}.
-     */
-    public Object[] evalNode(final EquationSystem pEqSys, TokenNode pNode) {
-        if(get(pNode.toString()).type == Type.ASSIGN){
-            assert pNode.size() == 2 : "size != 2: " + pNode;
-            // return new Object[]{null, pNode.}
-        }
-        Double[] retd = new Double[pNode.size()];
-        HashMap<String, Double> rethm = new HashMap<String, Double>();
-        for(int i = 0; i < pNode.size(); i++) {
-            rethm.putAll(((TokenNode)pNode.elements().get(i)).eval(pEqSys));
-            retd[i] = rethm.get(pNode.elements().get(i).toString());
-        }
-        return new Object[]{retd, rethm};
-    }
+    // /**
+    //  * This thing takes a {@link Node} (usually the node from {@link #exec(EquationSystem,Node) exec}), and returns an
+    //  * array of the numerical values of each {@link Node#elements() subNode}.
+    //  * @param pEqSys        The {@link EquationSystem} that will be used when evaluating <code>pNode</code>.
+    //  * @param pNode         The node to be evaluated.
+    //  * @return An array of doubles, with each position corresponding to the value of each Node of that position in 
+    //  *         {@link Node#elements() pNode's elements()}.
+    //  */
+    // public Object[] evalNode(final EquationSystem pEqSys, TokenNode pNode) {
+    //     if(get(pNode.toString()).type == Type.ASSIGN){
+    //         assert pNode.size() == 2 : "size != 2: " + pNode;
+    //         // return new Object[]{null, pNode.}
+    //     }
+    //     Double[] retd = new Double[pNode.size()];
+    //     HashMap<String, Double> rethm = new HashMap<String, Double>();
+    //     for(int i = 0; i < pNode.size(); i++) {
+    //         rethm.putAll(((TokenNode)pNode.elements().get(i)).eval(pEqSys));
+    //         retd[i] = rethm.get(pNode.elements().get(i).toString());
+    //     }
+    //     return new Object[]{retd, rethm};
+    // }
 
 
     /**
@@ -658,19 +658,32 @@ public class Function implements MathObject {
      * @return A double representing the value of <code>pNode</code>, when solved for with <code>pEqSys</code>.
      * @throws IllegalArgumentException   Thrown when the function required parameters, and the ones passed aren't right.
      */
-    public HashMap<String,Double> exec(final EquationSystem pEqSys, TokenNode pNode) {
-        Object[] rargs = evalNode(pEqSys, pNode);
-        Double[] args = (Double[])rargs[0];
+    public HashMap<String,Double> exec(HashMap<String, Double> ret, final EquationSystem pEqSys, TokenNode pNode) {
+        if(type == Type.ASSIGN){
+            assert pNode.size() == 2;
+            System.out.println("im assign:"+pNode);
+            ret.putAll(pNode.get(1).eval(ret, pEqSys));
+            ret.put(pNode.get(0).toString(),ret.get(pNode.get(1).toString()));
+        }
+        else
+            for(West.Math.Set.Node.Node<?, ?> n : pNode)
+                ret.putAll(((TokenNode)n).eval(ret, pEqSys));
+        Double[] args = new Double[pNode.size()];
+        for(int i = 0; i < args.length; i++)
+            args[i] = ret.get(pNode.get(i).toString());
         assert argsLength.contains(args.length) || argsLength.contains(-1) :
         "'" +names+ "' got incorrect args. Allowed args: " + argsLength + ", inputted args = '"+ pNode + "'("+args.length+")";
-        return addArgs((HashMap<String, Double>)rargs[1], pNode.toString(), funcObj.exec(args));
+        return addArgs(ret, pNode.toString(), funcObj.exec(args));
     }
 
-    public static HashMap<String,Double> exec(String pStr, final EquationSystem pEqSys, TokenNode pNode) {
+    public static HashMap<String,Double> exec(HashMap<String, Double> ret,
+                                              String pStr,
+                                              final EquationSystem pEqSys,
+                                              TokenNode pNode) {
         Function f;
         if((f = get(pStr)) == null)
             return null;
-        return f.exec(pEqSys, pNode);
+        return f.exec(ret, pEqSys, pNode);
     }
 
     public HashMap<String, Double> addArgs(HashMap<String, Double> hm, String key, Double val){

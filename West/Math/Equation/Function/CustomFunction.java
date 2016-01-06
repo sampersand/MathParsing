@@ -135,13 +135,13 @@ public class CustomFunction extends Function implements MathObject {
      */
     @Override
     @SuppressWarnings("unchecked") //stupid cl.getDeclaredMethod
-    public HashMap<String, Double> exec(final EquationSystem pEqSys,
+    public HashMap<String, Double> exec(HashMap<String, Double> ret, final EquationSystem pEqSys,
                        TokenNode pNode) throws
                            IllegalArgumentException {
         try {
-            Class[] argType = {EquationSystem.class, TokenNode.class};
+            Class[] argType = {HashMap.class, EquationSystem.class, TokenNode.class};
             Method execMethod = cl.getDeclaredMethod("exec",argType);
-            Object[] argListForInvokedExec = new Object[]{pEqSys, pNode};
+            Object[] argListForInvokedExec = new Object[]{ret, pEqSys, pNode};
             return (HashMap<String, Double>)execMethod.invoke(cl.newInstance(), argListForInvokedExec);
         } catch (NoSuchMethodException err) {
             Print.printe("A NoSuchMethodException happened when attempting to execute a " +

@@ -13,7 +13,7 @@ public class f extends CustomFunction{
         return "arg1, arg2, ..., N";
     }
     @Override
-    public HashMap<String, Double> exec(EquationSystem pEqSys, TokenNode pNode) {
+    public HashMap<String, Double> exec(HashMap<String, Double> hm, EquationSystem pEqSys, TokenNode pNode) {
         // return null;
         throw new NullPointerException();
         // Object[] rargs = evalNode(pEqSys, pNode);

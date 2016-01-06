@@ -190,9 +190,11 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
         if(token.isFunc()){
             if(pEqSys.functions().containsKey(token.val())) // if it is a function
-                return pEqSys.functions().get(token.val()).exec(pEqSys, this);
-            else
-                return Function.exec(token.val(), pEqSys, this);
+                return pEqSys.functions().get(token.val()).exec(pVars, pEqSys, this); //no work
+            else{
+                assert !token.toString().contains("pi");
+                return Function.exec(pVars, token.val(), pEqSys, this);
+            }
         } else if(isFinal()){
             String val = token.val();
             Double d;
@@ -204,11 +206,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                         if(((TokenNode)eq.subEquations().getSD(eq.subEquations().depthS())).token.val().equals(val)){
                             TokenNode tkn = eq.subEquations().findVar(val).get(1);
                             pVars = appendHashMap(pVars, tkn.eval(pVars, pEqSys));
-                            System.out.println("tkn:"+tkn);
-                            System.out.println(pVars);
-                            appendHashMap(pVars,
-                                          val,
-                                          pVars.get(tkn.toString()));
+                            appendHashMap(pVars,val, pVars.get(tkn.toString()));
                             return pVars;
                         }
                     }
@@ -223,8 +221,11 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                         return appendHashMap(pVars, val, Math.random()); 
                         // this might need work
                     default:
+                        if(pVars.containsKey(val))
+                            return pVars;
+                        System.out.println(pVars +" | " + val);
                         System.err.println(val + " doesn't exist, but returning NaN anyways");
-                        return appendHashMap(pVars, val, 10D);//Double.NaN);
+                        return appendHashMap(pVars, val, Double.NaN);
                         // throw new UnsupportedOperationException("Cannot evaluate the FinalNode '" + val +
                         //                               "' because it isn't defined as a variable," + 
                         //                               " and isn't an in-built variable.");
