@@ -67,6 +67,13 @@ public class Equation implements MathObject {
         return subEquations;
     }
 
+
+
+
+    private static String[] TRIG = {"sec", "csc", "cot", "sin", "cos", "tan"};
+    private static String[] FRAC8 = {"⅛", "¼", "⅜", "½", "⅝", "¾", "⅞"};
+    private static String[] FRAC5 = {"⅕", "⅖", "⅗", "⅘"};
+    private static String[] FRAC6 = {"⅙", "⅓", "⅗", "⅔", "⅚"};
     /**
      * Fixes any terms that might be misleading to the compiler. For example, <code>sinx</code> will become
      * <code>sin(x)</code>. Note: To not have it do any fixing, put a "@" at the beginning of the input String
@@ -76,12 +83,24 @@ public class Equation implements MathObject {
     public static String fixNode(String pEq) {
         if(pEq.charAt(0) == '@')
             return pEq.substring(1);
-        String[] trigf = new String[]{"sec", "csc", "cot", "sinh", "cosh", "tanh", "sin", "cos", "tan"};
-        for(String trig : trigf) {
-            pEq = pEq.replaceAll("()" + trig + "(?!h)([A-za-z]+)","$1" + trig + "($2)");
+        for(String trig : TRIG) {
+            pEq = pEq.replaceAll("(?!<a)" + trig + "(?!h)([A-za-z]+)","$1" + trig + "($2)");
         }
-        //TODO: fixNODE
-        //# = number    A = letter   & = BOTH
+        if(Function.USING_BIN_OPERS){
+            pEq = pEq.replaceAll("²", "^2");
+            pEq = pEq.replaceAll("³", "^3");
+            pEq = pEq.replaceAll("⁴", "^4");
+            // String[]
+            // for(int i = 0; i < )
+            // ⅐⅑⅒⅓⅔⅙⅚⅟
+            // ½ 
+            // for(String p : new String[]{"⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"}){
+            //     int val = p.codePointAt(0);
+            //     if(val > 8304)
+            //         val = val - 8304;
+            //     // peq = pEq.replaceAll(p,"^")
+            // }
+        }
         if(!Function.USING_BIN_OPERS){
             pEq = pEq.replaceAll("([\\d\\w.-]+)E([\\d\\w.-]+)","*($1,^(10,$2))"); // &.&E-?&.& → (&.&*10^(-?&.&))
             pEq = pEq.replaceAll("^x=-(.+)$","=(x,-(0,$1))");

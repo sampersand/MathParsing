@@ -34,18 +34,19 @@ public class Tester {
 
             // eqsys.add("y=3x-2x⁰");
 
-            // eqsys.add("y = x * 4");
-            // eqsys.add("x = (z = pi) * 99");
-            // eqsys.add("z = 1");
+            eqsys.add("y = 4 * qwertyuip$");
+            eqsys.add("qwertyuip$ = (z = pi) * f/e");
+            eqsys.add("f = z * 1/2");
+            // eqsys.add("z = 0");
                 //TWISTY THING
+            // eqsys.add("y = z * (x%2 > 1 ∨ x%2 < -1)");
             // eqsys.add("z = x0 * x1 * x2 * x3 * x4");
             // eqsys.add("x0 = (x) * c");
             // eqsys.add("x1 = (x - 8) * c");
             // eqsys.add("x2 = (x - 4) * c");
-            // eqsys.add("x3 = (x + 8) * c");
-            // eqsys.add("x4 = (x + 4) * c");
+            // eqsys.add("x3 = (x + 4) * c");
+            // eqsys.add("x4 = (x + 8) * c");
             // eqsys.add("c = 1/4"); 
-            // eqsys.add("y = z * (x%2 > 1 ∨ x%2 < -1)");
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {
@@ -75,8 +76,8 @@ public class Tester {
         }
 
 
-        MathCollection<Double> g3 = MathCollection.fromSetNotation("{y : y = x} min:-10 max:10 step:1");
-        g3.graph();
+        // MathCollection g3 = new MathCollection("{y | y = √(x³)}", -10, 10, 1);
+        // g3.graph();
         // Print.print(eqsys.toFancyString());   
         eqsys.graph();
         // Print.printi("RESULT (y):", eqsys.eval("y"));
