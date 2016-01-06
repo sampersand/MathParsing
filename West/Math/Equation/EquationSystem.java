@@ -141,8 +141,9 @@ public class EquationSystem implements MathObject{
                 Print.printi("A passed CustomFunction is null; not adding it to 'functions'.");
                 continue;
             }
-            assert func.name() != null; //this shoulda been taken care of in the constructor.
-            functions.put(func.name(), func);
+            assert func.names() != null; //this shoulda been taken care of in the constructor.
+            // functions.add(func);
+            assert false;
         }
         return this;
     }
@@ -325,7 +326,7 @@ public class EquationSystem implements MathObject{
         ret += "\n" + indentE(idtLvl + 2);
         ret += "\n" + indent(idtLvl + 1) + "Functions:";
         for(Object key : functions.keySet().toArray()) {
-            ret += "\n" + indent(idtLvl + 2) + "'" + key + "' = " + functions.get("" + key).name();
+            ret += "\n" + indent(idtLvl + 2) + "'" + key + "' = " + functions.get("" + key).names();
         }
         ret += "\n" + indentE(idtLvl + 2) + "\n" + indentE(idtLvl + 1);
 

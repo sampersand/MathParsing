@@ -45,7 +45,7 @@ public class CustomFunction extends Function implements MathObject {
      * @throws IllegalArgumentException When either name, help, and / or syntax is null.
      */
     public CustomFunction(String pName) throws IllegalArgumentException{
-        super(pName, null, null, -1, new Collection.Builder<Integer>().add(0).build(), null, null);
+        super(new Collection<String>(){{add(pName);}}, null, null, DEFAULT_PRIORITY, null, null, null);
     }
 
     /**
@@ -55,23 +55,23 @@ public class CustomFunction extends Function implements MathObject {
      * @param pSyntax   The "syntax" text that will be displayed when the {@link #syntax()} function is called.
      * @throws IllegalArgumentException When either name, help, and / or syntax is null.
      */
-    public CustomFunction(String pName,
+    public CustomFunction(Collection<String> pName,
                           String pHelp,
                           String pSyntax,
                           int pPriroity,
-                          Collection<Integer> pArgsLength,
                           Type pType,
+                          Collection<Integer> pArgsLength,
                           FuncObj pFuncObj) throws IllegalArgumentException{
-        super(pName, pHelp, pSyntax, pPriroity, pArgsLength, pType, pFuncObj);
+        super(pName, pHelp, pSyntax, pPriroity, pType, pArgsLength, pFuncObj);
         try {
             if(pName.isEmpty()) {
                 Print.printe("Instantiating a CustomFunction without a function associated!");
                 cl = null;
             } else {
-                cl = Class.forName("West.Math.Equation.CustomFunctions." + name);
+                cl = Class.forName("West.Math.Equation.CustomFunctions." + names);
             }
         } catch (ClassNotFoundException err) {
-                throw new IllegalArgumentException("Cannot instatiate CustomFunction '" + name + 
+                throw new IllegalArgumentException("Cannot instatiate CustomFunction '" + names + 
                     "'! All custom class currently must be in West.Math.Equation/CustomFunctions/<CLASS>!");
         }
     }
@@ -104,18 +104,18 @@ public class CustomFunction extends Function implements MathObject {
             return cl.getDeclaredMethod(pFuncName).invoke(null);
         } catch (IllegalAccessException err) {
             Print.printe("A IllegalAccessException occured when attempting to get '" + pFuncName + "' " +
-                               "of a CustomFunction (File Name: " + name + "): " + err + " | " + err.getMessage() +
+                               "of a CustomFunction (File Name: " + names + "): " + err + " | " + err.getMessage() +
                                " | " + err.getCause());
         // } catch (NullPointerException err) {
         //     throw new NotDefinedException("Cannot get the function '" + pFuncName +"' from the CustomFunction '" + name 
         //         + "'' because it doesnt exist, but should!");
         } catch (NoSuchMethodException err) {
             Print.printe("A NoSuchMethodException occured when attempting to get '" + pFuncName + "' " +
-                               "of a CustomFunction (File Name: " + name + "): " + err + " | " + err.getMessage() +
+                               "of a CustomFunction (File Name: " + names + "): " + err + " | " + err.getMessage() +
                                " | " + err.getCause());
         } catch (InvocationTargetException err) {
             Print.printe("A InvocationTargetException occured when attempting to get '" + pFuncName + "' " +
-                               "of a CustomFunction (File Name: " + name + "): " + err + " | " + err.getMessage() +
+                               "of a CustomFunction (File Name: " + names + "): " + err + " | " + err.getMessage() +
                                " | " + err.getCause());
         }
         return null;
@@ -145,22 +145,22 @@ public class CustomFunction extends Function implements MathObject {
             return (HashMap<String, Double>)execMethod.invoke(cl.newInstance(), argListForInvokedExec);
         } catch (NoSuchMethodException err) {
             Print.printe("A NoSuchMethodException happened when attempting to execute a " +
-                               "custom method in file '" + name + "'. ERROR: " + err + " | MESSAGE:  " +
+                               "custom method in file '" + names + "'. ERROR: " + err + " | MESSAGE:  " +
                                 err.getMessage() + " | CAUSE: " + err.getCause() + " | CAUSE'S STACKTRACE:\n");
             err.getCause().printStackTrace();
         } catch (InvocationTargetException err) {
             Print.printe("A InvocationTargetException happened when attempting to execute a " +
-                               "custom method in file '" + name + "'. ERROR: " + err + " | MESSAGE:  " +
+                               "custom method in file '" + names + "'. ERROR: " + err + " | MESSAGE:  " +
                                 err.getMessage() + " | CAUSE: " + err.getCause() + " | CAUSE'S STACKTRACE:\n");
             err.getCause().printStackTrace();
         } catch (IllegalAccessException err) {
             Print.printe("A IllegalAccessException happened when attempting to execute a " +
-                               "custom method in file '" + name + "'. ERROR: " + err + " | MESSAGE:  " +
+                               "custom method in file '" + names + "'. ERROR: " + err + " | MESSAGE:  " +
                                 err.getMessage() + " | CAUSE: " + err.getCause() + " | CAUSE'S STACKTRACE:\n");
             err.getCause().printStackTrace();
         } catch (InstantiationException err) {
             Print.printe("A InstantiationException happened when attempting to execute a " +
-                               "custom method in file '" + name + "'. ERROR: " + err + " | MESSAGE:  " +
+                               "custom method in file '" + names + "'. ERROR: " + err + " | MESSAGE:  " +
                                 err.getMessage() + " | CAUSE: " + err.getCause() + " | CAUSE'S STACKTRACE:\n");
             err.getCause().printStackTrace();
         }
@@ -168,12 +168,12 @@ public class CustomFunction extends Function implements MathObject {
     }
     @Override
     public String toString() {
-        return "CustomFunction '" + name + "'";
+        return "CustomFunction '" + names + "'";
     }
 
     @Override
     public String toFancyString(int idtLvl) {
-        String ret = indent(idtLvl) + "CustomFunction '" + name + "':\n";
+        String ret = indent(idtLvl) + "CustomFunction '" + names + "':\n";
         ret += indent(idtLvl + 1) + "Help = " + help + "\n";
         ret += indent(idtLvl + 1) + "Syntax = " + syntax + "";
         return ret;
@@ -182,7 +182,7 @@ public class CustomFunction extends Function implements MathObject {
     @Override
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "CustomFunction:\n";
-        ret += indent(idtLvl + 1) + "Name:\n" + indentE(idtLvl + 2) + name + "\n";
+        ret += indent(idtLvl + 1) + "Name:\n" + indentE(idtLvl + 2) + names + "\n";
         ret += indent(idtLvl + 1) + "Help:\n" + indentE(idtLvl + 2) + help + "\n";
         ret += indent(idtLvl + 1) + "Syntax:\n" + indentE(idtLvl + 2) + syntax + "\n";
         ret += indent(idtLvl + 1) + "Class:\n" + indentE(idtLvl + 2) + cl;
@@ -191,7 +191,7 @@ public class CustomFunction extends Function implements MathObject {
     }
     @Override
     public CustomFunction copy(){
-        return new CustomFunction(name, help, syntax, priority, argsLength, type, funcObj);
+        return new CustomFunction(names, help, syntax, priority, type, argsLength, funcObj);
     }
 
 }

@@ -59,7 +59,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         if(token.isConst())
             return Function.DEFAULT_PRIORITY + 1;
         assert token.isFunc();
-        Function i = Function.FUNCTIONS.get(token.val());
+        Function i = Function.get(token.val());
         return i == null ? Function.DEFAULT_PRIORITY : i.priority();
     }
     private static int firstHighPriority(Collection<TokenNode> peles){
@@ -226,7 +226,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         Double d0, d1;
         d0 = get(0).eval((EquationSystem.fromHashMap(vars))).get(get(0).toString()); 
         d1 = get(1).eval((EquationSystem.fromHashMap(vars))).get(get(0).toString()); 
-        return Function.FUNCTIONS.get(toString()).funcObj().exec(new Double[]{d0, d1}) == 1;
+        return Function.get(toString()).funcObj().exec(new Double[]{d0, d1}) == 1;
     }
 
     public String toExprString(){
