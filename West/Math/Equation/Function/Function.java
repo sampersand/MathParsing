@@ -502,6 +502,7 @@ public class Function implements MathObject {
                     for(String name : f.names())
                         add(name);
         }};
+        
     public static String isBinOper(String s){
         //TODO: Don't generate a new list every time.
         if(!USING_BIN_OPERS)

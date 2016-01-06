@@ -37,9 +37,7 @@ public class Tester {
             // eqsys.add("theta = ln(pi) - c ^ x ");
 
 
-            eqsys.add("y = x*(x-2)*(x+2)");//√(5^2 - X^2)");
-            // eqsys.add("y = sign(rand-0.5)*x*(x-2)*(x+2)");//√(5^2 - X^2)");
-            eqsys.add("X = x");
+            eqsys.add("y = (z = x * 4) * x");
                 //TWISTY THING
             // eqsys.add("z = x0 * x1 * x2 * x3 * x4");
             // eqsys.add("x0 = (x) * c");
