@@ -39,11 +39,9 @@ public class Grapher extends JPanel implements MathObject {
     /** TODO: JAVADOC */
     protected Collection<Collection<NumberCollection<Double>>> numcs;
 
-    /** TODO: JAVADOC */
-    protected EquationSystem equationsToGraph;
 
     /** TODO: JAVADOC */
-    protected EquationSystem equationsToUse;
+    protected EquationSystem equationsys;
 
     /** TODO: JAVADOC */
     protected GraphComponents components;
@@ -66,24 +64,21 @@ public class Grapher extends JPanel implements MathObject {
     }
 
     /** TODO: JAVADOC */
-    public Grapher(final EquationSystem pEqSysToGraph,
+    public Grapher(final EquationSystem pEqSys,
                    Collection<Collection<NumberCollection<Double>>> pNumberCollections,
                    GraphComponents pGraph) {
         numcs = pNumberCollections;
-        equationsToGraph = pEqSysToGraph;
-        equationsToUse = pEqSysToUse;
-        if(pEqSysToGraph == null)
-            equationsToGraph = new EquationSystem();
-        if(pEqSysToUse == null)
-            equationsToUse = pEqSysToGraph;
+        equationsys = pEqSys;
         if(pNumberCollections == null)
             numcs = new Collection<Collection<NumberCollection<Double>>>();
         components = pGraph;
         displays = new Collection<DisplayComponent>();
         displays.add(new DisplayComponent(this)); //adds axis
-        for(int i = 0; i < equationsToGraph.size(); i++)
-            displays.add(new DisplayComponent(this, equationsToGraph.equations().get(i),
-                    equationsToUse.copy()/*.add(equationsToGraph)*/, COLORS[i % COLORS.length]));
+        for(int i = 0; i < components.depVars().length; i++){
+            displays.add(new DisplayComponent(this,
+                    components.depVars()[i],
+                    equationsys.copy(), COLORS[i % COLORS.length]));
+        }
         for(int i = 0; i < numcs.size(); i++)
             displays.add(new DisplayComponent(this, numcs.get(i), COLORS[i % COLORS.length]));
         graphSetup();
@@ -126,24 +121,8 @@ public class Grapher extends JPanel implements MathObject {
     /** TODO: JAVADOC */
     public void graph() {
         //Create and set up the window.
-        String title = "Graph of ";
-        if(equationsToGraph.size() + numcs.size() > 3) {
-            title += "A lot of stuff";
-        } else if(equationsToGraph.size() + numcs.size() == 0) {
-            title += "Nothing...? Lol why graph that.";
-        } else if(equationsToGraph.size() + numcs.size() == 1) {
-            title += equationsToGraph.size() == 1 ? equationsToGraph.equations().get(0) : numcs.get(0);
-        } else {
-            for(int i = 0; i < equationsToGraph.size(); i++) { // for each loop will crash if equation's size is 0.
-                title += equationsToGraph.equations().get(i) + ", ";
-            }
-            for(int i =0; i < numcs.size(); i++) {
-                 title += numcs.get(i) + ", ";   
-            }
-            title = title.substring(0, title.length() - 2);
 
-        }
-        JFrame frame = new JFrame(title);
+        JFrame frame = new JFrame(toString());
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
  
         this.setOpaque(true); 
@@ -160,27 +139,29 @@ public class Grapher extends JPanel implements MathObject {
     public EquationSystem equationsToGraph() { return equationsToGraph; }
 
     /** TODO: JAVADOC */
-    public EquationSystem equationsToUse() { return equationsToUse; }
+    public EquationSystem equationsys() { return equationsys; }
     /** TODO: JAVADOC */
     public GraphComponents components() { return components; }
 
     @Override
     public String toString() {
-        // String ret = "Graph of ";
-        // if(numcs == null && equationsToGraph == null || (numcs.size() == 0 && equationsToGraph.size() == 0)) {
-        //     return "Empty Graph"; 
-        // } else if(equationsToGraph.size() + numcs.size() == 1) {
-        //     return ret + (equationsToGraph.size() == 1 ? equationsToGraph.equations().get(0) : numcs.get(0));
-        // } else {
-        //     for(int i = 0; i < equationsToGraph.size(); i++) { // for each loop will crash if equation's size is 0.
-        //         ret += equationsToGraph.equations().get(i) + ", ";
-        //     }
-        //     for(int i =0; i < numcs.size(); i++) {
-        //          ret += numcs.get(i) + ", ";   
-        //     }
-        //     return ret.substring(0, ret.length() - 2);
+        String title = "Graph of ";
+        if(components.depVars().length + numcs.size() > 3) {
+            title += "A lot of stuff";
+        } else if(components.depVars().length + numcs.size() == 0) {
+            title += "Nothing...? Lol why graph that.";
+        } else if(components.depVars().length + numcs.size() == 1) {
+            title += components.depVars().length == 1 ? equationsToGraph.equations().get(0) : numcs.get(0);
+        } else {
+            for(int i = 0; i < components.depVars().length; i++) { // for each loop will crash if equation's size is 0.
+                title += equationsToGraph.equations().get(i) + ", ";
+            }
+            for(int i =0; i < numcs.size(); i++) {
+                 title += numcs.get(i) + ", ";   
+            }
+            title = title.substring(0, title.length() - 2);
 
-        // }
+        }
         return "";
     }
 
@@ -222,7 +203,7 @@ public class Grapher extends JPanel implements MathObject {
             ret += "\n" + indent(idtLvl + 2) + "null";
 
         ret += "\n" + indent(idtLvl + 1) + "Equations to Graph:\n" + equationsToGraph.toFullString(idtLvl + 2);
-        ret += "\n" + indent(idtLvl + 1) + "Equations to Use:\n" + equationsToUse.toFullString(idtLvl + 2);
+        ret += "\n" + indent(idtLvl + 1) + "Equations to Use:\n" + equationsys.toFullString(idtLvl + 2);
 
         ret += "\n" + indent(idtLvl + 1) +"Graphing Components:\n" + components.toFullString(idtLvl + 2);
 
@@ -237,7 +218,7 @@ public class Grapher extends JPanel implements MathObject {
 
     @Override
     public Grapher copy(){
-        return new Grapher(equationsToGraph, equationsToUse, numcs, components);
+        return new Grapher(equationsToGraph, equationsys, numcs, components);
 
     }
 
@@ -256,7 +237,7 @@ public class Grapher extends JPanel implements MathObject {
             return false;
         if(!equationsToGraph.equals(pgrapher.equationsToGraph()))
             return false;
-        if(!equationsToUse.equals(pgrapher.equationsToUse()))
+        if(!equationsys.equals(pgrapher.equationsys()))
             return false;
         if(!components.equals(pgrapher.components()))
             return false;
