@@ -1,5 +1,6 @@
 package West.Math;
 import West.Math.Equation.*;
+import West.Math.Display.*;
 import West.Math.Equation.Function.*;
 import West.Math.Set.*;
 import West.*;
@@ -22,33 +23,29 @@ public class Tester {
     public static void main(String[] args) throws IllegalArgumentException {
         EquationSystem eqsys = new EquationSystem();
         if(args.length == 0) {
-            // eqsys.add("y=1+sin((9.45+x^(ln(pi)-(pi-e)^x))/2)+(pi-e)");
+            // eqsys.add("y=1+sin((9.45+x^(ln(pi)-x^x))/2)+x");
 
                 //SIN THING
 
-            eqsys.add("y = sin(x^2)");
-            eqsys.add("x = 2");
-            // eqsys.add("y = 1 + sin(alpha) + c");
-            // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
-            // eqsys.add("c = pi^-e");
-            // eqsys.add("theta = ln(pi) - c ^ x ");
-
-
+            eqsys.add("r=1");
             // eqsys.add("y = 1 + sin(alpha)/c");
             // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
-            // eqsys.add("c = √atanx * pi≪x^(-e)");
+            // eqsys.add("c = √atanx * pi/x^(-e)");
             // eqsys.add("theta = ln(pi) - c ^ x ");
 
-
                 //TWISTY THING
-            // eqsys.add("y = z * (x%2 > 1 ∨ x%2 < -1)");
-            // eqsys.add("z = x0 * x1 * x2 * x3 * x4");
-            // eqsys.add("x0 = (x) * c");
-            // eqsys.add("x1 = (x - 8) * c");
-            // eqsys.add("x2 = (x - 4) * c");
-            // eqsys.add("x3 = (x + 4) * c");
-            // eqsys.add("x4 = (x + 8) * c");
+            // eqsys.add("y = sin(pi/2-x) * cond");
+            // eqsys.add("cond = 1");
+            // eqsys.add("z = sin(x) * cond");
+            // eqsys.add("y = z · (x%2 > 1 ∨ x%2 < -1)");// ∨ z%2 < -1)");
+            // eqsys.add("z = x₀ · x₁ · x₂ · x₃ · x₄");
+            // eqsys.add("x₀ = (x) · c");
+            // eqsys.add("x₁ = (x - 8) · c");
+            // eqsys.add("x₂ = (x - 4) · c");
+            // eqsys.add("x₃ = (x + 4) · c");
+            // eqsys.add("x₄ = (x + 8) · c");
             // eqsys.add("c = 1/4"); 
+
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {
@@ -78,10 +75,16 @@ public class Tester {
         }
 
 
-        // MathCollection g3 = new MathCollection("{y | y = √(x³)}", -10, 10, 1);
+        // MathCollection g3 = new MathCollection("{y | y = x}", -10, 10, 1);
         // g3.graph();
         // Print.print(eqsys.toFancyString());   
-        eqsys.graph(-20, -20, 20, 20, 250, "x", "y");
+        eqsys.graph(new GraphComponents(
+                                        new int[]{1250, 750},
+                                        new double[]{-10, -10, 10, 10},
+                                        new double[]{-Math.PI/4,Math.PI/4, 1000},
+                                        GraphComponents.GraphTypes.POLAR,
+                                        "Θ",
+                                        "r"));
         // Print.printi("RESULT (y):", eqsys.eval("y"));
         // Print.printi("RESULT (x):", eqsys.eval("x"));
     }

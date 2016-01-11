@@ -245,12 +245,10 @@ public class EquationSystem implements MathObject{
                 return eq;
         return null;
     }
+    
     /**
      * Graphs the first equation in {@link #equations} using {@link West.Math.Display.Grapher}.
      */
-    public void graph(double xmin, double ymin, double xmax, double ymax, double step, String indep, String... dep) {
-        graph(new GraphComponents(new int[]{1250, 750}, new double[]{xmin, ymin, xmax, ymax}, step, indep, dep));
-    }
     public void graph(GraphComponents pGComp){
         Print.printi("Currently, solve isn't very good. Oh well.");
         new Grapher(new EquationSystem().add(

@@ -167,16 +167,22 @@ public class DisplayComponent extends JLabel implements MathObject {
        double[] xy=fix(x, y);
        drawer.drawOval((int)xy[0] - 5, (int) xy[1] - 5, 10, 10); // width, height
     }
- 
+
     /** TODO: JAVADOC */
     private void drawl(Double x, Double y, Double X, Double Y) {
         assert y != null;
         assert Y != null;
         if(y.equals(Double.NaN) || Y.equals(Double.NaN))
             return;
-       double[] xy=fix(x, y);
-       double[] XY=fix(X, Y);
-       drawer.drawLine((int) xy[0], (int)xy[1], (int)XY[0], (int)XY[1]); // width, height
+        if(grapher.components().type().equals(West.Math.Display.GraphComponents.GraphTypes.POLAR)){
+            x = x * Math.cos(y); //x is r, y is theta
+            y = x * Math.sin(y); //x is r, y is theta
+            X = Y * Math.cos(Y); //X is r, Y is theta
+            Y = Y * Math.sin(Y); //X is r, Y is theta
+        }
+        double[] xy=fix(x, y);
+        double[] XY=fix(X, Y);
+        drawer.drawLine((int) xy[0], (int)xy[1], (int)XY[0], (int)XY[1]); // width, height
     }
   
     /** TODO: JAVADOC */

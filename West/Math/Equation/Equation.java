@@ -7,7 +7,6 @@ import West.Math.Set.Node.TokenNode;
 import West.Math.Set.Node.Node;
 
 import java.util.HashMap;
-import java.util.regex.Pattern;
 
 import West.Math.Set.Collection;
 

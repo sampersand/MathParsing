@@ -481,8 +481,8 @@ public class Function implements MathObject {
             a -> -1 * a[0]
             ));
 
-        add(new Function(new Collection<String>(){{add("sig");}},
-            "1 if 'A' > 0, -1 if 'A' < 0, and 0 if 'A' == 0", "neg(A)",
+        add(new Function(new Collection<String>(){{add("sign");}},
+            "1 if 'A' > 0, -1 if 'A' < 0, and 0 if 'A' == 0", "sign(A)",
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
@@ -676,8 +676,15 @@ public class Function implements MathObject {
 
         assert argsLength.contains(args.length) || argsLength.contains(-1) :
         "'" +names+ "' got bad args. Allowed args: " + argsLength + ", inputted args = '"+ pNode + "'("+args.length+")";
-
-        return addArgs(ret, pNode.toString(), funcObj.exec(args));
+        try{
+            return addArgs(ret, pNode.toString(), funcObj.exec(args));
+        } catch (java.lang.NullPointerException n ){
+            System.err.println("An error happened while executing '" + names + "'");
+            System.err.println("\tThe HashMap was: " + ret);
+            System.err.println("\tThe EquationSystem was: " + pEqSys);
+            System.err.println("\tThe TokenNode was: " + pNode);
+            throw n;
+        }
     }
 
     public static HashMap<String,Double> exec(HashMap<String, Double> ret,

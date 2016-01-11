@@ -11,6 +11,7 @@ import West.Math.Set.Collection;
  * @since 0.2
  */
 public class GraphComponents implements MathObject {
+    public enum GraphTypes {XY, POLAR, FUNC}
 
     /**
      * The physical amount of pixels the window is wide and tall.
@@ -30,11 +31,13 @@ public class GraphComponents implements MathObject {
     /**
      * The amount of lines that will be drawn. "step" is a bit of a misnomer, but I couldnt think of anything better.
      */
-    protected double step;
+    protected double[] stepInfo; //start, end, step
 
     protected String indepVar;
 
     protected String[] depVars;
+
+    protected GraphTypes type;
     /**
      * TODO: JAVADOC
      */
@@ -42,16 +45,22 @@ public class GraphComponents implements MathObject {
         this("x", new String[]{"y"});
     }
     public GraphComponents(String indep, String[] dep){
-        this(new int[]{1250, 750}, new double[]{-10, -10, 10, 10}, 250, indep, dep);
+        this(new int[]{1250, 750},
+             new double[]{-10, -10, 10, 10},
+             new double[]{250},
+             GraphTypes.XY,
+             indep,
+             dep);
     }
     /**
      * TODO: JAVADOC
      */
     public GraphComponents(int[] pWinBounds,
                            double[] pDispBounds,
-                           double pStep,
+                           double[] pStep,
+                           GraphTypes pGraphTypes,
                            String indep,
-                           String[] dep)
+                           String... dep)
                             throws IllegalArgumentException{
         if(pWinBounds.length != 2)
             throw new IllegalArgumentException("Cannot instantiate GraphComponents! pWinBounds must be in format (X, Y)!");
@@ -61,17 +70,15 @@ public class GraphComponents implements MathObject {
         if(pDispBounds.length != 4)
             throw new IllegalArgumentException("Cannot instatiate GraphComponents! pDispBounds needs to be in format "+
                                            "(min X, min Y, max X, max Y)!");
+        if(pStep.length == 1)
+            pStep = new double[]{pDispBounds[0], pDispBounds[2], pStep[0]};
+        assert pStep.length == 3;
         winBounds = pWinBounds;
         dispBounds = pDispBounds;
-        step = pStep;
+        stepInfo = pStep;
         indepVar = indep;
-        assert indepVar != null;
-        // if(indepVar == null)
-        //     indepVar = "x";
         depVars = dep;
-        assert depVars != null;
-        // if(depVars == null)
-        //     depVars = new String[]{"y"};
+        type = pGraphTypes;
         assert indepVar != null;
         assert depVars != null;
         
@@ -84,15 +91,17 @@ public class GraphComponents implements MathObject {
     public double[] dispBounds() { return dispBounds; }
 
     /** TODO: JAVADOC */
-    public double step() { return step; }
+    public double stepInfo() { return stepInfo; }
 
     /** TODO: JAVADOC */
     public String indepVar() { return indepVar; }
 
     public String[] depVars() { return depVars; }
 
+    public GraphTypes type(){ return type;}
+
     /** TODO: JAVADOC */
-    public double cStep() { return (dispBounds[2] - dispBounds[0]) / step;}
+    public double cStep() { return (stepInfo[1] - stepInfo[0]) / stepInfo[2];}
 
     /** TODO: JAVADOC */
     public double[] fix(double x, double y) {
@@ -112,8 +121,8 @@ public class GraphComponents implements MathObject {
         assert winBounds.length == 2;
         assert dispBounds.length == 4;
         return "GraphingComponent: winBounds = [" + winBounds[0] + ", " + winBounds[1] + "], dispBounds = [" + 
-            dispBounds[0] + ", " + dispBounds[1] + ", " + dispBounds[2] + ", " + dispBounds[3] + "], step = " + step +
-            " (cStep = " + cStep() + "), indepVar = '" + indepVar + "', depVars = " +
+            dispBounds[0] + ", " + dispBounds[1] + ", " + dispBounds[2] + ", " + dispBounds[3] + "], stepInfo = "
+            + stepInfo + " (cStep = " + cStep() + "), indepVar = '" + indepVar + "', depVars = " +
             new Collection<String>().addAllE(depVars);
     }
 
@@ -125,7 +134,7 @@ public class GraphComponents implements MathObject {
         ret += indent(idtLvl + 1) + "Window Bounds (X, Y) = [" + winBounds[0] + ", " + winBounds[1] + "]\n";
         ret += indent(idtLvl + 1) + "Display Bounds (x, y, X, Y) = [" + dispBounds[0] + ", " + dispBounds[1] + ", " +
                dispBounds[2] + ", " + dispBounds[3] + "]\n";
-        ret += indent(idtLvl + 1) + "Step = " + step + " (cStep = " + cStep() + ")";
+        ret += indent(idtLvl + 1) + "Step = " + stepInfo + " (cStep = " + cStep() + ")";
         ret += indent(idtLvl + 1) + "Independent Var = " + indepVar;
         ret += indent(idtLvl + 1) + "Dependant Var = " + new Collection<String>().addAllE(depVars);
         return ret;
@@ -150,7 +159,7 @@ public class GraphComponents implements MathObject {
 
     @Override
     public GraphComponents copy(){
-        return new GraphComponents(winBounds, dispBounds, step, indepVar, depVars);
+        return new GraphComponents(winBounds, dispBounds, step, type, indepVar, depVars);
     }
 
     @Override
