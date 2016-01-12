@@ -99,13 +99,13 @@ public class Equation implements MathObject {
             pEq = pEq.replaceAll("([0-9])([A-Za-z]|\\()","$1·$2"); // fixing mult i.e. '2x' --> 2*x
         }
         if(!Function.USING_BIN_OPERS){
-        for(String trig : TRIG) {
-            System.out.println(pEq);
-            pEq = pEq.replaceAll("(?!<a)" + trig + "(?!=h)(\\^[\\d.-]+)?([\\w\\d]+)","("+trig + "($2))$1");
-        }
-            pEq = pEq.replaceAll("([\\d\\w.-]+)E([\\d\\w.-]+)","*($1,^(10,$2))"); // &.&E-?&.& → (&.&*10^(-?&.&))
-            pEq = pEq.replaceAll("^x=-(.+)$","=(x,-(0,$1))");
-            pEq = pEq.replaceAll("^x=(.+)$", "=(x,$1)"); // Used for graphing
+            for(String trig : TRIG) {
+                System.out.println(pEq);
+                pEq = pEq.replaceAll("(?!<a)" + trig + "(?!=h)(\\^[\\d.-]+)?([\\w\\d]+)","("+trig + "($2))$1");
+            }
+                pEq = pEq.replaceAll("([\\d\\w.-]+)E([\\d\\w.-]+)","*($1,^(10,$2))"); // &.&E-?&.& → (&.&*10^(-?&.&))
+                pEq = pEq.replaceAll("^x=-(.+)$","=(x,-(0,$1))");
+                pEq = pEq.replaceAll("^x=(.+)$", "=(x,$1)"); // Used for graphing
         }
         return pEq;
     }

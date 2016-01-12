@@ -286,10 +286,10 @@ public class DisplayComponent extends JLabel implements MathObject {
         if(equationsys == null ^ pdisp.equationsys == null) return false;
         if(numc == null ^ pdisp.numc == null) return false;
         if(color == null ^ pdisp.color == null) return false;
-        return equation.equals(pdisp.equation) &&
-               equationsys.equals(pdisp.equationsys) &&
-               numc.equals(pdisp.numc) &&
-               color.equals(pdisp.color);
+        return (equation == null || equation.equals(pdisp.equation)) &&
+               (equationsys == null || equationsys.equals(pdisp.equationsys)) &&
+               (numc == null || numc.equals(pdisp.numc)) &&
+               (color == null || color.equals(pdisp.color));
  
     }
 }
