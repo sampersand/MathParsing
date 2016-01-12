@@ -167,14 +167,14 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return a;
     }
 
-    public TokenNode findVar(String val){
-        if(token.val().equals(val))
+    public TokenNode findExpr(String val){
+        if(toExprString().equals(val))
             return this;
         assert size() > 0;
         for(int i = 0; i < size(); i++){
             TokenNode n = get(i);
             if(n != null)
-                if(n.token().val().equals(val))
+                if(n.toExprString().equals(val))
                     return this;
                 else
                     return n;
@@ -188,24 +188,26 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public HashMap<String, Double> eval(HashMap<String, Double> pVars, final EquationSystem pEqSys){
         assert token != null;
         assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
+        String val = toExprString();
+        if(pVars.containsKey(val)) //if the value is already in pVars, then just take a shortcut.
+            return pVars;
+        for(Equation eq : pEqSys.equations()) //if the current val is on the left hand side, then use that
+            if(((TokenNode)eq.subEquations().getSD(0).get(0)).toExprString().equals(val)){
+                TokenNode tkn = eq.subEquations().findExpr(val).get(1);
+                pVars = appendHashMap(pVars, tkn.eval(pVars, pEqSys));
+                appendHashMap(pVars,val, pVars.get(tkn.toString()));
+                return pVars;
+            }
         if(token.isFunc()){
             if(pEqSys.functions().containsKey(token.val())) // if it is a function
                 return pEqSys.functions().get(token.val()).exec(pVars, pEqSys, this); //no work
             return Function.exec(pVars, token.val(), pEqSys, this); //no else needed
         } else if(isFinal()){
-            String val = token.val();
+            val = token.val();
             Double d;
             try{
                 return appendHashMap(pVars, val, Double.parseDouble(val));
             } catch(NumberFormatException err){ 
-                    for(Equation eq : pEqSys.equations()){
-                        if(((TokenNode)eq.subEquations().getSD(eq.subEquations().depthS())).token.val().equals(val)){
-                            TokenNode tkn = eq.subEquations().findVar(val).get(1);
-                            pVars = appendHashMap(pVars, tkn.eval(pVars, pEqSys));
-                            appendHashMap(pVars,val, pVars.get(tkn.toString()));
-                            return pVars;
-                        }
-                    }
                 switch(val) {
                     case "e":
                         return appendHashMap(pVars, val, Math.E);
@@ -217,8 +219,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                         return appendHashMap(pVars, val, Math.random()); 
                         // this might need work
                     default:
-                        if(pVars.containsKey(val))
-                            return pVars;
                         System.err.println(val + " doesn't exist, but returning NaN anyways");
                         return appendHashMap(pVars, val, Double.NaN);
                 }

@@ -20,8 +20,26 @@ public class Tester {
      * @throws IllegalArgumentException Thrown when the first value isn't equal to "--e" of --f 
      */
     public static void main(String[] args) throws IllegalArgumentException {
+        double PI = Math.PI;
+
+        String indep = "";
+        ArrayList<String> dep = new ArrayList<String>();
+
+        GraphComponents.GraphTypes gtype = GraphComponents.GraphTypes.XY;
+
+        int[] winbounds = new int[]{750, 750};
+        double[] eqBounds = new double[]{-10, -10, 10, 10};
+        double[] step = new double[]{1000};
+
         EquationSystem eqsys = new EquationSystem();
+
         if(args.length == 0) {
+            indep = "theta";
+            step = new double[]{-PI*2, PI*2, 1000};
+            eqBounds = new double[]{-PI, -PI, PI, PI};
+            dep.add("r");
+            gtype = GraphComponents.GraphTypes.POLAR;
+            eqsys.add("r=2*sin(theta)^2+1/2*cos(theta)^2");
             // eqsys.add("y=1+sin((9.45+x^(ln(pi)-x^x))/2)+x");
 
                 //SIN THING
@@ -52,8 +70,13 @@ public class Tester {
                     throw new IllegalArgumentException("first value has to be --f, or --e");
                 while(i < args.length - 1) { //args.length is String.
                     i++;
-                    if(args[i].equals("--f")) {type = 'f'; continue;}
-                    if(args[i].equals("--e")) {type = 'e'; continue;}
+                    if(args[i].equals("--func")) {type = 'f'; continue;}
+                    if(args[i].equals("--eq")) {type = 'e'; continue;}
+                    if(args[i].equals("--idep")) {type = 'i'; continue;}
+                    if(args[i].equals("--dep")) {type = 'd'; continue;}
+                    if(args[i].equals("--gtype")) {type = 'g'; continue;}
+                    if(args[i].equals("--step")) {type = 's'; continue;}
+                    if(args[i].equals("--bounds")) {type = 'b'; continue;}
                     if (type == 'f') {
                         try {
                             eqsys.add(args[i].split(":")[0], new CustomFunction(args[i].split(":")[1])); //fix me.
@@ -64,25 +87,30 @@ public class Tester {
                         }
                     } else if (type == 'e') {
                         eqsys.add(new Equation().add(args[i]));
+                    } else if (type == 'i'){
+
                     }
                 }
             }
         }
 
 
+        if(indep.isEmpty()){
+            EquationSystem eqsysfinal = eqsys;
+            dep.forEach(s -> Print.printi("RESULT ("+s+"):", eqsysfinal.eval(s)));
+        }
         // MathCollection g3 = new MathCollection("{y | y = sinx}", -10, 10, 1);
         // g3.graph();
-        double PI = Math.PI;
-        eqsys.add("y=f(x)");
-        eqsys.add("f(x)=x^2+3");
-        // eqsys.graph(new GraphComponents(
-        //                                 new int[]{750, 750},
-        //                                 new double[]{-PI/2, -PI/2, PI/2, PI/2},
-        //                                 new double[]{0, 2*Math.PI, 1000},
-        //                                 GraphComponents.GraphTypes.POLAR,
-        //                                 "theta",
-        //                                 "r"));
-        Print.printi("RESULT (y):", eqsys.eval("y"));
+        String[] depl = new String[dep.size()];
+        for(int i = 0; i < dep.size(); i++)
+            depl[i] = dep.get(i);
+        eqsys.graph(new GraphComponents(winbounds,
+                                        eqBounds,
+                                        step,
+                                        gtype,
+                                        indep,
+                                        depl));
+        // Print.printi("RESULT (y):", eqsys.eval("y"));
         // Print.printi("RESULT (x):", eqsys.eval("x"));
     }
 
