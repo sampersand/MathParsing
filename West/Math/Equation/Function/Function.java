@@ -664,8 +664,10 @@ public class Function implements MathObject {
             ret.put(pNode.get(0).toString(),ret.get(pNode.get(1).toString()));
         }
         else
-            for(West.Math.Set.Node.Node<?, ?> n : pNode)
+            for(West.Math.Set.Node.Node<?, ?> n : pNode){
+                System.out.println(n);
                 ret.putAll(((TokenNode)n).eval(ret, pEqSys));
+            }
 
         Double[] args = new Double[pNode.size()];
 

@@ -278,24 +278,18 @@ public class DisplayComponent extends JLabel implements MathObject {
      */
     @Override
     public boolean equals(Object pObj){
-        if(pObj == null || !(pObj instanceof DisplayComponent))
-            return false;
-        if(this == pObj)
-            return true;
+        if(pObj == null || !(pObj instanceof DisplayComponent)) return false;
+        if(this == pObj) return true;
         DisplayComponent pdisp = (DisplayComponent)pObj;
-        if(!grapher.equals(pdisp.grapher()))
-            return false;
-
-        if((equation == null) ^ (pdisp.equation() == null))// TODO: ENCORPERATE -->|| !equation.equals(pdisp.equation()))
-            return false;
-        if((equationsys == null) ^ (pdisp.equationsys() == null)) //TODO: ENCORPERATE --> || !equationsys.equals(pdisp.equationsys()))
-            return false;
-        System.out.println("TODO: fix Equals!");
-        // if(!((numc == null) && (pdisp.numc() == null)) || numc.equals(pdisp.numc()))
-        //     return false;
-        if(!((color == null) && (pdisp.color() == null) || color.equals(pdisp.color())))
-            return false;
-        return true;
+        if(!grapher.equals(pdisp.grapher)) return false;
+        if(equation == null ^ pdisp.equation == null) return false;
+        if(equationsys == null ^ pdisp.equationsys == null) return false;
+        if(numc == null ^ pdisp.numc == null) return false;
+        if(color == null ^ pdisp.color == null) return false;
+        return equation.equals(pdisp.equation) &&
+               equationsys.equals(pdisp.equationsys) &&
+               numc.equals(pdisp.numc) &&
+               color.equals(pdisp.color);
  
     }
 }

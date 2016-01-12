@@ -36,11 +36,12 @@ public class Tester {
         if(args.length == 0) {
             indep = "theta";
             dep.add("r");
+            dep.add("q");
             step = new double[]{-PI*2, PI*2, 1000};
-            eqBounds = new double[]{-PI*2, -PI*2, PI*2, PI*2};
+            eqBounds = new double[]{-2, -2, 2, 2};
             gtype = GraphComponents.GraphTypes.POLAR;
             eqsys.add("r=2*sin²(theta)+1/2*cos²(theta)");
-            // eqsys.add("r=2sin²(theta)+½cos²(theta)");
+            eqsys.add("q=2sin²(theta)+½cos²(theta)");
 
             // eqsys.add("y=1+sin((9.45+x^(ln(pi)-x^x))/2)+x");
 
@@ -114,7 +115,7 @@ public class Tester {
                         String[] spl = args[i].split(",");
                         assert spl.length == 4 : "Bounds needs to be 'Min x, Min y, Max x, Max y' and all numbers.";
                         try{
-                        step = new double[]{Double.parseDouble(spl[0]),
+                        eqBounds = new double[]{Double.parseDouble(spl[0]),
                                             Double.parseDouble(spl[1]),
                                             Double.parseDouble(spl[2]),
                                             Double.parseDouble(spl[3])};
