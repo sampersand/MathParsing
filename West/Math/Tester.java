@@ -14,7 +14,6 @@ import java.util.ArrayList;
  * @since 0.1
  */
 public class Tester {
-
     /**
      * The main function for the West.Math.package.
      * @param args The arguemnts passed in - usually through the command line
@@ -73,15 +72,17 @@ public class Tester {
 
         // MathCollection g3 = new MathCollection("{y | y = sinx}", -10, 10, 1);
         // g3.graph();
-        eqsys.add("r=3+2*cos(Θ)");
-        eqsys.graph(new GraphComponents(
-                                        new int[]{750, 750},
-                                        new double[]{-5, -5, 5, 5},
-                                        new double[]{0, 2*Math.PI, 1000},
-                                        GraphComponents.GraphTypes.POLAR,
-                                        "Θ",
-                                        "r"));
-        // Print.printi("RESULT (y):", eqsys.eval("y"));
+        double PI = Math.PI;
+        eqsys.add("y=f(x)");
+        eqsys.add("f(x)=x^2+3");
+        // eqsys.graph(new GraphComponents(
+        //                                 new int[]{750, 750},
+        //                                 new double[]{-PI/2, -PI/2, PI/2, PI/2},
+        //                                 new double[]{0, 2*Math.PI, 1000},
+        //                                 GraphComponents.GraphTypes.POLAR,
+        //                                 "theta",
+        //                                 "r"));
+        Print.printi("RESULT (y):", eqsys.eval("y"));
         // Print.printi("RESULT (x):", eqsys.eval("x"));
     }
 

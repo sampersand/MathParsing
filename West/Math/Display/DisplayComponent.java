@@ -290,8 +290,9 @@ public class DisplayComponent extends JLabel implements MathObject {
             return false;
         if((equationsys == null) ^ (pdisp.equationsys() == null)) //TODO: ENCORPERATE --> || !equationsys.equals(pdisp.equationsys()))
             return false;
-        if(!((numc == null) && (pdisp.numc() == null)) || numc.equals(pdisp.numc()))
-            return false;
+        System.out.println("TODO: fix Equals!");
+        // if(!((numc == null) && (pdisp.numc() == null)) || numc.equals(pdisp.numc()))
+        //     return false;
         if(!((color == null) && (pdisp.color() == null) || color.equals(pdisp.color())))
             return false;
         return true;
