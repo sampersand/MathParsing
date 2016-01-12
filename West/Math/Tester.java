@@ -39,7 +39,7 @@ public class Tester {
             eqBounds = new double[]{-PI, -PI, PI, PI};
             dep.add("r");
             gtype = GraphComponents.GraphTypes.POLAR;
-            eqsys.add("r=2*sin(theta)^2+1/2*cos(theta)^2");
+            eqsys.add("r=2·sin²(theta)+½·cos²(theta)");
             // eqsys.add("y=1+sin((9.45+x^(ln(pi)-x^x))/2)+x");
 
                 //SIN THING
