@@ -96,7 +96,7 @@ public class Equation implements MathObject {
             pEq = pEq.replaceAll("⅟","1/"); // ^^^
             for(String trig : TRIG) // Trig i.e. 'coshΘ' --> cosh(Θ)
                 pEq = pEq.replaceAll("(?!<a)" + trig + "(?!=h)(\\^[\\d.-]+)?(?!=\\()([\\w\\d().]+)",trig + "($2)$1"); 
-            pEq = pEq.replaceAll("([0-9])([A-z]|\\()","$1·$2"); // fixing mult i.e. '2x' --> 2*x
+            pEq = pEq.replaceAll("([0-9])([A-Za-z]|\\()","$1·$2"); // fixing mult i.e. '2x' --> 2*x
         }
         if(!Function.USING_BIN_OPERS){
         for(String trig : TRIG) {
