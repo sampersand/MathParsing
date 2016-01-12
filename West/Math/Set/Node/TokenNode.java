@@ -65,7 +65,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     private static int firstHighPriority(Collection<TokenNode> peles){
         int pos = 0, priority = Function.DEFAULT_PRIORITY;
         for(int i = 0; i < peles.size(); i++){
-            if(peles.get(i).priority() < priority){ //i swapped them
+            if(peles.get(i).priority() <=priority){ //i swapped them
                 priority = peles.get(i).priority();
                 pos = i;
             }

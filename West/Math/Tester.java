@@ -40,6 +40,7 @@ public class Tester {
             eqBounds = new double[]{-PI*2, -PI*2, PI*2, PI*2};
             gtype = GraphComponents.GraphTypes.POLAR;
             eqsys.add("r=2sin²(theta)+½cos²(theta)");
+            System.out.println(eqsys.toFullString());
             // eqsys.add("y=1+sin((9.45+x^(ln(pi)-x^x))/2)+x");
 
                 //SIN THING
