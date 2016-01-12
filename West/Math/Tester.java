@@ -35,11 +35,13 @@ public class Tester {
 
         if(args.length == 0) {
             indep = "theta";
+            dep.add("r");
             step = new double[]{-PI*2, PI*2, 1000};
             eqBounds = new double[]{-PI, -PI, PI, PI};
-            dep.add("r");
             gtype = GraphComponents.GraphTypes.POLAR;
-            eqsys.add("r=2·sin²(theta)+½·cos²(theta)");
+            // eqsys.add("r=2sin²(theta)+½cos²(theta)");
+            eqsys.add("r=2sin²(theta)+½cos²(theta)");
+
             // eqsys.add("y=1+sin((9.45+x^(ln(pi)-x^x))/2)+x");
 
                 //SIN THING
@@ -59,6 +61,8 @@ public class Tester {
             // eqsys.add("x₄ = (x + 8) · c");
             // eqsys.add("c = 1/4"); 
 
+            // MathCollection g3 = new MathCollection("{y | y = sinx}", -10, 10, 1);
+            // g3.graph();
         } else {
             eqsys = new EquationSystem();
             if(args.length == 1) {
@@ -66,17 +70,17 @@ public class Tester {
             } else if(args.length > 1) {
                 int i = -1;
                 char type = ' ';
-                if(!args[0].equals("--f") && !args[0].equals("--e"))
-                    throw new IllegalArgumentException("first value has to be --f, or --e");
+                if(!args[0].contains("--"))
+                    throw new IllegalArgumentException("first value has to start with '--'");
                 while(i < args.length - 1) { //args.length is String.
                     i++;
-                    if(args[i].equals("--func")) {type = 'f'; continue;}
-                    if(args[i].equals("--eq")) {type = 'e'; continue;}
-                    if(args[i].equals("--idep")) {type = 'i'; continue;}
-                    if(args[i].equals("--dep")) {type = 'd'; continue;}
-                    if(args[i].equals("--gtype")) {type = 'g'; continue;}
-                    if(args[i].equals("--step")) {type = 's'; continue;}
-                    if(args[i].equals("--bounds")) {type = 'b'; continue;}
+                    if(args[i].matches("--f(unc)?")) {type = 'f'; continue;}
+                    if(args[i].matches("--e(q)?")) {type = 'e'; continue;}
+                    if(args[i].matches("--i(dep)?")) {type = 'i'; continue;}
+                    if(args[i].matches("--d(ep)?")) {type = 'd'; continue;}
+                    if(args[i].matches("--g(type)?")) {type = 'g'; continue;}
+                    if(args[i].matches("--s(tep)?")) {type = 's'; continue;}
+                    if(args[i].matches("--b(ounds)?")) {type = 'b'; continue;}
                     if (type == 'f') {
                         try {
                             eqsys.add(args[i].split(":")[0], new CustomFunction(args[i].split(":")[1])); //fix me.
@@ -88,30 +92,46 @@ public class Tester {
                     } else if (type == 'e') {
                         eqsys.add(new Equation().add(args[i]));
                     } else if (type == 'i'){
-
+                        indep = args[i];
+                    } else if (type == 'd'){
+                        dep.add(args[i]);
+                    } else if (type == 'g'){
+                        gtype = args[i].equals("P") ? GraphComponents.GraphTypes.POLAR : GraphComponents.GraphTypes.XY;
+                    } else if (type == 's'){
+                        String[] spl = args[i].split(",");
+                        assert spl.length == 1 || spl.length == 3 : "Step is 'Step' or 'Min, Max, Step'";
+                        try{
+                            if(spl.length == 0)
+                                step = new double[]{Double.parseDouble(spl[0])};
+                            else
+                                step = new double[]{Double.parseDouble(spl[0]),
+                                                    Double.parseDouble(spl[1]),
+                                                    Double.parseDouble(spl[2])};
+                        } catch(NumberFormatException exc){
+                            System.err.println("Step is 'Step' or 'Min, Max, Step' and all numbers, not '"+args[i]+"'");
+                        }
+                    } else if (type == 'b'){
+                        String[] spl = args[i].split(",");
+                        assert spl.length == 4 : "Bounds needs to be 'Min x, Min y, Max x, Max y' and all numbers.";
                     }
                 }
             }
         }
 
-
         if(indep.isEmpty()){
             EquationSystem eqsysfinal = eqsys;
             dep.forEach(s -> Print.printi("RESULT ("+s+"):", eqsysfinal.eval(s)));
+        } else {
+            String[] depl = new String[dep.size()];
+            for(int i = 0; i < dep.size(); i++)
+                depl[i] = dep.get(i);
+            eqsys.graph(new GraphComponents(winbounds,
+                                            eqBounds,
+                                            step,
+                                            gtype,
+                                            indep,
+                                            depl));
         }
-        // MathCollection g3 = new MathCollection("{y | y = sinx}", -10, 10, 1);
-        // g3.graph();
-        String[] depl = new String[dep.size()];
-        for(int i = 0; i < dep.size(); i++)
-            depl[i] = dep.get(i);
-        eqsys.graph(new GraphComponents(winbounds,
-                                        eqBounds,
-                                        step,
-                                        gtype,
-                                        indep,
-                                        depl));
-        // Print.printi("RESULT (y):", eqsys.eval("y"));
-        // Print.printi("RESULT (x):", eqsys.eval("x"));
     }
 
 

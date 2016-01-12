@@ -506,7 +506,6 @@ public class Function implements MathObject {
         }};
 
     public static String isBinOper(String s){
-        //TODO: Don't generate a new list every time.
         if(!USING_BIN_OPERS)
             return null;
         if(s.matches(".*E[-\\d.]*$"))
@@ -515,7 +514,6 @@ public class Function implements MathObject {
     }
 
     public static String isAssign(String s){
-        //TODO: Don't generate a new list every time.
         if(!USING_BIN_OPERS)
             return null;
         return Equation.isInLast(s, ASSIGN_OPERS);
