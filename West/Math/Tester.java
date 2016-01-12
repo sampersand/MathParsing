@@ -113,6 +113,14 @@ public class Tester {
                     } else if (type == 'b'){
                         String[] spl = args[i].split(",");
                         assert spl.length == 4 : "Bounds needs to be 'Min x, Min y, Max x, Max y' and all numbers.";
+                        try{
+                        step = new double[]{Double.parseDouble(spl[0]),
+                                            Double.parseDouble(spl[1]),
+                                            Double.parseDouble(spl[2]),
+                                            Double.parseDouble(spl[3])};
+                        } catch(NumberFormatException exc){
+                            System.err.println("Bounds needs to be 'Min x, Min y, Max x, Max y' and all numbers.");
+                        }
                     }
                 }
             }

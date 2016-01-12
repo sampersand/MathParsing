@@ -97,9 +97,9 @@ public class Equation implements MathObject {
             pEq = pEq.replaceAll("⅒","1/10");
             pEq = pEq.replaceAll("⅟","1/");
             for(String trig : TRIG)
-                pEq = pEq.replaceAll("(?!<a)" + trig + "(?!=h)(\\^[\\d.-]+)?([\\w\\d()]+)","("+trig + "($2))$1");
+                pEq = pEq.replaceAll("(?!<a)" + trig + "(?!=h)(\\^[\\d.-]+)?([\\w\\d().]+)","("+trig + "($2))$1");
             pEq = pEq.replaceAll("√([A-z\\d.]+)","√($1)"); // &.&E-?&.& → (&.&*10^(-?&.&))
-            pEq = pEq.replaceAll("(\\d)(\\w|\\()","$1*$2");
+            pEq = pEq.replaceAll("(\\d)([A-z]|\\()","$1*$2");
         }
         if(!Function.USING_BIN_OPERS){
         for(String trig : TRIG) {
