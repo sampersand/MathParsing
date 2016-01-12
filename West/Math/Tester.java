@@ -37,10 +37,10 @@ public class Tester {
             indep = "theta";
             dep.add("r");
             step = new double[]{-PI*2, PI*2, 1000};
-            eqBounds = new double[]{-PI, -PI, PI, PI};
+            eqBounds = new double[]{-PI*2, -PI*2, PI*2, PI*2};
             gtype = GraphComponents.GraphTypes.POLAR;
+            eqsys.add("r=2*sin²(theta)+1/2*cos²(theta)");
             // eqsys.add("r=2sin²(theta)+½cos²(theta)");
-            eqsys.add("r=2sin²(theta)+½cos²(theta)");
 
             // eqsys.add("y=1+sin((9.45+x^(ln(pi)-x^x))/2)+x");
 

@@ -83,23 +83,21 @@ public class Equation implements MathObject {
         if(pEq.charAt(0) == '@')
             return pEq.substring(1);
         if(Function.USING_BIN_OPERS){
-            pEq = pEq.replaceAll("²", "^2");
-            pEq = pEq.replaceAll("³", "^3");
-            pEq = pEq.replaceAll("⁴", "^4");
-            for(int i = 0; i < FRAC8.length; i++)
-                pEq = pEq.replaceAll(FRAC8[i], (i + 1) + "/8");
-            for(int i = 0; i < FRAC6.length; i++)
-                pEq = pEq.replaceAll(FRAC6[i], (i + 1) + "/6");
-            for(int i = 0; i < FRAC5.length; i++)
-                pEq = pEq.replaceAll(FRAC5[i], (i + 1) + "/5");
-            pEq = pEq.replaceAll("⅐","1/7");
-            pEq = pEq.replaceAll("⅑","1/9");
-            pEq = pEq.replaceAll("⅒","1/10");
-            pEq = pEq.replaceAll("⅟","1/");
-            for(String trig : TRIG)
-                pEq = pEq.replaceAll("(?!<a)" + trig + "(?!=h)(\\^[\\d.-]+)?([\\w\\d().]+)","("+trig + "($2))$1");
-            pEq = pEq.replaceAll("√([A-z\\d.]+)","√($1)"); // &.&E-?&.& → (&.&*10^(-?&.&))
-            pEq = pEq.replaceAll("(\\d)([A-z]|\\()","$1*$2");
+            pEq = pEq.replaceAll("([\\d\\w.-]+)E([\\d\\w.-]+)","$1*10^(0$2)"); // sci notation
+            pEq = pEq.replaceAll("²", "^2"); // exponents
+            pEq = pEq.replaceAll("³", "^3"); // i.e '²' --> ^2 
+            pEq = pEq.replaceAll("⁴", "^4"); // ^^^
+            for(int i = 0; i < FRAC8.length; i++) pEq = pEq.replaceAll(FRAC8[i], (i + 1) + "/8"); //fractions
+            for(int i = 0; i < FRAC6.length; i++) pEq = pEq.replaceAll(FRAC6[i], (i + 1) + "/6"); // i.e '½' --> 1/2
+            for(int i = 0; i < FRAC5.length; i++) pEq = pEq.replaceAll(FRAC5[i], (i + 1) + "/5"); // ^^^
+            pEq = pEq.replaceAll("⅐","1/7"); // ^^^
+            pEq = pEq.replaceAll("⅑","1/9"); // ^^^
+            pEq = pEq.replaceAll("⅒","1/10"); // ^^^
+            pEq = pEq.replaceAll("⅟","1/"); // ^^^
+            for(String trig : TRIG) // Trig i.e. 'coshΘ' --> cosh(Θ)
+                pEq = pEq.replaceAll("(?!<a)" + trig + "(?!=h)(\\^[\\d.-]+)?([\\w\\d().]+)","("+trig + "($2))$1"); 
+            pEq = pEq.replaceAll("([0-9])([A-z]|\\()","$1$2"); // fixing mult i.e. '2x' --> 2*x
+                                 System.out.println(pEq);
         }
         if(!Function.USING_BIN_OPERS){
         for(String trig : TRIG) {
