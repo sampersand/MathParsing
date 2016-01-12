@@ -77,7 +77,7 @@ public class Tester {
                     if(args[i].matches("--i(dep)?")) {type = 'i'; continue;}
                     if(args[i].matches("--d(ep)?")) {type = 'd'; continue;}
                     if(args[i].matches("--g(type)?")) {type = 'g'; continue;}
-                    if(args[i].matches("--s(tep)?")) {type = 's'; continue;}
+                    if(args[i].matches("--s(tep)?b?(ounds)?")) {type = 's'; continue;}
                     if(args[i].matches("--b(ounds)?")) {type = 'b'; continue;}
                     if (type == 'f') {
                         try {
@@ -94,17 +94,19 @@ public class Tester {
                     } else if (type == 'd'){
                         dep.add(args[i]);
                     } else if (type == 'g'){
-                        gtype = args[i].equals("P") ? GraphComponents.GraphTypes.POLAR : GraphComponents.GraphTypes.XY;
+                        gtype = args[i].matches("P(olar)?")?
+                            GraphComponents.GraphTypes.POLAR :
+                            GraphComponents.GraphTypes.XY;
                     } else if (type == 's'){
                         String[] spl = args[i].split(",");
                         assert spl.length == 1 || spl.length == 3 : "Step is 'Step' or 'Min, Max, Step'";
                         try{
                             if(spl.length == 0)
-                                step = new double[]{Double.parseDouble(spl[0])};
+                                step = new double[]{eqsys.eval("b0", new EquationSystem().add("b0="+spl[0]))};
                             else
-                                step = new double[]{Double.parseDouble(spl[0]),
-                                                    Double.parseDouble(spl[1]),
-                                                    Double.parseDouble(spl[2])};
+                                step = new double[]{eqsys.eval("b0", new EquationSystem().add("b0="+spl[0])),
+                                                    eqsys.eval("b1", new EquationSystem().add("b1="+spl[1])),
+                                                    eqsys.eval("b2", new EquationSystem().add("b2="+spl[2]))};
                         } catch(NumberFormatException exc){
                             System.err.println("Step is 'Step' or 'Min, Max, Step' and all numbers, not '"+args[i]+"'");
                         }
@@ -128,6 +130,7 @@ public class Tester {
             EquationSystem eqsysfinal = eqsys;
             dep.forEach(s -> Print.printi("RESULT ("+s+"):", eqsysfinal.eval(s)));
         } else {
+            System.out.println(eqsys);
             String[] depl = new String[dep.size()];
             for(int i = 0; i < dep.size(); i++)
                 depl[i] = dep.get(i);
