@@ -91,7 +91,7 @@ public class GraphComponents implements MathObject {
     public double[] dispBounds() { return dispBounds; }
 
     /** TODO: JAVADOC */
-    public double stepInfo() { return stepInfo; }
+    public double[] stepInfo() { return stepInfo; }
 
     /** TODO: JAVADOC */
     public String indepVar() { return indepVar; }
@@ -159,7 +159,7 @@ public class GraphComponents implements MathObject {
 
     @Override
     public GraphComponents copy(){
-        return new GraphComponents(winBounds, dispBounds, step, type, indepVar, depVars);
+        return new GraphComponents(winBounds, dispBounds, stepInfo, type, indepVar, depVars);
     }
 
     @Override
@@ -171,7 +171,7 @@ public class GraphComponents implements MathObject {
         GraphComponents pgc = (GraphComponents)pObj;
         return winBounds.equals(pgc) &&
                dispBounds.equals(pgc) &&
-               step == pgc.step &&
+               stepInfo.equals(pgc.stepInfo) &&
                indepVar.equals(pgc.indepVar) &&
                depVars.equals(pgc.depVars);
 

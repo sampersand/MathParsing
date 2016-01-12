@@ -27,16 +27,12 @@ public class Tester {
 
                 //SIN THING
 
-            eqsys.add("r=1");
             // eqsys.add("y = 1 + sin(alpha)/c");
             // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
             // eqsys.add("c = √atanx * pi/x^(-e)");
             // eqsys.add("theta = ln(pi) - c ^ x ");
 
                 //TWISTY THING
-            // eqsys.add("y = sin(pi/2-x) * cond");
-            // eqsys.add("cond = 1");
-            // eqsys.add("z = sin(x) * cond");
             // eqsys.add("y = z · (x%2 > 1 ∨ x%2 < -1)");// ∨ z%2 < -1)");
             // eqsys.add("z = x₀ · x₁ · x₂ · x₃ · x₄");
             // eqsys.add("x₀ = (x) · c");
@@ -75,13 +71,13 @@ public class Tester {
         }
 
 
-        // MathCollection g3 = new MathCollection("{y | y = x}", -10, 10, 1);
+        // MathCollection g3 = new MathCollection("{y | y = sinx}", -10, 10, 1);
         // g3.graph();
-        // Print.print(eqsys.toFancyString());   
+        eqsys.add("r=3+2*cos(Θ)");
         eqsys.graph(new GraphComponents(
-                                        new int[]{1250, 750},
-                                        new double[]{-10, -10, 10, 10},
-                                        new double[]{-Math.PI/4,Math.PI/4, 1000},
+                                        new int[]{750, 750},
+                                        new double[]{-5, -5, 5, 5},
+                                        new double[]{0, 2*Math.PI, 1000},
                                         GraphComponents.GraphTypes.POLAR,
                                         "Θ",
                                         "r"));

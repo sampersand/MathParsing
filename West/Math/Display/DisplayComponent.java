@@ -125,6 +125,7 @@ public class DisplayComponent extends JLabel implements MathObject {
         drawer.setColor(color);
 
         double[] dispBounds = grapher.components().dispBounds();
+        double[] stepInfo = grapher.components().stepInfo();
 
         if(numc != null) {
             assert numc.size() == 2;
@@ -140,18 +141,23 @@ public class DisplayComponent extends JLabel implements MathObject {
             }
         } else if(equation != null) {
             double cStep = grapher.components().cStep();
-            for(double x = dispBounds[0]; x < dispBounds[2]; x += cStep) {
+            for(double x = stepInfo[0]; x < stepInfo[1]; x += cStep) {
                 drawl(x,
-                      equationsys.eval(equation.getVar(), new EquationSystem().add(grapher.components().indepVar()
-                                            + "=" + x)), 
+                      equationsys.eval(equation.getVar(),
+                                       new EquationSystem().add(
+                                                                grapher.components().indepVar()
+                                                                + "=" + x)), 
                       x + cStep,
-                      equationsys.eval(equation.getVar(), new EquationSystem().add(grapher.components().indepVar()
-                                            + "=" + (x + cStep))));
+                      equationsys.eval(equation.getVar(),
+                                       new EquationSystem().add(
+                                                                grapher.components().indepVar()
+                                                                + "=" + (x + cStep)))
+                      , false);
             }
         }
         else {
-            drawl(0D, dispBounds[1], 0D, dispBounds[3]); //axis.
-            drawl(dispBounds[0], 0D, dispBounds[2], 0D); //axis.
+            drawl(0D, dispBounds[1], 0D, dispBounds[3], true); //axis.
+            drawl(dispBounds[0], 0D, dispBounds[2], 0D, true); //axis.
         }
     }
  
@@ -169,16 +175,18 @@ public class DisplayComponent extends JLabel implements MathObject {
     }
 
     /** TODO: JAVADOC */
-    private void drawl(Double x, Double y, Double X, Double Y) {
+    private void drawl(Double x, Double y, Double X, Double Y, boolean fix) {
         assert y != null;
         assert Y != null;
         if(y.equals(Double.NaN) || Y.equals(Double.NaN))
             return;
-        if(grapher.components().type().equals(West.Math.Display.GraphComponents.GraphTypes.POLAR)){
-            x = x * Math.cos(y); //x is r, y is theta
-            y = x * Math.sin(y); //x is r, y is theta
-            X = Y * Math.cos(Y); //X is r, Y is theta
-            Y = Y * Math.sin(Y); //X is r, Y is theta
+        if(!fix && grapher.components().type().equals(West.Math.Display.GraphComponents.GraphTypes.POLAR)){
+            Double r = y;
+            y = y * Math.sin(x); //y is r, x is theta
+            x = r * Math.cos(x); //y is r, x is theta
+            r = Y;
+            Y = Y * Math.sin(X); //Y is r, X is theta
+            X = r * Math.cos(X); //Y is r, X is theta
         }
         double[] xy=fix(x, y);
         double[] XY=fix(X, Y);
@@ -282,7 +290,7 @@ public class DisplayComponent extends JLabel implements MathObject {
             return false;
         if((equationsys == null) ^ (pdisp.equationsys() == null)) //TODO: ENCORPERATE --> || !equationsys.equals(pdisp.equationsys()))
             return false;
-        if(!((numc == null) && (pdisp.numc() == null) || numc.equals(pdisp.numc())))
+        if(!((numc == null) && (pdisp.numc() == null)) || numc.equals(pdisp.numc()))
             return false;
         if(!((color == null) && (pdisp.color() == null) || color.equals(pdisp.color())))
             return false;

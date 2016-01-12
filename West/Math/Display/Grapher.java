@@ -74,7 +74,6 @@ public class Grapher extends JPanel implements MathObject {
         numcs = pNumberCollections;
         equationsToGraph = pEqSysToGraph;
         equationsToUse = pEqSysToUse;
-        System.out.println(equationsToUse);
         if(pEqSysToGraph == null)
             equationsToGraph = new EquationSystem();
         if(pEqSysToUse == null)
