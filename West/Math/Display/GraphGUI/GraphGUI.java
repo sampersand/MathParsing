@@ -60,22 +60,24 @@ public class GraphGUI extends JFrame{
         }};
 
         eqBounds = new ArrayList<JTextField>(){{
-            add(new JTextField("-10")); //min x
-            add(new JTextField("-10")); //min y
-            add(new JTextField("10"));  //max x
-            add(new JTextField("10"));  //max y
+            add(new JTextField("-10",5)); //min x
+            add(new JTextField("-10",5)); //min y
+            add(new JTextField("10",5));  //max x
+            add(new JTextField("10",5));  //max y
         }};
 
         step = new ArrayList<JTextField>(){{
-            add(new JTextField("-10")); //min x
-            add(new JTextField("10")); //max x
-            add(new JTextField("1000")); //amount of drawn
+            add(new JTextField("-10",5)); //min x
+            add(new JTextField("10",5)); //max x
+            add(new JTextField("1000",10)); //amount of drawn
         }};
         gtype = new ArrayList<JTextField>(){{
             add(new JTextField("XY")); 
         }};
     }
     public void init(){
+        assert eqBounds.size() == 4;
+        assert winBounds.size() == 2;
         //Variables
             JPanel varJP = new JPanel(new GridLayout(5 + dep.size(),1));
             varJP.add(new JLabel("Independent Variable"));
@@ -92,9 +94,17 @@ public class GraphGUI extends JFrame{
             eqJP.add(new JButton("Remove Equation"));
             equations.forEach(eqJP::add);
         //winBounds
-            JPanel wbJP = new JPanel(new GridLayout(1,4));
-            winBounds.forEach(wbJP::add);
-
+            JPanel wbvalsJP = new JPanel(new GridLayout(1,2));
+            winBounds.forEach(wbvalsJP::add);
+            JPanel wbJP = new JPanel(new GridLayout(2,1));
+            wbJP.add(new JLabel(" Window Bounds "));
+            wbJP.add(wbvalsJP);
+        //eqBounds
+            JPanel dispvarsJP = new JPanel(new GridLayout(1,4));
+            eqBounds.forEach(dispvarsJP::add);
+            JPanel dbJP = new JPanel(new GridLayout(2,1));
+            dbJP.add(new JLabel(" Equation Bounds "));
+            dbJP.add(dispvarsJP);
 
             JPanel eqvarJP = new JPanel(new GridLayout(2,1));
             eqvarJP.add(varJP, BorderLayout.NORTH);
@@ -102,7 +112,8 @@ public class GraphGUI extends JFrame{
 
             this.setLayout(new BorderLayout());
 
-            this.add(wbJP, BorderLayout.NORTH);
+            this.add(wbJP, BorderLayout.WEST);
+            this.add(dbJP, BorderLayout.EAST);
             // this.add(eqvarJP, BorderLayout.SOUTH);
 
             this.pack();
