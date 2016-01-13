@@ -8,6 +8,7 @@ West/Math/Display/Calculator/CalcWindow.java
 West/Math/Display/Calculator/EquationDisplay.java
 West/Math/Display/Calculator/GraphDisplay.java
 West/Math/Display/Calculator/MainClass.java
+West/Math/Display/GraphGUI/GraphGUI.java
 West/Math/Equation/Equation.java
 West/Math/Equation/EquationSystem.java
 West/Math/Equation/Token.java

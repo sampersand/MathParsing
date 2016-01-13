@@ -85,7 +85,7 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
             JPanel row5a = new JPanel(new GridLayout(1,1));
             JPanel row5b = new JPanel(new GridLayout(1,2));
 
-            row0.add(dispField);
+            row0.x(dispField);
 
             row1.add(buttons.get("clear"));
             row1.add(buttons.get("posneg"));

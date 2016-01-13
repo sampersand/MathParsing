@@ -1,6 +1,7 @@
 package West.Math;
 import West.Math.Equation.*;
 import West.Math.Display.*;
+import West.Math.Display.GraphGUI.*;
 import West.Math.Equation.Function.*;
 import West.Math.Set.*;
 import West.*;
@@ -124,7 +125,9 @@ public class Tester {
                 }
             }
         }
-
+        if(args.length == 0){
+            GraphGUI gg = new GraphGUI();
+        } else
         if(indep.isEmpty()){
             EquationSystem eqsysfinal = eqsys;
             dep.forEach(s -> Print.printi("RESULT ("+s+"):", eqsysfinal.eval(s)));
