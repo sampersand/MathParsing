@@ -15,6 +15,7 @@ import java.util.Enumeration;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JOptionPane;
@@ -24,18 +25,27 @@ public class GraphGUI extends JFrame{
     private ArrayList<JTextField> equations;
     private ArrayList<JTextField> dep;
     private JTextField indep;
-    private ArrayList<JTextField> winbounds;
+    private ArrayList<JTextField> winBounds;
     private ArrayList<JTextField> eqBounds;
     private ArrayList<JTextField> step;
     private ArrayList<JTextField> gtype;
+
     public GraphGUI(){
+        this("unknown graph");
+    }
+    public GraphGUI(String title){
+        super(title);
+        this.setSize(400, 650);
         initvars();
         init();
-        graph();
+        this.setVisible(true);
+        // graph();
     }
     public void initvars(){
         equations = new ArrayList<JTextField>(){{
-            add(new JTextField());
+            add(new JTextField("A"));
+            add(new JTextField("B"));
+            add(new JTextField("C"));
         }};
 
         dep = new ArrayList<JTextField>(){{
@@ -44,7 +54,7 @@ public class GraphGUI extends JFrame{
 
         indep = new JTextField();
 
-        winbounds = new ArrayList<JTextField>(){{
+        winBounds = new ArrayList<JTextField>(){{
             add(new JTextField("850")); //width
             add(new JTextField("850")); //height
         }};
@@ -66,79 +76,42 @@ public class GraphGUI extends JFrame{
         }};
     }
     public void init(){
-           // Note: This might look like a mess of JPanels. They are strategically placed to make
-            // the calculator look an actual calculator.
-            // addButtons();
-            // for (Enumeration<String> button = buttons.keys(); button.hasMoreElements();) {
-                // buttons.get(button.nextElement()).addActionListener(this);
-            // }
+        //Variables
+            JPanel varJP = new JPanel(new GridLayout(5 + dep.size(),1));
+            varJP.add(new JLabel("Independent Variable"));
+            varJP.add(indep);
+            varJP.add(new JLabel("Dependent Variables"));
+            varJP.add(new JButton("Add Variable"));
+            varJP.add(new JButton("Remove Variable"));
+            dep.forEach(varJP::add);
 
-            JPanel row0 = new JPanel(new GridLayout(1,equations.size()));
-            JPanel row1 = new JPanel(new GridLayout(1,dep.size()));
-            // JPanel row2 = new JPanel(new GridLayout(1,4));
-
-            // JPanel row3 = new JPanel(new GridLayout(1,4));
-            // JPanel row4 = new JPanel(new GridLayout(1,4));
-            // JPanel row5 = new JPanel(new GridLayout(1,2));
-
-            // JPanel row5a = new JPanel(new GridLayout(1,1));
-            // JPanel row5b = new JPanel(new GridLayout(1,2));
-
-            equations.forEach(row0::add);
-            dep.forEach(row1::add);
-
-            // row1.add(buttons.get("clear"));
-            // row1.add(buttons.get("posneg"));
-            // row1.add(buttons.get("perc"));
-            // row1.add(buttons.get("div"));
-
-            // row2.add(buttons.get("7"));
-            // row2.add(buttons.get("8"));
-            // row2.add(buttons.get("9"));
-            // row2.add(buttons.get("mult"));
-
-            // row3.add(buttons.get("4"));
-            // row3.add(buttons.get("5"));
-            // row3.add(buttons.get("6"));
-            // row3.add(buttons.get("sub"));
-
-            // row4.add(buttons.get("1"));
-            // row4.add(buttons.get("2"));
-            // row4.add(buttons.get("3"));
-            // row4.add(buttons.get("add"));
+        //Equations
+            JPanel eqJP = new JPanel(new GridLayout(3 + equations.size(),1));
+            eqJP.add(new JLabel("Equations"));
+            eqJP.add(new JButton("Add Equation"));
+            eqJP.add(new JButton("Remove Equation"));
+            equations.forEach(eqJP::add);
+        //winBounds
+            JPanel wbJP = new JPanel(new GridLayout(1,4));
+            winBounds.forEach(wbJP::add);
 
 
-            // row5a.add(buttons.get("0"));
-            // row5b.add(buttons.get("deci"));
-            // row5b.add(buttons.get("equal"));
-
-            // row5.add(row5a, BorderLayout.WEST);
-            // row5.add(row5b, BorderLayout.EAST);
-
-            JPanel row01 = new JPanel(new GridLayout(2, 1));
-            row01.add(row0, BorderLayout.NORTH);
-            row01.add(row1, BorderLayout.SOUTH);
-
-            // JPanel row23 = new JPanel(new GridLayout(2, 1));
-            // row23.add(row2, BorderLayout.NORTH);
-            // row23.add(row3, BorderLayout.SOUTH);
-
-            // JPanel row45 = new JPanel(new GridLayout(2, 1));
-            // row45.add(row4, BorderLayout.NORTH);
-            // row45.add(row5, BorderLayout.SOUTH);
+            JPanel eqvarJP = new JPanel(new GridLayout(2,1));
+            eqvarJP.add(varJP, BorderLayout.NORTH);
+            eqvarJP.add(eqJP, BorderLayout.SOUTH);
 
             this.setLayout(new BorderLayout());
-            this.add(row01, BorderLayout.NORTH);
-            // this.add(row23, BorderLayout.CENTER);
-            // this.add(row45, BorderLayout.SOUTH);
+
+            this.add(wbJP, BorderLayout.NORTH);
+            // this.add(eqvarJP, BorderLayout.SOUTH);
 
             this.pack();
-            this.setResizable(false);
+            this.setResizable(true);
 
 
     }
    public void graph(){
-        eqsys().graph(new GraphComponents(winbounds(),
+        eqsys().graph(new GraphComponents(winBounds(),
                                         eqBounds(),
                                         step(),
                                         gtype(),
@@ -154,10 +127,10 @@ public class GraphGUI extends JFrame{
                 ret.add(jt.getText());
         return ret;
     }
-    public int[] winbounds(){
-        int[] ret = new int[winbounds.size()];
-        for(int i = 0; i < winbounds.size(); i++)
-            ret[i] = Integer.parseInt(winbounds.get(i).getText());
+    public int[] winBounds(){
+        int[] ret = new int[winBounds.size()];
+        for(int i = 0; i < winBounds.size(); i++)
+            ret[i] = Integer.parseInt(winBounds.get(i).getText());
         return ret;
     }
 
