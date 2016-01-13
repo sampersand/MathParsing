@@ -14,9 +14,9 @@ public class f extends CustomFunction{
     }
     @Override
     public HashMap<String, Double> exec(HashMap<String, Double> hm, EquationSystem pEqSys, TokenNode pNode) {
-        // return null;
-        throw new NullPointerException();
-        // Object[] rargs = evalNode(pEqSys, pNode);
+        return super.exec(hm, pEqSys, pNode);
+        // for(West.Math.Set.Node.Node<?, ?> n : pNode)
+        //     ret.putAll(((TokenNode)n).eval(ret, pEqSys));
         // double[] args = (double[])rargs[0];
         // HashMap<String, Double> rethm = (HashMap<String, Double>)rargs[1];
         // double ret = 0;

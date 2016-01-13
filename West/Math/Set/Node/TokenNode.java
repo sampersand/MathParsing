@@ -199,6 +199,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 return pVars;
             }
         if(token.isFunc()){
+            // System.out.println(pEqSys.functions()+"@");
             if(pEqSys.functions().containsKey(token.val())) // if it is a function
                 return pEqSys.functions().get(token.val()).exec(pVars, pEqSys, this); //no work
             return Function.exec(pVars, token.val(), pEqSys, this); //no else needed

@@ -27,19 +27,18 @@ public class Tester {
 
         GraphComponents.GraphTypes gtype = GraphComponents.GraphTypes.XY;
 
-        int[] winbounds = new int[]{750, 750};
+        int[] winbounds = new int[]{810, 810};
         double[] eqBounds = new double[]{-10, -10, 10, 10};
         double[] step = new double[]{1000};
 
         EquationSystem eqsys = new EquationSystem();
-
         if(args.length == 0) {
             indep = "theta";
             dep.add("r");
-            step = new double[]{0, PI*2, 1000};
-            eqBounds = new double[]{-PI*2, -PI*2, PI*2, PI*2};
+            step = new double[]{-64*PI, 64*PI, 10000};
+            eqBounds = new double[]{-10, -10, 10, 10};
             gtype = GraphComponents.GraphTypes.POLAR;
-            eqsys.add("r=2sin²(theta)+½cos²(theta)");
+            // eqsys.add("r = round(theta*(sin(theta/16)/cos(theta/16))");
             // eqsys.add("y=1+sin((9.45+x^(ln(pi)-x^x))/2)+x");
 
                 //SIN THING
@@ -85,7 +84,7 @@ public class Tester {
                         } catch(NumberFormatException err) {
                             Print.printw("Syntax: FUNCNAME:FUNC.val() (" + args[i] + ")");
                         } catch(ArrayIndexOutOfBoundsException err) {
-                            Print.printw("Syntax: FUNCNAME:FUNC.val() (" + args[i] + ")");
+                            eqsys.add(args[i], new CustomFunction(args[i])); //fix me.
                         }
                     } else if (type == 'e') {
                         eqsys.add(new Equation().add(args[i]));
@@ -114,10 +113,10 @@ public class Tester {
                         String[] spl = args[i].split(",");
                         assert spl.length == 4 : "Bounds needs to be 'Min x, Min y, Max x, Max y' and all numbers.";
                         try{
-                        eqBounds = new double[]{Double.parseDouble(spl[0]),
-                                            Double.parseDouble(spl[1]),
-                                            Double.parseDouble(spl[2]),
-                                            Double.parseDouble(spl[3])};
+                        eqBounds = new double[]{eqsys.eval("b0",new EquationSystem().add("b0="+spl[0])),
+                                                eqsys.eval("b1",new EquationSystem().add("b1="+spl[1])),
+                                                eqsys.eval("b2",new EquationSystem().add("b2="+spl[2])),
+                                                eqsys.eval("b3",new EquationSystem().add("b3="+spl[3]))};
                         } catch(NumberFormatException exc){
                             System.err.println("Bounds needs to be 'Min x, Min y, Max x, Max y' and all numbers.");
                         }

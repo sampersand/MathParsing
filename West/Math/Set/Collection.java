@@ -86,6 +86,7 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
     public E pop(int pPos){return remove(pPos);}
     public E remove(int pPos){ return elements.remove(stdPos(pPos)); }
 
+    public boolean isEmpty(){ return elements.isEmpty();}
     public List<E> subList(int start){
         return subList(start, size());
     }

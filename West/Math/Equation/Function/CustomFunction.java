@@ -45,7 +45,8 @@ public class CustomFunction extends Function implements MathObject {
      * @throws IllegalArgumentException When either name, help, and / or syntax is null.
      */
     public CustomFunction(String pName) throws IllegalArgumentException{
-        super(new Collection<String>(){{add(pName);}}, null, null, DEFAULT_PRIORITY, null, null, null);
+        this(new Collection<String>(){{add(pName);}}, "", "", DEFAULT_PRIORITY,
+            Type.NORM, new Collection<Integer>().addE(0), a -> null);
     }
 
     /**
@@ -68,11 +69,12 @@ public class CustomFunction extends Function implements MathObject {
                 Print.printe("Instantiating a CustomFunction without a function associated!");
                 cl = null;
             } else {
-                cl = Class.forName("West.Math.Equation.CustomFunctions." + names);
+                cl = Class.forName("West.Math.Equation.Function.CustomFunctions." + names.get(0));
             }
         } catch (ClassNotFoundException err) {
+            err.printStackTrace();
                 throw new IllegalArgumentException("Cannot instatiate CustomFunction '" + names + 
-                    "'! All custom class currently must be in West.Math.Equation/CustomFunctions/<CLASS>!");
+                    "'! All custom class currently must be in West.Math.Equation/Functions/CustomFunctions/<CLASS>!");
         }
     }
 
@@ -106,9 +108,6 @@ public class CustomFunction extends Function implements MathObject {
             Print.printe("A IllegalAccessException occured when attempting to get '" + pFuncName + "' " +
                                "of a CustomFunction (File Name: " + names + "): " + err + " | " + err.getMessage() +
                                " | " + err.getCause());
-        // } catch (NullPointerException err) {
-        //     throw new NotDefinedException("Cannot get the function '" + pFuncName +"' from the CustomFunction '" + name 
-        //         + "'' because it doesnt exist, but should!");
         } catch (NoSuchMethodException err) {
             Print.printe("A NoSuchMethodException occured when attempting to get '" + pFuncName + "' " +
                                "of a CustomFunction (File Name: " + names + "): " + err + " | " + err.getMessage() +

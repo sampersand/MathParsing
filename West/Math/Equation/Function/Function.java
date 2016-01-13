@@ -571,11 +571,11 @@ public class Function implements MathObject {
                     Type pType,
                     Collection<Integer> pArgsLength,
                     FuncObj pFuncObj) throws IllegalArgumentException{
-        assert pName != null;
-        assert pHelp != null;
-        assert pSyntax != null;
-        assert pType != null;
-        assert pArgsLength.size() >= 0;
+        // assert pName != null;
+        // assert pHelp != null;
+        // assert pSyntax != null;
+        // assert pType != null;
+        // assert pArgsLength.size() >= 0;
         funcObj = pFuncObj;
         names = pName;
         help = pHelp;
