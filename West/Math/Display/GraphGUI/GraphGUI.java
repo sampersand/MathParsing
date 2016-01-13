@@ -165,7 +165,7 @@ public class GraphGUI extends JFrame{
         double[] ret = new double[eqBounds.size()];
         EquationSystem eqsys = eqsys();
         for(int i = 0; i < eqBounds.size(); i++){
-            ret[i] = eqsys.eval("__TEMP__=", new EquationSystem().add("__TEMP__="+eqBounds.get(i).getText()));
+            ret[i] = eqsys.eval("__TEMP__", new EquationSystem().add("__TEMP__="+eqBounds.get(i).getText()));
         }
         return ret;
     }
@@ -174,7 +174,7 @@ public class GraphGUI extends JFrame{
         double[] ret = new double[step.size()];
         EquationSystem eqsys = eqsys();
         for(int i = 0; i < step.size(); i++)
-            ret[i] = eqsys.eval("__TEMP__=",new EquationSystem().add("__TEMP__="+step.get(i).getText()));
+            ret[i] = eqsys.eval("__TEMP__",new EquationSystem().add("__TEMP__="+step.get(i).getText()));
         return ret;
     }
 

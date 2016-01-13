@@ -83,7 +83,7 @@ public class Equation implements MathObject {
         if(pEq.charAt(0) == '@')
             return pEq.substring(1);
         if(Function.USING_BIN_OPERS){
-            pEq = pEq.replaceAll("([\\d\\w.-]+)E([\\d\\w.-]+)","$1*10^(0$2)"); // sci notation
+            pEq = pEq.replaceAll("([\\d.-]+)E([\\d.-]+)","$1*10^(0$2)"); // sci notation
             pEq = pEq.replaceAll("²", "^2"); // exponents
             pEq = pEq.replaceAll("³", "^3"); // i.e '²' --> ^2 
             pEq = pEq.replaceAll("⁴", "^4"); // ^^^
