@@ -125,7 +125,7 @@ public class Equation implements MathObject {
             s = "" + rEq.charAt(x);
             all += s;
             if(!isControlChar(all)) {
-                if(x == rEq.length() - 1){
+                if(x == rEq.length()-1){
                     tokens.add(new Token(all, Token.Type.VAR));
                     all = "";
                 }

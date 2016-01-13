@@ -207,7 +207,6 @@ public class EquationSystem implements MathObject{
                        EquationSystem pEqSys) {
         return copy().add(pEqSys).eval(toEval);
     }
-
     /**
      * Evaluates the variable <code>toEval</code>.
      * @param toEval    The variable to solve for.
@@ -216,6 +215,7 @@ public class EquationSystem implements MathObject{
     public Double eval(String toEval) {
         assert equations.size() != 0 : "Cannot evaluate an EquationSystem with no equations!";
         EquationSystem eqsys = copy().isolate(toEval);
+        System.out.println(eqsys+"|"+toEval);
         // assert eqsys.isolated() : "I'm not isolated!:\n\n"+eqsys.toFancyString();
         return eqsys.equations().get(0).subEquations().eval(eqsys).get(toEval);
 

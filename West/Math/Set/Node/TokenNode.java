@@ -193,7 +193,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             return pVars;
         for(Equation eq : pEqSys.equations()) //if the current val is on the left hand side, then use that
             if(((TokenNode)eq.subEquations().getSD(0).get(0)).toExprString().equals(val)){
-                TokenNode tkn = eq.subEquations().findExpr(val).get(1);
+                TokenNode tkn = eq.subEquations().findExpr(val).get(-1);
                 pVars = appendHashMap(pVars, tkn.eval(pVars, pEqSys));
                 appendHashMap(pVars,val, pVars.get(tkn.toString()));
                 return pVars;
