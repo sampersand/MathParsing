@@ -117,8 +117,8 @@ public class GraphGUI extends JFrame implements ActionListener{
         }};
 
         step = new ArrayList<JTextField>(){{
-            add(new JTextField("-4·π")); //min x
-            add(new JTextField("4·π")); //max x
+            add(new JTextField("")); //min x
+            add(new JTextField("")); //max x
             add(new JTextField("1000")); //amount of drawn
         }};
         gtype = POLAR;

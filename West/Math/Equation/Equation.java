@@ -93,10 +93,10 @@ public class Equation implements MathObject {
             pEq = pEq.replaceAll("⅐","1/7"); // ^^^
             pEq = pEq.replaceAll("⅑","1/9"); // ^^^
             pEq = pEq.replaceAll("⅒","1/10"); // ^^^
-            pEq = pEq.replaceAll("⅟","1/"); // ^^^
-            for(String trig : TRIG) // Trig i.e. 'coshΘ' --> cosh(Θ)
-                pEq = pEq.replaceAll("(?!<a)" + trig + "(?!=h)(\\^[\\d.-]+)?(?!=\\()([\\w\\d().]+)",trig + "($2)$1"); 
-            pEq = pEq.replaceAll("([0-9])([A-Za-z]|\\()","$1·$2"); // fixing mult i.e. '2x' --> 2*x
+            pEq = pEq.replaceAll("⅟","1/"); // ^^^s
+            // for(String trig : TRIG) // Trig i.e. 'coshΘ' --> cosh(Θ)
+            //     pEq = pEq.replaceAll("(?!<a)" + trig + "(?!=h)(\\^[\\d.-]+)?(?!=\\()([\\w\\d().]+)",trig + "($2)$1"); 
+            // pEq = pEq.replaceAll("([0-9])" + getOpersList(),"$1·$2"); // fixing mult i.e. '2x' --> 2*x
         }
         if(!Function.USING_BIN_OPERS){
             for(String trig : TRIG) {
@@ -110,6 +110,13 @@ public class Equation implements MathObject {
         return pEq;
     }
 
+    private static String getOpersList(){
+        String ret = "((?!=$";
+        for(String s : Function.BIN_OPERS)
+            ret += "|\\Q" + s + "\\E";
+        // assert false : ret + ").)";
+        return ret + ")[^0-9])";
+    }
     /**
      * Generates an Collection of tokens that represent rEq.
      * Note that this removes all whitespace (including spaces) before handling the expression.
