@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * A tester class for the whole equation
  * @author Sam Westerman
- * @version 0.90
+ * @version 1.0
  * @since 0.1
  */
 public class Tester {
@@ -21,48 +21,21 @@ public class Tester {
      * @throws IllegalArgumentException Thrown when the first value isn't equal to "--e" of --f 
      */
     public static void main(String[] args) throws IllegalArgumentException {
-        double PI = Math.PI;
-
-        String indep = "";
-        ArrayList<String> dep = new ArrayList<String>();
-
-        GraphComponents.GraphTypes gtype = GraphComponents.GraphTypes.XY;
-
-        int[] winbounds = new int[]{810, 810};
-        double[] eqBounds = new double[]{-10, -10, 10, 10};
-        double[] step = new double[]{1000};
-
-        EquationSystem eqsys = new EquationSystem();
-        if(args.length == 0) {
-            indep = "theta";
-            dep.add("r");
-            step = new double[]{-64*PI, 64*PI, 10000};
-            eqBounds = new double[]{-10, -10, 10, 10};
-            gtype = GraphComponents.GraphTypes.POLAR;
-            // eqsys.add("r = round(theta*(sin(theta/16)/cos(theta/16))");
-            // eqsys.add("y=1+sin((9.45+x^(ln(pi)-x^x))/2)+x");
-
-                //SIN THING
-
-            // eqsys.add("y = 1 + sin(alpha)/c");
-            // eqsys.add("alpha = (9.45 + x ^ theta) / 2");
-            // eqsys.add("c = √atanx * pi/x^(-e)");
-            // eqsys.add("theta = ln(pi) - c ^ x ");
-
-                //TWISTY THING
-            // eqsys.add("y = z · (x%2 > 1 ∨ x%2 < -1)");// ∨ z%2 < -1)");
-            // eqsys.add("z = x₀ · x₁ · x₂ · x₃ · x₄");
-            // eqsys.add("x₀ = (x) · c");
-            // eqsys.add("x₁ = (x - 8) · c");
-            // eqsys.add("x₂ = (x - 4) · c");
-            // eqsys.add("x₃ = (x + 4) · c");
-            // eqsys.add("x₄ = (x + 8) · c");
-            // eqsys.add("c = 1/4"); 
-
-            // MathCollection g3 = new MathCollection("{y | y = sinx}", -10, 10, 1);
-            // g3.graph();
+        if(args.length == 0){
+            GraphGUI gg = new GraphGUI();
         } else {
-            eqsys = new EquationSystem();
+            double PI = Math.PI;
+
+            String indep = "";
+            ArrayList<String> dep = new ArrayList<String>();
+
+            GraphComponents.GraphTypes gtype = GraphComponents.GraphTypes.XY;
+
+            int[] winbounds = new int[]{810, 810};
+            double[] eqBounds = new double[]{-10, -10, 10, 10};
+            double[] step = new double[]{1000};
+
+            EquationSystem eqsys = new EquationSystem();
             if(args.length == 1) {
                 eqsys = new EquationSystem().add(new Equation().add(args[0]));
             } else if(args.length > 1) {
@@ -124,24 +97,21 @@ public class Tester {
                     }
                 }
             }
-        }
-        if(args.length == 0){
-            GraphGUI gg = new GraphGUI();
-        } else
-        if(indep.isEmpty()){
-            EquationSystem eqsysfinal = eqsys;
-            dep.forEach(s -> Print.printi("RESULT ("+s+"):", eqsysfinal.eval(s)));
-        } else {
-            System.out.println(eqsys);
-            String[] depl = new String[dep.size()];
-            for(int i = 0; i < dep.size(); i++)
-                depl[i] = dep.get(i);
-            eqsys.graph(new GraphComponents(winbounds,
-                                            eqBounds,
-                                            step,
-                                            gtype,
-                                            indep,
-                                            depl));
+            if(indep.isEmpty()){
+                EquationSystem eqsysfinal = eqsys;
+                dep.forEach(s -> Print.printi("RESULT ("+s+"):", eqsysfinal.eval(s)));
+            } else {
+                System.out.println(eqsys);
+                String[] depl = new String[dep.size()];
+                for(int i = 0; i < dep.size(); i++)
+                    depl[i] = dep.get(i);
+                eqsys.graph(new GraphComponents(winbounds,
+                                                eqBounds,
+                                                step,
+                                                gtype,
+                                                indep,
+                                                depl));
+            }
         }
     }
 

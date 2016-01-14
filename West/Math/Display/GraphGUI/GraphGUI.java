@@ -23,6 +23,15 @@ import javax.swing.JTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import java.util.ArrayList;
+
+
+/**
+ * The graphing GUI inteface - where you plug in all the equations
+ * 
+ * @author Sam Westerman
+ * @version 1.0
+ * @since 0.90
+ */
 public class GraphGUI extends JFrame implements ActionListener{
     private ArrayList<JTextField> equations;
     private ArrayList<JTextField> dep;
@@ -170,24 +179,24 @@ public class GraphGUI extends JFrame implements ActionListener{
             varButtonJP.add(addActionListener(new JButton("Add Variable"), this));
             varButtonJP.add(addActionListener(new JButton("Remove Variable"), this));
 
-            varJP.add(varButtonJP, BorderLayout.NORTH);
+            varJP.add(varButtonJP);
             dep.forEach(tb -> varJP.add(addActionListener(tb, al -> dotb(tb, al))));
 
         //Equations
             JPanel eqJP = new JPanel(new GridLayout(2+ equations.size(),1));
-            eqJP.add(new JLabel("Equations"), BorderLayout.CENTER);
+            eqJP.add(new JLabel("Equations"));
 
             JPanel eqButtonJP = new JPanel(new GridLayout(1,2));
             eqButtonJP.add(addActionListener(new JButton("Add Equation"), this));
             eqButtonJP.add(addActionListener(new JButton("Remove Equation"),this));
 
-            eqJP.add(eqButtonJP, BorderLayout.NORTH);
+            eqJP.add(eqButtonJP);
             equations.forEach(tb -> eqJP.add(addActionListener(tb, al -> dotb(tb, al))));
 
         // all inputs
             JPanel eqvarJP = new JPanel(new GridLayout(2,1));
-            eqvarJP.add(varJP, BorderLayout.NORTH);
-            eqvarJP.add(eqJP, BorderLayout.SOUTH);
+            eqvarJP.add(varJP);
+            eqvarJP.add(eqJP);
 
         // Graph button
             JPanel graphJP = new JPanel(new GridLayout(1,1));
@@ -195,9 +204,9 @@ public class GraphGUI extends JFrame implements ActionListener{
 
         //PUTTING THEM IN THIS
         this.setLayout(new BorderLayout());
-        this.add(boundsJP, BorderLayout.CENTER);
-        this.add(graphJP, BorderLayout.NORTH);
-        this.add(eqvarJP, BorderLayout.SOUTH);
+        this.add(graphJP, BorderLayout.SOUTH);
+        this.add(boundsJP, BorderLayout.NORTH);
+        this.add(eqvarJP, BorderLayout.CENTER);
 
         this.pack();
     }

@@ -15,7 +15,7 @@ import West.Math.Set.Node.TokenNode;
  * {@link CustomFunction}s (and the corresponding classes for them).
  * 
  * @author Sam Westerman
- * @version 0.90
+ * @version 1.0
  * @since 0.1
  */
 public class EquationSystem implements MathObject{

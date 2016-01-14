@@ -9,7 +9,7 @@ import java.util.Scanner;
  * This is just a hacked up thing I used to find the correlation values of data in <code>West.Math.Set/data.csv</code>.
  * 
  * @author Sam Westerman
- * @version 0.90
+ * @version 1.0
  * @since 0.65
  */
 @Deprecated

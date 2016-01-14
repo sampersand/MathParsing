@@ -9,7 +9,7 @@ import java.util.function.Consumer;
  * TODO: JAVADOC
  * 
  * @author Sam Westerman
- * @version 0.90
+ * @version 1.0
  * @since 0.75
  */ 
 public class Collection<E> extends java.util.ArrayList<E> implements MathObject{

@@ -25,7 +25,7 @@ import java.awt.event.*;
  * Define
  * 
  * @author Sam Westerman
- * @version 0.90
+ * @version 1.0
  * @since 0.2
  */
 public class Grapher extends JPanel implements MathObject {

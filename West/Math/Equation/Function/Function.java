@@ -14,7 +14,7 @@ import java.util.Random;
  * For example, in <code>f(x)</code>, this class would represent f.
  * 
  * @author Sam Westerman
- * @version 0.90
+ * @version 1.0
  * @since 0.1
  */
 public class Function implements MathObject {
