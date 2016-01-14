@@ -83,7 +83,11 @@ public class Token implements MathObject {
         assert type != null;
         return type == Type.BINOPER;
     }
-
+    public boolean isDelim() {
+        assert type != null;
+        return type == Type.DELIM;
+    }
+    
     public boolean isFunc() {
         assert type != null;
         return type == Type.FUNC || type == Type.BINOPER;
