@@ -43,12 +43,12 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     x++;
                 } while(0 < paren && x < pTokens.size());
                 Collection<Token> passTokens = new Collection<Token>();
-                for(Token tk : pTokens.subList(pPos + 1, x ))
+                for(Token tk : pTokens.subList(pPos + 1, x))
                      passTokens.add(tk);
                 Object[] temp = new TokenNode(t).condeseNodes(0, passTokens);
                 pPos += (int)temp[0];
                 node.add((TokenNode)temp[1]);
-            } 
+            }
             pPos++;
         }
         return new Object[]{pPos, node};
@@ -73,15 +73,28 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return pos;
     }
     private static TokenNode condense(Collection<TokenNode> peles){
+    //     System.out.print("peles[");
+    //     peles.forEach(x -> System.out.print(x+":"));
+    // System.out.println("]");
         if(peles.size() == 0)
             return null;
         if(peles.size() == 1)
             if(peles.get(0).size() == 0)
                 return peles.get(0);
-            else
+            else if(peles.get(0).token().val().isEmpty())
                 return new TokenNode(peles.get(0).token()){{
                     add(condense(new Collection.Builder<TokenNode>().addAll(peles.get(0).elements()).build()));
                 }};
+            else{
+                System.out.print("token().val() '"+peles.get(0).token()+"' isn't empty! [[");
+                peles.forEach(x -> System.out.print(x+":"));
+                System.out.println();
+                return new TokenNode(peles.get(0).token()){{
+                    add(condense(new Collection<TokenNode>(){{
+                    peles.forEach((TokenNode e) -> addAll(e.elements()));
+                    }}));
+                }};
+            }
         int fhp = firstHighPriority(peles);
         TokenNode u = condense(new Collection.Builder<TokenNode>().add(peles.get(fhp)).build());
         TokenNode s = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(0, fhp)).build());
@@ -90,6 +103,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             u.add(s);
         if(e != null)
             u.add(e);
+        System.out.println("u:"+u);
         return u;
     }
 
@@ -285,6 +299,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 ret += ((TokenNode)n).toExprString() + ", ";
             ret = (size() == 0 ? ret : ret.substring(0, ret.length() - 2)) + ")";
         } else if(token.isBinOper()){
+            if(size() == 0)
+                ret += token.val();
             if(size() == 1) // TODO: FIX THIS
                 ret += token.val() + " " + ((TokenNode)get(0)).toExprString();
             else{
