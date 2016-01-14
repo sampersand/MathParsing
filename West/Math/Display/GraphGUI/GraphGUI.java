@@ -89,6 +89,7 @@ public class GraphGUI extends JFrame implements ActionListener{
     }
 
     public void initPolar(){
+        //3.5 - 1.5·abs(cos(Θ))·√(1.3 + abs(sin(Θ))) + cos(2·Θ) - 3·sin(Θ) + 0.7·cos(12.2·Θ)
         equations = new ArrayList<JTextField>(){{
             add(new JTextField("r1="));
             add(new JTextField("r2="));
@@ -109,15 +110,15 @@ public class GraphGUI extends JFrame implements ActionListener{
         }};
 
         eqBounds = new ArrayList<JTextField>(){{
-            add(new JTextField("-10")); //min x
-            add(new JTextField("-10")); //min y
-            add(new JTextField("10"));  //max x
-            add(new JTextField("10"));  //max y
+            add(new JTextField("-4·π")); //min x
+            add(new JTextField("-4·π")); //min y
+            add(new JTextField("4·π"));  //max x
+            add(new JTextField("4·π"));  //max y
         }};
 
         step = new ArrayList<JTextField>(){{
-            add(new JTextField("-pi*4")); //min x
-            add(new JTextField("pi*4")); //max x
+            add(new JTextField("-4·π")); //min x
+            add(new JTextField("4·π")); //max x
             add(new JTextField("1000")); //amount of drawn
         }};
         gtype = POLAR;
