@@ -269,6 +269,14 @@ public class EquationSystem implements MathObject{
         return equations.size();
     }
 
+    public boolean exprExists(String expr){
+        for(Equation eq : equations){
+            if(eq.getVar().equals(expr))
+                return true;
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         String ret = "EquationSystem: Equations = (";
