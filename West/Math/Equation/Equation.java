@@ -70,9 +70,6 @@ public class Equation implements MathObject {
 
     private static String[] TRIG = {"sec", "csc", "cot", "asin", "acos", "atan", 
                                     "sinh", "cosh", "tanh", "sin", "cos", "tan"};
-    private static String[] FRAC8 = {"⅛", "¼", "⅜", "½", "⅝", "¾", "⅞"};
-    private static String[] FRAC5 = {"⅕", "⅖", "⅗", "⅘"};
-    private static String[] FRAC6 = {"⅙", "⅓", "⅗", "⅔", "⅚"};
     /**
      * Fixes any terms that might be misleading to the compiler. For example, <code>sinx</code> will become
      * <code>sin(x)</code>. Note: To not have it do any fixing, put a "@" at the beginning of the input String
@@ -87,13 +84,8 @@ public class Equation implements MathObject {
             pEq = pEq.replaceAll("²", "^2"); // exponents
             pEq = pEq.replaceAll("³", "^3"); // i.e '²' --> ^2 
             pEq = pEq.replaceAll("⁴", "^4"); // ^^^
-            for(int i = 0; i < FRAC8.length; i++) pEq = pEq.replaceAll(FRAC8[i], (i + 1) + "/8"); //fractions
-            for(int i = 0; i < FRAC6.length; i++) pEq = pEq.replaceAll(FRAC6[i], (i + 1) + "/6"); // i.e '½' --> 1/2
-            for(int i = 0; i < FRAC5.length; i++) pEq = pEq.replaceAll(FRAC5[i], (i + 1) + "/5"); // ^^^
-            pEq = pEq.replaceAll("⅐","1/7"); // ^^^
-            pEq = pEq.replaceAll("⅑","1/9"); // ^^^
-            pEq = pEq.replaceAll("⅒","1/10"); // ^^^
             pEq = pEq.replaceAll("⅟","1/"); // ^^^s
+
             // for(String trig : TRIG) // Trig i.e. 'coshΘ' --> cosh(Θ)
             //     pEq = pEq.replaceAll("(?!<a)" + trig + "(?!=h)(\\^[\\d.-]+)?(?!=\\()([\\w\\d().]+)",trig + "($2)$1"); 
             // pEq = pEq.replaceAll("([0-9])" + getOpersList(),"$1·$2"); // fixing mult i.e. '2x' --> 2*x
