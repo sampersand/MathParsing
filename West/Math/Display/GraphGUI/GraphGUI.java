@@ -191,6 +191,7 @@ public class GraphGUI extends JFrame implements ActionListener{
             eqButtonJP.add(addActionListener(new JButton("Remove Equation"),this));
 
             eqJP.add(eqButtonJP);
+            equations.get(0).requestFocusInWindow();
             equations.forEach(tb -> eqJP.add(addActionListener(tb, al -> dotb(tb, al))));
 
         // all inputs
@@ -201,6 +202,7 @@ public class GraphGUI extends JFrame implements ActionListener{
         // Graph button
             JPanel graphJP = new JPanel(new GridLayout(1,1));
             graphJP.add(addActionListener(new JButton("Graph!"),t -> graph()));
+        graphJP.requestFocusInWindow();
 
         //PUTTING THEM IN THIS
         this.setLayout(new BorderLayout());
