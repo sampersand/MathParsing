@@ -49,6 +49,9 @@ public class Token implements MathObject {
         add(",");
         add(":");
         add("|");
+        add("$");
+        add("&");
+        add("@");
     }};
 
     public static String isDelim(String s){

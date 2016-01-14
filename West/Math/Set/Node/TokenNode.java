@@ -34,10 +34,10 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             assert t != null : "this should have been caught earlier.";
             if(t.isConst() || t.isBinOper()) {
                 node.add(new TokenNode(t));
-            } else if(t.isFunc() || t.isDelim()) {
+            } else if(t.isFunc()) {
                 Collection<Token> passTokens = new Collection<Token>();
-                if(t.isFunc())
-                    passTokens.add(new Token("`", Token.Type.DELIM));
+                // if(t.isFunc())
+                //     passTokens.add(new Token("`", Token.Type.DELIM));
                 int paren = 0;
                 int x = pPos + 1;
                 do{
@@ -49,11 +49,31 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                      passTokens.add(tk);
                 Object[] temp = new TokenNode(t).condeseNodes(0, passTokens);
                 pPos += (int)temp[0];
+                node.add((TokenNode)temp[1]);
+            } else if(t.isDelim()) {
+                Collection<Token> passTokens = new Collection<Token>();
+                int paren = 0;
+                int x = pPos+1;
+                System.out.println("@@");
+                do{
+                    System.out.println(pTokens.get(x));
+                    if(Token.PAREN_L.contains(pTokens.get(x).val())) paren++;
+                    if(Token.PAREN_R.contains(pTokens.get(x).val())) paren--;
+                    if(Token.DELIM.contains(pTokens.get(x).val()) && paren == 0)
+                        break;
+                    // if(Token.PAREN_R.contains(pTokens.get(x).val())) paren--;
+                } while(0 <= paren && ++x < pTokens.size());
+                for(Token tk : pTokens.subList(pPos + 1, x))
+                     passTokens.add(tk);
+                Object[] temp = new TokenNode(t).condeseNodes(0, passTokens);
+                pPos += (int)temp[0];
+                System.out.println("T1:"+temp[1]);
                 // System.out.println("NODE1:"+node);
                 // System.out.println("TEMP1:"+temp[1]);
                 node.add((TokenNode)temp[1]);
                 // System.out.println("NODE2:"+node);
             } 
+
             pPos++;
         }
         return new Object[]{pPos, node};
@@ -80,9 +100,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return pos;
     }
     private static TokenNode condense(Collection<TokenNode> peles){
-    //     System.out.print("peles[");
-    //     peles.forEach(x -> System.out.print(x+":"));
-    // System.out.println("]");
         if(peles.size() == 0)
             return null;
         if(peles.size() == 1)
@@ -107,7 +124,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             u.add(s);
         if(e != null)
             u.add(e);
-        System.out.println("u:"+u);
+        System.out.println("peles:"+peles.elements());
+        System.out.println("u:"+u.elements());
         return u;
     }
 
