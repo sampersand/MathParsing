@@ -81,8 +81,7 @@ public class Equation implements MathObject {
             return pEq.substring(1);
         pEq = pEq.replaceAll("^([A-Za-z_]+)=-","$1=–"); //makes parsing better. thrown together, however.
         if(pEq.matches(".*([0-9.–-]+)E([0-9.–-]+).*"))
-            pEq = pEq.replaceAll("([\\d.-–]+)E([\\d.-–]+)","$1*10^$2").replaceAll("-","–"); // sci notation
-        System.out.println(pEq);
+            pEq = pEq.replaceAll("([\\d.–-]+)E([\\d.–-]+)","$1*10^$2").replaceAll("-","–"); // sci notation
         pEq = pEq.replaceAll("²", "^2"); // exponents
         pEq = pEq.replaceAll("³", "^3"); // i.e '²' --> ^2 
         pEq = pEq.replaceAll("⁴", "^4"); // ^^^
@@ -127,7 +126,6 @@ public class Equation implements MathObject {
             if((repl = isUNL(all)) != null){
                 tokens.add(new Token(isUNL(all), Token.Type.UNL));
                 all=all.substring(isUNL(all).length());
-                System.out.println(tokens);
             }
             if((repl = isParenL(all)) != null){
                 if(isInLast(s,Token.PAREN_L) != null) //if its a left paren, make function

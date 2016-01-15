@@ -22,8 +22,7 @@ public class Tester {
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
-            args = new String[]{"--d","y","--e","y=hypot(f)","hypot(f)=4*d","d=e^pi"};
-            System.out.println(args[3]);
+            // args = new String[]{"--d","y","--e","y=hypot(f)","hypot(f)=4*d","d=e^pi"};
         }
 
 
