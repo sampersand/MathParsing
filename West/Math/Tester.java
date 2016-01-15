@@ -21,10 +21,11 @@ public class Tester {
      * @throws IllegalArgumentException Thrown when the first value isn't equal to "--e" of --f 
      */
     public static void main(String[] args) throws IllegalArgumentException {
-        if(args.length == 0){
-            args = new String[]{"--d","y","--e","y = 5*–1"};
-            System.out.println(args[3]);
-        }
+        // if(args.length == 0){
+            // args = new String[]{"--i","x","--d","y","--e","y = x^–1"};
+            // System.out.println(args[3]);
+        // }
+
         if(args.length == 1 && args[0].equals("--g")){
             GraphGUI gg = new GraphGUI();
         } else {

@@ -186,13 +186,6 @@ public class Function implements MathObject {
             new Collection.Builder<Integer>().add(1).add(2).build(),
             a -> a.length == 1 ? 0 - a[0] : a[0] - a[1]
             ));
-        add(new Function(new Collection<String>(){{add("–");}}, //negation
-            "negate 'A'", "–(A)",
-            7,
-            Type.UNL,
-            new Collection.Builder<Integer>().add(1).build(),
-            a -> -1 * a[0]
-            ));
 
         add(new Function(new Collection<String>(){{add("*");add("·");add("×");}},
             "Multiplies 'A' to 'B'", "A * B",
@@ -224,7 +217,27 @@ public class Function implements MathObject {
             a -> Math.pow(a[0],a[1])
             ));
 
-
+        //UN_L
+        add(new Function(new Collection<String>(){{add("–");}}, //negation
+            "negate 'A'", "–(A)",
+            7,
+            Type.UNL,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> -1 * a[0]
+            ));
+        //UN_R
+        add(new Function(new Collection<String>(){{add("!");}}, //negation
+            "factorial 'A'", "!(A)",
+            7,
+            Type.UNR,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> {
+                Double ret = 1D;
+                for(Double x = a[0]; x > 0; x--)
+                    ret *= x;
+                return ret;
+                }
+            ));
 
         //Trigonometric functions
         add(new Function(new Collection<String>(){{add("sin");}},

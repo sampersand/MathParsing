@@ -200,18 +200,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         String val = toExprString();
         if(pVars.containsKey(val)) //if the value is already in pVars, then just take a shortcut.
             return pVars;
-        // for(Equation eq : pEqSys.equations()) //if the current val is on the left hand side, then use that
-        //     if(((TokenNode)eq.subEquations().getSD(0).get(0)).toExprString().equals(val)){
-        //         System.out.println("A@@@@@@@@@@@@");
-        //         // assert false : val;
-        //         TokenNode tkn = eq.subEquations().findExpr(val).get(-1);
-        //         System.out.println("B@@@@@@@@@@@@");
-        //         pVars = appendHashMap(pVars, tkn.eval(pVars, pEqSys));
-        //         System.out.println("C@@@@@@@@@@@@");
-        //         appendHashMap(pVars,val, pVars.get(tkn.toString()));
-        //         System.out.println("D@@@@@@@@@@@@");
-        //         return pVars;
-        //     }
         if(token.isFunc() || token.isDelim()){
             if(pEqSys.functions().containsKey(token.val())) // if it is a function
                 return pEqSys.functions().get(token.val()).exec(pVars, pEqSys, this); //no work
@@ -222,6 +210,15 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             try{
                 return appendHashMap(pVars, val, Double.parseDouble(val));
             } catch(NumberFormatException err){ 
+            for(Equation eq : pEqSys.equations()){ //if the current val is on the left hand side, then use that
+                if(((TokenNode)eq.subEquations().getSD(1).get(0)).toExprString().equals(val)){
+                    // assert false : val;
+                    TokenNode tkn = eq.subEquations().findExpr(val).get(-1);
+                    pVars = appendHashMap(pVars, tkn.eval(pVars, pEqSys));
+                    appendHashMap(pVars,val, pVars.get(tkn.toString()));
+                    return pVars;
+                }
+            }
                 switch(val) {
                     case "e":
                         return appendHashMap(pVars, val, Math.E);
@@ -269,7 +266,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     case "⅒": return appendHashMap(pVars, val, 1/10D);
 
                     default:
-                        System.err.println(val + " doesn't exist; returning NaN instead");
+                        System.err.println("Variable '" + val + "' doesn't exist; returning NaN instead");
                         return appendHashMap(pVars, val, Double.NaN);
                 }
             }
