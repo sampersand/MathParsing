@@ -143,8 +143,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public static TokenNode generateMasterNode(ArrayList<Token> pTokens) {
         assert checkForNullTokens(pTokens);
         TokenNode tn = (TokenNode)new TokenNode().condeseNodes(0, pTokens)[1]; //just to make it easier to read.
-        if(Function.USING_BIN_OPERS)
-            tn = condense(new Collection.Builder<TokenNode>().addAll(tn.elements).build());
+        tn = condense(new Collection.Builder<TokenNode>().addAll(tn.elements).build());
         return tn.removeExtraFuncs();
     }
 

@@ -19,7 +19,6 @@ import java.util.Random;
  */
 public class Function implements MathObject {
     private static Double NaN = Double.NaN;
-    public static final boolean USING_BIN_OPERS = true;
     public static enum Type{
         UN_L,
         UN_R,
@@ -526,22 +525,18 @@ public class Function implements MathObject {
 
     public static Collection<String> UN_R = new Collection<String>(){{
             for(Function f : FUNCTIONS)
-                if(f.type() == Type.UNR)
+                if(f.type() == Type.UN_R)
                     for(String name : f.names())
                         add(name);
         }};
 
     public static String isBinOper(String s){
-        if(!USING_BIN_OPERS)
-            return null;
         if(s.matches(".*E[-\\d.]*$"))
             return null;
         return Equation.isInLast(s, BIN_OPERS);
     }
 
     public static String isAssign(String s){
-        if(!USING_BIN_OPERS)
-            return null;
         return Equation.isInLast(s, ASSIGN_OPERS);
     }
 
