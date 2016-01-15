@@ -84,7 +84,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 return peles.get(0);
             else
                 return new TokenNode(peles.get(0).token){{
-                    add(condense(new Collection<TokenNode>().addAllE(peles.get(0).elements)));
+                    addAllE(condense(new Collection<TokenNode>().addAllE(peles.get(0).elements)).elements());
                 }};
 
         int fhp = firstHighPriority(peles);
@@ -96,11 +96,14 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         TokenNode u = condense(new Collection.Builder<TokenNode>().add(peles.get(fhp)).build());
         TokenNode s = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(0, fhp)).build());
         TokenNode e = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(fhp + 1)).build());
-
+        System.out.println("u:"+u+"::"+peles.toFullString());
+        System.out.println("s:"+s+"::"+peles.toFullString());
+        System.out.println("e:"+e+"::"+peles.toFullString());
         if(s != null)
             u.add(s);
         if(e != null)
             u.add(e);
+        System.out.println("4"+peles);
         return u;
     }
 
@@ -117,7 +120,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     private void addD(TokenNode n){
         super.addD(depth(), n);
     }
-    
+
     public TokenNode getD(int depth){
         return (TokenNode) super.getD(depth);
     }
@@ -127,7 +130,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     }
 
     public TokenNode removeExtraFuncs(){
-        if(!token.val().isEmpty() || isFinal())
+        if(isFinal())
             return this;
         TokenNode ret = new TokenNode(token);
         for(Node<?, ?> tn : elements)
@@ -202,6 +205,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         String val = toExprString();
         if(pVars.containsKey(val)) //if the value is already in pVars, then just take a shortcut.
             return pVars;
+        System.out.println("TODO: fix the code after this");
         // for(Equation eq : pEqSys.equations()) //if the current val is on the left hand side, then use that
         //     if(((TokenNode)eq.subEquations().getSD(0).get(0)).toExprString().equals(val)){
         //         System.out.println("A@@@@@@@@@@@@");
@@ -295,11 +299,10 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
     public String toExprString(){
         String ret = "";
-        // if(size() == 0){
-        //     assert token.isConst() ? isFinal() : true;
-        //     return token.val();
-        // }
-
+        if(size() == 0){
+            assert token.isConst() ? isFinal() : true;
+            return token.val();
+        }
         if(token.isFunc()&& !token.isBinOper() || token.isDelim()){
             ret += token.val() + "(";
             for(Node n : this)

@@ -193,16 +193,18 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "Collection:\n";
 
-        final int columns = 5; // amount of columns
-        final int spacing = 20; // amount of spaces. Note that there will be an additional one between columns
+        int columns = 5; // amount of columns
+        int spacing = 0; // amount of spaces. Note that there will be an additional one between columns
+        for(E e : this)
+            if(e.toString().length() > spacing)
+                spacing = e.toString().length();
         String spaces = "";
         for(int i = 0; i < spacing; i++) spaces += " ";
-
         ret += indent(idtLvl + 1) + "Elements:";
         for(int i = 0; i < elements.size(); i++){
             if(i % columns == 0)
                 ret += "\n" + indent(idtLvl + 2);
-            ret += "'"+(get(i) + spaces).substring(0, spacing) + "', ";
+            ret += "'" + (get(i) + "'" + spaces).substring(0, spacing) + " | ";
         }
         return ret + "\n";
 
