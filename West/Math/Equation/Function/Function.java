@@ -32,7 +32,7 @@ public class Function implements MathObject {
         public Double exec(Double[] args);
     }
 
-    public static final int DEFAULT_PRIORITY = 8;
+    public static final int DEFAULT_PRIORITY = 9;
 
     public static Collection<Function> FUNCTIONS = new Collection<Function>() {{
         // =                : 0
@@ -217,10 +217,15 @@ public class Function implements MathObject {
             a -> Math.pow(a[0],a[1])
             ));
 
+
+
+        //UNARY
+
+
         //UN_L
         add(new Function(new Collection<String>(){{add("–");}}, //negation
             "negate 'A'", "–(A)",
-            7,
+            8,
             Type.UNL,
             new Collection.Builder<Integer>().add(1).build(),
             a -> -1 * a[0]
@@ -232,12 +237,13 @@ public class Function implements MathObject {
             Type.UNR,
             new Collection.Builder<Integer>().add(1).build(),
             a -> {
-                Double ret = 1D;
-                for(Double x = a[0]; x > 0; x--)
-                    ret *= x;
-                return ret;
+                    Double ret = 1D;
+                    for(Double x = a[0]; x > 0; x--)
+                        ret *= x;
+                    return ret;
                 }
             ));
+
 
         //Trigonometric functions
         add(new Function(new Collection<String>(){{add("sin");}},
