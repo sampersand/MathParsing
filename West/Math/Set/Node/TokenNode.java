@@ -18,7 +18,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
     public TokenNode(){
         super();
-        token = new Token("",Token.Type.FUNC);
+        token = new Token();
     }
 
     public TokenNode(Token pToken) {
@@ -31,47 +31,23 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         TokenNode node = copy();
         while(pPos < pTokens.size()) {
             Token t = pTokens.get(pPos);
-            assert t != null : "this should have been caught earlier.";
-            if(t.isConst() || t.isBinOper()) {
+            if(t.isConst() || t.isBinOper())
                 node.add(new TokenNode(t));
-            } else if(t.isFunc()) {
+            else if(t.isFunc() || t.isDelim()) {
                 Collection<Token> passTokens = new Collection<Token>();
-                // if(t.isFunc())
-                //     passTokens.add(new Token("`", Token.Type.DELIM));
                 int paren = 0;
                 int x = pPos + 1;
                 do{
                     if(Token.PAREN_L.contains(pTokens.get(x).val())) paren++;
                     if(Token.PAREN_R.contains(pTokens.get(x).val())) paren--;
+                    if(t.isDelim() && Token.DELIM.contains(pTokens.get(x).val()) && paren == 0) break;
                     x++;
-                } while(0 < paren && x < pTokens.size());
+                } while((t.isDelim() ? 0 <= paren : 0 < paren) && x < pTokens.size());
                 for(Token tk : pTokens.subList(pPos + 1, x))
                      passTokens.add(tk);
                 Object[] temp = new TokenNode(t).condeseNodes(0, passTokens);
                 pPos += (int)temp[0];
                 node.add((TokenNode)temp[1]);
-            } else if(t.isDelim()) {
-                Collection<Token> passTokens = new Collection<Token>();
-                int paren = 0;
-                int x = pPos+1;
-                System.out.println("@@");
-                do{
-                    System.out.println(pTokens.get(x));
-                    if(Token.PAREN_L.contains(pTokens.get(x).val())) paren++;
-                    if(Token.PAREN_R.contains(pTokens.get(x).val())) paren--;
-                    if(Token.DELIM.contains(pTokens.get(x).val()) && paren == 0)
-                        break;
-                    // if(Token.PAREN_R.contains(pTokens.get(x).val())) paren--;
-                } while(0 <= paren && ++x < pTokens.size());
-                for(Token tk : pTokens.subList(pPos + 1, x))
-                     passTokens.add(tk);
-                Object[] temp = new TokenNode(t).condeseNodes(0, passTokens);
-                pPos += (int)temp[0];
-                System.out.println("T1:"+temp[1]);
-                // System.out.println("NODE1:"+node);
-                // System.out.println("TEMP1:"+temp[1]);
-                node.add((TokenNode)temp[1]);
-                // System.out.println("NODE2:"+node);
             } 
 
             pPos++;
@@ -83,6 +59,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     private int priority(){
         if(token.isConst())
             return Function.DEFAULT_PRIORITY + 1;
+        assert !token.isDelim();
+        System.out.println("remove the delim part");
         if(token.isDelim())
             return Function.DEFAULT_PRIORITY;
         assert token.isFunc();
@@ -92,7 +70,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     private static int firstHighPriority(Collection<TokenNode> peles){
         int pos = 0, priority = Function.DEFAULT_PRIORITY;
         for(int i = 0; i < peles.size(); i++){
-            if(peles.get(i).priority() <=priority){ //i swapped them
+            if(peles.get(i).priority() <= priority){ //i swapped them
                 priority = peles.get(i).priority();
                 pos = i;
             }
@@ -105,27 +83,22 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         if(peles.size() == 1)
             if(peles.get(0).size() == 0)
                 return peles.get(0);
-            else if(peles.get(0).token().val().isEmpty())
+            else
                 return new TokenNode(peles.get(0).token()){{
                     add(condense(new Collection.Builder<TokenNode>().addAll(peles.get(0).elements()).build()));
                 }};
-            else{
-                return new TokenNode(peles.get(0).token()){{
-                    add(condense(new Collection<TokenNode>(){{
-                    peles.forEach((TokenNode e) -> addAll(e.elements()));
-                    }}));
-                }};
-            }
         int fhp = firstHighPriority(peles);
         TokenNode u = condense(new Collection.Builder<TokenNode>().add(peles.get(fhp)).build());
+        // System.out.println("u:"+peles+"::"+u);
         TokenNode s = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(0, fhp)).build());
+        // System.out.println("s:"+peles+"::"+s);
         TokenNode e = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(fhp + 1)).build());
+        // System.out.println("e:"+peles+"::"+e);
+        // System.out.println("u4:"+peles+"::"+u);
         if(s != null)
             u.add(s);
         if(e != null)
             u.add(e);
-        System.out.println("peles:"+peles.elements());
-        System.out.println("u:"+u.elements());
         return u;
     }
 
@@ -154,8 +127,9 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public TokenNode removeExtraFuncs(){
         if(!token.val().isEmpty())
             return this;
-        assert size() == 1;
-        return get(0).removeExtraFuncs();
+        TokenNode ret = new TokenNode(token);
+        elements.forEach(e -> ret.add(((TokenNode)e).removeExtraFuncs()));
+        return ret;
     }
 
     @Override
@@ -329,9 +303,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 ret = ret.substring(0, ret.length() >=2 ? ret.length() - 2 : ret.length());
             }
         }
-        else if(token.isConst()){
+        else if(token.isConst())
             ret += token.val();
-        }
         else
             assert false;
         return ret;

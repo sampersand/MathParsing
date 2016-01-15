@@ -59,7 +59,7 @@ public class Token implements MathObject {
     }
 
     public Token() {
-        this("", Type.VAR);
+        this("", Type.FUNC);
     }
 
     public Token(String pVal, Type pType) {
