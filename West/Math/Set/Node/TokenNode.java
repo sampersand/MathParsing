@@ -17,8 +17,8 @@ import java.util.HashMap;
 public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
     public TokenNode(){
-        super();
-        token = new Token();
+        super(new Token("",Token.Type.FUNC));
+
     }
 
     public TokenNode(Token pToken) {
@@ -127,10 +127,10 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public TokenNode removeExtraFuncs(){
         if(!token.val().isEmpty())
             return this;
-        TokenNode ret = new TokenNode(token);
-        elements.forEach(e -> ret.add(((TokenNode)e).removeExtraFuncs()));
-        return ret;
+        assert size() == 1;
+        return get(0).removeExtraFuncs();
     }
+
 
     @Override
     public TokenNode get(int pPos){
@@ -165,13 +165,14 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
     private HashMap<String, Double> appendHashMap(HashMap<String, Double> a, Object b){
         if(b != null)
-        a.putAll((HashMap<String, Double>)b);
+            a.putAll((HashMap<String, Double>)b);
         return a;
     }
     private HashMap<String, Double> appendHashMap(HashMap<String, Double> a, String b, Double c){
         a.put(b,c);
         return a;
     }
+
 
     public TokenNode findExpr(String val){
         if(toExprString().equals(val))
