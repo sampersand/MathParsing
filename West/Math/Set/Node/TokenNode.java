@@ -98,9 +98,9 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         TokenNode e = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(fhp + 1)).build());
 
         if(s != null)
-            u.addE(s);
+            u.add(s);
         if(e != null)
-            u.addE(e);
+            u.add(e);
         return u;
     }
 
@@ -108,7 +108,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public void addD(int i, Node<?, ?> n) {
         assert n != null : "Cannot addDepth null Nodes!";
         if(i <= 0 || size() <= 0){
-            addE(n);
+            add(n);
         } else {
             get(size() - 1).addD(i - 1, n);
         }
@@ -117,7 +117,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     private void addD(TokenNode n){
         super.addD(depth(), n);
     }
-
+    
     public TokenNode getD(int depth){
         return (TokenNode) super.getD(depth);
     }
