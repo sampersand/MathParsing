@@ -32,7 +32,7 @@ public class Grapher extends JPanel implements MathObject {
 
     /** TODO: JAVADOC */
     public static final Color[] COLORS = new Color[]{
-        Color.BLUE, Color.RED, Color.CYAN, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.GREEN, Color.YELLOW};
+        Color.BLUE, Color.RED, Color.ORANGE, Color.CYAN, Color.MAGENTA, Color.PINK, Color.GREEN, Color.YELLOW};
 
     /** TODO: JAVADOC */
     protected JLayeredPane layeredPane;

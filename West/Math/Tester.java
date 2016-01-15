@@ -22,10 +22,12 @@ public class Tester {
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
-            args = new String[]{"--d","y","--e","y=abs(5)"};
+            args = new String[]{"--d","y","--e","y=hypot(c:d)","c=4*d","d=e^pi"};
+            // args = new String[]{"--d","y","--e","y=hypot(x^–1|x)"};
             // args = new String[]{"--i","x","--d","y","--e","y = abs(x)"};
             System.out.println(args[3]);
         }
+
 
         if(args.length == 1 && args[0].equals("--g")){
             GraphGUI gg = new GraphGUI();

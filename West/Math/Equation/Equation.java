@@ -79,15 +79,18 @@ public class Equation implements MathObject {
     public static String fixNode(String pEq) {
         if(pEq.charAt(0) == '@')
             return pEq.substring(1);
-        if(pEq.matches(".*([\\d.-]+)E([\\d.-]+).*"))
+        System.out.println(pEq = pEq.replaceAll("([\\d.-]+)E([\\d.-]+)","$1*10^$2"));
+        if(pEq.matches(".*([\\d.-]+)E([\\d.-]+).*")){
+            System.out.println("MATCHES");
             pEq = pEq.replaceAll("([\\d.-]+)E([\\d.-]+)","$1*10^$2").replaceAll("-","–"); // sci notation
+        }
         pEq = pEq.replaceAll("²", "^2"); // exponents
         pEq = pEq.replaceAll("³", "^3"); // i.e '²' --> ^2 
         pEq = pEq.replaceAll("⁴", "^4"); // ^^^
         pEq = pEq.replaceAll("⅟","1/"); // ^^^s
 
-        // for(String trig : TRIG) // Trig i.e. 'coshΘ' --> cosh(Θ)
-        //     pEq = pEq.replaceAll("(?!<a)" + trig + "(?!=h)(\\^[\\d.-]+)?(?!=\\()([\\w\\d().]+)",trig + "($2)$1"); 
+        for(String trig : TRIG) // Trig i.e. 'coshΘ' --> cosh(Θ)
+            pEq = pEq.replaceAll("(?!<a)" + trig + "(?!=h)(\\^[\\d.-]+)?(?!=\\()([\\w\\d().]+)",trig + "($2)$1"); 
         // pEq = pEq.replaceAll("([0-9])" + getOpersList(),"$1·$2"); // fixing mult i.e. '2x' --> 2*x
         return pEq;
     }

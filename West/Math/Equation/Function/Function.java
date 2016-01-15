@@ -32,7 +32,7 @@ public class Function implements MathObject {
         public Double exec(Double[] args);
     }
 
-    public static final int DEFAULT_PRIORITY = 9;
+    public static final int DEFAULT_PRIORITY = 100; //TODO: FIX
 
     public static Collection<Function> FUNCTIONS = new Collection<Function>() {{
         // =                : 0
@@ -42,6 +42,8 @@ public class Function implements MathObject {
         // ^, ≫, ≪          : 4
         // *, /, %          : 5
         // +, -             : 6
+        // unary !          : 7
+        // unary –          : 8
         add(new Function(new Collection<String>(){{add("=");}},
             "Sets 'A' to 'B'", "A = B",
             0,
@@ -183,7 +185,7 @@ public class Function implements MathObject {
             "Subtracts 'A' to 'B'", "A - B",
             4,
             Type.BIN,
-            new Collection.Builder<Integer>().add(1).add(2).build(),
+            new Collection.Builder<Integer>().add(2).build(),
             a -> a.length == 1 ? 0 - a[0] : a[0] - a[1]
             ));
 
@@ -393,6 +395,8 @@ public class Function implements MathObject {
             Type.NORM,
             new Collection.Builder<Integer>().add(-1).build(),
             a -> {
+                    if(a.length <= 1)
+                        return NaN;
                     Double ret = 0D;
                     for(double d : a)
                         ret += d * d;
