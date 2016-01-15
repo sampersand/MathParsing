@@ -270,7 +270,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     case "⅒": return appendHashMap(pVars, val, 1/10D);
 
                     default:
-                        System.err.println(val + " doesn't exist, but returning NaN anyways");
+                        System.err.println(val + " doesn't exist; returning NaN instead");
                         return appendHashMap(pVars, val, Double.NaN);
                 }
             }

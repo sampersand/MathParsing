@@ -22,7 +22,7 @@ public class Tester {
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
-            args = new String[]{"--d","y","--e","y = 1+hypot(hypot(2,3),4)"};
+            args = new String[]{"--d","y","--e","y = –1"};
             System.out.println(args[3]);
         }
         if(args.length == 1 && args[0].equals("--g")){

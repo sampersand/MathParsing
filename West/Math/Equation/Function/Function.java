@@ -517,6 +517,20 @@ public class Function implements MathObject {
                         add(name);
         }};
 
+    public static Collection<String> UN_L = new Collection<String>(){{
+            for(Function f : FUNCTIONS)
+                if(f.type() == Type.UN_L)
+                    for(String name : f.names())
+                        add(name);
+        }};
+
+    public static Collection<String> UN_R = new Collection<String>(){{
+            for(Function f : FUNCTIONS)
+                if(f.type() == Type.UNR)
+                    for(String name : f.names())
+                        add(name);
+        }};
+
     public static String isBinOper(String s){
         if(!USING_BIN_OPERS)
             return null;
