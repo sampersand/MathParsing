@@ -508,6 +508,11 @@ public class Function implements MathObject {
                     for(String name : f.names())
                         add(name);
         }};
+    public static String isBinOper(String s){
+        if(s.matches(".*E[-\\d.]*$"))
+            return null;
+        return Equation.isInLast(s, BIN_OPERS);
+    }
 
     public static Collection<String> ASSIGN_OPERS = new Collection<String>(){{
             for(Function f : FUNCTIONS)
@@ -516,6 +521,10 @@ public class Function implements MathObject {
                         add(name);
         }};
 
+    public static String isAssign(String s){
+        return Equation.isInLast(s, ASSIGN_OPERS);
+    }
+
     public static Collection<String> UN_L = new Collection<String>(){{
             for(Function f : FUNCTIONS)
                 if(f.type() == Type.UN_L)
@@ -523,22 +532,20 @@ public class Function implements MathObject {
                         add(name);
         }};
 
+    public static String isUn_L(String s){
+        return Equation.isInLast(s, UN_L);
+    }
+
     public static Collection<String> UN_R = new Collection<String>(){{
             for(Function f : FUNCTIONS)
                 if(f.type() == Type.UN_R)
                     for(String name : f.names())
                         add(name);
         }};
-
-    public static String isBinOper(String s){
-        if(s.matches(".*E[-\\d.]*$"))
-            return null;
-        return Equation.isInLast(s, BIN_OPERS);
+    public static String isUn_R(String s){
+        return Equation.isInLast(s, UN_R);
     }
 
-    public static String isAssign(String s){
-        return Equation.isInLast(s, ASSIGN_OPERS);
-    }
 
     public static Function get(String name){
         for(Function f : FUNCTIONS)
