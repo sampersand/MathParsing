@@ -202,18 +202,19 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         String val = toExprString();
         if(pVars.containsKey(val)) //if the value is already in pVars, then just take a shortcut.
             return pVars;
-        for(Equation eq : pEqSys.equations()) //if the current val is on the left hand side, then use that
-            if(((TokenNode)eq.subEquations().getSD(0).get(0)).toExprString().equals(val)){
-                System.out.println("A@@@@@@@@@@@@");
-                TokenNode tkn = eq.subEquations().findExpr(val).get(-1);
-                System.out.println("B@@@@@@@@@@@@");
-                pVars = appendHashMap(pVars, tkn.eval(pVars, pEqSys));
-                System.out.println("C@@@@@@@@@@@@");
-                appendHashMap(pVars,val, pVars.get(tkn.toString()));
-                System.out.println("D@@@@@@@@@@@@");
-                return pVars;
-            }
-        if(token.isFunc()){
+        // for(Equation eq : pEqSys.equations()) //if the current val is on the left hand side, then use that
+        //     if(((TokenNode)eq.subEquations().getSD(0).get(0)).toExprString().equals(val)){
+        //         System.out.println("A@@@@@@@@@@@@");
+        //         // assert false : val;
+        //         TokenNode tkn = eq.subEquations().findExpr(val).get(-1);
+        //         System.out.println("B@@@@@@@@@@@@");
+        //         pVars = appendHashMap(pVars, tkn.eval(pVars, pEqSys));
+        //         System.out.println("C@@@@@@@@@@@@");
+        //         appendHashMap(pVars,val, pVars.get(tkn.toString()));
+        //         System.out.println("D@@@@@@@@@@@@");
+        //         return pVars;
+        //     }
+        if(token.isFunc() || token.isDelim()){
             if(pEqSys.functions().containsKey(token.val())) // if it is a function
                 return pEqSys.functions().get(token.val()).exec(pVars, pEqSys, this); //no work
             return Function.exec(pVars, token.val(), pEqSys, this); //no else needed
@@ -275,7 +276,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 }
             }
         } else
-            throw new UnsupportedOperationException("This shouldn't happen! There is no way to evaluate node: " + token.val());
+            throw new UnsupportedOperationException("This shouldn't happen! There is no way to evaluate node: " +
+                                                    token.val());
     }
 
     //here down are from EquationNode
@@ -293,22 +295,15 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
     public String toExprString(){
         String ret = "";
-        if(size() == 0){
-            assert token.isConst() ? isFinal() : true;
-            return token.val();
-        }
-        if(token.isFunc() && !token.isBinOper()){
+        // if(size() == 0){
+        //     assert token.isConst() ? isFinal() : true;
+        //     return token.val();
+        // }
+
+        if(token.isFunc()&& !token.isBinOper() || token.isDelim()){
             ret += token.val() + "(";
             for(Node n : this)
                 ret += ((TokenNode)n).toExprString() + ", ";
-            ret = (size() == 0 ? ret : ret.substring(0, ret.length() - 2)) + ")";
-
-        } else if(token.isDelim()){
-            ret += token.val() + "(";
-            for(Node n : this){
-                System.out.println(n.toFullString());
-                ret += ((TokenNode)n).toExprString() + ", ";
-            }
             ret = (size() == 0 ? ret : ret.substring(0, ret.length() - 2)) + ")";
 
         } else if(token.isBinOper()){

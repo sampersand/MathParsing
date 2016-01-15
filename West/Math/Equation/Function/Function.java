@@ -523,7 +523,7 @@ public class Function implements MathObject {
         for(Function f : FUNCTIONS)
             if(f.names().contains(name))
                 return f;
-        return null;
+        return West.Math.Equation.Token.isDelim(name) == null ? null : get(""); // if its a delim, then return "()" Func
     }
     /**
      * A String that holds either the function name ({@link Function}) or the file name ({@link CustomFunction}).

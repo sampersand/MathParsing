@@ -24,7 +24,7 @@ public class Tester {
         if(args.length == 0)
             // args = new String[]{"--d","y","--e","y = 1$2"};
             // args = new String[]{"--d","y","--e","y = 0+f(1$2)"};
-            args = new String[]{"--d","y","--e","y = 0+f(1&g(2$3)@4)"};
+            args = new String[]{"--d","y","--e","y = 0+rand(1&hypot(2$3)@4)"};
         System.out.println(args[3]);
             // args = new String[]{"--d","y","--e","y = 1+hypot(2-rand(3*(4/5)^6|7)|8)"};
         if(args.length == 1 && args[0].equals("--g")){
@@ -104,13 +104,12 @@ public class Tester {
                 }
             }
             System.out.println("TODO: REMOVE THIS PRINT");
-            System.out.println(eqsys);
+            System.out.println(eqsys.toFullString());
             if(indep.isEmpty()){
                 EquationSystem eqsysfinal = eqsys;
                 dep.forEach(s -> Print.printi("RESULT ("+s+"):", eqsysfinal.eval(s)));
             } else {
                 System.out.println(eqsys);
-                assert false;
                 String[] depl = new String[dep.size()];
                 for(int i = 0; i < dep.size(); i++)
                     depl[i] = dep.get(i);
