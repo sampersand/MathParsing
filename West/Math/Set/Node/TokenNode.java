@@ -25,34 +25,35 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         super(pToken);
     }
 
-    protected Object[] condeseNodes(int pPos, ArrayList<Token> pTokens) {
-        assert pTokens != null;
-        assert checkForNullTokens(pTokens);
+    protected Object[] condeseNodes(ArrayList<Token> pTokens) {
+        int pos = 0;
+        System.out.println("Passed tokens:" + pTokens);
         TokenNode node = copy();
-        while(pPos < pTokens.size()) {
-            Token t = pTokens.get(pPos);
+        while(pos < pTokens.size()) {
+            Token t = pTokens.get(pos);
             if(t.isConst() || t.isBinOper() || t.isUNL() || t.isUNR())
                 node.add(new TokenNode(t));
             else if(t.isFunc() || t.isDelim()) {
                 Collection<Token> passTokens = new Collection<Token>();
                 int paren = 0;
-                int x = pPos + 1;
+                int x = pos + 1;
                 do{
                     if(Token.PAREN_L.contains(pTokens.get(x).val())) paren++;
                     if(Token.PAREN_R.contains(pTokens.get(x).val())) paren--;
                     if(t.isDelim() && Token.DELIM.contains(pTokens.get(x).val()) && paren == 0) break;
                     x++;
                 } while((t.isDelim() ? 0 <= paren : 0 < paren) && x < pTokens.size());
-                for(Token tk : pTokens.subList(pPos + 1, x))
+                for(Token tk : pTokens.subList(pos + 1, x))
                      passTokens.add(tk);
-                Object[] temp = new TokenNode(t).condeseNodes(0, passTokens);
-                pPos += (int)temp[0];
+                Object[] temp = new TokenNode(t).condeseNodes(passTokens);
+                pos += (int)temp[0];
                 node.add((TokenNode)temp[1]);
             } 
 
-            pPos++;
+            pos++;
         }
-        return new Object[]{pPos, node};
+        System.out.println("Returned Node:" + node);
+        return new Object[]{pos, node};
     }
 
 
@@ -76,30 +77,46 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return priority == Function.DEFAULT_PRIORITY ? -1 : pos;
     }
     private static TokenNode condense(final Collection<TokenNode> peles){
+        System.out.println(peles+"<------peles");
         if(peles.size() == 0)
             return null;
 
         if(peles.size() == 1)
             if(peles.get(0).size() == 0)
                 return peles.get(0);
-            else
+            else{
+                System.out.println("TKND:"+new TokenNode(peles.get(0).token){{
+                    System.out.println("@TKNDTKN:"+peles.get(0).token);
+                    System.out.println("@TKNDADD:"+condense(new Collection<TokenNode>().addAllE(peles.get(0).elements)));
+                    for(Node<?, ?> tn : condense(new Collection<TokenNode>().addAllE(peles.get(0).elements)).elements)
+                        add((TokenNode)tn);
+                    // condense(new Collection<TokenNode>().addAllE(peles.get(0).elements)).forEach(this::add);
+                }});
                 return new TokenNode(peles.get(0).token){{
-                    addAllE(condense(new Collection<TokenNode>().addAllE(peles.get(0).elements)).elements);
+                    System.out.println(peles+"<-----size==0&getsize!=0");
+                    System.out.println("added:"+condense(new Collection<TokenNode>().addAllE(peles.get(0).elements)).elements);
+                    condense(new Collection<TokenNode>().addAllE(peles.get(0).elements)).elements.forEach(this::add);
                 }};
+            }
 
         int fhp = firstHighPriority(peles);
-
+        assert fhp != -1;
         if(fhp == -1)
             return new TokenNode(new Token()){{
                 peles.forEach(this::add);
             }};
+        System.out.println("B@@@@@");
         TokenNode u = condense(new Collection.Builder<TokenNode>().add(peles.get(fhp)).build());
         TokenNode s = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(0, fhp)).build());
         TokenNode e = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(fhp + 1)).build());
+        System.out.println("U:"+u);
+        System.out.println("S:"+s);
+        System.out.println("E:"+e+"::"+new Collection.Builder<TokenNode>().addAll(peles.subList(fhp + 1)).build());
         if(s != null)
             u.add(s);
         if(e != null)
             u.add(e);
+        System.out.println("return::"+peles+":"+u);
         return u;
     }
 
@@ -142,16 +159,9 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
     public static TokenNode generateMasterNode(ArrayList<Token> pTokens) {
         assert checkForNullTokens(pTokens);
-        TokenNode tn = (TokenNode)new TokenNode().condeseNodes(0, pTokens)[1]; //just to make it easier to read.
+        TokenNode tn = (TokenNode)new TokenNode().condeseNodes(pTokens)[1]; //just to make it easier to read.
         tn = condense(new Collection.Builder<TokenNode>().addAll(tn.elements).build());
         return tn.removeExtraFuncs();
-    }
-
-    private static boolean checkForNullTokens(ArrayList<Token> pTokens){
-        for(Token t : pTokens)
-            if(t == null)
-                return false;
-        return true;
     }
 
     @Override
@@ -294,12 +304,11 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             assert token.isConst() ? isFinal() : true;
             return token.val();
         }
-        if(token.isFunc()&& !token.isBinOper() || token.isDelim()){
+        if((token.isFunc() && !token.isBinOper()) || token.isDelim()){
             ret += token.val() + "(";
             for(Node n : this)
                 ret += ((TokenNode)n).toExprString() + ", ";
             ret = (size() == 0 ? ret : ret.substring(0, ret.length() - 2)) + ")";
-
         } else if(token.isBinOper()){
             if(size() == 1) // TODO: FIX THIS
                 ret += token.val() + " " + ((TokenNode)get(0)).toExprString();
