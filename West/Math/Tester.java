@@ -110,6 +110,7 @@ public class Tester {
                 dep.forEach(s -> Print.printi("RESULT ("+s+"):", eqsysfinal.eval(s)));
             } else {
                 System.out.println(eqsys);
+                assert false;
                 String[] depl = new String[dep.size()];
                 for(int i = 0; i < dep.size(); i++)
                     depl[i] = dep.get(i);
