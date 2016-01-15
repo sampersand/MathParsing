@@ -81,21 +81,16 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         if(peles.size() == 1)
             if(peles.get(0).size() == 0)
                 return peles.get(0);
-            else{
-                // TokenNode ret = new TokenNode();
-                // add(condense(new Collection.Builder<TokenNode>().addAll(peles.get(0).elements()).build()));
-                // for(TokenNode tn : peles)
-                //     ret.add(condense((Collection<TokenNode>)tn.elements()));
-                // return ret;
-                return new TokenNode(new Token()){{
-                    peles.forEach(tn -> add(condense(new Collection<TokenNode>().addAllE(tn.elements()))));
+            else
+                return new TokenNode(peles.get(0).token){{
+                    add(condense(new Collection<TokenNode>().addAllE(peles.get(0).elements)));
                 }};
-            }
         int fhp = firstHighPriority(peles);
-        if(fhp == -1)
+        if(fhp == -1){
             return new TokenNode(new Token()){{
                 peles.forEach(this::add);
             }};
+        }
 
         TokenNode u, s, e;
         u = condense(new Collection.Builder<TokenNode>().add(peles.get(fhp)).build());
