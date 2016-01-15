@@ -31,7 +31,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         TokenNode node = copy();
         while(pPos < pTokens.size()) {
             Token t = pTokens.get(pPos);
-            if(t.isConst() || t.isBinOper())
+            if(t.isConst() || t.isBinOper() || t.isUNL() || t.isUNR())
                 node.add(new TokenNode(t));
             else if(t.isFunc() || t.isDelim()) {
                 Collection<Token> passTokens = new Collection<Token>();

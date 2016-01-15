@@ -22,7 +22,7 @@ public class Tester {
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
-            args = new String[]{"--d","y","--e","y = –1"};
+            args = new String[]{"--d","y","--e","y = 5*–1"};
             System.out.println(args[3]);
         }
         if(args.length == 1 && args[0].equals("--g")){
@@ -103,6 +103,7 @@ public class Tester {
             }
             if(indep.isEmpty()){
                 EquationSystem eqsysfinal = eqsys;
+                System.out.println(eqsys);
                 dep.forEach(s -> Print.printi("RESULT ("+s+"):", eqsysfinal.eval(s)));
             } else {
                 System.out.println(eqsys);

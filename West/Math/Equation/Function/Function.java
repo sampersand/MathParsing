@@ -20,8 +20,8 @@ import java.util.Random;
 public class Function implements MathObject {
     private static Double NaN = Double.NaN;
     public static enum Type{
-        UN_L,
-        UN_R,
+        UNL,
+        UNR,
         BIN,
         ASSIGN,
         NORM
@@ -32,7 +32,7 @@ public class Function implements MathObject {
         public Double exec(Double[] args);
     }
 
-    public static final int DEFAULT_PRIORITY = 7;
+    public static final int DEFAULT_PRIORITY = 8;
 
     public static Collection<Function> FUNCTIONS = new Collection<Function>() {{
         // =                : 0
@@ -188,8 +188,8 @@ public class Function implements MathObject {
             ));
         add(new Function(new Collection<String>(){{add("–");}}, //negation
             "negate 'A'", "–(A)",
-            4,
-            Type.UN_L,
+            7,
+            Type.UNL,
             new Collection.Builder<Integer>().add(1).build(),
             a -> -1 * a[0]
             ));
@@ -525,25 +525,25 @@ public class Function implements MathObject {
         return Equation.isInLast(s, ASSIGN_OPERS);
     }
 
-    public static Collection<String> UN_L = new Collection<String>(){{
+    public static Collection<String> UNL = new Collection<String>(){{
             for(Function f : FUNCTIONS)
-                if(f.type() == Type.UN_L)
+                if(f.type() == Type.UNL)
                     for(String name : f.names())
                         add(name);
         }};
 
-    public static String isUn_L(String s){
-        return Equation.isInLast(s, UN_L);
+    public static String isUNL(String s){
+        return Equation.isInFirst(s, UNL);
     }
 
-    public static Collection<String> UN_R = new Collection<String>(){{
+    public static Collection<String> UNR = new Collection<String>(){{
             for(Function f : FUNCTIONS)
-                if(f.type() == Type.UN_R)
+                if(f.type() == Type.UNR)
                     for(String name : f.names())
                         add(name);
         }};
-    public static String isUn_R(String s){
-        return Equation.isInLast(s, UN_R);
+    public static String isUNR(String s){
+        return Equation.isInLast(s, UNR);
     }
 
 

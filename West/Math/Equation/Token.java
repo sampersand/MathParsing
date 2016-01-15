@@ -2,6 +2,7 @@ package West.Math.Equation;
 
 import West.Math.MathObject;
 import West.Math.Set.Collection;
+import West.Math.Equation.Function.Function;
 import West.Math.Equation.Equation;
 
 /**
@@ -19,7 +20,7 @@ public class Token implements MathObject {
     protected Type type;
 
     public static enum Type { 
-        VAR, FUNC, PAREN, DELIM, BINOPER
+        VAR, FUNC, PAREN, DELIM, BINOPER, UNL, UNR
     }
 
     public static final Collection<String> PAREN_L = new Collection<String>()
@@ -49,9 +50,6 @@ public class Token implements MathObject {
         add(",");
         add(":");
         add("|");
-        add("$");//these 3 are added for tesing
-        add("&");//they will be removed asap
-        add("@");//
     }};
 
     public static String isDelim(String s){
@@ -78,22 +76,25 @@ public class Token implements MathObject {
     }
     
     public boolean isConst() {
-        assert type != null;
         return type == Type.VAR;
     }
 
     public boolean isBinOper() {
-        assert type != null;
         return type == Type.BINOPER;
     }
     public boolean isDelim() {
-        assert type != null;
         return type == Type.DELIM;
     }
     
+    public boolean isUNL() {
+        return type == Type.UNL;
+    }
+    
+    public boolean isUNR() {
+        return type == Type.UNR;
+    }
     public boolean isFunc() {
-        assert type != null;
-        return type == Type.FUNC || type == Type.BINOPER;
+        return type == Type.FUNC || Function.get(val) != null;
     }
 
     @Override

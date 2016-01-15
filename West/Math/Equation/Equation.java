@@ -109,6 +109,7 @@ public class Equation implements MathObject {
         rEq = fixNode(rEq.trim().replaceAll(" ","")); //remove all spaces
         Collection<Token> tokens = new Collection<Token>();
         String all = "", s;
+
         for(int x = 0; x < rEq.length(); x++) {
             s = "" + rEq.charAt(x);
             all += s;
@@ -120,6 +121,11 @@ public class Equation implements MathObject {
                 continue;
             }
             String repl;
+            if((repl = isUNL(all)) != null){
+                tokens.add(new Token(isUNL(all), Token.Type.UNL));
+                all=all.substring(isUNL(all).length());
+                System.out.println(tokens);
+            }
             if((repl = isParenL(all)) != null){
                 if(isInLast(s,Token.PAREN_L) != null) //if its a left paren, make function
                     tokens.add(new Token(replLast(all, repl), Token.Type.FUNC));
@@ -136,7 +142,11 @@ public class Equation implements MathObject {
             } else if((repl = isDelim(all)) != null){
                 if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
                 tokens.add(new Token(isDelim(all), Token.Type.DELIM));
-            } else {
+            } else if((repl = isUNR(all)) != null){
+                if(!replLast(all, repl).isEmpty()) tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
+                tokens.add(new Token(isUNR(all), Token.Type.UNR));
+
+            } else if (isUNL(all)!=null){
                 assert false;
             }
 
@@ -148,9 +158,16 @@ public class Equation implements MathObject {
     private static String replLast(String str, String last){
         return str.replaceAll("\\Q" + last + "\\E$", "");
     }
-
+    private static String replFirst(String str, String first){
+        return str.replaceAll("^\\Q" + first + "\\E", "");
+    }
     public static boolean isControlChar(String s){
-        return isParenL(s) != null || isParenR(s) != null || isDelim(s) != null || isBinOper(s) != null;
+        return isParenL(s) != null ||
+               isParenR(s) != null ||
+               isDelim(s) != null ||
+               isBinOper(s) != null ||
+               isUNR(s) != null || 
+               isUNL(s) != null;
     }
     
     public static String isDelim(String s){
@@ -161,6 +178,14 @@ public class Equation implements MathObject {
         return Function.isBinOper(s);
     }
 
+    public static String isUNR(String s){
+        return Function.isUNR(s);
+    }
+
+    public static String isUNL(String s){
+        return Function.isUNL(s);
+    }
+
     public static String isParenR(String s){
         return Token.isParenR(s);
     }
@@ -168,11 +193,23 @@ public class Equation implements MathObject {
     public static String isParenL(String s){
         return Token.isParenL(s);
     }
+
+
     public static String isInLast(String pStr, java.util.Collection<String> pList){
         if(pStr.isEmpty()) //just makes it faster so it doesnt have to iterate thru everything
             return null;
         for(String s : pList){
             if(pStr.replaceAll("\\Q" + s + "\\E$","").length() != pStr.length())
+                return s;
+        }
+        return null;
+    }
+
+    public static String isInFirst(String pStr, java.util.Collection<String> pList){
+        if(pStr.isEmpty()) //just makes it faster so it doesnt have to iterate thru everything
+            return null;
+        for(String s : pList){
+            if(pStr.replaceAll("^\\Q" + s + "\\E","").length() != pStr.length())
                 return s;
         }
         return null;
