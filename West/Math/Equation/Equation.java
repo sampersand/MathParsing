@@ -79,11 +79,10 @@ public class Equation implements MathObject {
     public static String fixNode(String pEq) {
         if(pEq.charAt(0) == '@')
             return pEq.substring(1);
-        System.out.println(pEq = pEq.replaceAll("([\\d.-]+)E([\\d.-]+)","$1*10^$2"));
-        if(pEq.matches(".*([\\d.-]+)E([\\d.-]+).*")){
-            System.out.println("MATCHES");
-            pEq = pEq.replaceAll("([\\d.-]+)E([\\d.-]+)","$1*10^$2").replaceAll("-","–"); // sci notation
-        }
+        pEq = pEq.replaceAll("^([A-Za-z_]+)=-","$1=–"); //makes parsing better. thrown together, however.
+        if(pEq.matches(".*([0-9.–-]+)E([0-9.–-]+).*"))
+            pEq = pEq.replaceAll("([\\d.-–]+)E([\\d.-–]+)","$1*10^$2").replaceAll("-","–"); // sci notation
+        System.out.println(pEq);
         pEq = pEq.replaceAll("²", "^2"); // exponents
         pEq = pEq.replaceAll("³", "^3"); // i.e '²' --> ^2 
         pEq = pEq.replaceAll("⁴", "^4"); // ^^^

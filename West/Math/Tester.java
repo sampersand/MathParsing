@@ -22,9 +22,7 @@ public class Tester {
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
-            args = new String[]{"--d","y","--e","y=hypot(c:d)","c=4*d","d=e^pi"};
-            // args = new String[]{"--d","y","--e","y=hypot(x^–1|x)"};
-            // args = new String[]{"--i","x","--d","y","--e","y = abs(x)"};
+            args = new String[]{"--d","y","--e","y=hypot(f)","hypot(f)=4*d","d=e^pi"};
             System.out.println(args[3]);
         }
 
@@ -107,10 +105,8 @@ public class Tester {
             }
             if(indep.isEmpty()){
                 EquationSystem eqsysfinal = eqsys;
-                System.out.println(eqsys);
                 dep.forEach(s -> Print.printi("RESULT ("+s+"):", eqsysfinal.eval(s)));
             } else {
-                System.out.println(eqsys);
                 String[] depl = new String[dep.size()];
                 for(int i = 0; i < dep.size(); i++)
                     depl[i] = dep.get(i);
