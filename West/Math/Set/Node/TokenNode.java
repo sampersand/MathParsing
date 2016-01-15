@@ -84,7 +84,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 return peles.get(0);
             else
                 return new TokenNode(peles.get(0).token){{
-                    addAllE(condense(new Collection<TokenNode>().addAllE(peles.get(0).elements)).elements());
+                    addAllE(condense(new Collection<TokenNode>().addAllE(peles.get(0).elements)).elements);
                 }};
 
         int fhp = firstHighPriority(peles);
@@ -96,14 +96,10 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         TokenNode u = condense(new Collection.Builder<TokenNode>().add(peles.get(fhp)).build());
         TokenNode s = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(0, fhp)).build());
         TokenNode e = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(fhp + 1)).build());
-        System.out.println("u:"+u+"::"+peles.toFullString());
-        System.out.println("s:"+s+"::"+peles.toFullString());
-        System.out.println("e:"+e+"::"+peles.toFullString());
         if(s != null)
             u.add(s);
         if(e != null)
             u.add(e);
-        System.out.println("4"+peles);
         return u;
     }
 
@@ -148,7 +144,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         assert checkForNullTokens(pTokens);
         TokenNode tn = (TokenNode)new TokenNode().condeseNodes(0, pTokens)[1]; //just to make it easier to read.
         if(Function.USING_BIN_OPERS)
-            tn = condense(new Collection.Builder<TokenNode>().addAll(tn.elements()).build());
+            tn = condense(new Collection.Builder<TokenNode>().addAll(tn.elements).build());
         return tn.removeExtraFuncs();
     }
 
@@ -205,7 +201,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         String val = toExprString();
         if(pVars.containsKey(val)) //if the value is already in pVars, then just take a shortcut.
             return pVars;
-        System.out.println("TODO: fix the code after this");
         // for(Equation eq : pEqSys.equations()) //if the current val is on the left hand side, then use that
         //     if(((TokenNode)eq.subEquations().getSD(0).get(0)).toExprString().equals(val)){
         //         System.out.println("A@@@@@@@@@@@@");

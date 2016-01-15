@@ -44,14 +44,14 @@ public class Function implements MathObject {
         // *, /, %          : 5
         // +, -             : 6
         add(new Function(new Collection<String>(){{add("=");}},
-            "Sets 'A' to 'B'", "=(A, B)",
+            "Sets 'A' to 'B'", "A = B",
             0,
             Type.ASSIGN,
             new Collection.Builder<Integer>().add(2).build(), 
             a -> a[0] //doesnt matter
             ));
         add(new Function(new Collection<String>(){{add("");}},
-            "Parenthesis, literallY: ('A')", "(A)",
+            "Parenthesis, literally: ('A')", "(A)",
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
@@ -62,7 +62,7 @@ public class Function implements MathObject {
 
             //Normal Comparators
         add(new Function(new Collection<String>(){{add(">");}},
-            "Checks if 'A' > 'B'", ">(A, B)",
+            "Checks if 'A' > 'B'", "A > B",
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
@@ -71,7 +71,7 @@ public class Function implements MathObject {
             ));
 
         add(new Function(new Collection<String>(){{add("<");}},
-            "Checks if 'A' < 'B'", "<(A, B)",
+            "Checks if 'A' < 'B'", "A < B",
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
@@ -80,7 +80,7 @@ public class Function implements MathObject {
             ));
 
         add(new Function(new Collection<String>(){{add("≣");}},
-            "Checks if 'A' == 'B'", "≣(A, B)",
+            "Checks if 'A' == 'B'", "A ≣ B",
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
@@ -89,7 +89,7 @@ public class Function implements MathObject {
             ));
 
         add(new Function(new Collection<String>(){{add("≥");}},
-            "Checks if 'A' ≥ 'B'", "≥(A, B)",
+            "Checks if 'A' ≥ 'B'", "A ≥ B",
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
@@ -98,7 +98,7 @@ public class Function implements MathObject {
             ));
 
         add(new Function(new Collection<String>(){{add("≤");}},
-            "Checks if 'A' ≤ 'B'", "≤(A, B)",
+            "Checks if 'A' ≤ 'B'", "A ≤ B",
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
@@ -107,7 +107,7 @@ public class Function implements MathObject {
             ));
 
         add(new Function(new Collection<String>(){{add("≠");}},
-            "Checks if 'A' ≠ 'B'", "≠(A, B)",
+            "Checks if 'A' ≠ 'B'", "A ≠ B",
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
@@ -126,7 +126,7 @@ public class Function implements MathObject {
 
             //Boolean Comparators
         add(new Function(new Collection<String>(){{add("∧");}},
-            "Checks if 'A' ∧ 'B'", "∧(A, B)",
+            "Checks if 'A' ∧ 'B'", "A ∧ B",
             2,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
@@ -135,7 +135,7 @@ public class Function implements MathObject {
             ));
 
         add(new Function(new Collection<String>(){{add("∨");}},
-            "Checks if 'A' ∨ 'B'", "∨(A, B)",
+            "Checks if 'A' ∨ 'B'", "A ∨ B",
             2,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
@@ -144,7 +144,7 @@ public class Function implements MathObject {
             ));
 
         add(new Function(new Collection<String>(){{add("⊻");}},
-            "Checks if 'A' ⊻ 'B'", "⊻(A, B)",
+            "Checks if 'A' ⊻ 'B'", "A ⊻ B",
             2,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
@@ -153,7 +153,7 @@ public class Function implements MathObject {
             ));
 
         add(new Function(new Collection<String>(){{add("⊼");}},
-            "Checks if 'A' ⊼ 'B'", "⊼(A, B)",
+            "Checks if 'A' ⊼ 'B'", "A ⊼ B",
             2,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
@@ -161,7 +161,7 @@ public class Function implements MathObject {
                  a[0].compareTo(0D) != 1 && a[1].compareTo(0D) != 1 ? 1D : NaN
             ));
         add(new Function(new Collection<String>(){{add("⊻");}},
-            "Checks if 'A' ⊻ 'B'", "⊻(A, B)",
+            "Checks if 'A' ⊻ 'B'", "A ⊻ B",
             2,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
@@ -173,7 +173,7 @@ public class Function implements MathObject {
 
         // Standard math operators
         add(new Function(new Collection<String>(){{add("+");}},
-            "Adds 'A' to 'B'", "+(A, B)", 
+            "Adds 'A' to 'B'", "A + B", 
             4,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
@@ -181,22 +181,29 @@ public class Function implements MathObject {
             ));
 
         add(new Function(new Collection<String>(){{add("-");}},
-            "Subtracts 'A' to 'B'", "-(A, B)",
+            "Subtracts 'A' to 'B'", "A - B",
             4,
             Type.BIN,
             new Collection.Builder<Integer>().add(1).add(2).build(),
             a -> a.length == 1 ? 0 - a[0] : a[0] - a[1]
             ));
+        add(new Function(new Collection<String>(){{add("–");}}, //negation
+            "negate 'A'", "–(A)",
+            4,
+            Type.UN_L,
+            new Collection.Builder<Integer>().add(1).build(),
+            a -> -1 * a[0]
+            ));
 
         add(new Function(new Collection<String>(){{add("*");add("·");add("×");}},
-            "Multiplies 'A' to 'B'", "*(A, B)",
+            "Multiplies 'A' to 'B'", "A * B",
             5,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
             a -> a[0] * a[1]
             ));
         add(new Function(new Collection<String>(){{add("/");add("÷");}},
-            "Divides 'A' to 'B'", "/(A, B)",
+            "Divides 'A' to 'B'", "A / B",
             5,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
@@ -204,14 +211,14 @@ public class Function implements MathObject {
             ));
 
         add(new Function(new Collection<String>(){{add("%");}},
-            "'A' Modulo 'B'", "%(A, B)",
+            "'A' Modulo 'B'", "A % B",
             5,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
             a -> a[0] % a[1]
             ));
         add(new Function(new Collection<String>(){{add("^");}},
-            "Raises 'A' to 'B'", "^(A, B)",
+            "Raises 'A' to 'B'", "A ^ B",
             6,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
@@ -366,8 +373,13 @@ public class Function implements MathObject {
             "hypotenuse of 'A' and 'B' ( √[A² + B²] )", "hypot(A, B)",
             DEFAULT_PRIORITY,
             Type.NORM,
-            new Collection.Builder<Integer>().add(2).build(),
-            a -> Math.hypot(a[0], a[1])
+            new Collection.Builder<Integer>().add(-1).build(),
+            a -> {
+                    Double ret = 0D;
+                    for(double d : a)
+                        ret += d * d;
+                    return Math.pow(ret,0.5);
+                }
             ));
 
         add(new Function(new Collection<String>(){{add("ln");}},
