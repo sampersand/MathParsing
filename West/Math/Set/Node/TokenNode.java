@@ -59,8 +59,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     private int priority(){
         if(token.isConst())
             return Function.DEFAULT_PRIORITY + 1;
-        assert !token.isDelim();
-        System.out.println("remove the delim part");
         if(token.isDelim())
             return Function.DEFAULT_PRIORITY;
         assert token.isFunc();
@@ -128,6 +126,11 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         if(!token.val().isEmpty())
             return this;
         assert size() == 1;
+        // return get(0).removeExtraFuncs();
+        // TokenNode ret = new TokenNode(token);
+        // ret.add(get(0).removeExtraFuncs());
+        // System.out.println(get(0).removeExtraFuncs().elements());
+        // return ret;
         return get(0).removeExtraFuncs();
     }
 
@@ -206,7 +209,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 return pVars;
             }
         if(token.isFunc()){
-            // System.out.println(pEqSys.functions()+"@");
             if(pEqSys.functions().containsKey(token.val())) // if it is a function
                 return pEqSys.functions().get(token.val()).exec(pVars, pEqSys, this); //no work
             return Function.exec(pVars, token.val(), pEqSys, this); //no else needed
