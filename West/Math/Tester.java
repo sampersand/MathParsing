@@ -22,7 +22,8 @@ public class Tester {
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0)
-            args = new String[]{"--d","y","--e","y = 0+f(1$2)"};
+            args = new String[]{"--d","y","--e","1$2"};
+            // args = new String[]{"--d","y","--e","y = 0+f(1$2)"};
             // args = new String[]{"--d","y","--e","y = 0+f(1&f(2$3)@4)"};
         System.out.println(args[3]);
             // args = new String[]{"--d","y","--e","y = 1+hypot(2-rand(3*(4/5)^6|7)|8)"};

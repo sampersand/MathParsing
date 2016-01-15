@@ -60,7 +60,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         if(token.isConst())
             return Function.DEFAULT_PRIORITY + 1;
         if(token.isDelim())
-            return Function.DEFAULT_PRIORITY;
+            return Function.DEFAULT_PRIORITY + 1;
         assert token.isFunc();
         Function i = Function.get(token.val());
         return i == null ? Function.DEFAULT_PRIORITY : i.priority();
@@ -73,30 +73,44 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 pos = i;
             }
         }
-        return pos;
+        return priority == Function.DEFAULT_PRIORITY ? -1 : pos;
     }
-    private static TokenNode condense(Collection<TokenNode> peles){
+    private static TokenNode condense(final Collection<TokenNode> peles){
         if(peles.size() == 0)
             return null;
         if(peles.size() == 1)
             if(peles.get(0).size() == 0)
                 return peles.get(0);
-            else
-                return new TokenNode(peles.get(0).token()){{
-                    add(condense(new Collection.Builder<TokenNode>().addAll(peles.get(0).elements()).build()));
+            else{
+                // TokenNode ret = new TokenNode();
+                // add(condense(new Collection.Builder<TokenNode>().addAll(peles.get(0).elements()).build()));
+                // for(TokenNode tn : peles)
+                //     ret.add(condense((Collection<TokenNode>)tn.elements()));
+                // return ret;
+                return new TokenNode(new Token()){{
+                    peles.forEach(tn -> add(condense(new Collection<TokenNode>().addAllE(tn.elements()))));
                 }};
+            }
         int fhp = firstHighPriority(peles);
-        TokenNode u = condense(new Collection.Builder<TokenNode>().add(peles.get(fhp)).build());
-        // System.out.println("u:"+peles+"::"+u);
-        TokenNode s = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(0, fhp)).build());
-        // System.out.println("s:"+peles+"::"+s);
-        TokenNode e = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(fhp + 1)).build());
-        // System.out.println("e:"+peles+"::"+e);
-        // System.out.println("u4:"+peles+"::"+u);
+        if(fhp == -1)
+            return new TokenNode(new Token()){{
+                peles.forEach(this::add);
+            }};
+
+        TokenNode u, s, e;
+        u = condense(new Collection.Builder<TokenNode>().add(peles.get(fhp)).build());
+        s = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(0, fhp)).build());
+        e = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(fhp + 1)).build());
+
+        System.out.println("u:\t"+u+"\t \t::"+peles);
+        System.out.println("s:\t"+s+"\t \t::"+peles);
+        System.out.println("e:\t"+e+"\t \t::"+peles);
+        System.out.println("u4:\t"+u+"\t \t::"+peles);
         if(s != null)
-            u.add(s);
+            u.addE(s);
         if(e != null)
-            u.add(e);
+            u.addE(e);
+        System.out.println("u8:\t"+u+"\t \t::"+peles);
         return u;
     }
 
@@ -123,15 +137,17 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     }
 
     public TokenNode removeExtraFuncs(){
-        if(!token.val().isEmpty())
+        if(!token.val().isEmpty() || isFinal())
             return this;
-        assert size() == 1;
+        // assert size() == 1;
+        TokenNode ret = new TokenNode(token);
+        for(Node<?, ?> tn : elements){
+            System.out.println(tn.elements()+"@");
+            ret.add(((TokenNode)tn).removeExtraFuncs());
+        }
+        // System.out.println(ret);
+        return ret;
         // return get(0).removeExtraFuncs();
-        // TokenNode ret = new TokenNode(token);
-        // ret.add(get(0).removeExtraFuncs());
-        // System.out.println(get(0).removeExtraFuncs().elements());
-        // return ret;
-        return get(0).removeExtraFuncs();
     }
 
 
@@ -145,6 +161,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         TokenNode tn = (TokenNode)new TokenNode().condeseNodes(0, pTokens)[1]; //just to make it easier to read.
         if(Function.USING_BIN_OPERS)
             tn = condense(new Collection.Builder<TokenNode>().addAll(tn.elements()).build());
+        System.out.println(tn+"<---------------tn");
+        assert false;
         return tn.removeExtraFuncs();
     }
 
@@ -288,14 +306,16 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
     public String toExprString(){
         String ret = "";
+        if(size() == 0){
+            assert token.isConst() ? isFinal() : true;
+            return token.val();
+        }
         if((token.isFunc() || token.isDelim()) && !token.isBinOper()){
             ret += token.val() + "(";
             for(Node n : this)
                 ret += ((TokenNode)n).toExprString() + ", ";
             ret = (size() == 0 ? ret : ret.substring(0, ret.length() - 2)) + ")";
         } else if(token.isBinOper()){
-            if(size() == 0)
-                ret += token.val();
             if(size() == 1) // TODO: FIX THIS
                 ret += token.val() + " " + ((TokenNode)get(0)).toExprString();
             else{
