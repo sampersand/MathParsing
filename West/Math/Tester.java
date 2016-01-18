@@ -72,7 +72,7 @@ public class Tester {
                     } else if (type == 'd'){
                         dep.add(args[i]);
                     } else if (type == 'g'){
-                        gtype = args[i].matches("P(olar)?")?
+                        gtype = args[i].matches("[Pp](olar)?")?
                             GraphComponents.GraphTypes.POLAR :
                             GraphComponents.GraphTypes.XY;
                     } else if (type == 's'){
