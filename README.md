@@ -17,7 +17,7 @@ NOTE: Double quotes are only required if there is spaces in the passed arguments
   <ul>Example: <code>--dep y1 y2</code></ul></ul>
 <ul>·<code>--gtype</code> - The next argument will dictate the Graph Type. Currently, the Graph Type defaults to Cartesian, and the only valid argument is "Polar".
   <ul>Example: <code>--gtype Polar</code></ul></ul>
-<ul>·<code>--step</code> -A bit of a misnomer, the next argument is either a single number (Step), or three seperate numbers seperated by commas (Start, End, Step). This is only ever used when graphing, and is used to define how detailed the graph is & where the graph starts. Start and End are by default set to the window bound's min x and min y.
+<ul>·<code>--step</code> - A bit of a misnomer, the next argument is either a single number (Step), or three seperate numbers seperated by commas (Start, End, Step). This is only ever used when graphing, and is used to define how detailed the graph is & where the graph starts. Start and End are by default set to the window bound's min x and min y.
   <ul>Example: <code>--step "-4·pi, 4×π/5, π÷16"</code></ul></ul>
 <ul>·<code>--bounds</code> - Only ever used for graphing, this defines the bounds of what will be displayed. The next argument should be 4 numbers, seperated by commas, in the format: <code>Minimum X, Minimum Y, Maximum X, Maximum Y</code>
   <ul>Example: <code>--bounds "-2·π, -1, 2×pi, 1.0"</code></ul></ul>
