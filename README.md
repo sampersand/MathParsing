@@ -1,10 +1,6 @@
 # MathParsing
-NOTE: Set will not be supported fully until version 1.0 comes out
-## TODO
-<ul>Make sets use ArrayLists instead of arrays.</ul>
-<ul>Try and break the graphing code, among other things - v??</ul>
-<ul>go over and make sure all the things can handle null and empty lists. - v 7</ul>
-    NOTE: for each loops work for empty things, but not null things
-<ul>Javadoc everything - v ??</ul>
-<ul>make isolate work - v ??</ul>
-<ul>make it so a node can have mroe than 1 subnode.</ul>
+a java program that is used to parse strings into equations, and then solve them (among other things).
+more info to come.
+##How to run the code
+from the command line, type `java -cp bin West.Math.Tester <ARGUMENTS>`.
+Arguments are as follows:

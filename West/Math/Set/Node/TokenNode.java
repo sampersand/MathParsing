@@ -83,11 +83,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 return peles.get(0);
             else
                 return new TokenNode(peles.get(0).token){{
-                    TokenNode tn = condense(new Collection<TokenNode>().addAllE(peles.get(0).elements));
-                    if(tn.isFinal())
-                        add(tn);
-                    else
-                        addAllE(tn.elements);
+                    add(condense(new Collection<TokenNode>().addAllE(peles.get(0).elements)));
                 }};
         int fhp = firstHighPriority(peles);
         if(fhp == -1)
@@ -294,7 +290,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             ret += token.val() + "(";
             for(Node n : this)
                 ret += ((TokenNode)n).toExprString() + ", ";
-            ret = (size() == 0 ? ret : ret.substring(0, ret.length() - 2)) + ")";
+            return (size() == 0 ? ret : ret.substring(0, ret.length() - 2)) + ")";
         } else if(token.isBinOper()){
             if(size() == 1) // TODO: FIX THIS
                 ret += token.val() + " " + ((TokenNode)get(0)).toExprString();
@@ -303,14 +299,14 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     ret += ((TokenNode)n).toExprString();
                     ret += " " + (token == null ? "" : token.val()) + " ";
                 }
-                ret = ret.substring(0, ret.length() >=2 ? ret.length() - 2 : ret.length());
+                return ret.substring(0, ret.length() >=2 ? ret.length() - 2 : ret.length());
             }
         }
         else if(token.isConst())
-            ret += token.val();
+            return token.val();
         else
             assert false;
-        return ret;
+        return null;
     }
 
     @Override
