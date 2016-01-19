@@ -15,7 +15,7 @@ import West.Math.Set.Collection;
  * each other.
  * 
  * @author Sam Westerman
- * @version 1.0
+ * @version 1.1
  * @since 0.1
  */
 public class Equation implements MathObject {
@@ -88,7 +88,8 @@ public class Equation implements MathObject {
         pEq = pEq.replaceAll("⅟","1/"); // ^^^s
         for(String trig : TRIG) // Trig i.e. 'coshΘ' --> cosh(Θ)
             pEq = pEq.replaceAll("(?!<a)("+trig+")(?!=h)(\\^[\\d.-]+)?(?!=\\()([\\w\\d().]+)", "$1($3)$2"); 
-        pEq = pEq.replaceAll("(?<!\\w|\\d|\\.)(\\d)(\\w)","$1·$2");
+        pEq = pEq.replaceAll("(?<!\\w|\\d|\\.)(\\d)([A-Za-z])","$1·$2");
+        System.out.println(pEq);
         // pEq = pEq.replaceAll("(\\W*?)(\\d)(\\w+?)","$1$2·$3"); // ^^^s
         return pEq;
     }

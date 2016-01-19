@@ -9,7 +9,7 @@ import West.Math.Equation.Equation;
  * A single item from an equation String.
  * Example: "sin(x+2)" yields the tokens <code>{"sin":FUNC, "(":LPAR, "x":VAR, "+":OPER, "2":NUM, ")":RPAR}</code>.
  * @author Sam Westerman
- * @version 1.0
+ * @version 1.1
  * @since 0.1
  */
 public class Token implements MathObject {

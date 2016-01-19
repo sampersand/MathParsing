@@ -7,7 +7,7 @@ import West.Math.Set.Collection;
  * Keeps track of different thigns about graphing - like window sizes
  * 
  * @author Sam Westerman
- * @version 1.0
+ * @version 1.1
  * @since 0.2
  */
 public class GraphComponents implements MathObject {

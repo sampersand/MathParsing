@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * A tester class for the whole equation
  * @author Sam Westerman
- * @version 1.0
+ * @version 1.1
  * @since 0.1
  */
 public class Tester {
@@ -22,7 +22,7 @@ public class Tester {
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
-            args = new String[]{"--e","y=5cos3x","--i","x"};
+            args = new String[]{"--e","y=5·cos3x","--i","x"};
         }
 
 

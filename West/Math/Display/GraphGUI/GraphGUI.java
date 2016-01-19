@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * The graphing GUI inteface - where you plug in all the equations
  * 
  * @author Sam Westerman
- * @version 1.0
+ * @version 1.1
  * @since 0.90
  */
 public class GraphGUI extends JFrame implements ActionListener{

@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * There is a reason this isn't merge with {@link TokenNode}. It's incase I want to use this later on in another project
  * 
  * @author Sam Westerman
- * @version 1.0
+ * @version 1.1
  * @since 0.75
  */ 
 
