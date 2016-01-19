@@ -41,6 +41,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         TokenNode node = copy();
         while(pos < pTokens.size()) {
             Token t = pTokens.get(pos);
+            System.out.println("t:"+t);
             if(t.isConst() || t.isBinOper() || t.isUNL() || t.isUNR())
                 node.add(new TokenNode(t));
             else if(t.isFunc() || t.isDelim()) {
@@ -62,19 +63,20 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     toAddParens[0] = pTokens.get(pos++).val();
                     passTokens.remove(0);
                     passTokens.remove(passTokens.size()-1);
+                    assert Token.PAREN_L.contains(toAddParens[0]) &&
+                           Token.PAREN_R.contains(toAddParens[1]) : toAddParens[0]+" "+toAddParens[1];
+                    passTokens.add(0, new Token("", Token.Type.DELIM));
+                    pos--;
                 }
 
-                if(!toAddParens[0].isEmpty()){
-                    assert !toAddParens[1].isEmpty();
-                    passTokens.add(0, new Token("", Token.Type.DELIM));
-                }
+                System.out.println("passtkL"+passTokens);
                 Object[] temp = new TokenNode(t).condeseNodes(passTokens);
                 pos += (int)temp[0];//(x==pTokens.size()-1?1:0);
                 ((TokenNode)temp[1]).parens = toAddParens;
                 node.add((TokenNode)temp[1]);
             } else if(t.isParen()){
                 if(Token.isParenL(t.val()) != null){
-                    assert node.parens[0].isEmpty();
+                    assert node.parens[0].isEmpty() : "Uh oh! adding '"+t+"' to\n" + node.toFancyString();
                     node.parens[0] = t.val();
                 } else{
                     assert node.parens[1].isEmpty() && !node.parens[0].isEmpty() : t+"\n"+toFancyString();
@@ -83,7 +85,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             }
             pos++;
         }
-        return new Object[]{pos, node};
+        return new Object[]{pos, node.removeExtraFuncs()};
     }
 
 
@@ -116,12 +118,14 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             }
             else
                 return new TokenNode(peles.get(0)){{
+                    System.out.println("peles1:"+peles);
                     add(condense(new Collection<TokenNode>().addAllE(peles.get(0).elements)));
                 }};
 
         int fhp = firstHighPriority(peles);
         if(fhp == -1)
             return new TokenNode(new Token()){{
+                System.out.println("peles:"+peles);
                 peles.forEach(e -> add(condense(new Collection<TokenNode>().addE(e))));
             }};
         TokenNode u = condense(new Collection.Builder<TokenNode>().add(peles.get(fhp)).build());
@@ -131,6 +135,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             u.add(s);
         if(e != null)
             u.add(e);
+        System.out.println("u:"+u);
         return u;
     }
 
@@ -302,7 +307,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     case "⅒": return appendHashMap(pVars, val, 1/10D);
 
                     default:
-                        System.err.println("Variable '" + val + "' doesn't exist; returning NaN instead");
+                        System.err.println("Variable '" + val + "' doesn't exist in'"+pVars+"'; returning NaN instead");
                         return appendHashMap(pVars, val, Double.NaN);
                 }
             }
@@ -326,10 +331,10 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             return token.val();
         }
         if((token.isFunc() && !token.isBinOper()) || token.isDelim()){
-            ret += token.val() + "["+parens[0];
+            ret += token.val() + parens[0];
             for(Node n : this)
                 ret += ((TokenNode)n).toExprString();
-            return ret + parens[1]+"]";
+            return ret + parens[1];
         } else if(token.isBinOper()){
             if(size() == 1) // TODO: FIX THIS
                 ret += token.val() + " " + ((TokenNode)get(0)).toExprString();

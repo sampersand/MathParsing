@@ -22,7 +22,8 @@ public class Tester {
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
-            args = new String[]{"--d","y","--e","y=<1/5,14/5>"};
+            // args = new String[]{"--d","y","--e","@v=<4*cos(4*t)-sin(4*t),0>","t=5*pi/4"};
+            // args = new String[]{"--d","y","--e","v=<4*cos(t)*cos(4*t)-sin(4*t)*sin(t),–2*cos(2*t)>","t=5*pi/4"};
             // args = new String[]{"--d","y","--e","y=test(3|5)"};
         }
 

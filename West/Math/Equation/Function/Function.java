@@ -717,7 +717,7 @@ public class Function implements MathObject {
         else
             for(West.Math.Set.Node.Node<?, ?> n : pNode)
                 ret.putAll(((TokenNode)n).eval(ret, pEqSys));
-
+        System.out.println("ret::"+ret+" >==< " + pNode);
         assert argsLength.contains(pNode.size()) || argsLength.contains(-1) :
         "'" +names+ "' got bad args. Allowed args: " + argsLength + ", inputted args = '"+ pNode +"'("+pNode.size()+")";
         try{
@@ -741,7 +741,7 @@ public class Function implements MathObject {
         return f.exec(ret, pEqSys, pNode);
     }
 
-    public HashMap<String, Double> addArgs(HashMap<String, Double> hm, String key, Double val){
+    public static HashMap<String, Double> addArgs(HashMap<String, Double> hm, String key, Double val){
         hm.put(key, val);
         return hm;
     }
