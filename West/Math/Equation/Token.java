@@ -49,8 +49,6 @@ public class Token implements MathObject {
     {{
         add(",");
         add(":");
-        add("@"); //TODO: REMOVE
-        System.out.println("TODO: REMOVE '@' from DELIM");
         add("|");
     }};
 
