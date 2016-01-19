@@ -40,6 +40,8 @@ public class Tester {
             double[] eqBounds = new double[]{-10, -10, 10, 10};
             double[] step = new double[]{1000};
 
+            int prefix = 0;
+
             EquationSystem eqsys = new EquationSystem();
             if(args.length == 1) {
                 eqsys = new EquationSystem().add(new Equation().add(args[0]));
@@ -57,6 +59,11 @@ public class Tester {
                     if(args[i].matches("--g(type)?")) {type = 'g'; continue;}
                     if(args[i].matches("--s(tep)?b?(ounds)?")) {type = 's'; continue;}
                     if(args[i].matches("--b(ounds)?")) {type = 'b'; continue;}
+                    if(args[i].matches("--[Pp](refix(es)?)?")) {
+                        System.out.println("@");
+                        prefix = Character.valueOf(args[i].charAt(2)) == 'P' ? 1: 2;
+                        continue;
+                    }
                     if (type == 'f') {
                         try {
                             eqsys.add(args[i].split(":")[0], new CustomFunction(args[i].split(":")[1])); //fix me.
@@ -104,7 +111,11 @@ public class Tester {
             }
             if(indep.isEmpty()){
                 EquationSystem eqsysfinal = eqsys;
-                dep.forEach(s -> Print.printi("RESULT ("+s+"):", eqsysfinal.eval(s)));
+                int pref = prefix;
+                dep.forEach(s -> Print.printi("RESULT ("+s+"):", 
+                            EquationSystem.appendMetricSuffix(
+                                                              eqsysfinal.eval(s),
+                                                              pref)));
             } else {
                 String[] depl = new String[dep.size()];
                 for(int i = 0; i < dep.size(); i++)

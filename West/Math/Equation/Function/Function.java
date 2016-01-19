@@ -532,7 +532,7 @@ public class Function implements MathObject {
                         add(name);
         }};
     public static String isBinOper(String s){
-        if(s.matches(".*E[-\\d.]*$"))
+        if(s.matches(".*[eE][-\\d.]*$"))//if its sci notation, say no
             return null;
         return Equation.isInLast(s, BIN_OPERS);
     }

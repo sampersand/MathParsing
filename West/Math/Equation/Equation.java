@@ -80,8 +80,8 @@ public class Equation implements MathObject {
         if(pEq.charAt(0) == '@')
             return pEq.substring(1);
         pEq = pEq.replaceAll("^([A-Za-z_]+)=-","$1=–"); //makes parsing better. thrown together, however.
-        if(pEq.matches(".*([0-9.–-]+)E([0-9.–-]+).*"))
-            pEq = pEq.replaceAll("([\\d.–-]+)E([\\d.–-]+)","$1*10^$2").replaceAll("-","–"); // sci notation
+        if(pEq.matches(".*([0-9.–-]+)[Ee]([0-9.–-]+).*"))
+            pEq = pEq.replaceAll("([\\d.–-]+)[Ee]([\\d.–-]+)","$1*10^$2").replaceAll("-","–"); // sci notation
         pEq = pEq.replaceAll("²", "^2"); // exponents
         pEq = pEq.replaceAll("³", "^3"); // i.e '²' --> ^2 
         pEq = pEq.replaceAll("⁴", "^4"); // ^^^
