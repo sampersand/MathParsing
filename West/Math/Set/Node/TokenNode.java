@@ -320,7 +320,13 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return eval(new EquationSystem());
     }
 
+
+    public Double evald(HashMap<String, Double> hm, final EquationSystem pEqSys){
+        return eval(hm, pEqSys).get(toString());
+    }
+
     public Double eval(final EquationSystem pEqSys){
+        System.out.println("eval!"+this);
         return eval(new HashMap<String, Double>(), pEqSys).get(toString());
     }
 

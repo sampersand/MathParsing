@@ -46,7 +46,7 @@ public class CustomFunction extends Function implements MathObject {
      */
     public CustomFunction(String pName) throws IllegalArgumentException{
         this(new Collection<String>(){{add(pName);}}, "", "", DEFAULT_PRIORITY,
-            Type.NORM, new Collection<Integer>().addE(0), (a, eqsys) -> null);
+            Type.NORM, new Collection<Integer>().addE(0), (hm, tn, eqsys) -> null);
     }
 
     /**
