@@ -314,7 +314,7 @@ public class EquationSystem implements MathObject{
 
     @Override
     public String toString() {
-        String ret = "EquationSystem: Equations = (";
+        String ret = "Equations = (";
         if(equations == null) {
             ret += "null";
         } else {

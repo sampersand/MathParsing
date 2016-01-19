@@ -16,16 +16,24 @@ import java.util.HashMap;
 */
 public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
-    public TokenNode(){
-        super(new Token("",Token.Type.FUNC));
+    private String[] parens;
 
+    public TokenNode(){
+        this(new Token("",Token.Type.FUNC));
     }
 
     public TokenNode(Token pToken) {
-        super(pToken);
+        this(pToken, new String[]{"", ""});
     }
+
+    public TokenNode(Token pToken, String[] pParens) {
+        super(pToken);
+        parens = pParens;
+    }
+
     public TokenNode(TokenNode pTokenNode) {
-        super(pTokenNode.token);
+        this(pTokenNode.token);
+        parens = pTokenNode.parens;
     }
 
     protected Object[] condeseNodes(ArrayList<Token> pTokens) {
@@ -52,7 +60,15 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 Object[] temp = new TokenNode(t).condeseNodes(passTokens);
                 pos += (int)temp[0];
                 node.add((TokenNode)temp[1]);
-            } 
+            } else if(t.isParen()){
+                if(Token.isParenL(t.val()) != null){
+                    assert parens[0].isEmpty();
+                    parens[0] = t.val();
+                } else{
+                    assert parens[1].isEmpty();
+                    parens[1] = t.val();
+                }
+            }
             pos++;
         }
         return new Object[]{pos, node};
@@ -300,10 +316,10 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             return token.val();
         }
         if((token.isFunc() && !token.isBinOper()) || token.isDelim()){
-            ret += token.val() + (token.isDelim() ? "" : "(");
+            ret += token.val() + parens[0];
             for(Node n : this)
-                ret += ((TokenNode)n).toExprString(); //+ ", ";
-            return ret  + (token.isDelim() ? "" : ")");
+                ret += ((TokenNode)n).toExprString();
+            return ret + parens[1];
         } else if(token.isBinOper()){
             if(size() == 1) // TODO: FIX THIS
                 ret += token.val() + " " + ((TokenNode)get(0)).toExprString();
@@ -325,7 +341,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     @Override
     public TokenNode copy(){
         assert elements != null;
-        return (TokenNode)new TokenNode(token).setElements(elements);
+        return (TokenNode)new TokenNode(this).setElements(elements);
     }
 
     @Override

@@ -62,8 +62,8 @@ public class Function implements MathObject {
         //Comparators
 
             //Normal Comparators
-        add(new Function(new Collection<String>(){{add(">");}},
-            "Checks if 'A' > 'B'", "A > B",
+        add(new Function(new Collection<String>(){{add("＞");}},
+            "Checks if 'A' ＞ 'B'", "A ＞ B",
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
@@ -71,8 +71,8 @@ public class Function implements MathObject {
                   a[0].compareTo(a[1]) == 1 ? 1D : NaN
             ));
 
-        add(new Function(new Collection<String>(){{add("<");}},
-            "Checks if 'A' < 'B'", "A < B",
+        add(new Function(new Collection<String>(){{add("＜");}},
+            "Checks if 'A' ＜ 'B'", "A ＜ B",
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
