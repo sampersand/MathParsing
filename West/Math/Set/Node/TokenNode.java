@@ -181,10 +181,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return this;
     }
 
-    public HashMap<String, Double> eval(final EquationSystem pEqSys){
-        return eval(new HashMap<String, Double>(), pEqSys);
-    }
-
     private HashMap<String, Double> appendHashMap(HashMap<String, Double> a, Object b){
         if(b != null)
             a.putAll((HashMap<String, Double>)b);
@@ -296,17 +292,12 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                                                     token.val());
     }
 
-    //here down are from EquationNode
-    public <C extends Comparable<C>> boolean isInBounds(HashMap<String, Double> vars, String toEval){
-        if(token.val().isEmpty()){
-            assert size() == 1 : toFancyString();
-            return get(0).isInBounds(vars, toEval);
-        }
-        assert size() == 2;
-        Double d0, d1;
-        d0 = get(0).eval((EquationSystem.fromHashMap(vars))).get(get(0).toString()); 
-        d1 = get(1).eval((EquationSystem.fromHashMap(vars))).get(get(0).toString()); 
-        return Function.get(toString()).funcObj().exec(new Double[]{d0, d1}) == 1;
+    public Double eval(){ //when jsut a double is needed
+        return eval(new EquationSystem());
+    }
+
+    public Double eval(final EquationSystem pEqSys){
+        return eval(new HashMap<String, Double>(), pEqSys).get(toString());
     }
 
     public String toExprString(){

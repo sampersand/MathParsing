@@ -216,7 +216,7 @@ public class EquationSystem implements MathObject{
         assert equations.size() != 0 : "Cannot evaluate an EquationSystem with no equations!";
         EquationSystem eqsys = copy().isolate(toEval);
         // assert eqsys.isolated() : "I'm not isolated!:\n\n"+eqsys.toFancyString();
-        return eqsys.equations().get(0).subEquations().eval(eqsys).get(toEval);
+        return eqsys.equations().get(0).subEquations().eval(new HashMap<String, Double>(), eqsys).get(toEval);
 
     }
 
