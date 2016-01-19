@@ -29,7 +29,7 @@ public class Function implements MathObject {
 
     @FunctionalInterface
     public interface FuncObj{
-        public Double exec(EquationSystem eqsys, TokenNode[] args);
+        public Double exec(EquationSystem eqsys, TokenNode tn);
     }
 
     public static final int DEFAULT_PRIORITY = 100; //TODO: FIX
@@ -49,14 +49,19 @@ public class Function implements MathObject {
             0,
             Type.ASSIGN,
             new Collection.Builder<Integer>().add(2).build(), 
-            (eqsys, a) -> a[0].eval(eqsys) //doesnt matter
+            (eqsys, tn) -> tn.get(0).eval(eqsys) //doesnt matter
             ));
         add(new Function(new Collection<String>(){{add("");}},
             "Parenthesis, literally: ('A')", "(A)",
             DEFAULT_PRIORITY,
             Type.NORM,
-            new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> a[0].eval(eqsys)
+            new Collection.Builder<Integer>().add(1).add(2).build(),
+            (eqsys, tn) -> {
+                assert tn.size() == 1 || (tn.parens()[0].equals("<") && tn.parens()[1].equals(">")) : tn;
+                if(tn.size() == 2)
+                    return Math.hypot(tn.get(0).eval(eqsys), tn.get(1).eval(eqsys));
+                return tn.get(0).eval(eqsys);
+            }
             ));
 
         //Comparators
@@ -67,7 +72,7 @@ public class Function implements MathObject {
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> a[0].eval(eqsys).compareTo(a[1].eval(eqsys)) == 1 ? 1D : NaN
+            (eqsys, tn) -> tn.get(0).eval(eqsys).compareTo(tn.get(1).eval(eqsys)) == 1 ? 1D : NaN
             ));
 
         add(new Function(new Collection<String>(){{add("＜");}},
@@ -75,7 +80,7 @@ public class Function implements MathObject {
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> a[0].eval(eqsys).compareTo(a[1].eval(eqsys)) == -1 ? 1D : NaN
+            (eqsys, tn) -> tn.get(0).eval(eqsys).compareTo(tn.get(1).eval(eqsys)) == -1 ? 1D : NaN
             ));
 
         add(new Function(new Collection<String>(){{add("≣");}},
@@ -83,7 +88,7 @@ public class Function implements MathObject {
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> a[0].eval(eqsys).compareTo(a[1].eval(eqsys)) == 0 ? 1D : NaN
+            (eqsys, tn) -> tn.get(0).eval(eqsys).compareTo(tn.get(1).eval(eqsys)) == 0 ? 1D : NaN
             ));
 
         add(new Function(new Collection<String>(){{add("≥");}},
@@ -91,7 +96,7 @@ public class Function implements MathObject {
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> a[0].eval(eqsys).compareTo(a[1].eval(eqsys)) != -1 ? 1D : NaN
+            (eqsys, tn) -> tn.get(0).eval(eqsys).compareTo(tn.get(1).eval(eqsys)) != -1 ? 1D : NaN
             ));
 
         add(new Function(new Collection<String>(){{add("≤");}},
@@ -99,7 +104,7 @@ public class Function implements MathObject {
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> a[0].eval(eqsys).compareTo(a[1].eval(eqsys)) != 1 ? 1D : NaN
+            (eqsys, tn) -> tn.get(0).eval(eqsys).compareTo(tn.get(1).eval(eqsys)) != 1 ? 1D : NaN
             ));
 
         add(new Function(new Collection<String>(){{add("≠");}},
@@ -107,7 +112,7 @@ public class Function implements MathObject {
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> a[0].eval(eqsys).compareTo(a[1].eval(eqsys)) != 0 ? 1D : NaN
+            (eqsys, tn) -> tn.get(0).eval(eqsys).compareTo(tn.get(1).eval(eqsys)) != 0 ? 1D : NaN
             ));
 
         add(new Function(new Collection<String>(){{add("compare");}},
@@ -115,7 +120,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> new Double(a[0].eval(eqsys).compareTo(a[1].eval(eqsys)))
+            (eqsys, tn) -> new Double(tn.get(0).eval(eqsys).compareTo(tn.get(1).eval(eqsys)))
             ));
 
 
@@ -125,8 +130,8 @@ public class Function implements MathObject {
             2,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> !a[0].eval(eqsys).isNaN() && !a[1].eval(eqsys).isNaN() &&
-                  a[0].eval(eqsys).compareTo(0D) == 1 && a[1].eval(eqsys).compareTo(0D) == 1 ? 1D : NaN
+            (eqsys, tn) -> !tn.get(0).eval(eqsys).isNaN() && !tn.get(1).eval(eqsys).isNaN() &&
+                  tn.get(0).eval(eqsys).compareTo(0D) == 1 && tn.get(1).eval(eqsys).compareTo(0D) == 1 ? 1D : NaN
             ));
 
         add(new Function(new Collection<String>(){{add("∨");}},
@@ -134,8 +139,8 @@ public class Function implements MathObject {
             2,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> !(a[0].eval(eqsys).isNaN() && a[1].eval(eqsys).isNaN()) &&
-                  (a[0].eval(eqsys).compareTo(0D) == 1 || a[1].eval(eqsys).compareTo(0D) == 1) ? 1D : NaN
+            (eqsys, tn) -> !(tn.get(0).eval(eqsys).isNaN() && tn.get(1).eval(eqsys).isNaN()) &&
+                  (tn.get(0).eval(eqsys).compareTo(0D) == 1 || tn.get(1).eval(eqsys).compareTo(0D) == 1) ? 1D : NaN
             ));
 
         add(new Function(new Collection<String>(){{add("⊻");}},
@@ -143,8 +148,8 @@ public class Function implements MathObject {
             2,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> !a[0].eval(eqsys).isNaN() && !a[1].eval(eqsys).isNaN() &&
-                  a[0].eval(eqsys).compareTo(0D) == 1 ^ a[1].eval(eqsys).compareTo(0D) == 1 ? 1D : NaN
+            (eqsys, tn) -> !tn.get(0).eval(eqsys).isNaN() && !tn.get(1).eval(eqsys).isNaN() &&
+                  tn.get(0).eval(eqsys).compareTo(0D) == 1 ^ tn.get(1).eval(eqsys).compareTo(0D) == 1 ? 1D : NaN
             ));
 
         add(new Function(new Collection<String>(){{add("⊼");}},
@@ -152,16 +157,16 @@ public class Function implements MathObject {
             2,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> !a[0].eval(eqsys).isNaN() && !a[1].eval(eqsys).isNaN() &&
-                 a[0].eval(eqsys).compareTo(0D) != 1 && a[1].eval(eqsys).compareTo(0D) != 1 ? 1D : NaN
+            (eqsys, tn) -> !tn.get(0).eval(eqsys).isNaN() && !tn.get(1).eval(eqsys).isNaN() &&
+                 tn.get(0).eval(eqsys).compareTo(0D) != 1 && tn.get(1).eval(eqsys).compareTo(0D) != 1 ? 1D : NaN
             ));
         add(new Function(new Collection<String>(){{add("⊻");}},
             "Checks if 'A' ⊻ 'B'", "A ⊻ B",
             2,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> !a[0].eval(eqsys).isNaN() && !a[1].eval(eqsys).isNaN() &&
-                  a[0].eval(eqsys).compareTo(0D) != 1 && a[1].eval(eqsys).compareTo(0D) != 1 ? 1D : NaN
+            (eqsys, tn) -> !tn.get(0).eval(eqsys).isNaN() && !tn.get(1).eval(eqsys).isNaN() &&
+                  tn.get(0).eval(eqsys).compareTo(0D) != 1 && tn.get(1).eval(eqsys).compareTo(0D) != 1 ? 1D : NaN
             ));
 
 
@@ -172,7 +177,7 @@ public class Function implements MathObject {
             4,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> a[0].eval(eqsys) + a[1].eval(eqsys)
+            (eqsys, tn) -> tn.get(0).eval(eqsys) + tn.get(1).eval(eqsys)
             ));
 
         add(new Function(new Collection<String>(){{add("-");}},
@@ -180,7 +185,7 @@ public class Function implements MathObject {
             4,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> a.length == 1 ? 0 - a[0].eval(eqsys) : a[0].eval(eqsys) - a[1].eval(eqsys)
+            (eqsys, tn) -> tn.size() == 1 ? 0 - tn.get(0).eval(eqsys) : tn.get(0).eval(eqsys) - tn.get(1).eval(eqsys)
             ));
 
         add(new Function(new Collection<String>(){{add("*");add("·");add("×");}},
@@ -188,14 +193,14 @@ public class Function implements MathObject {
             5,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> a[0].eval(eqsys) * a[1].eval(eqsys)
+            (eqsys, tn) -> tn.get(0).eval(eqsys) * tn.get(1).eval(eqsys)
             ));
         add(new Function(new Collection<String>(){{add("/");add("÷");}},
             "Divides 'A' to 'B'", "A / B",
             5,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> a[0].eval(eqsys) / a[1].eval(eqsys)
+            (eqsys, tn) -> tn.get(0).eval(eqsys) / tn.get(1).eval(eqsys)
             ));
 
         add(new Function(new Collection<String>(){{add("%");}},
@@ -203,14 +208,14 @@ public class Function implements MathObject {
             5,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> a[0].eval(eqsys) % a[1].eval(eqsys)
+            (eqsys, tn) -> tn.get(0).eval(eqsys) % tn.get(1).eval(eqsys)
             ));
         add(new Function(new Collection<String>(){{add("^");}},
             "Raises 'A' to 'B'", "A ^ B",
             6,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> Math.pow(a[0].eval(eqsys),a[1].eval(eqsys))
+            (eqsys, tn) -> Math.pow(tn.get(0).eval(eqsys),tn.get(1).eval(eqsys))
             ));
 
 
@@ -224,7 +229,7 @@ public class Function implements MathObject {
             8,
             Type.UNL,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> -1 * a[0].eval(eqsys)
+            (eqsys, tn) -> -1 * tn.get(0).eval(eqsys)
             ));
         //UN_R
         add(new Function(new Collection<String>(){{add("!");}}, //negation
@@ -232,9 +237,9 @@ public class Function implements MathObject {
             7,
             Type.UNR,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> {
+            (eqsys, tn) -> {
                     Double ret = 1D;
-                    for(Double x = a[0].eval(eqsys); x > 0; x--)
+                    for(Double x = tn.get(0).eval(eqsys); x > 0; x--)
                         ret *= x;
                     return ret;
                 }
@@ -247,7 +252,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Math.sin(a[0].eval(eqsys))
+            (eqsys, tn) -> Math.sin(tn.get(0).eval(eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("cos");}},
@@ -255,7 +260,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Math.cos(a[0].eval(eqsys))
+            (eqsys, tn) -> Math.cos(tn.get(0).eval(eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("tan");}},
@@ -263,7 +268,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Math.tan(a[0].eval(eqsys))
+            (eqsys, tn) -> Math.tan(tn.get(0).eval(eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("csc");}},
@@ -271,7 +276,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> 1D / Math.sin(a[0].eval(eqsys))
+            (eqsys, tn) -> 1D / Math.sin(tn.get(0).eval(eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("sec");}},
@@ -279,7 +284,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> 1D / Math.cos(a[0].eval(eqsys))
+            (eqsys, tn) -> 1D / Math.cos(tn.get(0).eval(eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("cot");}},
@@ -287,7 +292,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> 1D / Math.tan(a[0].eval(eqsys))
+            (eqsys, tn) -> 1D / Math.tan(tn.get(0).eval(eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("sinh");}},
@@ -295,7 +300,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Math.sinh(a[0].eval(eqsys))
+            (eqsys, tn) -> Math.sinh(tn.get(0).eval(eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("cosh");}},
@@ -303,7 +308,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Math.cosh(a[0].eval(eqsys))
+            (eqsys, tn) -> Math.cosh(tn.get(0).eval(eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("tanh");}},
@@ -311,7 +316,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Math.tanh(a[0].eval(eqsys))
+            (eqsys, tn) -> Math.tanh(tn.get(0).eval(eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("asin");}},
@@ -319,7 +324,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Math.asin(a[0].eval(eqsys))
+            (eqsys, tn) -> Math.asin(tn.get(0).eval(eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("acon");}},
@@ -327,7 +332,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Math.acos(a[0].eval(eqsys))
+            (eqsys, tn) -> Math.acos(tn.get(0).eval(eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("atan");}},
@@ -335,7 +340,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Math.atan(a[0].eval(eqsys))
+            (eqsys, tn) -> Math.atan(tn.get(0).eval(eqsys))
             ));
 
 
@@ -346,14 +351,14 @@ public class Function implements MathObject {
             5,
         Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> Integer.valueOf(a[0].eval(eqsys).intValue() >> a[1].eval(eqsys).intValue()).doubleValue()
+            (eqsys, tn) -> Integer.valueOf(tn.get(0).eval(eqsys).intValue() >> tn.get(1).eval(eqsys).intValue()).doubleValue()
             ));
         add(new Function(new Collection<String>(){{add("≪");}},
             "'A' Shifted to the left 'B' bits", "≪(A, B)",
             5,
         Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (eqsys, a) -> Integer.valueOf(a[0].eval(eqsys).intValue() << a[1].eval(eqsys).intValue()).doubleValue()
+            (eqsys, tn) -> Integer.valueOf(tn.get(0).eval(eqsys).intValue() << tn.get(1).eval(eqsys).intValue()).doubleValue()
             ));
 
 
@@ -364,7 +369,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Math.abs(a[0].eval(eqsys))
+            (eqsys, tn) -> Math.abs(tn.get(0).eval(eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("ceil");}},
@@ -372,7 +377,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Math.ceil(a[0].eval(eqsys))
+            (eqsys, tn) -> Math.ceil(tn.get(0).eval(eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("floor");}},
@@ -380,7 +385,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Math.floor(a[0].eval(eqsys))
+            (eqsys, tn) -> Math.floor(tn.get(0).eval(eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("hypot");}},
@@ -388,12 +393,12 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(-1).build(),
-            (eqsys, a) -> {
-                    if(a.length <= 1)
+            (eqsys, tn) -> {
+                    if(tn.size() <= 1)
                         return NaN;
                     Double ret = 0D;
-                    for(TokenNode tnd : a)
-                        ret += Math.pow(tnd.eval(),2);
+                    for(West.Math.Set.Node.Node<?, ?> tnd : tn)
+                        ret += Math.pow(((TokenNode)tnd).eval(),2);
                     return Math.pow(ret, 0.5);
                 }
             ));
@@ -403,7 +408,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Math.log(a[0].eval(eqsys))
+            (eqsys, tn) -> Math.log(tn.get(0).eval(eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("log");}},
@@ -411,14 +416,14 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Math.log10(a[0].eval(eqsys))
+            (eqsys, tn) -> Math.log10(tn.get(0).eval(eqsys))
             ));
         add(new Function(new Collection<String>(){{add("round");}},
             "rounds 'A' to the nearest integer", "round(A)",
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Long.valueOf(Math.round(a[0].eval(eqsys))).doubleValue()
+            (eqsys, tn) -> Long.valueOf(Math.round(tn.get(0).eval(eqsys))).doubleValue()
             ));
 
         add(new Function(new Collection<String>(){{add("sqrt");}},
@@ -426,7 +431,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Math.sqrt(a[0].eval(eqsys))
+            (eqsys, tn) -> Math.sqrt(tn.get(0).eval(eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("√");}},
@@ -434,7 +439,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Math.sqrt(a[0].eval(eqsys))
+            (eqsys, tn) -> Math.sqrt(tn.get(0).eval(eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("deg");}},
@@ -442,7 +447,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Math.toDegrees(a[0].eval(eqsys))
+            (eqsys, tn) -> Math.toDegrees(tn.get(0).eval(eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("rad");}},
@@ -450,7 +455,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Math.toRadians(a[0].eval(eqsys))
+            (eqsys, tn) -> Math.toRadians(tn.get(0).eval(eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("randi");}},
@@ -458,13 +463,13 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(0).add(1).add(2).build(),
-            (eqsys, a) -> {
-               if(a.length == 0)
+            (eqsys, tn) -> {
+               if(tn.size() == 0)
                     return Integer.valueOf(new Random().nextInt(100)).doubleValue();
-                else if(a.length == 1)
-                    return Integer.valueOf(new Random().nextInt(a[0].eval(eqsys).intValue())).doubleValue();
-                else if(a.length == 2)
-                    return Integer.valueOf(new Random().nextInt(a[1].eval(eqsys).intValue())+a[0].eval(eqsys).intValue()).doubleValue();
+                else if(tn.size() == 1)
+                    return Integer.valueOf(new Random().nextInt(tn.get(0).eval(eqsys).intValue())).doubleValue();
+                else if(tn.size() == 2)
+                    return Integer.valueOf(new Random().nextInt(tn.get(1).eval(eqsys).intValue())+tn.get(0).eval(eqsys).intValue()).doubleValue();
                 else
                     throw new UnsupportedOperationException();
                 }
@@ -475,12 +480,12 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(0).add(1).add(2).build(),
-            (eqsys, a) -> {
-                if(a.length == 1)
-                    return new Random().nextDouble() * a[0].eval(eqsys);
-                else if(a.length == 2)
-                    return (new Random().nextDouble() + a[0].eval(eqsys)) * a[1].eval(eqsys);
-                else if(a.length == 0)
+            (eqsys, tn) -> {
+                if(tn.size() == 1)
+                    return new Random().nextDouble() * tn.get(0).eval(eqsys);
+                else if(tn.size() == 2)
+                    return (new Random().nextDouble() + tn.get(0).eval(eqsys)) * tn.get(1).eval(eqsys);
+                else if(tn.size() == 0)
                     return Math.random();
                 else
                     throw new UnsupportedOperationException();
@@ -493,9 +498,9 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> {
+            (eqsys, tn) -> {
                 Double ret = 1D;
-                for(Double x = a[0].eval(eqsys); x > 0; x--)
+                for(Double x = tn.get(0).eval(eqsys); x > 0; x--)
                     ret *= x;
                 return ret;
                 }
@@ -506,7 +511,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> -1 * a[0].eval(eqsys)
+            (eqsys, tn) -> -1 * tn.get(0).eval(eqsys)
             ));
 
         add(new Function(new Collection<String>(){{add("sign");}},
@@ -514,7 +519,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (eqsys, a) -> Integer.valueOf(a[0].eval(eqsys).compareTo(0D)).doubleValue()
+            (eqsys, tn) -> Integer.valueOf(tn.get(0).eval(eqsys).compareTo(0D)).doubleValue()
             ));
     }};
 
@@ -628,7 +633,7 @@ public class Function implements MathObject {
         priority = pPriority;
         argsLength = pArgsLength;
         if(funcObj == null)
-            funcObj = (eqsys, a) -> null;
+            funcObj = (eqsys, tn) -> null;
     }
 
     /**
@@ -711,15 +716,10 @@ public class Function implements MathObject {
             for(West.Math.Set.Node.Node<?, ?> n : pNode)
                 ret.putAll(((TokenNode)n).eval(ret, pEqSys));
 
-        TokenNode[] args = new TokenNode[pNode.size()];
-
-        for(int i = 0; i < args.length; i++)
-            args[i] = pNode.get(i);
-
-        assert argsLength.contains(args.length) || argsLength.contains(-1) :
-        "'" +names+ "' got bad args. Allowed args: " + argsLength + ", inputted args = '"+ pNode + "'("+args.length+")";
+        assert argsLength.contains(pNode.size()) || argsLength.contains(-1) :
+        "'" +names+ "' got bad args. Allowed args: " + argsLength + ", inputted args = '"+ pNode +"'("+pNode.size()+")";
         try{
-            return addArgs(ret, pNode.toString(), funcObj.exec(pEqSys, args));
+            return addArgs(ret, pNode.toString(), funcObj.exec(pEqSys, pNode));
         } catch (java.lang.NullPointerException n ){
             System.err.println("An error happened while executing '" + names + "'");
             System.err.println("\tThe HashMap was: " + ret);

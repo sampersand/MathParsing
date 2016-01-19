@@ -16,7 +16,7 @@ import java.util.HashMap;
 */
 public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
-    private String[] parens;
+    protected String[] parens;
 
     public TokenNode(){
         this(new Token("",Token.Type.FUNC));
@@ -41,13 +41,18 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         TokenNode node = copy();
         while(pos < pTokens.size()) {
             Token t = pTokens.get(pos);
+            String[] toAddParens = new String[]{"",""};
+            System.out.println(t+";;"+node);
             if(t.isConst() || t.isBinOper() || t.isUNL() || t.isUNR())
                 node.add(new TokenNode(t));
             else if(t.isFunc() || t.isDelim()) {
+
                 Collection<Token> passTokens = new Collection<Token>();
-                int paren = 0;
                 int x = pos + 1;
+                int paren = 0;
+                System.out.println("pkn:"+pTokens);
                 do{
+                    System.out.println(pTokens+"::"+pTokens.get(x));
                     if(Token.PAREN_L.contains(pTokens.get(x).val())) paren++;
                     if(Token.PAREN_R.contains(pTokens.get(x).val())) paren--;
                     if(t.isDelim() && Token.DELIM.contains(pTokens.get(x).val()) && paren == 0) break;
@@ -55,22 +60,49 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 } while((t.isDelim() ? 0 <= paren : 0 < paren) && x < pTokens.size());
                 for(Token tk : pTokens.subList(pos + 1, x))
                     passTokens.add(tk);
+                System.out.println("before"+pTokens.get(pos));
+                if(t.isFunc() && passTokens.get(passTokens.size()-1).isParen() && passTokens.get(0).isParen()){
+                    toAddParens[1] = pTokens.get(pos+passTokens.size()).val();
+                    toAddParens[0] = pTokens.get(pos+++1).val();
+                    passTokens.remove(0);
+                    passTokens.remove(passTokens.size()-1);
+                    System.out.println("0:"+toAddParens[0]);
+                    System.out.println("1:"+toAddParens[1]);
+                    System.out.println("T:"+t);
+                    pos++;
+                }
+                System.out.println("passtk:"+passTokens);
+
+                // int paren = 0;
+                // int x = pos + 1;
+                // do{
+                //     if(Token.PAREN_L.contains(pTokens.get(x).val())) paren++;
+                //     if(Token.PAREN_R.contains(pTokens.get(x).val())) paren--;
+                //     if(t.isDelim() && Token.DELIM.contains(pTokens.get(x).val()) && paren == 0) break;
+                //     x++;
+                // } while((t.isDelim() ? 0 <= paren : 0 < paren) && x < pTokens.size());
+                // for(Token tk : pTokens.subList(pos + 1, x))
+                //     passTokens.add(tk);
                 if(passTokens.get(0).isParen())
-                    passTokens.add(1, new Token("", Token.Type.DELIM));
+                    passTokens.set(0, new Token("", Token.Type.DELIM));
                 Object[] temp = new TokenNode(t).condeseNodes(passTokens);
-                pos += (int)temp[0];
+                pos += (int)temp[0];//(x==pTokens.size()-1?1:0);
+                System.out.println("after:"+temp[1]);
+                ((TokenNode)temp[1]).parens = toAddParens;
                 node.add((TokenNode)temp[1]);
+                System.out.println("node:"+node);
             } else if(t.isParen()){
                 if(Token.isParenL(t.val()) != null){
-                    assert parens[0].isEmpty();
-                    parens[0] = t.val();
+                    assert node.parens[0].isEmpty();
+                    node.parens[0] = t.val();
                 } else{
-                    assert parens[1].isEmpty();
-                    parens[1] = t.val();
+                    assert node.parens[1].isEmpty() && !node.parens[0].isEmpty() : t+"\n"+toFancyString();
+                    node.parens[1] = t.val();
                 }
             }
             pos++;
         }
+        System.out.println(node.parens[0]+"|"+node.parens[1]+":"+node);
         return new Object[]{pos, node};
     }
 
@@ -172,6 +204,11 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     @Override
     public TokenNode get(int pPos){
         return (TokenNode)super.get(pPos);
+    }
+
+    
+    public String[] parens(){
+        return parens;
     }
 
     @Override
@@ -307,10 +344,10 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             return token.val();
         }
         if((token.isFunc() && !token.isBinOper()) || token.isDelim()){
-            ret += token.val() + parens[0];
+            ret += token.val() + "["+parens[0];
             for(Node n : this)
                 ret += ((TokenNode)n).toExprString();
-            return ret + parens[1];
+            return ret + parens[1]+"]";
         } else if(token.isBinOper()){
             if(size() == 1) // TODO: FIX THIS
                 ret += token.val() + " " + ((TokenNode)get(0)).toExprString();
@@ -342,10 +379,22 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
     @Override
     public String toFancyString(){
-        return super.toFancyString().replaceFirst("Node", "TokenNode");
+        return super.toFancyString().replaceFirst("(?<!Token)Node(?!s)", "TokenNode ('"+parens[0]+"', '"+parens[1]+"')");
     }
+
+    @Override
+    public String toFancyString(int i){
+        return super.toFancyString(i).replaceFirst("(?<!Token)Node", "TokenNode ('"+parens[0]+"', '"+parens[1]+"')");
+    }
+
+
     @Override
     public String toFullString(){
-        return super.toFullString().replaceFirst("Node", "TokenNode");
+        return super.toFancyString().replaceFirst("(?<!Token)Node", "TokenNode ('"+parens[0]+"', '"+parens[1]+"')");
+    }
+
+    @Override
+    public String toFullString(int i){
+        return super.toFancyString(i).replaceFirst("(?<!Token)Node", "TokenNode ('"+parens[0]+"', '"+parens[1]+"')");
     }
 }
