@@ -42,7 +42,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         while(pos < pTokens.size()) {
             Token t = pTokens.get(pos);
             String[] toAddParens = new String[]{"",""};
-            System.out.println(t+";;"+node);
             if(t.isConst() || t.isBinOper() || t.isUNL() || t.isUNR())
                 node.add(new TokenNode(t));
             else if(t.isFunc() || t.isDelim()) {
@@ -50,9 +49,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 Collection<Token> passTokens = new Collection<Token>();
                 int x = pos + 1;
                 int paren = 0;
-                System.out.println("pkn:"+pTokens);
                 do{
-                    System.out.println(pTokens+"::"+pTokens.get(x));
                     if(Token.PAREN_L.contains(pTokens.get(x).val())) paren++;
                     if(Token.PAREN_R.contains(pTokens.get(x).val())) paren--;
                     if(t.isDelim() && Token.DELIM.contains(pTokens.get(x).val()) && paren == 0) break;
@@ -60,37 +57,19 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 } while((t.isDelim() ? 0 <= paren : 0 < paren) && x < pTokens.size());
                 for(Token tk : pTokens.subList(pos + 1, x))
                     passTokens.add(tk);
-                System.out.println("before"+pTokens.get(pos));
                 if(t.isFunc() && passTokens.get(passTokens.size()-1).isParen() && passTokens.get(0).isParen()){
-                    toAddParens[1] = pTokens.get(pos+passTokens.size()).val();
-                    toAddParens[0] = pTokens.get(pos+++1).val();
+                    toAddParens[1] = pTokens.get(pos+++passTokens.size()).val();
+                    toAddParens[0] = pTokens.get(pos++).val();
                     passTokens.remove(0);
                     passTokens.remove(passTokens.size()-1);
-                    System.out.println("0:"+toAddParens[0]);
-                    System.out.println("1:"+toAddParens[1]);
-                    System.out.println("T:"+t);
-                    pos++;
                 }
-                System.out.println("passtk:"+passTokens);
 
-                // int paren = 0;
-                // int x = pos + 1;
-                // do{
-                //     if(Token.PAREN_L.contains(pTokens.get(x).val())) paren++;
-                //     if(Token.PAREN_R.contains(pTokens.get(x).val())) paren--;
-                //     if(t.isDelim() && Token.DELIM.contains(pTokens.get(x).val()) && paren == 0) break;
-                //     x++;
-                // } while((t.isDelim() ? 0 <= paren : 0 < paren) && x < pTokens.size());
-                // for(Token tk : pTokens.subList(pos + 1, x))
-                //     passTokens.add(tk);
                 if(passTokens.get(0).isParen())
                     passTokens.set(0, new Token("", Token.Type.DELIM));
                 Object[] temp = new TokenNode(t).condeseNodes(passTokens);
                 pos += (int)temp[0];//(x==pTokens.size()-1?1:0);
-                System.out.println("after:"+temp[1]);
                 ((TokenNode)temp[1]).parens = toAddParens;
                 node.add((TokenNode)temp[1]);
-                System.out.println("node:"+node);
             } else if(t.isParen()){
                 if(Token.isParenL(t.val()) != null){
                     assert node.parens[0].isEmpty();
@@ -102,7 +81,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             }
             pos++;
         }
-        System.out.println(node.parens[0]+"|"+node.parens[1]+":"+node);
         return new Object[]{pos, node};
     }
 
