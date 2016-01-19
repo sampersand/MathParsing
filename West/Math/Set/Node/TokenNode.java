@@ -41,7 +41,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         TokenNode node = copy();
         while(pos < pTokens.size()) {
             Token t = pTokens.get(pos);
-            System.out.println("t:"+t);
             if(t.isConst() || t.isBinOper() || t.isUNL() || t.isUNR())
                 node.add(new TokenNode(t));
             else if(t.isFunc() || t.isDelim()) {
@@ -69,7 +68,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     pos--;
                 }
 
-                System.out.println("passtkL"+passTokens);
                 Object[] temp = new TokenNode(t).condeseNodes(passTokens);
                 pos += (int)temp[0];//(x==pTokens.size()-1?1:0);
                 ((TokenNode)temp[1]).parens = toAddParens;
@@ -112,20 +110,16 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         if(peles.size() == 0)
             return null;
         if(peles.size() == 1)
-            if(peles.get(0).size() == 0){
-                System.out.println(peles.get(0));
+            if(peles.get(0).size() == 0)
                 return peles.get(0);
-            }
             else
                 return new TokenNode(peles.get(0)){{
-                    System.out.println("peles1:"+peles);
                     add(condense(new Collection<TokenNode>().addAllE(peles.get(0).elements)));
                 }};
 
         int fhp = firstHighPriority(peles);
         if(fhp == -1)
             return new TokenNode(new Token()){{
-                System.out.println("peles:"+peles);
                 peles.forEach(e -> add(condense(new Collection<TokenNode>().addE(e))));
             }};
         TokenNode u = condense(new Collection.Builder<TokenNode>().add(peles.get(fhp)).build());
@@ -135,7 +129,6 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             u.add(s);
         if(e != null)
             u.add(e);
-        System.out.println("u:"+u);
         return u;
     }
 
@@ -316,18 +309,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                                                     token.val());
     }
 
-    public Double eval(){ //when jsut a double is needed
-        return eval(new EquationSystem());
-    }
-
-
     public Double evald(HashMap<String, Double> hm, final EquationSystem pEqSys){
         return eval(hm, pEqSys).get(toString());
-    }
-
-    public Double eval(final EquationSystem pEqSys){
-        System.out.println("eval!"+this);
-        return eval(new HashMap<String, Double>(), pEqSys).get(toString());
     }
 
     public String toExprString(){

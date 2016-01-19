@@ -676,29 +676,6 @@ public class Function implements MathObject {
         return funcObj;
     }
 
-    // /**
-    //  * This thing takes a {@link Node} (usually the node from {@link #exec(EquationSystem,Node) exec}), and returns an
-    //  * array of the numerical values of each {@link Node#elements() subNode}.
-    //  * @param pEqSys        The {@link EquationSystem} that will be used when evaluating <code>pNode</code>.
-    //  * @param pNode         The node to be evaluated.
-    //  * @return An array of doubles, with each position corresponding to the value of each Node of that position in 
-    //  *         {@link Node#elements() pNode's elements()}.
-    //  */
-    // public Object[] evalNode(final EquationSystem pEqSys, TokenNode pNode) {
-    //     if(get(pNode.toString()).type == Type.ASSIGN){
-    //         assert pNode.size() == 2 : "size != 2: " + pNode;
-    //         // return new Object[]{null, pNode.}
-    //     }
-    //     Double[] retd = new Double[pNode.size()];
-    //     HashMap<String, Double> rethm = new HashMap<String, Double>();
-    //     for(int i = 0; i < pNode.size(); i++) {
-    //         rethm.putAll(((TokenNode)pNode.elements().get(i)).eval(pEqSys));
-    //         retd[i] = rethm.get(pNode.elements().get(i).toString());
-    //     }
-    //     return new Object[]{retd, rethm};
-    // }
-
-
     /**
      * Takes the parameter {@link Node} (and {@link EquationSystem}, performs whatever this function is defined to do,
      * and returns the result.
@@ -713,12 +690,10 @@ public class Function implements MathObject {
             assert pNode.size() == 2;
             ret.putAll(pNode.get(1).eval(ret, pEqSys));
             ret.put(pNode.get(0).toString(), ret.get(pNode.get(1).toString()));
-            return addArgs(ret, pNode.toString(), funcObj.exec(ret, pEqSys, pNode));
         }
         else
             for(West.Math.Set.Node.Node<?, ?> n : pNode)
                 ret.putAll(((TokenNode)n).eval(ret, pEqSys));
-        // System.out.println("ret::"+ret+" >==< " + pNode);
         assert argsLength.contains(pNode.size()) || argsLength.contains(-1) :
         "'" +names+ "' got bad args. Allowed args: " + argsLength + ", inputted args = '("+ pNode.size() +"') " + pNode;
         try{
