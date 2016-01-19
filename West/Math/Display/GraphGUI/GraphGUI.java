@@ -196,9 +196,10 @@ public class GraphGUI extends JFrame implements ActionListener{
             JPanel graphJP = new JPanel(new GridLayout(1,1));
             graphJP.add(addActionListener(new JButton("Go!"), t -> {
                     if(indep.getText().isEmpty())
-                        JOptionPane.showMessageDialog(this,
-                        eqsys().equations().get(0).subEquations().get(0).get(0).toString() + " = " +
-                        eqsys().eval(eqsys().equations().get(0).subEquations().get(0).get(0).toString()));
+                        for(Equation eq : eqsys().equations())
+                            JOptionPane.showMessageDialog(this,
+                            eq.subEquations().get(0).get(0).toString() + " = " +
+                            eqsys().eval(eq.subEquations().get(0).get(0).toString()));
                     else
                         graph();
                     }
