@@ -47,7 +47,7 @@ public class GraphComponents implements MathObject {
     public GraphComponents(String indep, String[] dep){
         this(new int[]{1250, 800},
              new double[]{-10, -10, 10, 10},
-             new double[]{250},
+             new double[]{1000},
              GraphTypes.XY,
              indep,
              dep);

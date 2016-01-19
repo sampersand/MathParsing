@@ -88,7 +88,8 @@ public class Equation implements MathObject {
         pEq = pEq.replaceAll("⅟","1/"); // ^^^s
         for(String trig : TRIG) // Trig i.e. 'coshΘ' --> cosh(Θ)
             pEq = pEq.replaceAll("(?!<a)("+trig+")(?!=h)(\\^[\\d.-]+)?(?!=\\()([\\w\\d().]+)", "$1($3)$2"); 
-        pEq = pEq.replaceAll("(\\W*?)(\\d)(\\w)","$1$2·$3"); // ^^^s
+        pEq = pEq.replaceAll("(?<!\\w|\\d|\\.)(\\d)(\\w)","$1·$2");
+        // pEq = pEq.replaceAll("(\\W*?)(\\d)(\\w+?)","$1$2·$3"); // ^^^s
         return pEq;
     }
 
