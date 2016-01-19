@@ -457,21 +457,21 @@ public class Function implements MathObject {
             (hm, eqsys, tn) -> Long.valueOf(Math.round(tn.get(0).evald(hm, eqsys))).doubleValue()
             ));
 
-        // add(new Function(new Collection<String>(){{add("sqrt");}},
-        //     "the square root (√) of 'A'", "sqrt(A)",
-        //     DEFAULT_PRIORITY,
-        //     Type.NORM,
-        //     new Collection.Builder<Integer>().add(1).build(),
-        //     (hm, eqsys, tn) -> Math.sqrt(tn.get(0).evald(hm, eqsys))
-        //     ));
-
-        add(new Function(new Collection<String>(){{add("√");}},
-            "the square root (√) of 'A'", "√(A)",
+        add(new Function(new Collection<String>(){{add("sqrt");}},
+            "the square root (√) of 'A'", "sqrt(A)",
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
             (hm, eqsys, tn) -> Math.sqrt(tn.get(0).evald(hm, eqsys))
             ));
+
+        // add(new Function(new Collection<String>(){{add("√");}},
+        //     "the square root (√) of 'A'", "√(A)",
+        //     DEFAULT_PRIORITY,
+        //     Type.NORM,
+        //     new Collection.Builder<Integer>().add(1).build(),
+        //     (hm, eqsys, tn) -> Math.sqrt(tn.get(0).evald(hm, eqsys))
+        //     ));
 
         add(new Function(new Collection<String>(){{add("deg");}},
             "turns 'A' into degrees (from radians)", "degrees(A)",
