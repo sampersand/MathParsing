@@ -522,14 +522,6 @@ public class Function implements MathObject {
             new Collection.Builder<Integer>().add(1).build(),
             a -> Integer.valueOf(a[0].compareTo(0D)).doubleValue()
             ));
-
-        add(new Function(new Collection<String>(){{add("test");System.out.println("TODO: Remove test in Function");}},
-            "","",
-            DEFAULT_PRIORITY,
-            Type.NORM,
-            new Collection.Builder<Integer>().add(2).build(),
-            a -> a[0]*a[1]
-            ));
     }};
 
     public static Collection<String> BIN_OPERS = new Collection<String>(){{
