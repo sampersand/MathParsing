@@ -43,14 +43,17 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     x++;
                 } while((t.isDelim() ? 0 <= paren : 0 < paren) && x < pTokens.size());
                 for(Token tk : pTokens.subList(pos + 1, x))
-                     passTokens.add(tk);
+                    passTokens.add(tk);
+                if(passTokens.get(0).isParen())
+                    passTokens.add(1, new Token("", Token.Type.DELIM));
                 Object[] temp = new TokenNode(t).condeseNodes(passTokens);
                 pos += (int)temp[0];
                 node.add((TokenNode)temp[1]);
+                System.out.println(node.toFancyString());
             } 
-
             pos++;
         }
+        System.out.println("=======node=======\n"+node.toFancyString()+"\n==================\n\n\n");
         return new Object[]{pos, node};
     }
 
@@ -75,20 +78,24 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return priority == -1 ? -1 : pos;
     }
     private static TokenNode condense(final Collection<TokenNode> peles){
+        System.out.println("peles:"+peles);
         if(peles.size() == 0)
             return null;
-
         if(peles.size() == 1)
-            if(peles.get(0).size() == 0)
+            if(peles.get(0).size() == 0){
+                System.out.println("peles.get(0).size() == 0::ret='"+peles.get(0)+"'");
                 return peles.get(0);
+            }
             else
                 return new TokenNode(peles.get(0).token){{
                     add(condense(new Collection<TokenNode>().addAllE(peles.get(0).elements)));
+                    System.out.println("peles.get(0).size() != 0::ret='"+get(0)+"'");
                 }};
         int fhp = firstHighPriority(peles);
         if(fhp == -1)
             return new TokenNode(new Token()){{
                 peles.forEach(e -> add(condense(new Collection<TokenNode>().addE(e))));
+                System.out.println("fhp == -1::ret="+elements);
             }};
         TokenNode u = condense(new Collection.Builder<TokenNode>().add(peles.get(fhp)).build());
         TokenNode s = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(0, fhp)).build());
@@ -97,6 +104,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             u.add(s);
         if(e != null)
             u.add(e);
+        System.out.println("normal ret::ret="+u);
         return u;
     }
 

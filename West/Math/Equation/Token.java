@@ -97,6 +97,10 @@ public class Token implements MathObject {
         return type == Type.FUNC || Function.get(val) != null;
     }
 
+    public boolean isParen() {
+        return type == Type.PAREN;
+    }
+
     @Override
     public String toString() {
         return "["+val+":"+type.toString().substring(0,3)+"]";

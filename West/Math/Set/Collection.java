@@ -60,6 +60,11 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
         return elements.add(pObj); // might throw exception
     }
 
+    @Override
+    public void add(int pos, E pObj){
+        elements.add(pos, pObj); // might throw exception
+    }
+
     public boolean addAll(Object pObj){
         assert pObj instanceof java.lang.Iterable || pObj instanceof Object[]: "Cannot addAll:" +pObj.getClass();
         if(pObj instanceof Object[])
