@@ -22,9 +22,11 @@ public class Tester {
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
-            args = new String[]{"--d","a","v","--e","v=<4*cos(t)*cos(4*t)-sin(4*t)*sin(t),–2*cos(2*t)>","a=<0-1*sin(2*t)*cos(3*t)-4*cos(5*t)*sin(6*t)-7*cos(8*t)*sin(9*t)-sin(10*t)*cos(11*t),12*sin(13*t)>","t=5*pi/4"};
+            // args = new String[]{"--d","a","v","--e","v=<4*cos(t)*cos(4*t)-sin(4*t)*sin(t),–2*cos(2*t)>",
+            // "a=<0-1*sin(2*t)*cos(3*t)-4*cos(5*t)*sin(6*t)-7*cos(8*t)*sin(9*t)-sin(10*t)*cos(11*t),12*sin(13*t)>",
+            // "t=5*pi/4"};
             // args = new String[]{"--d","y","--e","v=<4*cos(t)*cos(4*t)-sin(4*t)*sin(t),–2*cos(2*t)>","t=5*pi/4"};
-            // args = new String[]{"--d","y","--e","y=test(3|5)"};
+            args = new String[]{"--d","y","--e","y=5cos(3x)","x=9pi"};
         }
 
 
