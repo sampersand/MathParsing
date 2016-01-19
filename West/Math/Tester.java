@@ -22,7 +22,7 @@ public class Tester {
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
-            // args = new String[]{"--d","y","--e","y= <3, 4>"};
+            args = new String[]{"--d","y","--e","y=<1/5,14/5>"};
             // args = new String[]{"--d","y","--e","y=test(3|5)"};
         }
 
@@ -112,6 +112,7 @@ public class Tester {
             }
             if(indep.isEmpty()){
                 EquationSystem eqsysfinal = eqsys;
+                System.out.println(eqsys.toFancyString());
                 int pref = prefix;
                 dep.forEach(s -> Print.printi("RESULT ("+s+"):", 
                             EquationSystem.appendMetricSuffix(

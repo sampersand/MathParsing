@@ -41,12 +41,12 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         TokenNode node = copy();
         while(pos < pTokens.size()) {
             Token t = pTokens.get(pos);
-            String[] toAddParens = new String[]{"",""};
             if(t.isConst() || t.isBinOper() || t.isUNL() || t.isUNR())
                 node.add(new TokenNode(t));
             else if(t.isFunc() || t.isDelim()) {
 
                 Collection<Token> passTokens = new Collection<Token>();
+                String[] toAddParens = new String[]{"",""};
                 int x = pos + 1;
                 int paren = 0;
                 do{
@@ -64,8 +64,10 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     passTokens.remove(passTokens.size()-1);
                 }
 
-                if(passTokens.get(0).isParen())
-                    passTokens.set(0, new Token("", Token.Type.DELIM));
+                if(!toAddParens[0].isEmpty()){
+                    assert !toAddParens[1].isEmpty();
+                    passTokens.add(0, new Token("", Token.Type.DELIM));
+                }
                 Object[] temp = new TokenNode(t).condeseNodes(passTokens);
                 pos += (int)temp[0];//(x==pTokens.size()-1?1:0);
                 ((TokenNode)temp[1]).parens = toAddParens;
@@ -108,8 +110,10 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         if(peles.size() == 0)
             return null;
         if(peles.size() == 1)
-            if(peles.get(0).size() == 0)
+            if(peles.get(0).size() == 0){
+                System.out.println(peles.get(0));
                 return peles.get(0);
+            }
             else
                 return new TokenNode(peles.get(0)){{
                     add(condense(new Collection<TokenNode>().addAllE(peles.get(0).elements)));

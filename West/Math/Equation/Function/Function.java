@@ -58,6 +58,8 @@ public class Function implements MathObject {
             new Collection.Builder<Integer>().add(1).add(2).build(),
             (eqsys, tn) -> {
                 assert tn.size() == 1 || (tn.parens()[0].equals("<") && tn.parens()[1].equals(">")) : tn;
+                if(tn.parens()[0].equals("{"))
+                    System.out.println(tn);
                 if(tn.size() == 2)
                     return Math.hypot(tn.get(0).eval(eqsys), tn.get(1).eval(eqsys));
                 return tn.get(0).eval(eqsys);
@@ -710,7 +712,7 @@ public class Function implements MathObject {
         if(type == Type.ASSIGN){
             assert pNode.size() == 2;
             ret.putAll(pNode.get(1).eval(ret, pEqSys));
-            ret.put(pNode.get(0).toString(),ret.get(pNode.get(1).toString()));
+            ret.put(pNode.get(0).toString(), ret.get(pNode.get(1).toString()));
         }
         else
             for(West.Math.Set.Node.Node<?, ?> n : pNode)
