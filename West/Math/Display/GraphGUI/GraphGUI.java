@@ -55,15 +55,11 @@ public class GraphGUI extends JFrame implements ActionListener{
     }
     public void initXY(){
         equations = new ArrayList<JTextField>(){{
-            add(new JTextField("y1="));
-            add(new JTextField("y2="));
-            add(new JTextField("y3="));
+            add(new JTextField("y="));
         }};
 
         dep = new ArrayList<JTextField>(){{
-            add(new JTextField("y1"));
-            add(new JTextField("y2"));
-            add(new JTextField("y3"));
+            add(new JTextField("y"));
         }};
 
         indep = new JTextField("x");
@@ -91,15 +87,11 @@ public class GraphGUI extends JFrame implements ActionListener{
     public void initPolar(){
         //3.5 - 1.5·abs(cos(Θ))·√(1.3 + abs(sin(Θ))) + cos(2·Θ) - 3·sin(Θ) + 0.7·cos(12.2·Θ)
         equations = new ArrayList<JTextField>(){{
-            add(new JTextField("r1="));
-            add(new JTextField("r2="));
-            add(new JTextField("r3="));
+            add(new JTextField("r="));
         }};
 
         dep = new ArrayList<JTextField>(){{
-            add(new JTextField("r1"));
-            add(new JTextField("r2"));
-            add(new JTextField("r3"));
+            add(new JTextField("r0"));
         }};
 
         indep = new JTextField("theta");
@@ -202,7 +194,15 @@ public class GraphGUI extends JFrame implements ActionListener{
 
         // Graph button
             JPanel graphJP = new JPanel(new GridLayout(1,1));
-            graphJP.add(addActionListener(new JButton("Graph!"),t -> graph()));
+            graphJP.add(addActionListener(new JButton("Go!"), t -> {
+                    if(indep.getText().isEmpty())
+                        JOptionPane.showMessageDialog(this,
+                        eqsys().equations().get(0).subEquations().get(0).get(0).toString() + " = " +
+                        eqsys().eval(eqsys().equations().get(0).subEquations().get(0).get(0).toString()));
+                    else
+                        graph();
+                    }
+            ));
         graphJP.requestFocusInWindow();
 
         //PUTTING THEM IN THIS
