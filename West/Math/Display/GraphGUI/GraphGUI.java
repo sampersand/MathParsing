@@ -250,15 +250,15 @@ public class GraphGUI extends JFrame implements ActionListener{
                     init();
                     break;
                 case "Remove Equation":
-                    if(equations.size() <=1)
-                        return;
+                    if(dep.size() <=1)
+                        equations.get(0).setText("");
                     equations.remove(equations.size() - 1);
                     getContentPane().removeAll();
                     init();
                     break;
                 case "Remove Variable":
                     if(dep.size() <=1)
-                        return;
+                        dep.get(0).setText("");
                     dep.remove(dep.size() - 1);
                     getContentPane().removeAll();
                     init();
@@ -297,7 +297,7 @@ public class GraphGUI extends JFrame implements ActionListener{
         EquationSystem eqsys = eqsys();
         for(int i = 0; i < step.size(); i++){
             if(step.get(i).getText().isEmpty() && i <= 2)
-                ret[i] = eqBounds()[2*i];
+                ret[i] = eqBounds()[2 * i];
             else
                 ret[i] = eqsys.eval("__TEMP__",new EquationSystem().add("__TEMP__="+step.get(i).getText()));
         }
@@ -317,6 +317,9 @@ public class GraphGUI extends JFrame implements ActionListener{
             for(JTextField jt : dep)
                 if(eqsys().exprExists(jt.getText()))
                     add(jt.getText());
+            if(isEmpty())
+                add(eqsys().equations().get(0).subEquations().get(0).get(0).toString());
+
         }};
         String[] ret = new String[ret2.size()];
         for(int i = 0; i < ret2.size(); i++)
