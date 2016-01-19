@@ -55,14 +55,35 @@ public class Function implements MathObject {
             "Parenthesis, literally: ('A')", "(A)",
             DEFAULT_PRIORITY,
             Type.NORM,
-            new Collection.Builder<Integer>().add(1).add(2).build(),
+            new Collection.Builder<Integer>().add(-1).build(),
             (hm, eqsys, tn) -> {
-                assert tn.size() == 1 || (tn.parens()[0].equals("<") && tn.parens()[1].equals(">")) : tn;
-                if(tn.parens()[0].equals("{"))
-                    System.out.println(tn);
-                if(tn.size() == 2)
-                    return Math.hypot(tn.get(0).evald(hm, eqsys), tn.get(1).evald(hm, eqsys));
-                return tn.get(0).evald(hm, eqsys);
+                String[] p = tn.parens();
+                int s = tn.size();
+                switch(p[0]){
+                    case "(": case "":
+                        switch(p[1]){
+                            case ")":case "":
+                                assert s == 1 : tn;
+                                return tn.get(0).evald(hm, eqsys);
+                            default:
+                                assert false : p[0] + p[1] + " isn't defined!";
+                        }
+                    case "<":
+                        switch(p[1]){
+                            case ">":
+                                if(tn.size() <= 1)
+                                    return NaN;
+                                Double ret = 0D;
+                                for(West.Math.Set.Node.Node<?, ?> tnd : tn)
+                                    ret += Math.pow(((TokenNode)tnd).evald(hm, eqsys),2);
+                                return Math.pow(ret, 0.5);
+                            default:
+                                assert false : p[0] + p[1] + " isn't defined!";
+                        }
+                    default:
+                        assert false : p[0] + p[1] + " isn't defined!";
+                        return NaN;
+                }
             }
             ));
 

@@ -218,6 +218,7 @@ public class GraphGUI extends JFrame implements ActionListener{
         return t -> {System.out.println(t);};
     }
     public void graph(){
+        System.out.println("graphing!");
         eqsys().graph(new GraphComponents(winBounds(),
                                         eqBounds(),
                                         step(),
@@ -251,16 +252,14 @@ public class GraphGUI extends JFrame implements ActionListener{
                     init();
                     break;
                 case "Remove Equation":
-                    if(dep.size() <=1)
-                        equations.get(0).setText("");
-                    equations.remove(equations.size() - 1);
+                    if(dep.size() > 1)
+                        equations.remove(equations.size() - 1);
                     getContentPane().removeAll();
                     init();
                     break;
                 case "Remove Variable":
-                    if(dep.size() <=1)
-                        dep.get(0).setText("");
-                    dep.remove(dep.size() - 1);
+                    if(dep.size() > 1)
+                        dep.remove(dep.size() - 1);
                     getContentPane().removeAll();
                     init();
                     break;
@@ -318,10 +317,10 @@ public class GraphGUI extends JFrame implements ActionListener{
             for(JTextField jt : dep)
                 if(eqsys().exprExists(jt.getText()))
                     add(jt.getText());
-            if(isEmpty())
-                add(eqsys().equations().get(0).subEquations().get(0).get(0).toString());
 
         }};
+        if(ret2.isEmpty())
+            ret2.add(eqsys().equations().get(0).subEquations().get(0).get(0).toString());
         String[] ret = new String[ret2.size()];
         for(int i = 0; i < ret2.size(); i++)
             ret[i] = ret2.get(i);
