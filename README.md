@@ -21,3 +21,5 @@ NOTE: Double quotes are only required if there is spaces in the passed arguments
   <ul>Example: <code>--step "-4·pi, 4×π/5, π÷16"</code></ul></ul>
 <ul>·<code>--bounds</code> - Only ever used for graphing, this defines the bounds of what will be displayed. The next argument should be 4 numbers, seperated by commas, in the format: <code>Minimum X, Minimum Y, Maximum X, Maximum Y</code>
   <ul>Example: <code>--bounds "-2·π, -1, 2×pi, 1.0"</code></ul></ul>
+<ul>·<code>--Prefix</code> OR <code>--prefix</code> - Enables metric prefixing. "p" enables only commonly used ones, while "P" enables them all.
+  <ul>Example: <code>4.61952289967403E-7</code> becomes <code>4.61952289967403μ</code>.</ul></ul>

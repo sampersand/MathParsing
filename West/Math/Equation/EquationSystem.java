@@ -290,16 +290,16 @@ public class EquationSystem implements MathObject{
             case + 3: case + 4: case + 5:          return param / Math.pow(10, + 3) + "k" ; // kilo
             case + 2:                     if(!NSO) return param / Math.pow(10, + 2) + "h" ; // hecto
             case + 1:                     if(!NSO) return param / Math.pow(10, + 1) + "da"; // deca
+            case -24:                     if(!NSO) return param / Math.pow(10, -24) + "y" ; // yocto
+            case -21: case -22: case -23: if(!NSO) return param / Math.pow(10, -21) + "z" ; // zepto
+            case -18: case -19: case -20: if(!NSO) return param / Math.pow(10, -18) + "a" ; // atto
+            case -15: case -16: case -17: if(!NSO) return param / Math.pow(10, -15) + "f" ; // femto
+            case -12: case -13: case -14: if(!NSO) return param / Math.pow(10, -12) + "p" ; // pico
+            case - 9: case -10: case -11: if(!NSO) return param / Math.pow(10, - 9) + "n" ; // nano
+            case - 6: case - 7: case - 8:          return param / Math.pow(10, - 6) + "μ" ; // micro
+            case - 3: case - 4: case - 5:          return param / Math.pow(10, - 3) + "m" ; // milli
             case - 1:                     if(!NSO) return param / Math.pow(10, - 1) + "d" ; // deci
             case - 2:                              return param / Math.pow(10, - 2) + "c" ; // centi
-            case - 3: case - 4: case - 5:          return param / Math.pow(10, - 3) + "m" ; // milli
-            case - 6: case - 7: case - 8:          return param / Math.pow(10, - 6) + "μ" ; // micro
-            case - 9: case -10: case -11: if(!NSO) return param / Math.pow(10, - 9) + "n" ; // nano
-            case -12: case -13: case -14: if(!NSO) return param / Math.pow(10, -12) + "p" ; // pico
-            case -15: case -16: case -17: if(!NSO) return param / Math.pow(10, -15) + "f" ; // femto
-            case -18: case -19: case -20: if(!NSO) return param / Math.pow(10, -18) + "a" ; // atto
-            case -21: case -22: case -23: if(!NSO) return param / Math.pow(10, -21) + "z" ; // zepto
-            case -24:                     if(!NSO) return param / Math.pow(10, -24) + "y" ; // yocto
             case + 0: default:                     return param                     + ""  ; // --
         }
     }

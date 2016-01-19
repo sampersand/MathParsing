@@ -61,7 +61,7 @@ public class Tester {
                     if(args[i].matches("--b(ounds)?")) {type = 'b'; continue;}
                     if(args[i].matches("--[Pp](refix(es)?)?")) {
                         System.out.println("@");
-                        prefix = Character.valueOf(args[i].charAt(2)) == 'P' ? 1: 2;
+                        prefix = Character.valueOf(args[i].charAt(2)) == 'p' ? 1: 2;
                         continue;
                     }
                     if (type == 'f') {
