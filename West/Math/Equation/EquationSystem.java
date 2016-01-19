@@ -312,6 +312,9 @@ public class EquationSystem implements MathObject{
         return false;
     }
 
+    public boolean isEmpty(){
+        return equations.size() == 0;
+    }
     @Override
     public String toString() {
         String ret = "Equations = (";

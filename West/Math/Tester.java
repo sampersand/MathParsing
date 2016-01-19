@@ -22,7 +22,9 @@ public class Tester {
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
-            args = new String[]{"--e","y=5·cos3x","--i","x"};
+            // args = new String[]{"y=cos(Θ)","Θ=4"};
+            args = new String[]{"3.5 - 1.5·abs(cos(Θ))·√(1.3 + abs(sin(Θ))) + cos(2·Θ) - 3·sin(Θ) + 0.7·cos(12.2·Θ)","Θ=4"};
+            // args = new String[]{"--e","y=5cos3x","--i","x"};
         }
 
 
@@ -47,9 +49,9 @@ public class Tester {
                 eqsys = new EquationSystem().add(new Equation().add(args[0]));
             } else if(args.length > 1) {
                 int i = -1;
-                char type = ' ';
-                if(!args[0].contains("--"))
-                    throw new IllegalArgumentException("first value has to start with '--'");
+                char type = 'e';
+                // if(!args[0].contains("--"))
+                    // throw new IllegalArgumentException("first value has to start with '--'");
                 while(i < args.length - 1) { //args.length is String.
                     i++;
                     if(args[i].matches("--f(unc)?")) {type = 'f'; continue;}
@@ -109,7 +111,7 @@ public class Tester {
                 }
             }
             EquationSystem eqsysfinal = eqsys;
-            if(dep.isEmpty()){
+            if(dep.isEmpty() && !eqsys.isEmpty()){
                 dep = new ArrayList<String>(){{
                     add(eqsysfinal.equations().get(0).subEquations().get(0).get(0).toString());
                     //first equation, first node - which is just (EQUATION) - then first subnode.

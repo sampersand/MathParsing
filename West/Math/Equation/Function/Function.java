@@ -80,6 +80,14 @@ public class Function implements MathObject {
                             default:
                                 assert false : p[0] + p[1] + " isn't defined!";
                         }
+                    case "|":
+                        switch(p[1]){
+                            case "|":
+                                assert s == 1 : tn;
+                                return Math.abs(tn.get(0).evald(hm, eqsys));
+                            default:
+                                assert false : p[0] + p[1] + " isn't defined!";
+                            }
                     default:
                         assert false : p[0] + p[1] + " isn't defined!";
                         return NaN;
