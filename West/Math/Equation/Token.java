@@ -93,8 +93,13 @@ public class Token implements MathObject {
     public boolean isUNR() {
         return type == Type.UNR;
     }
+
     public boolean isFunc() {
         return type == Type.FUNC || Function.get(val) != null;
+    }
+    
+    public boolean isGroup() {
+        return type == Type.FUNC && val.equals("");
     }
 
     public boolean isParen() {

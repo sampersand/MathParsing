@@ -23,6 +23,7 @@ public class Tester {
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
             args = new String[]{"--d","y","--e","y=test(3|5)"};
+            // args = new String[]{"--d","y","--e","y=test(3|5)"};
         }
 
 

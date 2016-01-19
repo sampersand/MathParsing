@@ -24,6 +24,9 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public TokenNode(Token pToken) {
         super(pToken);
     }
+    public TokenNode(TokenNode pTokenNode) {
+        super(pTokenNode.token);
+    }
 
     protected Object[] condeseNodes(ArrayList<Token> pTokens) {
         int pos = 0;
@@ -49,11 +52,9 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 Object[] temp = new TokenNode(t).condeseNodes(passTokens);
                 pos += (int)temp[0];
                 node.add((TokenNode)temp[1]);
-                System.out.println(node.toFancyString());
             } 
             pos++;
         }
-        System.out.println("=======node=======\n"+node.toFancyString()+"\n==================\n\n\n");
         return new Object[]{pos, node};
     }
 
@@ -83,28 +84,50 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             return null;
         if(peles.size() == 1)
             if(peles.get(0).size() == 0){
-                System.out.println("peles.get(0).size() == 0::ret='"+peles.get(0)+"'");
+                System.out.println("returning0:"+peles.get(0));
                 return peles.get(0);
             }
-            else
-                return new TokenNode(peles.get(0).token){{
-                    add(condense(new Collection<TokenNode>().addAllE(peles.get(0).elements)));
-                    System.out.println("peles.get(0).size() != 0::ret='"+get(0)+"'");
+            else if(peles.get(0).size() != 0)
+                return new TokenNode(peles.get(0)){{
+                    add(condense(new Collection<TokenNode>().addAllE(peles.get(0).elements)).removeExtraFuncs());
+                    System.out.println("removed:"+condense(new Collection<TokenNode>().addAllE(peles.get(0).elements)).removeExtraFuncs());
+                    // forEach(this::addE);
+                    // System.out.println("--elements--::"+peles);
+                    // elements.forEach(System.out::println);
+                    // System.out.println("--end--::"+peles);
+                    // System.out.println("size!=0::  "+this+"$$"+elements+"  ::  "+peles+"::");
+                    System.out.println("returning1:"+this);
                 }};
         int fhp = firstHighPriority(peles);
         if(fhp == -1)
             return new TokenNode(new Token()){{
+                // System.out.println("--aadding---");
+                // for(TokenNode e : peles)
+                //     System.out.println("->>"+condense(new Collection<TokenNode>().addE(e)));
                 peles.forEach(e -> add(condense(new Collection<TokenNode>().addE(e))));
-                System.out.println("fhp == -1::ret="+elements);
+                // System.out.println("--fhpelements--::"+peles);
+                // for(int i = 0; i < elements.size(); i++)
+                //     System.out.println(i+": "+elements.get(i));
+                // System.out.println(elements+"::"+peles);
+                // System.out.println("--peles--::"+peles);
+                // for(int i = 0; i < peles.size(); i++)
+                //     System.out.println(i+": "+peles.get(i));
+                // System.out.println(peles+"::"+peles);
+                // System.out.println("---------");
+                System.out.println("returning2:"+this);
             }};
         TokenNode u = condense(new Collection.Builder<TokenNode>().add(peles.get(fhp)).build());
         TokenNode s = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(0, fhp)).build());
-        TokenNode e = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(fhp + 1)).build());
+        TokenNode e = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(fhp + 1)).build()).removeExtraFuncs();
+        // System.out.println("u4:  "+u+"  ::  "+peles);
+        // System.out.println("s:  "+s+"  ::  "+peles);
+        System.out.println("e:  "+e+"  ::  "+peles);
         if(s != null)
             u.add(s);
         if(e != null)
             u.add(e);
-        System.out.println("normal ret::ret="+u);
+        System.out.println("returning3:"+u);
+        // System.out.println("u8:  "+u+"  ::  "+peles);
         return u;
     }
 
@@ -112,14 +135,25 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     public TokenNode removeExtraFuncs(){
         if(isFinal())
             return this;
-        TokenNode ret = new TokenNode(token);
-        for(Node<?, ?> tn : elements)
-            ret.add(((TokenNode)tn).removeExtraFuncs());
+        TokenNode ret = new TokenNode(this);
+        for(Node<?, ?> n : elements){
+            TokenNode tn = (TokenNode)n;
+            if(!tn.isFinal())
+            System.out.println(tn+":"+(tn.size() == 1) + ":"+ tn.get(0).token.isGroup());
+            System.out.println(tn.toFancyString());
+            if(tn.size() == 1 && tn.get(0).token.isGroup())
+                ret.add(new TokenNode(tn){{
+                    tn.get(0).forEach(e -> this.add(((TokenNode)e).removeExtraFuncs()));
+                }});
+            else
+                ret.add(tn.removeExtraFuncs());
+        }
+        System.out.println("ret::"+ret);
         return ret;
     }
 
     public boolean add(TokenNode tn){
-        assert tn != null : "attempting to add null to '"+this+"'";
+        assert tn != null : "attempting to add null to '"+toFullString()+"'";
         return super.add(tn);
     }
     public static TokenNode generateMasterNode(ArrayList<Token> pTokens) {
