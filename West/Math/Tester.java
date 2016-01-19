@@ -23,7 +23,12 @@ public class Tester {
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
             // args = new String[]{"y=cos(Θ)","Θ=4"};
-            args = new String[]{"3.5 - 1.5·abs(cos(Θ))·√(1.3 + abs(sin(Θ))) + cos(2·Θ) - 3·sin(Θ) + 0.7·cos(12.2·Θ)","Θ=4"};
+            args = new String[]{
+                "r=3.5 - 1.5abs(cos(Θ))·√(1.3 + abs(sin(Θ))) + cos(2Θ) - 3·sin(Θ) + 0.7cos(12.2Θ)",
+                "--i",
+                "Θ",
+                "--g","P",
+                "--b","-4pi,-4pi,4pi,4pi"};
             // args = new String[]{"--e","y=5cos3x","--i","x"};
         }
 

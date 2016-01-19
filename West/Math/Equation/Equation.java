@@ -79,7 +79,7 @@ public class Equation implements MathObject {
     public static String fixNode(String pEq) {
         if(pEq.charAt(0) == '@')
             return pEq.substring(1);
-        pEq = pEq.replaceAll("^([A-Za-z_]+)=-","$1=–"); //makes parsing better. thrown together, however.
+        pEq = pEq.replaceAll("^([\\wΘπ]+)=-","$1=–"); //makes parsing better. thrown together, however.
         if(pEq.matches(".*([0-9.–-]+)[Ee]([0-9.–-]+).*"))
             pEq = pEq.replaceAll("([\\d.–-]+)[Ee]([\\d.–-]+)","$1*10^$2").replaceAll("-","–"); // sci notation
         pEq = pEq.replaceAll("²", "^2"); // exponents
@@ -87,9 +87,10 @@ public class Equation implements MathObject {
         pEq = pEq.replaceAll("⁴", "^4"); // ^^^
         pEq = pEq.replaceAll("⅟","1/"); // ^^^s
         for(String trig : TRIG) // Trig i.e. 'coshΘ' --> cosh(Θ)
-            pEq = pEq.replaceAll("(?!<a)("+trig+")(?!=h)(\\^[\\d.-]+)?(?!\\()([\\w\\d().]+)", "$1($3)$2"); 
-        pEq = pEq.replaceAll("(?<!\\w|\\d|\\.)([0-9.]+)([A-Za-z])","$1·$2");
-        // pEq = pEq.replaceAll("(\\W*?)(\\d)(\\w+?)","$1$2·$3"); // ^^^s
+            pEq = pEq.replaceAll("(?!<a)("+trig+")(?!h)(\\^[\\d.-]+)?(?!\\()([\\w\\d().]+)", "$1($3)$2"); 
+        pEq = pEq.replaceAll("(?<![0-9.])([0-9.]+)(?!\\d|\\.)(\\w|Θ|π)","$1·$2");
+        // assert false : pEq;
+        // pEq = pEq.replaceAll("(?<!\\w)([0-9]+(?:\\.[0-9]+)?)([A-Za-z])","$1·$2");
         return pEq;
     }
 
