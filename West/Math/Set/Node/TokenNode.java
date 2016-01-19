@@ -214,6 +214,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 switch(val) {
                     case "e":
                         return appendHashMap(pVars, val, Math.E);
+                    case "k": //Coloumn's constant
+                        return appendHashMap(pVars, val, 8.9875517873681764E9);
                     case "pi": case "π": case "Π":
                         return appendHashMap(pVars, val, Math.PI);
                     case "NaN": case "nan":
