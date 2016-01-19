@@ -91,7 +91,7 @@ public class GraphGUI extends JFrame implements ActionListener{
         }};
 
         dep = new ArrayList<JTextField>(){{
-            add(new JTextField("r0"));
+            add(new JTextField("r"));
         }};
 
         indep = new JTextField("theta");
