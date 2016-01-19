@@ -22,7 +22,7 @@ public class Tester {
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
-            args = new String[]{"y=|pi*(9-3)|"};
+            args = new String[]{"y=√x)","x=4"};
         }
 
 

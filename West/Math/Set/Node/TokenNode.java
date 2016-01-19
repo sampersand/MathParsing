@@ -59,13 +59,12 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     passTokens.add(tk);
                 if(t.isFunc() && passTokens.get(passTokens.size()-1).isParen() && passTokens.get(0).isParen()){
                     toAddParens[1] = pTokens.get(pos+++passTokens.size()).val();
-                    toAddParens[0] = pTokens.get(pos++).val();
+                    toAddParens[0] = pTokens.get(pos).val();
                     passTokens.remove(0);
                     passTokens.remove(passTokens.size()-1);
                     assert Token.PAREN_L.contains(toAddParens[0]) &&
                            Token.PAREN_R.contains(toAddParens[1]) : toAddParens[0]+" "+toAddParens[1];
                     passTokens.add(0, new Token("", Token.Type.DELIM));
-                    pos--;
                 }
 
                 Object[] temp = new TokenNode(t).condeseNodes(passTokens);

@@ -60,14 +60,6 @@ public class Function implements MathObject {
                 String[] p = tn.parens();
                 int s = tn.size();
                 switch(p[0]){
-                    case "(": case "":
-                        switch(p[1]){
-                            case ")":case "":
-                                assert s == 1 : tn;
-                                return tn.get(0).evald(hm, eqsys);
-                            default:
-                                assert false : p[0] + p[1] + " isn't defined!";
-                        }
                     case "<":
                         switch(p[1]){
                             case ">":
@@ -77,20 +69,28 @@ public class Function implements MathObject {
                                 for(West.Math.Set.Node.Node<?, ?> tnd : tn)
                                     ret += Math.pow(((TokenNode)tnd).evald(hm, eqsys),2);
                                 return Math.pow(ret, 0.5);
-                            default:
-                                assert false : p[0] + p[1] + " isn't defined!";
                         }
+                    case "√":
+                        switch(p[1]){
+                            case ")":
+                                assert s == 1 : tn;
+                                return Math.sqrt(tn.get(0).evald(hm, eqsys));
+                            }
                     case "|":
                         switch(p[1]){
                             case "|":
                                 assert s == 1 : tn;
                                 return Math.abs(tn.get(0).evald(hm, eqsys));
-                            default:
-                                assert false : p[0] + p[1] + " isn't defined!";
                             }
-                    default:
-                        assert false : p[0] + p[1] + " isn't defined!";
-                        return NaN;
+                    case "(": case "": default:
+                        switch(p[1]){
+                            case ")":case "":
+                                assert s == 1 : tn;
+                                return tn.get(0).evald(hm, eqsys);
+                            default:
+                                throw new IllegalArgumentException("The Parenthesis '" + p[0] + ", " + p[1] +
+                                                       "' (args: " + s + ") have no function associated!");
+                        }
                 }
             }
             ));
@@ -457,13 +457,13 @@ public class Function implements MathObject {
             (hm, eqsys, tn) -> Long.valueOf(Math.round(tn.get(0).evald(hm, eqsys))).doubleValue()
             ));
 
-        add(new Function(new Collection<String>(){{add("sqrt");}},
-            "the square root (√) of 'A'", "sqrt(A)",
-            DEFAULT_PRIORITY,
-            Type.NORM,
-            new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> Math.sqrt(tn.get(0).evald(hm, eqsys))
-            ));
+        // add(new Function(new Collection<String>(){{add("sqrt");}},
+        //     "the square root (√) of 'A'", "sqrt(A)",
+        //     DEFAULT_PRIORITY,
+        //     Type.NORM,
+        //     new Collection.Builder<Integer>().add(1).build(),
+        //     (hm, eqsys, tn) -> Math.sqrt(tn.get(0).evald(hm, eqsys))
+        //     ));
 
         add(new Function(new Collection<String>(){{add("√");}},
             "the square root (√) of 'A'", "√(A)",

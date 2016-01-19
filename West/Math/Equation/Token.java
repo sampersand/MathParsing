@@ -29,7 +29,8 @@ public class Token implements MathObject {
         add("[");
         add("{");
         add("<");
-        add("|");
+        // add("|");
+        add("√");
     }};
 
     public static String isParenL(String s){
@@ -42,7 +43,7 @@ public class Token implements MathObject {
         add("]");
         add("}");
         add(">");
-        add("|");
+        // add("|");
     }};
 
     public static String isParenR(String s){
@@ -53,7 +54,7 @@ public class Token implements MathObject {
     {{
         add(",");
         add(":");
-        // add("|");
+        add("|");
     }};
 
     public static String isDelim(String s){
