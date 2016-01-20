@@ -218,7 +218,6 @@ public class GraphGUI extends JFrame implements ActionListener{
         return t -> {System.out.println(t);};
     }
     public void graph(){
-        System.out.println("graphing!");
         eqsys().graph(new GraphComponents(winBounds(),
                                         eqBounds(),
                                         step(),

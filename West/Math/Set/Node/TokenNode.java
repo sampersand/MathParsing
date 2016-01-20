@@ -308,7 +308,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     case "⅒": return appendHashMap(pVars, val, 1/10D);
 
                     default:
-                        System.err.println("Variable '" + val + "' doesn't exist in'"+pVars+"'; returning NaN instead");
+                        System.err.println("Variable '" + val + "' doesn't exist in '"+pVars+"'; returning NaN instead");
                         return appendHashMap(pVars, val, Double.NaN);
                 }
             }

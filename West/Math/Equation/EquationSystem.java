@@ -283,11 +283,15 @@ public class EquationSystem implements MathObject{
 
 
     public static String appendMetricSuffix(ComplexNumber param, int normStuffOnly){
-        return appendMetricSuffix(param.real(), normStuffOnly) + appendMetricSuffix(param.imag(), normStuffOnly) + "j";
+        return 
+                (param.isReal() ? appendMetricSuffix(param.real(), normStuffOnly) + 
+                                (param.isImag() ? " + " : "") : "")+
+                (param.isImag() ? appendMetricSuffix(param.imag(), normStuffOnly)+"i": 
+                                (param.isReal() ? "" : param.toString()));
     }
     public static String appendMetricSuffix(Double param, int normStuffOnly){
         if(param == null || param.isNaN() || normStuffOnly == 0)
-            return param + " ";
+            return param.toString();
         boolean NSO = normStuffOnly == 1;
         int size = new Double(Math.log10(param)).intValue(); 
         if(size > +24 && !NSO) return param / Math.pow(10, +24) + " Y";

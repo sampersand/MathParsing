@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Random;
 import West.Math.DoubleSupplier;
 import West.Math.ComplexNumber;
+import static West.Math.ComplexNumber.NaN;
 
 /**
  * A class that simulates both any kind of operation and any fuction in West.Math.
@@ -21,7 +22,6 @@ import West.Math.ComplexNumber;
  * @since 0.1
  */
 public class Function implements MathObject {
-    private static Double NaN = Double.NaN;
     public static enum Type{
         UNL,
         UNR,
@@ -37,8 +37,6 @@ public class Function implements MathObject {
     public static final int DEFAULT_PRIORITY = 100; // TODO: FIX
 
     public static Collection<Function> FUNCTIONS = new Collection<Function>() {{
-        /*
-
         //  =                : 0
         //  ()               : 1
         //  ∧, ∨, ⊻, ⊼, ⊽    : 2
@@ -53,7 +51,7 @@ public class Function implements MathObject {
             0,
             Type.ASSIGN,
             new Collection.Builder<Integer>().add(2).build(), 
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys) // doesnt matter
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)) // doesnt matter
         ));
 
         add(new Function(new Collection<String>(){{add("");}},
@@ -69,10 +67,10 @@ public class Function implements MathObject {
                         switch(p[1]){
                             case ">":
                                 if(tn.size() <= 1)
-                                    return NaN;
+                                    return ComplexNumber.NaN;
                                 ComplexNumber ret = new ComplexNumber(0D);
                                 for(West.Math.Set.Node.Node<?, ?> tnd : tn)
-                                    ret += ((TokenNode)tnd).evald(hm, eqsys).pow(2D);
+                                    ret = ret.plus(((ComplexNumber)((TokenNode)tnd).evald(hm, eqsys)).pow(2D));
                                 return ret.pow(0.5D);
                         }
                     case "{":
@@ -87,9 +85,9 @@ public class Function implements MathObject {
                                 Collection<Double> col = new Collection<Double>();
                                 String toeval = tn.get(0).token().val();
                                 TokenNode condits = tn.get(1).get(0);
-                                Double min = tn.get(2).get(0).evald(hm, eqsys).aIsOnlyReal().real();
-                                Double max = tn.get(2).get(1).evald(hm, eqsys).aIsOnlyReal().real();
-                                Double step = tn.get(2).get(2).evald(hm, eqsys).aIsOnlyReal().real();
+                                Double min = ((ComplexNumber)tn.get(2).get(0).evald(hm, eqsys)).aIsOnlyReal().real();
+                                Double max = ((ComplexNumber)tn.get(2).get(1).evald(hm, eqsys)).aIsOnlyReal().real();
+                                Double step = ((ComplexNumber)tn.get(2).get(2).evald(hm, eqsys)).aIsOnlyReal().real();
                                 assert !min.isNaN();
                                 assert !max.isNaN();
                                 assert !step.isNaN();
@@ -101,7 +99,7 @@ public class Function implements MathObject {
                                     //  if(!d.isNaN())
                                     //      col.add(d2);
                                 }
-                                return new Double(col.size());
+                                return new ComplexNumber(col.size());
 
                             }
 
@@ -109,19 +107,19 @@ public class Function implements MathObject {
                         switch(p[1]){
                             case ")":
                                 assert s == 1 : tn;
-                                return tn.get(0).evald(hm, eqsys).pow(0.5D);
+                                return ((ComplexNumber)tn.get(0).evald(hm, eqsys)).pow(0.5D);
                             }
                     case "|":
                         switch(p[1]){
                             case "|":
                                 assert s == 1 : tn;
-                                return tn.get(0).evald(hm, eqsys).abs();
+                                return ((ComplexNumber)tn.get(0).evald(hm, eqsys)).abs();
                             }
                     case "(": case "": default:
                         switch(p[1]){
                             case ")":case "":
                                 assert s == 1 || tn.token().isDelim(): tn;
-                                return tn.get(0).evald(hm, eqsys);
+                                return ((ComplexNumber)tn.get(0).evald(hm, eqsys));
                             default:
                                 throw new IllegalArgumentException("The Parenthesis '" + p[0] + ", " + p[1] +
                                                        "' (args: " + s + ") have no function associated!");
@@ -129,6 +127,7 @@ public class Function implements MathObject {
                 }
             }
         ));
+        
 
         // Comparators
 
@@ -138,7 +137,8 @@ public class Function implements MathObject {
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).compareTo(tn.get(1).evald(hm, eqsys)) == 1 ? 1D : NaN
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).
+                            compareTo(((ComplexNumber)tn.get(1).evald(hm, eqsys))) == 1 ? new ComplexNumber(1D) : NaN
         ));
 
         add(new Function(new Collection<String>(){{add("＜");}},
@@ -146,7 +146,8 @@ public class Function implements MathObject {
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).compareTo(tn.get(1).evald(hm, eqsys)) == -1 ? 1D : NaN
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).
+                            compareTo(((ComplexNumber)tn.get(1).evald(hm, eqsys))) == -1 ? new ComplexNumber(1D) : NaN
         ));
 
         add(new Function(new Collection<String>(){{add("≣");}},
@@ -154,7 +155,8 @@ public class Function implements MathObject {
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).compareTo(tn.get(1).evald(hm, eqsys)) == 0 ? 1D : NaN
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).
+                            compareTo(((ComplexNumber)tn.get(1).evald(hm, eqsys))) == 0 ? new ComplexNumber(1D) : NaN
         ));
 
         add(new Function(new Collection<String>(){{add("≥");}},
@@ -162,7 +164,8 @@ public class Function implements MathObject {
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).compareTo(tn.get(1).evald(hm, eqsys)) != -1 ? 1D : NaN
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).
+                            compareTo(((ComplexNumber)tn.get(1).evald(hm, eqsys))) != -1 ? new ComplexNumber(1D) : NaN
         ));
 
         add(new Function(new Collection<String>(){{add("≤");}},
@@ -170,7 +173,8 @@ public class Function implements MathObject {
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).compareTo(tn.get(1).evald(hm, eqsys)) != 1 ? 1D : NaN
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).
+                            compareTo(((ComplexNumber)tn.get(1).evald(hm, eqsys))) != 1 ? new ComplexNumber(1D) : NaN
         ));
 
         add(new Function(new Collection<String>(){{add("≠");}},
@@ -178,7 +182,8 @@ public class Function implements MathObject {
             3,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).compareTo(tn.get(1).evald(hm, eqsys)) != 0 ? 1D : NaN
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).
+                            compareTo(((ComplexNumber)tn.get(1).evald(hm, eqsys))) != 0 ? new ComplexNumber(1D) : NaN
         ));
 
         add(new Function(new Collection<String>(){{add("compare");}},
@@ -186,7 +191,8 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> new ComplexNumber(tn.get(0).evald(hm, eqsys).compareTo(tn.get(1).evald(hm, eqsys)))
+            (hm, eqsys, tn) -> new ComplexNumber(((ComplexNumber)tn.get(0).evald(hm, eqsys)).
+                                                 compareTo(((ComplexNumber)tn.get(1).evald(hm, eqsys))))
         ));
 
 
@@ -196,8 +202,11 @@ public class Function implements MathObject {
             2,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> !tn.get(0).evald(hm, eqsys).isNaN() && !tn.get(1).evald(hm, eqsys).isNaN() &&
-                  tn.get(0).evald(hm, eqsys).compareTo(0D) == 1 && tn.get(1).evald(hm, eqsys).compareTo(0D) == 1 ? 1D : NaN
+            (hm, eqsys, tn) ->
+                   !((ComplexNumber)tn.get(0).evald(hm, eqsys)).isNaN() &&
+                   !((ComplexNumber)tn.get(1).evald(hm, eqsys)).isNaN() &&
+                    ((ComplexNumber)tn.get(0).evald(hm, eqsys)).compareTo(0D) == 1 &&
+                    ((ComplexNumber)tn.get(1).evald(hm, eqsys)).compareTo(0D) == 1 ? new ComplexNumber(1D) : NaN
         ));
 
         add(new Function(new Collection<String>(){{add("∨");}},
@@ -205,8 +214,11 @@ public class Function implements MathObject {
             2,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> !(tn.get(0).evald(hm, eqsys).isNaN() && tn.get(1).evald(hm, eqsys).isNaN()) &&
-                  (tn.get(0).evald(hm, eqsys).compareTo(0D) == 1 || tn.get(1).evald(hm, eqsys).compareTo(0D) == 1) ? 1D : NaN
+            (hm, eqsys, tn) ->
+                  !(((ComplexNumber)tn.get(0).evald(hm, eqsys)).isNaN() &&
+                    ((ComplexNumber)tn.get(1).evald(hm, eqsys)).isNaN()) &&
+                    (((ComplexNumber)tn.get(0).evald(hm, eqsys)).compareTo(0D) == 1 ||
+                    ((ComplexNumber)tn.get(1).evald(hm, eqsys)).compareTo(0D) == 1) ? new ComplexNumber(1D) : NaN
         ));
 
         add(new Function(new Collection<String>(){{add("⊻");}},
@@ -214,8 +226,11 @@ public class Function implements MathObject {
             2,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> !tn.get(0).evald(hm, eqsys).isNaN() && !tn.get(1).evald(hm, eqsys).isNaN() &&
-                  tn.get(0).evald(hm, eqsys).compareTo(0D) == 1 ^ tn.get(1).evald(hm, eqsys).compareTo(0D) == 1 ? 1D : NaN
+            (hm, eqsys, tn) -> 
+                   !((ComplexNumber)tn.get(0).evald(hm, eqsys)).isNaN() &&
+                   !((ComplexNumber)tn.get(1).evald(hm, eqsys)).isNaN() &&
+                    ((ComplexNumber)tn.get(0).evald(hm, eqsys)).compareTo(0D) == 1 ^
+                    ((ComplexNumber)tn.get(1).evald(hm, eqsys)).compareTo(0D) == 1 ? new ComplexNumber(1D) : NaN
         ));
 
         add(new Function(new Collection<String>(){{add("⊼");}},
@@ -223,16 +238,22 @@ public class Function implements MathObject {
             2,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> !tn.get(0).evald(hm, eqsys).isNaN() && !tn.get(1).evald(hm, eqsys).isNaN() &&
-                 tn.get(0).evald(hm, eqsys).compareTo(0D) != 1 && tn.get(1).evald(hm, eqsys).compareTo(0D) != 1 ? 1D : NaN
+            (hm, eqsys, tn) ->
+                   !((ComplexNumber)tn.get(0).evald(hm, eqsys)).isNaN() &&
+                   !((ComplexNumber)tn.get(1).evald(hm, eqsys)).isNaN() &&
+                    ((ComplexNumber)tn.get(0).evald(hm, eqsys)).compareTo(0D) != 1 &&
+                    ((ComplexNumber)tn.get(1).evald(hm, eqsys)).compareTo(0D) != 1 ? new ComplexNumber(1D) : NaN
         ));
         add(new Function(new Collection<String>(){{add("⊻");}},
             "Checks if 'A' ⊻ 'B'", "A ⊻ B",
             2,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> !tn.get(0).evald(hm, eqsys).isNaN() && !tn.get(1).evald(hm, eqsys).isNaN() &&
-                  tn.get(0).evald(hm, eqsys).compareTo(0D) != 1 && tn.get(1).evald(hm, eqsys).compareTo(0D) != 1 ? 1D : NaN
+            (hm, eqsys, tn) ->
+                   !((ComplexNumber)tn.get(0).evald(hm, eqsys)).isNaN() &&
+                   !((ComplexNumber)tn.get(1).evald(hm, eqsys)).isNaN() &&
+                    ((ComplexNumber)tn.get(0).evald(hm, eqsys)).compareTo(0D) != 1 &&
+                    ((ComplexNumber)tn.get(1).evald(hm, eqsys)).compareTo(0D) != 1 ? new ComplexNumber(1D) : NaN
         ));
 
 
@@ -243,7 +264,8 @@ public class Function implements MathObject {
             4,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).plus(tn.get(1).evald(hm, eqsys))
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).
+                                 plus(((ComplexNumber)tn.get(1).evald(hm, eqsys)))
         ));
 
         add(new Function(new Collection<String>(){{add("-");}},
@@ -251,9 +273,10 @@ public class Function implements MathObject {
             4,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).minus(tn.get(1).evald(hm, eqsys))
-            // (hm, eqsys, tn) -> tn.size() == 1 ? 0 - tn.get(0).evald(hm, eqsys) :
-            // tn.get(0).evald(hm, eqsys) - tn.get(1).evald(hm, eqsys)
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).
+                                 minus(((ComplexNumber)tn.get(1).evald(hm, eqsys)))
+            // (hm, eqsys, tn) -> tn.size() == 1 ? 0 - ((ComplexNumber)tn.get(0).evald(hm, eqsys)) :
+            // ((ComplexNumber)tn.get(0).evald(hm, eqsys)) - ((ComplexNumber)tn.get(1).evald(hm, eqsys))
         ));
 
         add(new Function(new Collection<String>(){{add("*");add("·");add("×");}},
@@ -261,14 +284,16 @@ public class Function implements MathObject {
             5,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).times(tn.get(1).evald(hm, eqsys))
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).
+                                 times(((ComplexNumber)tn.get(1).evald(hm, eqsys)))
         ));
         add(new Function(new Collection<String>(){{add("/");add("÷");}},
             "Divides 'A' to 'B'", "A / B",
             5,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).div(tn.get(1).evald(hm, eqsys))
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).
+                                 div(((ComplexNumber)tn.get(1).evald(hm, eqsys)))
         ));
 
         add(new Function(new Collection<String>(){{add("%");}},
@@ -276,14 +301,16 @@ public class Function implements MathObject {
             5,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).modulo(tn.get(1).evald(hm, eqsys))
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).
+                                 modulo(((ComplexNumber)tn.get(1).evald(hm, eqsys)))
         ));
         add(new Function(new Collection<String>(){{add("^");}},
             "Raises 'A' to 'B'", "A ^ B",
             6,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).pow(tn.get(1).evald(hm, eqsys))
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).
+                                 pow(((ComplexNumber)tn.get(1).evald(hm, eqsys)))
         ));
 
 
@@ -297,7 +324,7 @@ public class Function implements MathObject {
             8,
             Type.UNL,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> new ComplexNumber(-1D).times(tn.get(0).evald(hm, eqsys))
+            (hm, eqsys, tn) -> new ComplexNumber(-1D).times(((ComplexNumber)tn.get(0).evald(hm, eqsys)))
         ));
         // UN_R
         add(new Function(new Collection<String>(){{add("!");}}, // negation
@@ -305,7 +332,7 @@ public class Function implements MathObject {
             7,
             Type.UNR,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).factorial()
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).factorial()
         ));
 
 
@@ -315,7 +342,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).sin()
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).sin()
         ));
 
         add(new Function(new Collection<String>(){{add("cos");}},
@@ -323,7 +350,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).cos()
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).cos()
         ));
 
         add(new Function(new Collection<String>(){{add("tan");}},
@@ -331,7 +358,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).tan()
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).tan()
         ));
 
         add(new Function(new Collection<String>(){{add("csc");}},
@@ -339,7 +366,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> 1D / tn.get(0).evald(hm, eqsys).sin()
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).csc()
         ));
 
         add(new Function(new Collection<String>(){{add("sec");}},
@@ -347,7 +374,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> 1D / tn.get(0).evald(hm, eqsys).cos()
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).sec()
         ));
 
         add(new Function(new Collection<String>(){{add("cot");}},
@@ -355,7 +382,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> 1D / tn.get(0).evald(hm, eqsys).tan()
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).cot()
         ));
 
         add(new Function(new Collection<String>(){{add("sinh");}},
@@ -363,7 +390,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).sinh()
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).sinh()
         ));
 
         add(new Function(new Collection<String>(){{add("cosh");}},
@@ -371,7 +398,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).cosh()
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).cosh()
         ));
 
         add(new Function(new Collection<String>(){{add("tanh");}},
@@ -379,7 +406,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).tanh()
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).tanh()
         ));
 
         add(new Function(new Collection<String>(){{add("asin");}},
@@ -387,7 +414,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).asin()
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).asin()
         ));
 
         add(new Function(new Collection<String>(){{add("acon");}},
@@ -395,7 +422,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).acos()
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).acos()
         ));
 
         add(new Function(new Collection<String>(){{add("atan");}},
@@ -403,7 +430,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).atan()
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).atan()
         ));
 
 
@@ -414,14 +441,16 @@ public class Function implements MathObject {
             5,
         Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).byteShiftRight(tn.get(1).evald(hm, eqsys))
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).
+                                 byteShiftRight(((ComplexNumber)tn.get(1).evald(hm, eqsys)))
         ));
         add(new Function(new Collection<String>(){{add("≪");}},
             "'A' Shifted to the left 'B' bits", "≪(A, B)",
             5,
         Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).byteShiftLeft(tn.get(1).evald(hm, eqsys))
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).
+                                 byteShiftLeft(((ComplexNumber)tn.get(1).evald(hm, eqsys)))
         ));
 
 
@@ -432,7 +461,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).abs()
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).abs()
         ));
 
         add(new Function(new Collection<String>(){{add("ceil");}},
@@ -440,7 +469,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).ceil()
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).ceil()
         ));
 
         add(new Function(new Collection<String>(){{add("floor");}},
@@ -448,7 +477,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).floor()
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).floor()
         ));
 
         add(new Function(new Collection<String>(){{add("hypot");}},
@@ -461,7 +490,7 @@ public class Function implements MathObject {
                         return NaN;
                     ComplexNumber ret = new ComplexNumber(0D);
                     for(West.Math.Set.Node.Node<?, ?> tnd : tn)
-                        ret += ((TokenNode)tnd).evald(hm, eqsys).pow(2D);
+                        ret = ret.plus(((ComplexNumber)((TokenNode)tnd).evald(hm, eqsys)).pow(2D));
                     return ret.pow(0.5D);
                 }
         ));
@@ -471,7 +500,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).ln()
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).ln()
         ));
 
         add(new Function(new Collection<String>(){{add("log");}},
@@ -479,15 +508,19 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).add(2).build(),
-            (hm, eqsys, tn) -> tn.size() == 1 ? tn.get(0).evald(hm, eqsys).log10() : 
-                               tn.get(0).evald(hm, eqsys).log(tn.get(1).evald(hm, eqsys))
+            (hm, eqsys, tn) -> tn.size() == 1 ?
+                                ((ComplexNumber)tn.get(0).evald(hm, eqsys)).log10() : 
+                               ((ComplexNumber)tn.get(0).evald(hm, eqsys)).
+                                 log(((ComplexNumber)tn.get(1).evald(hm, eqsys)))
         ));
         add(new Function(new Collection<String>(){{add("round");}},
             "rounds 'A' to the nearest integer", "round(A)",
             DEFAULT_PRIORITY,
             Type.NORM,
-            new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> Long.valueOf(Math.round(tn.get(0).evald(hm, eqsys))).doubleValue()
+            new Collection.Builder<Integer>().add(1).add(2).build(),
+            (hm, eqsys, tn) ->  tn.size() == 1 ? ((ComplexNumber)tn.get(0).evald(hm, eqsys)).round()
+                                : ((ComplexNumber)tn.get(0).evald(hm, eqsys)).round(
+                                ((ComplexNumber)tn.get(1).evald(hm, eqsys)).aIsOnlyReal().real().intValue())
         ));
 
         add(new Function(new Collection<String>(){{add("sqrt");}},
@@ -495,7 +528,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).pow(0.5D)
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).pow(0.5D)
         ));
 
         add(new Function(new Collection<String>(){{add("deg");}},
@@ -503,7 +536,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).toDegrees()
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).toDegrees()
         ));
 
         add(new Function(new Collection<String>(){{add("rad");}},
@@ -511,7 +544,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).toRadians()
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).toRadians()
         ));
 
         add(new Function(new Collection<String>(){{add("randi");}},
@@ -524,11 +557,13 @@ public class Function implements MathObject {
                     case 0:
                         return new ComplexNumber(Integer.valueOf(new Random().nextInt(100)).doubleValue());
                     case 1:
-                        return new ComplexNumber(Integer.valueOf(new Random().nextInt(tn.get(0).evald(hm, eqsys).
+                        return new ComplexNumber(Integer.valueOf(new Random().nextInt(
+                                                 ((ComplexNumber)tn.get(0).evald(hm, eqsys)).
                                                  aIsOnlyReal().intValue())).doubleValue());
                     case 2:
-                        return new ComplexNumber(Integer.valueOf(new Random().nextInt(tn.get(1).evald(hm, eqsys).
-                                                 aIsOnlyReal().intValue()) + tn.get(0).evald(hm, eqsys).
+                        return new ComplexNumber(Integer.valueOf(new Random().nextInt(
+                                                 ((ComplexNumber)tn.get(1).evald(hm, eqsys)).
+                                                 aIsOnlyReal().intValue()) +((ComplexNumber)tn.get(0).evald(hm, eqsys)).
                                                  aIsOnlyReal().intValue()).doubleValue());
                     default:
                         throw new IllegalArgumentException();
@@ -546,26 +581,44 @@ public class Function implements MathObject {
                     case 0:
                         return new ComplexNumber(Math.random());
                     case 1:
-                        return new ComplexNumber(new Random().nextDouble() * tn.get(0).evald(hm, eqsys).aIsOnlyReal());
+                        return new ComplexNumber(new Random().nextDouble()).
+                            times(((ComplexNumber)tn.get(0).evald(hm, eqsys)).aIsOnlyReal());
                     case 2:
-                        return new ComplexNumber(new Random().nextDouble() +
-                                                 tn.get(0).evald(hm, eqsys)).aIsOnlyReal().times(
-                                                    tn.get(1).evald(hm, eqsys).aIsOnlyReal());
+                        return new ComplexNumber(new Random().nextDouble()).plus(
+                                                 ((ComplexNumber)tn.get(0).evald(hm, eqsys))).aIsOnlyReal().times(
+                                                 ((ComplexNumber)tn.get(1).evald(hm, eqsys)).aIsOnlyReal());
                 default:
                     throw new IllegalArgumentException();
                 }
             }
         ));
- 
+
+        add(new Function(new Collection<String>(){{add("summation");add("Σ")}},
+            "Summation of 'EQ' starting at 'S' and ending at 'E'. If 'E' is left out, it is assumed to be ∞",
+            "Σ(S, E, EQ)",
+            DEFAULT_PRIORITY,
+            Type.NORM,
+            new Collection.Builder<Integer>().add(2).add(3).build(),
+            (hm, eqsys, tn) -> {
+                ComplexNumber max, min = tn.get(0).evald(hm, eqsys);
+                if(tn.size() == 2)
+                    tn.add(1, ComplexNumber.INF_P);
+                max = tn.get(1).evald(hm, eqsys);
+                TokenNode toparse = tn.get(2);
+                assert min.isOnlyReal() && max.isOnlyReal() : min + " | " + max + " <-- needs to be only real";
+                ComplexNumber ret = new ComplexNumber(0D);
+                while(min.compareTo(max) > 1){
+                    assert false;
+                }
+                return null;
+        ));
 
         add(new Function(new Collection<String>(){{add("fac");}},
             "factorial of 'A'", "fac(A)",
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> {
-                return tn.get(0).evald(hm, eqsys).factorial();
-            }
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).factorial()
         ));
 
         add(new Function(new Collection<String>(){{add("negte");}},
@@ -573,7 +626,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).mult(new ComplexNumber(-1D))
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).times(new ComplexNumber(-1D))
         ));
 
         add(new Function(new Collection<String>(){{add("sign");}},
@@ -582,9 +635,9 @@ public class Function implements MathObject {
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
             (hm, eqsys, tn) -> 
-                    new ComplexNumber(Integer.valueOf(tn.get(0).evald(hm, eqsys).compareTo(new ComplexNumber(0D)))
-                                      .doubleValue())
-        ));*/
+                    new ComplexNumber(Integer.valueOf(((ComplexNumber)tn.get(0).evald(hm, eqsys)).
+                                      compareTo(new ComplexNumber(0D))).doubleValue())
+        ));
     }};
 
     public static Collection<String> BIN_OPERS = new Collection<String>(){{
