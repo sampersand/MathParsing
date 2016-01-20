@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements MathObject {
 
-    protected T token; // its an object so functions can also use this
+    protected T token; //  its an object so functions can also use this
 
     public Node(){
         super();
@@ -91,7 +91,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
             assert size() > p && (p >= 0 || p == -1);
             set(p, n);
         } else {
-            assert !get(-1).isFinal(); //shouldnt happen, methinks.
+            assert !get(-1).isFinal(); // shouldnt happen, methinks.
             get(-1).setD(i - 1, p, n);
         }
     }

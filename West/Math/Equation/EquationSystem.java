@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import West.Math.Set.Collection;
 import West.Math.Set.Node.TokenNode;
+import West.Math.DoubleSupplier;
+import West.Math.ComplexNumber;
 /**
  * The main class for all equation-related things. It keeps track of different equations, and of names of 
  * {@link CustomFunction}s (and the corresponding classes for them).
@@ -86,7 +88,7 @@ public class EquationSystem implements MathObject{
      * @return This class, but with <code>pEqs</code> added to {@link #equations}.
      */
     public EquationSystem add(Equation... pEqs) {
-        equations.addAll(pEqs); //doesnt check for null
+        equations.addAll(pEqs); // doesnt check for null
         return this;
     }
 
@@ -138,8 +140,8 @@ public class EquationSystem implements MathObject{
                 Print.printi("A passed CustomFunction is null; not adding it to 'functions'.");
                 continue;
             }
-            assert func.names() != null; //this shoulda been taken care of in the constructor.
-            // functions.add(func);
+            assert func.names() != null; // this shoulda been taken care of in the constructor.
+            //  functions.add(func);
             assert false;
         }
         return this;
@@ -181,7 +183,7 @@ public class EquationSystem implements MathObject{
      * @return This class's {@link #functions}.
      */
     public HashMap<String, CustomFunction> functions() {
-        assert functions != null; // it should always be instatiated by the constructor.
+        assert functions != null; //  it should always be instatiated by the constructor.
         return functions;
     }
 
@@ -192,7 +194,7 @@ public class EquationSystem implements MathObject{
      * @return This class's {@link #equations}.
      */
     public Collection<Equation> equations() {
-        assert equations != null; // it should always be instatiated by the constructor.
+        assert equations != null; //  it should always be instatiated by the constructor.
         return equations;
     }
 
@@ -203,7 +205,7 @@ public class EquationSystem implements MathObject{
      * @param pEqSys    The EquationSystem that will be evaluated.
      * @return A double that represents the value of <code>toEval</code>.
      */
-    public Double eval(String toEval,
+    public ComplexNumber eval(String toEval,
                        EquationSystem pEqSys) {
         return copy().add(pEqSys).eval(toEval);
     }
@@ -212,11 +214,14 @@ public class EquationSystem implements MathObject{
      * @param toEval    The variable to solve for.
      * @return A double that represents the value of <code>toEval</code>.
      */
-    public Double eval(String toEval) {
+    public ComplexNumber eval(String toEval) {
         assert equations.size() != 0 : "Cannot evaluate an EquationSystem with no equations!";
         EquationSystem eqsys = copy().isolate(toEval);
-        // assert eqsys.isolated() : "I'm not isolated!:\n\n"+eqsys.toFancyString();
-        return eqsys.equations().get(0).subEquations().eval(new HashMap<String, Double>(), eqsys).get(toEval);
+        DoubleSupplier ret = eqsys.equations().get(0).subEquations().
+                eval(new HashMap<String, DoubleSupplier>(), eqsys).
+                get(toEval);
+        assert ret instanceof ComplexNumber : ret + "isn't a ComplexNumber!";
+        return (ComplexNumber)ret;
 
     }
 
@@ -238,7 +243,7 @@ public class EquationSystem implements MathObject{
         return this;
     }
 
-    public Equation getEq(String var){ //gets an equation that starts with 'var'
+    public Equation getEq(String var){ // gets an equation that starts with 'var'
         for(Equation eq : equations)
             if(eq.getVar().equals(var))
                 return eq;
@@ -257,7 +262,7 @@ public class EquationSystem implements MathObject{
                     }}), this, null, pGComp).graph();
 
     }
-    public void graph(String indep, String... dep) { //graphs the thing with independent being "x" and dependant being "y"
+    public void graph(String indep, String... dep) { // graphs the thing with independent being "x" and dependant being "y"
         graph(new GraphComponents(indep, dep));
     }
 
@@ -270,37 +275,40 @@ public class EquationSystem implements MathObject{
     }
 
 
-    public static String appendMetricSuffix(Double param, int normalStuffOnly){
-        if(param == null || param.isNaN() || normalStuffOnly == 0)
+    public static String appendMetricSuffix(ComplexNumber param, int normStuffOnly){
+        return appendMetricSuffix(param.real(), normStuffOnly) + appendMetricSuffix(param.imag(), normStuffOnly) + "j";
+    }
+    public static String appendMetricSuffix(Double param, int normStuffOnly){
+        if(param == null || param.isNaN() || normStuffOnly == 0)
             return param + " ";
-        boolean NSO = normalStuffOnly == 1;
+        boolean NSO = normStuffOnly == 1;
         int size = new Double(Math.log10(param)).intValue(); 
         if(size > +24 && !NSO) return param / Math.pow(10, +24) + " Y";
         if(size < -24 && !NSO) return param / Math.pow(10, -24) + " y";
         if(size > +12 &&  NSO) return param / Math.pow(10, +12) + " T";
         if(size < -12 &&  NSO) return param / Math.pow(10, -12) + " p";
         switch(size){
-            case +24:                     if(!NSO) return param / Math.pow(10, +24) + "Y" ; // yotta
-            case +21: case +22: case +23: if(!NSO) return param / Math.pow(10, +21) + "Z" ; // zetta
-            case +18: case +19: case +20: if(!NSO) return param / Math.pow(10, +18) + "E" ; // exa
-            case +15: case +16: case +17: if(!NSO) return param / Math.pow(10, +15) + "P" ; // peta
-            case +12: case +13: case +14:          return param / Math.pow(10, +12) + "T" ; // tera
-            case + 9: case +10: case +11:          return param / Math.pow(10, + 9) + "G" ; // giga
-            case + 6: case + 7: case + 8:          return param / Math.pow(10, + 6) + "M" ; // mega
-            case + 3: case + 4: case + 5:          return param / Math.pow(10, + 3) + "k" ; // kilo
-            case + 2:                     if(!NSO) return param / Math.pow(10, + 2) + "h" ; // hecto
-            case + 1:                     if(!NSO) return param / Math.pow(10, + 1) + "da"; // deca
-            case -24:                     if(!NSO) return param / Math.pow(10, -24) + "y" ; // yocto
-            case -21: case -22: case -23: if(!NSO) return param / Math.pow(10, -21) + "z" ; // zepto
-            case -18: case -19: case -20: if(!NSO) return param / Math.pow(10, -18) + "a" ; // atto
-            case -15: case -16: case -17: if(!NSO) return param / Math.pow(10, -15) + "f" ; // femto
-            case -12: case -13: case -14: if(!NSO) return param / Math.pow(10, -12) + "p" ; // pico
-            case - 9: case -10: case -11: if(!NSO) return param / Math.pow(10, - 9) + "n" ; // nano
-            case - 6: case - 7: case - 8:          return param / Math.pow(10, - 6) + "μ" ; // micro
-            case - 3: case - 4: case - 5:          return param / Math.pow(10, - 3) + "m" ; // milli
-            case - 1:                     if(!NSO) return param / Math.pow(10, - 1) + "d" ; // deci
-            case - 2:                              return param / Math.pow(10, - 2) + "c" ; // centi
-            case + 0: default:                     return param                     + ""  ; // --
+            case +24:                     if(!NSO) return param / Math.pow(10, +24) + "Y" ; //  yotta
+            case +21: case +22: case +23: if(!NSO) return param / Math.pow(10, +21) + "Z" ; //  zetta
+            case +18: case +19: case +20: if(!NSO) return param / Math.pow(10, +18) + "E" ; //  exa
+            case +15: case +16: case +17: if(!NSO) return param / Math.pow(10, +15) + "P" ; //  peta
+            case +12: case +13: case +14:          return param / Math.pow(10, +12) + "T" ; //  tera
+            case + 9: case +10: case +11:          return param / Math.pow(10, + 9) + "G" ; //  giga
+            case + 6: case + 7: case + 8:          return param / Math.pow(10, + 6) + "M" ; //  mega
+            case + 3: case + 4: case + 5:          return param / Math.pow(10, + 3) + "k" ; //  kilo
+            case + 2:                     if(!NSO) return param / Math.pow(10, + 2) + "h" ; //  hecto
+            case + 1:                     if(!NSO) return param / Math.pow(10, + 1) + "da"; //  deca
+            case -24:                     if(!NSO) return param / Math.pow(10, -24) + "y" ; //  yocto
+            case -21: case -22: case -23: if(!NSO) return param / Math.pow(10, -21) + "z" ; //  zepto
+            case -18: case -19: case -20: if(!NSO) return param / Math.pow(10, -18) + "a" ; //  atto
+            case -15: case -16: case -17: if(!NSO) return param / Math.pow(10, -15) + "f" ; //  femto
+            case -12: case -13: case -14: if(!NSO) return param / Math.pow(10, -12) + "p" ; //  pico
+            case - 9: case -10: case -11: if(!NSO) return param / Math.pow(10, - 9) + "n" ; //  nano
+            case - 6: case - 7: case - 8:          return param / Math.pow(10, - 6) + "μ" ; //  micro
+            case - 3: case - 4: case - 5:          return param / Math.pow(10, - 3) + "m" ; //  milli
+            case - 1:                     if(!NSO) return param / Math.pow(10, - 1) + "d" ; //  deci
+            case - 2:                              return param / Math.pow(10, - 2) + "c" ; //  centi
+            case + 0: default:                     return param                     + ""  ; //  --
         }
     }
 

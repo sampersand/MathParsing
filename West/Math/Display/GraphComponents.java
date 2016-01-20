@@ -31,7 +31,7 @@ public class GraphComponents implements MathObject {
     /**
      * The amount of lines that will be drawn. "step" is a bit of a misnomer, but I couldnt think of anything better.
      */
-    protected double[] stepInfo; //start, end, step
+    protected double[] stepInfo; // start, end, step
 
     protected String indepVar;
 

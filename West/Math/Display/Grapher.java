@@ -82,7 +82,7 @@ public class Grapher extends JPanel implements MathObject {
             numcs = new Collection<Collection<NumberCollection<Double>>>();
         components = pGraph;
         displays = new Collection<DisplayComponent>();
-        displays.add(new DisplayComponent(this)); //adds axis
+        displays.add(new DisplayComponent(this)); // adds axis
         for(int i = 0; i < equationsToGraph.size(); i++){
             displays.add(new DisplayComponent(this, equationsToGraph.equations().get(i),
                     equationsToUse.copy()/*.add(equationsToGraph)*/, COLORS[i % COLORS.length]));
@@ -97,10 +97,10 @@ public class Grapher extends JPanel implements MathObject {
 
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
  
-         //Create and set up the layered pane.
+         // Create and set up the layered pane.
         layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(components.winBounds()[0] + 10, components.winBounds()[1] + 10));
-        // layeredPane.setBorder(BorderFactory.createTitledBorder("Graph"));
+        //  layeredPane.setBorder(BorderFactory.createTitledBorder("Graph"));
   
         for (int i = 0; i < displays.size(); i++) {
             JLabel label = createDisplay(i);
@@ -108,7 +108,7 @@ public class Grapher extends JPanel implements MathObject {
         }
 
 
-        //Add control pane and layered pane to this JPanel.
+        // Add control pane and layered pane to this JPanel.
         add(Box.createRigidArea(new Dimension(0, 10)));
         add(layeredPane);
     }
@@ -122,13 +122,13 @@ public class Grapher extends JPanel implements MathObject {
         label.setBorder(BorderFactory.createLineBorder(Color.black));
         label.setBounds(5, 0, components.winBounds()[0], components.winBounds()[1]);
 
-        // label.setBounds(5, 20, components.winBounds()[0], components.winBounds()[1] - 20);
+        //  label.setBounds(5, 20, components.winBounds()[0], components.winBounds()[1] - 20);
         return label;
     }
 
     /** TODO: JAVADOC */
     public void graph() {
-        //Create and set up the window.
+        // Create and set up the window.
         String title = "Graph of ";
         if(equationsToGraph.size() + numcs.size() > 3) {
             title += "A lot of stuff";
@@ -137,7 +137,7 @@ public class Grapher extends JPanel implements MathObject {
         } else if(equationsToGraph.size() + numcs.size() == 1) {
             title += equationsToGraph.size() == 1 ? equationsToGraph.equations().get(0) : numcs.get(0);
         } else {
-            for(int i = 0; i < equationsToGraph.size(); i++) { // for each loop will crash if equation's size is 0.
+            for(int i = 0; i < equationsToGraph.size(); i++) { //  for each loop will crash if equation's size is 0.
                 title += equationsToGraph.equations().get(i) + ", ";
             }
             for(int i =0; i < numcs.size(); i++) {
@@ -169,21 +169,21 @@ public class Grapher extends JPanel implements MathObject {
 
     @Override
     public String toString() {
-        // String ret = "Graph of ";
-        // if(numcs == null && equationsToGraph == null || (numcs.size() == 0 && equationsToGraph.size() == 0)) {
-        //     return "Empty Graph"; 
-        // } else if(equationsToGraph.size() + numcs.size() == 1) {
-        //     return ret + (equationsToGraph.size() == 1 ? equationsToGraph.equations().get(0) : numcs.get(0));
-        // } else {
-        //     for(int i = 0; i < equationsToGraph.size(); i++) { // for each loop will crash if equation's size is 0.
-        //         ret += equationsToGraph.equations().get(i) + ", ";
-        //     }
-        //     for(int i =0; i < numcs.size(); i++) {
-        //          ret += numcs.get(i) + ", ";   
-        //     }
-        //     return ret.substring(0, ret.length() - 2);
+        //  String ret = "Graph of ";
+        //  if(numcs == null && equationsToGraph == null || (numcs.size() == 0 && equationsToGraph.size() == 0)) {
+        //      return "Empty Graph"; 
+        //  } else if(equationsToGraph.size() + numcs.size() == 1) {
+        //      return ret + (equationsToGraph.size() == 1 ? equationsToGraph.equations().get(0) : numcs.get(0));
+        //  } else {
+        //      for(int i = 0; i < equationsToGraph.size(); i++) { //  for each loop will crash if equation's size is 0.
+        //          ret += equationsToGraph.equations().get(i) + ", ";
+        //      }
+        //      for(int i =0; i < numcs.size(); i++) {
+        //           ret += numcs.get(i) + ", ";   
+        //      }
+        //      return ret.substring(0, ret.length() - 2);
 
-        // }
+        //  }
         return "";
     }
 

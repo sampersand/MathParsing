@@ -68,8 +68,8 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
      * Creates the window, and puts all the different buttons / input boxes in it.
      */
     private void init() {
-            // Note: This might look like a mess of JPanels. They are strategically placed to make
-            // the calculator look an actual calculator.
+            //  Note: This might look like a mess of JPanels. They are strategically placed to make
+            //  the calculator look an actual calculator.
             addButtons();
             for (Enumeration<String> button = buttons.keys(); button.hasMoreElements();) {
                 buttons.get(button.nextElement()).addActionListener(this);
@@ -189,7 +189,7 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
                 dispField.setText(dispField.getText() + num);
             } catch (NumberFormatException err) {
                 String text = button.getText();
-                String eqText = dispField.getText(); // just to make it easier to use
+                String eqText = dispField.getText(); //  just to make it easier to use
                 switch(text) {
                     case "." :
                         dispField.setText(eqText + ".");
@@ -250,12 +250,12 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
      * @see actionPerformed
      */
     public String getResultWithGraph(String rawEq) {
-        if (rawEq.indexOf("==") == -1) { // a beginning '=' is always passed
-            // try {
+        if (rawEq.indexOf("==") == -1) { //  a beginning '=' is always passed
+            //  try {
             return getResult(rawEq);
-            // } catch (Exception err) {
-                // System.err.println(err);
-            // }
+            //  } catch (Exception err) {
+                //  System.err.println(err);
+            //  }
 
         }
         MAINCL.setUpAndDrawGraph(rawEq.substring(1));
@@ -321,7 +321,7 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
                 }
             }};
             throw new NullPointerException();
-            // return "" + new ((TokenNode)EquationSystem().add(split[0]).add(vars).add(funcs)).eval();
+            //  return "" + new ((TokenNode)EquationSystem().add(split[0]).add(vars).add(funcs)).eval();
         }
         
     }

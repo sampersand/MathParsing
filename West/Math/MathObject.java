@@ -63,10 +63,10 @@ public interface MathObject {
         for(int i = 0; i < idtLvl; i++)
             ret += (i % 2 == 0 ? "│" : "║")+ "  ";
         return ret;
-        //┌
-        //│─
-        //├
-        //└
+        // ┌
+        // │─
+        // ├
+        // └
     }
     public default String indent(int idtLvl){
         return idtLvl == 0 ? indentS(idtLvl) : indentM(idtLvl);

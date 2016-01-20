@@ -58,8 +58,8 @@ public class MathCollection extends NumberCollection<Double> {
         pSetNot = pSetNot.replaceAll(" ","");
         if(pSetNot.charAt(0) == '{' && pSetNot.charAt(pSetNot.length() - 1) == '}')
             pSetNot = pSetNot.substring(1, pSetNot.length() - 1);
-        pSetNot = pSetNot.replaceAll("\\|", ":"); // {x : ...} OR {x | ...}, not both.
-        assert pSetNot.replaceAll("[^:]","").length() == 1 : pSetNot; // only can be 1 ":"
+        pSetNot = pSetNot.replaceAll("\\|", ":"); //  {x : ...} OR {x | ...}, not both.
+        assert pSetNot.replaceAll("[^:]","").length() == 1 : pSetNot; //  only can be 1 ":"
         String vars = pSetNot.split(":")[0];
         String firstVar = vars.replaceAll("^[^A-z]*([A-z]+).*$","$1");
         pSetNot = pSetNot.split(":")[1];

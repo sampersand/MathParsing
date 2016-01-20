@@ -7,6 +7,7 @@ import West.Math.Equation.Token;
 import West.Math.MathObject;
 import West.Math.Equation.Equation;
 import java.util.HashMap;
+import West.Math.DoubleSupplier;
 /**
 * TODO: JAVADOC
 * 
@@ -68,7 +69,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 }
 
                 Object[] temp = new TokenNode(t).condeseNodes(passTokens);
-                pos += (int)temp[0];//(x==pTokens.size()-1?1:0);
+                pos += (int)temp[0];// (x==pTokens.size()-1?1:0);
                 ((TokenNode)temp[1]).parens = toAddParens;
                 node.add((TokenNode)temp[1]);
             } else if(t.isParen()){
@@ -98,7 +99,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     private static int firstHighPriority(Collection<TokenNode> peles){
         int pos = 0, priority = Function.DEFAULT_PRIORITY;
         for(int i = 0; i < peles.size(); i++){
-            if(peles.get(i).priority() <= priority){ //i swapped them
+            if(peles.get(i).priority() <= priority){ // i swapped them
                 priority = peles.get(i).priority();
                 pos = i;
             }
@@ -153,7 +154,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return super.add(tn);
     }
     public static TokenNode generateMasterNode(ArrayList<Token> pTokens) {
-        TokenNode tn = (TokenNode)new TokenNode().condeseNodes(pTokens)[1]; //just to make it easier to read.
+        TokenNode tn = (TokenNode)new TokenNode().condeseNodes(pTokens)[1]; // just to make it easier to read.
         tn = condense(new Collection.Builder<TokenNode>().addAll(tn.elements).build());
         return tn.removeExtraFuncs();
     }
@@ -197,12 +198,12 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return this;
     }
 
-    private HashMap<String, Double> appendHashMap(HashMap<String, Double> a, Object b){
+    private HashMap<String, DoubleSupplier> appendHashMap(HashMap<String, DoubleSupplier> a, Object b){
         if(b != null)
-            a.putAll((HashMap<String, Double>)b);
+            a.putAll((HashMap<String, DoubleSupplier>)b);
         return a;
     }
-    private HashMap<String, Double> appendHashMap(HashMap<String, Double> a, String b, Double c){
+    private HashMap<String, DoubleSupplier> appendHashMap(HashMap<String, DoubleSupplier> a, String b, Double c){
         a.put(b,c);
         return a;
     }
@@ -227,12 +228,12 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
      * TODO: JAVADOC
      * returns Double.NaN if the result isnt in bounds
      */
-    public HashMap<String, Double> eval(HashMap<String, Double> pVars, final EquationSystem pEqSys){
+    public HashMap<String, DoubleSupplier> eval(HashMap<String, DoubleSupplier> pVars, final EquationSystem pEqSys){
         assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
         String val = toExprString();
-        if(pVars.containsKey(val)) //if the value is already in pVars, then just take a shortcut.
+        if(pVars.containsKey(val)) // if the value is already in pVars, then just take a shortcut.
             return pVars;
-        for(Equation eq : pEqSys.equations()){ //if the current val is on the left hand side, then use that
+        for(Equation eq : pEqSys.equations()){ // if the current val is on the left hand side, then use that
             if(((TokenNode)eq.subEquations().getSD(1).get(0)).toExprString().equals(val)){
                 TokenNode tkn = (((TokenNode)eq.subEquations().getSD(1).get(-1)));
                 pVars = appendHashMap(pVars, tkn.eval(pVars, pEqSys));
@@ -241,9 +242,9 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             }
         }
         if(token.isFunc() || token.isDelim()){
-            if(pEqSys.functions().containsKey(token.val())) // if it is a function
-                return pEqSys.functions().get(token.val()).exec(pVars, pEqSys, this); //no work
-            return Function.exec(pVars, token.val(), pEqSys, this); //no else needed
+            if(pEqSys.functions().containsKey(token.val())) //  if it is a function
+                return pEqSys.functions().get(token.val()).exec(pVars, pEqSys, this); // no work
+            return Function.exec(pVars, token.val(), pEqSys, this); // no else needed
         } else if(isFinal()){
             val = token.val();
             Double d;
@@ -253,7 +254,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 switch(val) {
                     case "e":
                         return appendHashMap(pVars, val, Math.E);
-                    case "k": //Coloumn's constant
+                    case "k": // Coloumn's constant
                         return appendHashMap(pVars, val, 8.9875517873681764E9);
                     case "pi": case "π": case "Π":
                         return appendHashMap(pVars, val, Math.PI);
@@ -262,40 +263,40 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     case "rand": case "random":
                         return appendHashMap(pVars, val, Math.random()); 
 
-                    // X / 2
+                    //  X / 2
                     case "½": return appendHashMap(pVars, val, 1/2D);
 
-                    // X / 3
+                    //  X / 3
                     case "⅓": return appendHashMap(pVars, val, 1/3D);
                     case "⅔": return appendHashMap(pVars, val, 2/3D);
 
-                    // X / 4
+                    //  X / 4
                     case "¼": return appendHashMap(pVars, val, 1/4D);
                     case "¾": return appendHashMap(pVars, val, 3/4D);
                     
-                    // X / 5
+                    //  X / 5
                     case "⅕": return appendHashMap(pVars, val, 1/5D);
                     case "⅖": return appendHashMap(pVars, val, 2/5D);
                     case "⅗": return appendHashMap(pVars, val, 3/5D);
                     case "⅘": return appendHashMap(pVars, val, 4/5D);
 
-                    // X / 6
+                    //  X / 6
                     case "⅙": return appendHashMap(pVars, val, 1/6D);
                     case "⅚": return appendHashMap(pVars, val, 5/6D);
 
-                    // X / 7
+                    //  X / 7
                     case "⅐": return appendHashMap(pVars, val, 1/7D);
 
-                    // X / 8
+                    //  X / 8
                     case "⅛": return appendHashMap(pVars, val, 1/8D);
                     case "⅜": return appendHashMap(pVars, val, 3/8D);
                     case "⅝": return appendHashMap(pVars, val, 5/8D);
                     case "⅞": return appendHashMap(pVars, val, 7/8D);
 
-                    //X / 9
+                    // X / 9
                     case "⅑": return appendHashMap(pVars, val, 1/9D);
 
-                    //X / 10
+                    // X / 10
                     case "⅒": return appendHashMap(pVars, val, 1/10D);
 
                     default:
@@ -308,7 +309,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                                                     token.val());
     }
 
-    public Double evald(HashMap<String, Double> hm, final EquationSystem pEqSys){
+    public DoubleSupplier evald(HashMap<String, DoubleSupplier> hm, final EquationSystem pEqSys){
         return eval(hm, pEqSys).get(toString());
     }
 
@@ -324,7 +325,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 ret += ((TokenNode)n).toExprString();
             return ret + parens[1];
         } else if(token.isBinOper()){
-            if(size() == 1) // TODO: FIX THIS
+            if(size() == 1) //  TODO: FIX THIS
                 ret += token.val() + " " + ((TokenNode)get(0)).toExprString();
             else{
                 for(Node n : this){

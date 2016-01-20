@@ -22,8 +22,8 @@ public class Tester {
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
-            // args = new String[]{"y=<x^e,e^x>","--i","x"};
-            // args = new String[]{"y={x | x＜–2 ∨ x＞2 $(–10,10,1)}"};
+            args = new String[]{"y=5*4"};
+            //  args = new String[]{"y={x | x＜–2 ∨ x＞2 $(–10,10,1)}"};
         }
 
 
@@ -49,9 +49,9 @@ public class Tester {
             } else if(args.length > 1) {
                 int i = -1;
                 char type = 'e';
-                // if(!args[0].contains("--"))
-                    // throw new IllegalArgumentException("first value has to start with '--'");
-                while(i < args.length - 1) { //args.length is String.
+                //  if(!args[0].contains("--"))
+                    //  throw new IllegalArgumentException("first value has to start with '--'");
+                while(i < args.length - 1) { // args.length is String.
                     i++;
                     if(args[i].matches("--f(unc)?")) {type = 'f'; continue;}
                     if(args[i].matches("--e(q)?")) {type = 'e'; continue;}
@@ -66,11 +66,11 @@ public class Tester {
                     }
                     if (type == 'f') {
                         try {
-                            eqsys.add(args[i].split(":")[0], new CustomFunction(args[i].split(":")[1])); //fix me.
+                            eqsys.add(args[i].split(":")[0], new CustomFunction(args[i].split(":")[1])); // fix me.
                         } catch(NumberFormatException err) {
                             Print.printw("Syntax: FUNCNAME:FUNC.val() (" + args[i] + ")");
                         } catch(ArrayIndexOutOfBoundsException err) {
-                            eqsys.add(args[i], new CustomFunction(args[i])); //fix me.
+                            eqsys.add(args[i], new CustomFunction(args[i])); // fix me.
                         }
                     } else if (type == 'e') {
                         eqsys.add(new Equation().add(args[i]));
@@ -113,7 +113,7 @@ public class Tester {
             if(dep.isEmpty() && !eqsys.isEmpty()){
                 dep = new ArrayList<String>(){{
                     add(eqsysfinal.equations().get(0).subEquations().get(0).get(0).toString());
-                    //first equation, first node - which is just (EQUATION) - then first subnode.
+                    // first equation, first node - which is just (EQUATION) - then first subnode.
                 }};
             }
             if(indep.isEmpty()){

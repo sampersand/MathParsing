@@ -140,7 +140,7 @@ public class GraphDisplay extends JComponent implements MathObject {
                 largestSize=eq.length();
             }
         }
-        drawer.drawRect(13,5,(largestSize)*10,5+15*this.EQUATIONS.length); //x, y, width, height
+        drawer.drawRect(13,5,(largestSize)*10,5+15*this.EQUATIONS.length); // x, y, width, height
         drawer.setColor(Color.WHITE);
         drawer.fillRect(13,5,(largestSize)*10,5+15*this.EQUATIONS.length);
         drawer.setColor(Color.BLACK);
@@ -160,8 +160,8 @@ public class GraphDisplay extends JComponent implements MathObject {
      */
     private void drawAxis() {
         drawer.setStroke(new BasicStroke(2));
-        drawl(DISPLAY_BOUNDS[0], 0, DISPLAY_BOUNDS[1], 0); // x
-        drawl(0, DISPLAY_BOUNDS[2], 0, DISPLAY_BOUNDS[3]); // y
+        drawl(DISPLAY_BOUNDS[0], 0, DISPLAY_BOUNDS[1], 0); //  x
+        drawl(0, DISPLAY_BOUNDS[2], 0, DISPLAY_BOUNDS[3]); //  y
         drawer.setStroke(new BasicStroke(1));
         double eqyb = (Math.abs(EQUATION_BOUNDS[2]) + Math.abs(EQUATION_BOUNDS[3]));
         double eqxb = (Math.abs(EQUATION_BOUNDS[0]) + Math.abs(EQUATION_BOUNDS[1]));
@@ -193,11 +193,11 @@ public class GraphDisplay extends JComponent implements MathObject {
         double xEBound = Math.abs(DISPLAY_BOUNDS[0]) + Math.abs(DISPLAY_BOUNDS[1]);
         double yEBound = Math.abs(DISPLAY_BOUNDS[2]) + Math.abs(DISPLAY_BOUNDS[3]);
 
-        //  |-------1st-Term------|  |-2nd-Term-|
-        x =  x * xSBound / xEBound + xSBound / 2; // 1st term is adjusting x/y to fit in the bounds.
-        X =  X * xSBound / xEBound + xSBound / 2; // 2nd term is shifting x/y right/down to be centred
-        y = -y * ySBound / yEBound + ySBound / 2; // Y is inverted b/c positive y is down for pixels,
-        Y = -Y * ySBound / yEBound + ySBound / 2; // and should be upwards for graphing.
+        //   |-------1st-Term------|  |-2nd-Term-|
+        x =  x * xSBound / xEBound + xSBound / 2; //  1st term is adjusting x/y to fit in the bounds.
+        X =  X * xSBound / xEBound + xSBound / 2; //  2nd term is shifting x/y right/down to be centred
+        y = -y * ySBound / yEBound + ySBound / 2; //  Y is inverted b/c positive y is down for pixels,
+        Y = -Y * ySBound / yEBound + ySBound / 2; //  and should be upwards for graphing.
         drawer.drawLine( (int) x, (int) y, (int) X, (int) Y);
     }
 

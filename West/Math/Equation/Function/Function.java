@@ -8,6 +8,9 @@ import West.Math.Set.Collection;
 import static West.Math.Declare.*;
 import java.util.HashMap;
 import java.util.Random;
+import West.Math.DoubleSupplier;
+import West.Math.ComplexNumber;
+
 /**
  * A class that simulates both any kind of operation and any fuction in West.Math.
  * Simply put, anything that isn't a number or variable should be a function somehow.
@@ -25,31 +28,30 @@ public class Function implements MathObject {
         BIN,
         ASSIGN,
         NORM
-    } //Assign extends Bin
-
+    } // Assign extends Bin
     @FunctionalInterface
     public interface FuncObj{
-        public Double exec(HashMap<String, Double> hm, EquationSystem eqsys, TokenNode tn);
+        public DoubleSupplier exec(HashMap<String, DoubleSupplier> hm, EquationSystem eqsys, TokenNode tn);
     }
 
-    public static final int DEFAULT_PRIORITY = 100; //TODO: FIX
+    public static final int DEFAULT_PRIORITY = 100; // TODO: FIX
 
     public static Collection<Function> FUNCTIONS = new Collection<Function>() {{
-        // =                : 0
-        // ()               : 1
-        // ∧, ∨, ⊻, ⊼, ⊽    : 2
-        // >, <, ≣, ≥, ≤, ≠ : 3
-        // ^, ≫, ≪          : 4
-        // *, /, %          : 5
-        // +, -             : 6
-        // unary !          : 7
-        // unary –          : 8
+        //  =                : 0
+        //  ()               : 1
+        //  ∧, ∨, ⊻, ⊼, ⊽    : 2
+        //  >, <, ≣, ≥, ≤, ≠ : 3
+        //  ^, ≫, ≪          : 4
+        //  *, /, %          : 5
+        //  +, -             : 6
+        //  unary !          : 7
+        //  unary –          : 8
         add(new Function(new Collection<String>(){{add("=");}},
             "Sets 'A' to 'B'", "A = B",
             0,
             Type.ASSIGN,
             new Collection.Builder<Integer>().add(2).build(), 
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys) //doesnt matter
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys) // doesnt matter
             ));
         add(new Function(new Collection<String>(){{add("");}},
             "Parenthesis, literally: ('A')", "(A)",
@@ -65,10 +67,10 @@ public class Function implements MathObject {
                             case ">":
                                 if(tn.size() <= 1)
                                     return NaN;
-                                Double ret = 0D;
+                                ComplexNumber ret = new ComplexNumber(0D);
                                 for(West.Math.Set.Node.Node<?, ?> tnd : tn)
-                                    ret += Math.pow(((TokenNode)tnd).evald(hm, eqsys),2);
-                                return Math.pow(ret, 0.5);
+                                    ret += ((TokenNode)tnd).evald(hm, eqsys).pow(2D);
+                                return ret.pow(0.5D);
                         }
                     case "{":
                         switch(p[1]){
@@ -82,19 +84,19 @@ public class Function implements MathObject {
                                 Collection<Double> col = new Collection<Double>();
                                 String toeval = tn.get(0).token().val();
                                 TokenNode condits = tn.get(1).get(0);
-                                Double min = tn.get(2).get(0).evald(hm, eqsys);
-                                Double max = tn.get(2).get(1).evald(hm, eqsys);
-                                Double step = tn.get(2).get(2).evald(hm, eqsys);
+                                Double min = tn.get(2).get(0).evald(hm, eqsys).aIsOnlyReal().real();
+                                Double max = tn.get(2).get(1).evald(hm, eqsys).aIsOnlyReal().real();
+                                Double step = tn.get(2).get(2).evald(hm, eqsys).aIsOnlyReal().real();
                                 assert !min.isNaN();
                                 assert !max.isNaN();
                                 assert !step.isNaN();
                                 for(Double d = min; d < max; d+=step){
                                     assert false : "TODO: SET NOTATION";
-                                    // Double d2 = 
-                                    // Double d2 = new EquationSystem().add(toeval+"="+d).eval(toeval,hm, eqsys);
-                                                              // West.Math.Equation.Token.Type.VAR)).evald(hm, eqsys);
-                                    // if(!d.isNaN())
-                                    //     col.add(d2);
+                                    //  Double d2 = 
+                                    //  Double d2 = new EquationSystem().add(toeval+"="+d).eval(toeval,hm, eqsys);
+                                                              //  West.Math.Equation.Token.Type.VAR)).evald(hm, eqsys);
+                                    //  if(!d.isNaN())
+                                    //      col.add(d2);
                                 }
                                 return new Double(col.size());
 
@@ -104,13 +106,13 @@ public class Function implements MathObject {
                         switch(p[1]){
                             case ")":
                                 assert s == 1 : tn;
-                                return Math.sqrt(tn.get(0).evald(hm, eqsys));
+                                return tn.get(0).evald(hm, eqsys).pow(0.5D);
                             }
                     case "|":
                         switch(p[1]){
                             case "|":
                                 assert s == 1 : tn;
-                                return Math.abs(tn.get(0).evald(hm, eqsys));
+                                return tn.get(0).evald(hm, eqsys).abs();
                             }
                     case "(": case "": default:
                         switch(p[1]){
@@ -125,9 +127,9 @@ public class Function implements MathObject {
             }
             ));
 
-        //Comparators
+        // Comparators
 
-            //Normal Comparators
+            // Normal Comparators
         add(new Function(new Collection<String>(){{add("＞");}},
             "Checks if 'A' ＞ 'B'", "A ＞ B",
             3,
@@ -185,7 +187,7 @@ public class Function implements MathObject {
             ));
 
 
-            //Boolean Comparators
+            // Boolean Comparators
         add(new Function(new Collection<String>(){{add("∧");}},
             "Checks if 'A' ∧ 'B'", "A ∧ B",
             2,
@@ -232,13 +234,13 @@ public class Function implements MathObject {
 
 
 
-        // Standard math operators
+        //  Standard math operators
         add(new Function(new Collection<String>(){{add("+");}},
             "Adds 'A' to 'B'", "A + B", 
             4,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys) + tn.get(1).evald(hm, eqsys)
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).plus(tn.get(1).evald(hm, eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("-");}},
@@ -246,7 +248,9 @@ public class Function implements MathObject {
             4,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> tn.size() == 1 ? 0 - tn.get(0).evald(hm, eqsys) : tn.get(0).evald(hm, eqsys) - tn.get(1).evald(hm, eqsys)
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).minus(tn.get(1).evald(hm, eqsys))
+            // (hm, eqsys, tn) -> tn.size() == 1 ? 0 - tn.get(0).evald(hm, eqsys) :
+            // tn.get(0).evald(hm, eqsys) - tn.get(1).evald(hm, eqsys)
             ));
 
         add(new Function(new Collection<String>(){{add("*");add("·");add("×");}},
@@ -254,14 +258,14 @@ public class Function implements MathObject {
             5,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys) * tn.get(1).evald(hm, eqsys)
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).times(tn.get(1).evald(hm, eqsys))
             ));
         add(new Function(new Collection<String>(){{add("/");add("÷");}},
             "Divides 'A' to 'B'", "A / B",
             5,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys) / tn.get(1).evald(hm, eqsys)
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).div(tn.get(1).evald(hm, eqsys))
             ));
 
         add(new Function(new Collection<String>(){{add("%");}},
@@ -269,7 +273,7 @@ public class Function implements MathObject {
             5,
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys) % tn.get(1).evald(hm, eqsys)
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).modulo(tn.get(1).evald(hm, eqsys))
             ));
         add(new Function(new Collection<String>(){{add("^");}},
             "Raises 'A' to 'B'", "A ^ B",
@@ -281,39 +285,34 @@ public class Function implements MathObject {
 
 
 
-        //UNARY
+        // UNARY
 
 
-        //UN_L
-        add(new Function(new Collection<String>(){{add("–");}}, //negation
+        // UN_L
+        add(new Function(new Collection<String>(){{add("–");}}, // negation
             "negate 'A'", "–(A)",
             8,
             Type.UNL,
             new Collection.Builder<Integer>().add(1).build(),
             (hm, eqsys, tn) -> -1 * tn.get(0).evald(hm, eqsys)
             ));
-        //UN_R
-        add(new Function(new Collection<String>(){{add("!");}}, //negation
+        // UN_R
+        add(new Function(new Collection<String>(){{add("!");}}, // negation
             "factorial 'A'", "!(A)",
             7,
             Type.UNR,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> {
-                    Double ret = 1D;
-                    for(Double x = tn.get(0).evald(hm, eqsys); x > 0; x--)
-                        ret *= x;
-                    return ret;
-                }
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).factorial();
             ));
 
 
-        //Trigonometric functions
+        // Trigonometric functions
         add(new Function(new Collection<String>(){{add("sin");}},
             "sin of 'A'", "sin(A)",
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> Math.sin(tn.get(0).evald(hm, eqsys))
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).sin()
             ));
 
         add(new Function(new Collection<String>(){{add("cos");}},
@@ -321,7 +320,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> Math.cos(tn.get(0).evald(hm, eqsys))
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).cos()
             ));
 
         add(new Function(new Collection<String>(){{add("tan");}},
@@ -329,7 +328,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> Math.tan(tn.get(0).evald(hm, eqsys))
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).tan()
             ));
 
         add(new Function(new Collection<String>(){{add("csc");}},
@@ -337,7 +336,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> 1D / Math.sin(tn.get(0).evald(hm, eqsys))
+            (hm, eqsys, tn) -> 1D / tn.get(0).evald(hm, eqsys).sin()
             ));
 
         add(new Function(new Collection<String>(){{add("sec");}},
@@ -345,7 +344,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> 1D / Math.cos(tn.get(0).evald(hm, eqsys))
+            (hm, eqsys, tn) -> 1D / tn.get(0).evald(hm, eqsys).cos()
             ));
 
         add(new Function(new Collection<String>(){{add("cot");}},
@@ -353,7 +352,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> 1D / Math.tan(tn.get(0).evald(hm, eqsys))
+            (hm, eqsys, tn) -> 1D / tn.get(0).evald(hm, eqsys).tan()
             ));
 
         add(new Function(new Collection<String>(){{add("sinh");}},
@@ -361,7 +360,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> Math.sinh(tn.get(0).evald(hm, eqsys))
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).sinh()
             ));
 
         add(new Function(new Collection<String>(){{add("cosh");}},
@@ -369,7 +368,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> Math.cosh(tn.get(0).evald(hm, eqsys))
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).cosh()
             ));
 
         add(new Function(new Collection<String>(){{add("tanh");}},
@@ -377,7 +376,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> Math.tanh(tn.get(0).evald(hm, eqsys))
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).tanh()
             ));
 
         add(new Function(new Collection<String>(){{add("asin");}},
@@ -385,7 +384,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> Math.asin(tn.get(0).evald(hm, eqsys))
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).asin()
             ));
 
         add(new Function(new Collection<String>(){{add("acon");}},
@@ -393,7 +392,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> Math.acos(tn.get(0).evald(hm, eqsys))
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).acos()
             ));
 
         add(new Function(new Collection<String>(){{add("atan");}},
@@ -401,12 +400,12 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> Math.atan(tn.get(0).evald(hm, eqsys))
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).atan()
             ));
 
 
 
-        //Shifting
+        // Shifting
         add(new Function(new Collection<String>(){{add("≫");}},
             "'A' Shifted to the right 'B' bits", "≫(A, B)",
             5,
@@ -424,13 +423,13 @@ public class Function implements MathObject {
 
 
 
-        //Misc math functions
+        // Misc math functions
         add(new Function(new Collection<String>(){{add("abs");}},
             "absolute value of 'A'", "abs(a)",
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> Math.abs(tn.get(0).evald(hm, eqsys))
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).abs()
             ));
 
         add(new Function(new Collection<String>(){{add("ceil");}},
@@ -438,7 +437,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> Math.ceil(tn.get(0).evald(hm, eqsys))
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).ceil()
             ));
 
         add(new Function(new Collection<String>(){{add("floor");}},
@@ -469,7 +468,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> Math.log(tn.get(0).evald(hm, eqsys))
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).log()
             ));
 
         add(new Function(new Collection<String>(){{add("log");}},
@@ -492,16 +491,16 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> Math.sqrt(tn.get(0).evald(hm, eqsys))
+            (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).sqrt()
             ));
 
-        // add(new Function(new Collection<String>(){{add("√");}},
-        //     "the square root (√) of 'A'", "√(A)",
-        //     DEFAULT_PRIORITY,
-        //     Type.NORM,
-        //     new Collection.Builder<Integer>().add(1).build(),
-        //     (hm, eqsys, tn) -> Math.sqrt(tn.get(0).evald(hm, eqsys))
-        //     ));
+        //  add(new Function(new Collection<String>(){{add("√");}},
+        //      "the square root (√) of 'A'", "√(A)",
+        //      DEFAULT_PRIORITY,
+        //      Type.NORM,
+        //      new Collection.Builder<Integer>().add(1).build(),
+        //      (hm, eqsys, tn) -> tn.get(0).evald(hm, eqsys).sqrt()
+        //      ));
 
         add(new Function(new Collection<String>(){{add("deg");}},
             "turns 'A' into degrees (from radians)", "degrees(A)",
@@ -591,7 +590,7 @@ public class Function implements MathObject {
                         add(name);
         }};
     public static String isBinOper(String s){
-        if(s.matches(".*[eE][-\\d.]*$"))//if its sci notation, say no
+        if(s.matches(".*[eE][-\\d.]*$"))// if its sci notation, say no
             return null;
         return Equation.isInLast(s, BIN_OPERS);
     }
@@ -633,7 +632,7 @@ public class Function implements MathObject {
         for(Function f : FUNCTIONS)
             if(f.names().contains(name))
                 return f;
-        return West.Math.Equation.Token.isDelim(name) == null ? null : get(""); // if its a delim, then return "()" Func
+        return West.Math.Equation.Token.isDelim(name) == null ? null : get(""); //  if its a delim, then return "()" Func
     }
     /**
      * A String that holds either the function name ({@link Function}) or the file name ({@link CustomFunction}).
@@ -681,11 +680,11 @@ public class Function implements MathObject {
                     Type pType,
                     Collection<Integer> pArgsLength,
                     FuncObj pFuncObj) throws IllegalArgumentException{
-        // assert pName != null;
-        // assert pHelp != null;
-        // assert pSyntax != null;
-        // assert pType != null;
-        // assert pArgsLength.size() >= 0;
+        //  assert pName != null;
+        //  assert pHelp != null;
+        //  assert pSyntax != null;
+        //  assert pType != null;
+        //  assert pArgsLength.size() >= 0;
         funcObj = pFuncObj;
         names = pName;
         help = pHelp;
@@ -744,7 +743,9 @@ public class Function implements MathObject {
      * @return A double representing the value of <code>pNode</code>, when solved for with <code>pEqSys</code>.
      * @throws IllegalArgumentException   Thrown when the function required parameters, and the ones passed aren't right.
      */
-    public HashMap<String,Double> exec(HashMap<String, Double> ret, final EquationSystem pEqSys, TokenNode pNode) {
+    public HashMap<String, DoubleSupplier> exec(HashMap<String, DoubleSupplier> ret,
+                                                final EquationSystem pEqSys,
+                                                TokenNode pNode) {
         if(type == Type.ASSIGN){
             assert pNode.size() == 2;
             ret.putAll(pNode.get(1).eval(ret, pEqSys));
@@ -766,7 +767,7 @@ public class Function implements MathObject {
         }
     }
 
-    public static HashMap<String,Double> exec(HashMap<String, Double> ret,
+    public static HashMap<String,Double> exec(HashMap<String, DoubleSupplier> ret,
                                               String pStr,
                                               final EquationSystem pEqSys,
                                               TokenNode pNode) {
@@ -776,7 +777,9 @@ public class Function implements MathObject {
         return f.exec(ret, pEqSys, pNode);
     }
 
-    public static HashMap<String, Double> addArgs(HashMap<String, Double> hm, String key, Double val){
+    public static HashMap<String, DoubleSupplier> addArgs(HashMap<String, DoubleSupplier> hm,
+                                                          String key,
+                                                          DoubleSupplier val){
         hm.put(key, val);
         return hm;
     }

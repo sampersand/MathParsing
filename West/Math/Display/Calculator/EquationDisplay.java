@@ -107,7 +107,7 @@ public class EquationDisplay extends JComponent implements MathObject {
         this.ISEQIMAG = isImag;
         this.COLOR=color;
 
-        this.createToolTip(); // I thought these might be interesting, but right now they dont work.
+        this.createToolTip(); //  I thought these might be interesting, but right now they dont work.
         this.setToolTipText("Equation: "+eq);
 
         if (eqBnd.length == 1) {
@@ -189,13 +189,13 @@ public class EquationDisplay extends JComponent implements MathObject {
                 y = -EQUATION_BOUNDS[2];
                 while (y <= EQUATION_BOUNDS[3]) {
                     y += STEPS[1];
-                    // TODO: Make this work
+                    //  TODO: Make this work
                     drawl( (int) x, (int) y, (int) x, (int) y);
                 }
             }
         } else {
-            double X; // The other end of the line; X is "x+step".
-            double Y; // The other end of the line. Y is the equation with X plugged into it.
+            double X; //  The other end of the line; X is "x+step".
+            double Y; //  The other end of the line. Y is the equation with X plugged into it.
             while (x <= EQUATION_BOUNDS[1]) {
                 y = Double.parseDouble(CalcWindow.getResult(new String(EQUATION).replaceAll("x", "(" + x + ")")));
             X = x + STEPS[0];
@@ -216,25 +216,25 @@ public class EquationDisplay extends JComponent implements MathObject {
      * @return           The JavaScript-executable version of the string
      */
     public String fixEquation(String eq) {
-        // This could always have work done to it.
-        if(eq.charAt(1) == '@') { // if the equation is '=@...', then return '=...' without formatting.
+        //  This could always have work done to it.
+        if(eq.charAt(1) == '@') { //  if the equation is '=@...', then return '=...' without formatting.
             return "=" + eq.substring(2);
         }
-        eq = eq.replaceAll("pi","Math.PI");                         //pi
-        eq = eq.replaceAll("\u03C0","Math.PI");                     //π
-        eq = eq.replaceAll("\u221A","sqrt");                        //√
-        eq = eq.replaceAll("sqrt\\((.*)\\)","Math.sqrt($1)");       //sqrt
-        eq = eq.replaceAll("sqrt([^(])","Math.sqrt($1)");           //sqrt
-        eq = eq.replaceAll("(?<!Math\\.)\\b(e|E)\\b","Math.E");     //e
-        eq = eq.replaceAll("log([^(]|\\(.*)","Math.log10($1)");     //log
-        eq = eq.replaceAll("ln([^(]|\\(.*)","Math.log($1)");        //ln
-        eq = eq.replaceAll("(\\d)x", "$1*x");                       //#X -> #*X
+        eq = eq.replaceAll("pi","Math.PI");                         // pi
+        eq = eq.replaceAll("\u03C0","Math.PI");                     // π
+        eq = eq.replaceAll("\u221A","sqrt");                        // √
+        eq = eq.replaceAll("sqrt\\((.*)\\)","Math.sqrt($1)");       // sqrt
+        eq = eq.replaceAll("sqrt([^(])","Math.sqrt($1)");           // sqrt
+        eq = eq.replaceAll("(?<!Math\\.)\\b(e|E)\\b","Math.E");     // e
+        eq = eq.replaceAll("log([^(]|\\(.*)","Math.log10($1)");     // log
+        eq = eq.replaceAll("ln([^(]|\\(.*)","Math.log($1)");        // ln
+        eq = eq.replaceAll("(\\d)x", "$1*x");                       // #X -> #*X
         eq = eq.replaceAll(
-                            "((?:.*[+-/^ *.])|(?:^=))" + // The beginning of the expression can be '+-/^ *' or '^='.
-                            "(\\((?:.*)\\)|.*)" + // The term is either surrounded by parenthesis or not. 
-                            "(?:\\*\\*|\\^)"    + // The exponent can either be '**' or '^'.
-                            "(\\((?:.*)\\)|.*)" + // The power is either surrounded by parenthesis or not.
-                            "([+-/^ *.]|(?:$))"    // The end of the expression is either '+-/^ *' or '$'.
+                            "((?:.*[+-/^ *.])|(?:^=))" + //  The beginning of the expression can be '+-/^ *' or '^='.
+                            "(\\((?:.*)\\)|.*)" + //  The term is either surrounded by parenthesis or not. 
+                            "(?:\\*\\*|\\^)"    + //  The exponent can either be '**' or '^'.
+                            "(\\((?:.*)\\)|.*)" + //  The power is either surrounded by parenthesis or not.
+                            "([+-/^ *.]|(?:$))"    //  The end of the expression is either '+-/^ *' or '$'.
                             ,"$1Math.pow($2,$3)"); 
 
         for(String trig : new String[] { "cos", "sin", "tan", "csc", "sec", "cot"} ) {
@@ -265,11 +265,11 @@ public class EquationDisplay extends JComponent implements MathObject {
         double xEBound = Math.abs(DISPLAY_BOUNDS[0]) + Math.abs(DISPLAY_BOUNDS[1]);
         double yEBound = Math.abs(DISPLAY_BOUNDS[2]) + Math.abs(DISPLAY_BOUNDS[3]);
 
-        //  |-------1st-Term------|  |-2nd-Term-|
-        x =  x * xSBound / xEBound + xSBound / 2; // 1st term is adjusting x/y to fit in the bounds.
-        X =  X * xSBound / xEBound + xSBound / 2; // 2nd term is shifting x/y right/down to be centred
-        y = -y * ySBound / yEBound + ySBound / 2; // Y is inverted b/c positive y is down for pixels,
-        Y = -Y * ySBound / yEBound + ySBound / 2; // and should be upwards for graphing.
+        //   |-------1st-Term------|  |-2nd-Term-|
+        x =  x * xSBound / xEBound + xSBound / 2; //  1st term is adjusting x/y to fit in the bounds.
+        X =  X * xSBound / xEBound + xSBound / 2; //  2nd term is shifting x/y right/down to be centred
+        y = -y * ySBound / yEBound + ySBound / 2; //  Y is inverted b/c positive y is down for pixels,
+        Y = -Y * ySBound / yEBound + ySBound / 2; //  and should be upwards for graphing.
         drawer.drawLine( (int) x, (int) y, (int) X, (int) Y);
     }
 

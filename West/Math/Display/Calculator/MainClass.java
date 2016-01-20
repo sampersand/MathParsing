@@ -88,8 +88,8 @@ public class MainClass implements MathObject {
         limit = 10;
         step = 0.1D;
         JFrame frame = new JFrame();
-        int xScreenLimit = 500; // note this is the physical screen limits
-        int yScreenLimit = 500; // note this is the physical screen limits        
+        int xScreenLimit = 500; //  note this is the physical screen limits
+        int yScreenLimit = 500; //  note this is the physical screen limits        
         frame.setSize(xScreenLimit * 2, yScreenLimit * 2);
         frame.setTitle("Graphing calculator");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

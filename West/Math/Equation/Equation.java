@@ -79,18 +79,18 @@ public class Equation implements MathObject {
     public static String fixNode(String pEq) {
         if(pEq.charAt(0) == '@')
             return pEq.substring(1);
-        pEq = pEq.replaceAll("^([\\wΘπ]+)=-","$1=–"); //makes parsing better. thrown together, however.
+        pEq = pEq.replaceAll("^([\\wΘπ]+)=-","$1=–"); // makes parsing better. thrown together, however.
         if(pEq.matches(".*([0-9.–-]+)[Ee]([0-9.–-]+).*"))
-            pEq = pEq.replaceAll("([\\d.–-]+)[Ee]([\\d.–-]+)","$1*10^$2").replaceAll("-","–"); // sci notation
-        pEq = pEq.replaceAll("²", "^2"); // exponents
-        pEq = pEq.replaceAll("³", "^3"); // i.e '²' --> ^2 
-        pEq = pEq.replaceAll("⁴", "^4"); // ^^^
-        pEq = pEq.replaceAll("⅟","1/"); // ^^^s
-        for(String trig : TRIG) // Trig i.e. 'coshΘ' --> cosh(Θ)
+            pEq = pEq.replaceAll("([\\d.–-]+)[Ee]([\\d.–-]+)","$1*10^$2").replaceAll("-","–"); //  sci notation
+        pEq = pEq.replaceAll("²", "^2"); //  exponents
+        pEq = pEq.replaceAll("³", "^3"); //  i.e '²' --> ^2 
+        pEq = pEq.replaceAll("⁴", "^4"); //  ^^^
+        pEq = pEq.replaceAll("⅟","1/"); //  ^^^s
+        for(String trig : TRIG) //  Trig i.e. 'coshΘ' --> cosh(Θ)
             pEq = pEq.replaceAll("(?!<a)("+trig+")(?!h)(\\^[\\d.-]+)?(?!\\()([\\w\\d().]+)", "$1($3)$2"); 
         pEq = pEq.replaceAll("(?<![0-9.])([0-9.]+)(?!\\d|\\.)(\\w|Θ|π)","$1·$2");
-        // assert false : pEq;
-        // pEq = pEq.replaceAll("(?<!\\w)([0-9]+(?:\\.[0-9]+)?)([A-Za-z])","$1·$2");
+        //  assert false : pEq;
+        //  pEq = pEq.replaceAll("(?<!\\w)([0-9]+(?:\\.[0-9]+)?)([A-Za-z])","$1·$2");
         return pEq;
     }
 
@@ -98,7 +98,7 @@ public class Equation implements MathObject {
         String ret = "((?!=$";
         for(String s : Function.BIN_OPERS)
             ret += "|\\Q" + s + "\\E";
-        // assert false : ret + ").)";
+        //  assert false : ret + ").)";
         return ret + ")[^0-9])";
     }
     /**
@@ -109,7 +109,7 @@ public class Equation implements MathObject {
      * @see Token
      */
     public static Collection<Token> parseTokens(String rEq) {
-        rEq = fixNode(rEq.trim().replaceAll(" ","")); //remove all spaces
+        rEq = fixNode(rEq.trim().replaceAll(" ","")); // remove all spaces
         Collection<Token> tokens = new Collection<Token>();
         String all = "", s;
 
@@ -129,7 +129,7 @@ public class Equation implements MathObject {
                 all=all.substring(isUNL(all).length());
             }
             if((repl = isParenL(all)) != null){
-                if(isInLast(s,Token.PAREN_L) != null) //if its a left paren, make function
+                if(isInLast(s,Token.PAREN_L) != null) // if its a left paren, make function
                     tokens.add(new Token(replLast(all, repl), Token.Type.FUNC));
                 else if(!replLast(all, repl).isEmpty())
                     tokens.add(new Token(replLast(all, repl), Token.Type.VAR));
@@ -198,7 +198,7 @@ public class Equation implements MathObject {
 
 
     public static String isInLast(String pStr, java.util.Collection<String> pList){
-        if(pStr.isEmpty()) //just makes it faster so it doesnt have to iterate thru everything
+        if(pStr.isEmpty()) // just makes it faster so it doesnt have to iterate thru everything
             return null;
         for(String s : pList){
             if(pStr.replaceAll("\\Q" + s + "\\E$","").length() != pStr.length())
@@ -208,7 +208,7 @@ public class Equation implements MathObject {
     }
 
     public static String isInFirst(String pStr, java.util.Collection<String> pList){
-        if(pStr.isEmpty()) //just makes it faster so it doesnt have to iterate thru everything
+        if(pStr.isEmpty()) // just makes it faster so it doesnt have to iterate thru everything
             return null;
         for(String s : pList){
             if(pStr.replaceAll("^\\Q" + s + "\\E","").length() != pStr.length())

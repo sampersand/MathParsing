@@ -100,7 +100,7 @@ public class DisplayComponent extends JLabel implements MathObject {
                 "\nnumc1 (" + numc.get(1).size() + "): \n\t" + numc.get(1);
         color = pColor;
         this.createToolTip();
-        // setPreferredSize(new Dimension(grapher.components().winBounds()[0], grapher.components().winBounds()[1]));
+        //  setPreferredSize(new Dimension(grapher.components().winBounds()[0], grapher.components().winBounds()[1]));
     }
     
     /**
@@ -156,8 +156,8 @@ public class DisplayComponent extends JLabel implements MathObject {
             }
         }
         else {
-            drawl(0D, dispBounds[1], 0D, dispBounds[3], true); //axis.
-            drawl(dispBounds[0], 0D, dispBounds[2], 0D, true); //axis.
+            drawl(0D, dispBounds[1], 0D, dispBounds[3], true); // axis.
+            drawl(dispBounds[0], 0D, dispBounds[2], 0D, true); // axis.
         }
     }
  
@@ -171,7 +171,7 @@ public class DisplayComponent extends JLabel implements MathObject {
      */
     private void drawp(double x, double y) {
        double[] xy=fix(x, y);
-       drawer.drawOval((int)xy[0] - 5, (int) xy[1] - 5, 10, 10); // width, height
+       drawer.drawOval((int)xy[0] - 5, (int) xy[1] - 5, 10, 10); //  width, height
     }
 
     /** TODO: JAVADOC */
@@ -182,15 +182,15 @@ public class DisplayComponent extends JLabel implements MathObject {
             return;
         if(!fix && grapher.components().type().equals(West.Math.Display.GraphComponents.GraphTypes.POLAR)){
             Double r = y;
-            y = y * Math.sin(x); //y is r, x is theta
-            x = r * Math.cos(x); //y is r, x is theta
+            y = y * Math.sin(x); // y is r, x is theta
+            x = r * Math.cos(x); // y is r, x is theta
             r = Y;
-            Y = Y * Math.sin(X); //Y is r, X is theta
-            X = r * Math.cos(X); //Y is r, X is theta
+            Y = Y * Math.sin(X); // Y is r, X is theta
+            X = r * Math.cos(X); // Y is r, X is theta
         }
         double[] xy=fix(x, y);
         double[] XY=fix(X, Y);
-        drawer.drawLine((int) xy[0], (int)xy[1], (int)XY[0], (int)XY[1]); // width, height
+        drawer.drawLine((int) xy[0], (int)xy[1], (int)XY[0], (int)XY[1]); //  width, height
     }
   
     /** TODO: JAVADOC */

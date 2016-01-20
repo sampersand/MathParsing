@@ -35,7 +35,7 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
     }
     protected ArrayList<E> elements;
 
-    //empty
+    // empty
     public Collection(){
         this(new Builder());
     }
@@ -44,7 +44,7 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
         elements = builder.elements;
     }
 
-    //returns a Collection
+    // returns a Collection
     public Collection addE(Object pObj){
         add((E)pObj);
         return this;
@@ -54,15 +54,15 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
         addAll(pObj);
         return this;
     }
-    //adds elements. does not check to make sure they are actual valid elements
+    // adds elements. does not check to make sure they are actual valid elements
     @Override
     public boolean add(E pObj){
-        return elements.add(pObj); // might throw exception
+        return elements.add(pObj); //  might throw exception
     }
 
     @Override
     public void add(int pos, E pObj){
-        elements.add(pos, pObj); // might throw exception
+        elements.add(pos, pObj); //  might throw exception
     }
 
     public boolean addAll(Object pObj){
@@ -107,12 +107,12 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
         elements = new ArrayList<E>();
         return this;
     }
-    // THIS ∪ PRGROUP
+    //  THIS ∪ PRGROUP
     public Collection<E> union(Collection<E> pCollection){
         return copy().addAllE(pCollection);
     }
 
-    // THIS ∩ PGROUP
+    //  THIS ∩ PGROUP
     public Collection<E> intersect(Collection<E> pCollection){
         Collection<E> ret = new Collection<E>();
         for(E d : this)
@@ -121,7 +121,7 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
         return ret;
     }
     
-    // ¬ THIS
+    //  ¬ THIS
     public Collection<E> not(Collection<E> universe){
         return new Collection<E>(){{
             for(E e : universe)
@@ -138,7 +138,7 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
         return true;
     }
 
-    public Collection<Integer> enumeration(){ //should be integer, but its this so it works with other things.
+    public Collection<Integer> enumeration(){ // should be integer, but its this so it works with other things.
         int size = size();
         return new Collection<Integer>(){{
             for(int i = 0; i < size; i++)
@@ -198,8 +198,8 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "Collection:\n";
 
-        int columns = 5; // amount of columns
-        int spacing = 0; // amount of spaces. Note that there will be an additional one between columns
+        int columns = 5; //  amount of columns
+        int spacing = 0; //  amount of spaces. Note that there will be an additional one between columns
         for(E e : this)
             if(e.toString().length() > spacing)
                 spacing = e.toString().length();
