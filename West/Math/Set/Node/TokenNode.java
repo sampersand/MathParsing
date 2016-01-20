@@ -8,6 +8,8 @@ import West.Math.MathObject;
 import West.Math.Equation.Equation;
 import java.util.HashMap;
 import West.Math.DoubleSupplier;
+import West.Math.ComplexNumber;
+
 /**
 * TODO: JAVADOC
 * 
@@ -203,8 +205,15 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             a.putAll((HashMap<String, DoubleSupplier>)b);
         return a;
     }
+
+    private HashMap<String, DoubleSupplier> appendHashMap(HashMap<String, DoubleSupplier> a,
+                                                          String b,
+                                                          DoubleSupplier c){
+        a.put(b, c);
+        return a;
+    }
     private HashMap<String, DoubleSupplier> appendHashMap(HashMap<String, DoubleSupplier> a, String b, Double c){
-        a.put(b,c);
+            a.put(b, new ComplexNumber(c));
         return a;
     }
 
@@ -247,9 +256,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             return Function.exec(pVars, token.val(), pEqSys, this); // no else needed
         } else if(isFinal()){
             val = token.val();
-            Double d;
             try{
-                return appendHashMap(pVars, val, Double.parseDouble(val));
+                return appendHashMap(pVars, val, new ComplexNumber(val));
             } catch(NumberFormatException err){ 
                 switch(val) {
                     case "e":

@@ -87,11 +87,11 @@ public class Tester {
                         assert spl.length == 1 || spl.length == 3 : "Step is 'Step' or 'Min, Max, Step'";
                         try{
                             if(spl.length == 0)
-                                step = new double[]{eqsys.eval("b0", new EquationSystem().add("b0="+spl[0]))};
+                                step = new double[]{(double)eqsys.evald("b0", new EquationSystem().add("b0="+spl[0]))};
                             else
-                                step = new double[]{eqsys.eval("b0", new EquationSystem().add("b0="+spl[0])),
-                                                    eqsys.eval("b1", new EquationSystem().add("b1="+spl[1])),
-                                                    eqsys.eval("b2", new EquationSystem().add("b2="+spl[2]))};
+                                step = new double[]{(double)eqsys.evald("b0", new EquationSystem().add("b0="+spl[0])),
+                                                    (double)eqsys.evald("b1", new EquationSystem().add("b1="+spl[1])),
+                                                    (double)eqsys.evald("b2", new EquationSystem().add("b2="+spl[2]))};
                         } catch(NumberFormatException exc){
                             System.err.println("Step is 'Step' or 'Min, Max, Step' and all numbers, not '"+args[i]+"'");
                         }
@@ -99,10 +99,10 @@ public class Tester {
                         String[] spl = args[i].split(",");
                         assert spl.length == 4 : "Bounds needs to be 'Min x, Min y, Max x, Max y' and all numbers.";
                         try{
-                        eqBounds = new double[]{eqsys.eval("b0",new EquationSystem().add("b0="+spl[0])),
-                                                eqsys.eval("b1",new EquationSystem().add("b1="+spl[1])),
-                                                eqsys.eval("b2",new EquationSystem().add("b2="+spl[2])),
-                                                eqsys.eval("b3",new EquationSystem().add("b3="+spl[3]))};
+                        eqBounds = new double[]{(double)eqsys.evald("b0",new EquationSystem().add("b0="+spl[0])),
+                                                (double)eqsys.evald("b1",new EquationSystem().add("b1="+spl[1])),
+                                                (double)eqsys.evald("b2",new EquationSystem().add("b2="+spl[2])),
+                                                (double)eqsys.evald("b3",new EquationSystem().add("b3="+spl[3]))};
                         } catch(NumberFormatException exc){
                             System.err.println("Bounds needs to be 'Min x, Min y, Max x, Max y' and all numbers.");
                         }

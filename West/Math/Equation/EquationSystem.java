@@ -225,6 +225,13 @@ public class EquationSystem implements MathObject{
 
     }
 
+    public Double evald(String toEval, EquationSystem pEqSys){
+        return eval(toEval, pEqSys).getAsDouble();
+    }
+    
+    public Double evald(String toEval){
+        return eval(toEval).getAsDouble();
+    }
     
     /**
      * Trys to isolate <code>toIso</code> on its own, and then returns an EquationSystem, with the first Equation in 

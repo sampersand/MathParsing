@@ -17,6 +17,10 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
         this(pR, NaN);
     }
 
+    public ComplexNumber(String inp){
+        this(null, null);
+        assert false;
+    }
     public ComplexNumber(double pR){
         this(new Double(pR) , NaN);
     }

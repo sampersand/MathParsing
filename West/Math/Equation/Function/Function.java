@@ -37,6 +37,8 @@ public class Function implements MathObject {
     public static final int DEFAULT_PRIORITY = 100; // TODO: FIX
 
     public static Collection<Function> FUNCTIONS = new Collection<Function>() {{
+        /*
+
         //  =                : 0
         //  ()               : 1
         //  ∧, ∨, ⊻, ⊼, ⊽    : 2
@@ -184,7 +186,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(2).build(),
-            (hm, eqsys, tn) -> new Double(tn.get(0).evald(hm, eqsys).compareTo(tn.get(1).evald(hm, eqsys)))
+            (hm, eqsys, tn) -> new ComplexNumber(tn.get(0).evald(hm, eqsys).compareTo(tn.get(1).evald(hm, eqsys)))
         ));
 
 
@@ -582,7 +584,7 @@ public class Function implements MathObject {
             (hm, eqsys, tn) -> 
                     new ComplexNumber(Integer.valueOf(tn.get(0).evald(hm, eqsys).compareTo(new ComplexNumber(0D)))
                                       .doubleValue())
-        ));
+        ));*/
     }};
 
     public static Collection<String> BIN_OPERS = new Collection<String>(){{
@@ -769,7 +771,7 @@ public class Function implements MathObject {
         }
     }
 
-    public static HashMap<String,Double> exec(HashMap<String, DoubleSupplier> ret,
+    public static HashMap<String, DoubleSupplier> exec(HashMap<String, DoubleSupplier> ret,
                                               String pStr,
                                               final EquationSystem pEqSys,
                                               TokenNode pNode) {
