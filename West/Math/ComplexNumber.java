@@ -40,14 +40,14 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     }
 
     public ComplexNumber aIsOnlyReal(){
-        assert isOnlyReal();
+        assert isOnlyReal() : "Complex Number '"+this+"' has to have no imaginary component!";
         return this;
     }
     public boolean isOnlyReal(){
-        return real.equals(0D) && (imag == 0 || imag.isNaN());
+        return !real.isNaN() && (imag == 0 || imag.isNaN());
     }
     public boolean isOnlyImag(){
-        return imag.equals(0D) && (real == 0 || real.isNaN());
+        return !imag.isNaN() && (real == 0 || real.isNaN());
     }
 
     public boolean isNaN(){
@@ -86,7 +86,8 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
 
     @Override
     public String toString(){
-        return real + " + " + imag + "j";
+        return (!real.isNaN() ? real + (imag.isNaN() ? "" : " + ") : imag.isNaN() ? NaN : "")
+                + (imag.isNaN() ? "" : imag + "j");
     }
 
 
@@ -95,15 +96,12 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
         ComplexNumber top = times(c.conj());
         return new ComplexNumber(top.real / c.times(c.conj()).aIsOnlyReal().real, top.imag / c.times(c.conj()).real);
     }
-
     public ComplexNumber times(ComplexNumber c){
         return new ComplexNumber(real * c.real - imag * c.imag, real * c.imag + imag * c.real);
     }
-
     public ComplexNumber plus(ComplexNumber c){
         return new ComplexNumber(real + c.real, imag + c.imag);
     }
-
     public ComplexNumber minus(ComplexNumber c){
         return new ComplexNumber(real - c.real, imag - c.imag);
     }
@@ -113,7 +111,6 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     public ComplexNumber pow(Double d){
         return pow(new ComplexNumber(d));
     }
-
     public ComplexNumber pow(ComplexNumber d){
         assert false;
         return null;
@@ -127,7 +124,6 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     public ComplexNumber abs(){
         return new ComplexNumber(Math.abs(real), Math.abs(imag));
     }
-
 
     public ComplexNumber conj(){
         return new ComplexNumber(real, -1 * imag);
@@ -166,5 +162,82 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
         return null;
     }
 
+        // Hyperbolic Trigonometric Functions
+    public ComplexNumber sinh(){
+        assert false;
+        return null;
+    }
+    public ComplexNumber cosh(){
+        assert false;
+        return null;
+    }
+    public ComplexNumber tanh(){
+        assert false;
+        return null;
+    }
 
+        // Arc- Trigonometric Functions
+    public ComplexNumber asin(){
+        assert false;
+        return null;
+    }
+    public ComplexNumber acos(){
+        assert false;
+        return null;
+    }
+    public ComplexNumber atan(){
+        assert false;
+        return null;
+    }
+
+
+    // Byte shifting
+    public ComplexNumber byteShiftLeft(ComplexNumber c){
+        assert false;
+        return null;
+    }
+    public ComplexNumber byteShiftRight(ComplexNumber c){
+        assert false;
+        return null;
+    }
+
+
+    // Misc
+        // Rounding
+    public ComplexNumber ceil(){
+        assert false;
+        return null;
+    }
+    public ComplexNumber floor(){
+        assert false;
+        return null;
+    }
+    public ComplexNumber round(){
+        assert false;
+        return null;
+    }
+
+        // Logarithms
+    public ComplexNumber ln(){
+        assert false;
+        return null;
+    }
+    public ComplexNumber log10(){
+        assert false;
+        return null;
+    }
+    public ComplexNumber log(ComplexNumber c){
+        assert false;
+        return null;
+    }
+
+        // Changing
+    public ComplexNumber toDegrees(){
+        assert false;
+        return null;   
+    }
+    public ComplexNumber toRadians(){
+        assert false;
+        return null;   
+    }
 }
