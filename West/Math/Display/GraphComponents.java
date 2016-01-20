@@ -11,7 +11,7 @@ import West.Math.Set.Collection;
  * @since 0.2
  */
 public class GraphComponents implements MathObject {
-    public enum GraphTypes {XY, POLAR, FUNC}
+    public enum GraphTypes {XY, POLAR, FUNC, IMAG}
 
     /**
      * The physical amount of pixels the window is wide and tall.

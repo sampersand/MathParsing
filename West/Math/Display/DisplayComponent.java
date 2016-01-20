@@ -6,6 +6,7 @@ import West.Math.Equation.Equation;
 import West.Math.Equation.EquationSystem;
 import West.Math.Set.NumberCollection;
 import West.Math.Set.Collection;
+import West.Math.ComplexNumber;
 
 import java.util.ArrayList;
 
@@ -39,7 +40,7 @@ public class DisplayComponent extends JLabel implements MathObject {
     protected EquationSystem equationsys;
 
     /** TODO: JAVADOC */
-    protected Collection<NumberCollection<Double>> numc;
+    protected Collection<NumberCollection<ComplexNumber>> numc;
 
     /** TODO: JAVADOC */
     protected Color color;
@@ -65,12 +66,12 @@ public class DisplayComponent extends JLabel implements MathObject {
      * I draw a set
      * TODO: JAVADOC
      */
-    public DisplayComponent(Grapher pGrapher, Collection<NumberCollection<Double>> pNC) {
+    public DisplayComponent(Grapher pGrapher, Collection<NumberCollection<ComplexNumber>> pNC) {
         this(pGrapher, pNC, Color.BLUE);
     }
 
     /** TODO: JAVADOC */
-    public DisplayComponent(Grapher pGrapher, Collection<NumberCollection<Double>> pNC, Color pColor) {
+    public DisplayComponent(Grapher pGrapher, Collection<NumberCollection<ComplexNumber>> pNC, Color pColor) {
         this(pGrapher, null, null, pNC, pColor);
     }
 
@@ -89,7 +90,7 @@ public class DisplayComponent extends JLabel implements MathObject {
 
     /** TODO: JAVADOC */
     private DisplayComponent(Grapher pGrapher, Equation pEquation, final EquationSystem pEqSys,
-                             Collection<NumberCollection<Double>> pNC, Color pColor) {
+                             Collection<NumberCollection<ComplexNumber>> pNC, Color pColor) {
         grapher = pGrapher;
         equation = pEquation;
         equationsys = pEqSys;
@@ -131,8 +132,8 @@ public class DisplayComponent extends JLabel implements MathObject {
             assert numc.size() == 2;
             assert numc.get(0).size() == numc.get(1).size();
             for(int x = 0; x < numc.get(0).size(); x++) {
-                double d1 = numc.get(0).get(x);
-                double d2 = numc.get(1).get(x);
+                double d1 = numc.get(0).get(x).getAsDouble();
+                double d2 = numc.get(1).get(x).getAsDouble();
                 if(d1 == Double.NaN)
                     Print.printi("d1 is " + d1 + ". Not graphing (" + d1 + ", " + d2 + ").");
                 if(d2 == Double.NaN)
@@ -142,17 +143,17 @@ public class DisplayComponent extends JLabel implements MathObject {
         } else if(equation != null) {
             double cStep = grapher.components().cStep();
             for(double x = stepInfo[0]; x < stepInfo[1]; x += cStep) {
-                drawl(x,
-                      equationsys.evald(equation.getVar(),
+                drawl(new ComplexNumber(x),
+                      equationsys.eval(equation.getVar(),
                                        new EquationSystem().add(
                                                                 grapher.components().indepVar()
                                                                 + "=" + x)), 
-                      x + cStep,
-                      equationsys.evald(equation.getVar(),
+                      new ComplexNumber(x + cStep),
+                      equationsys.eval(equation.getVar(),
                                        new EquationSystem().add(
                                                                 grapher.components().indepVar()
-                                                                + "=" + (x + cStep)))
-                      , false);
+                                                                + "=" + (x + cStep))),
+                      false);
             }
         }
         else {
@@ -174,22 +175,32 @@ public class DisplayComponent extends JLabel implements MathObject {
        drawer.drawOval((int)xy[0] - 5, (int) xy[1] - 5, 10, 10); //  width, height
     }
 
-    /** TODO: JAVADOC */
     private void drawl(Double x, Double y, Double X, Double Y, boolean fix) {
+        drawl(new ComplexNumber(x), new ComplexNumber(y), new ComplexNumber(X), new ComplexNumber(Y), fix);
+    }
+    /** TODO: JAVADOC */
+    private void drawl(ComplexNumber x, ComplexNumber y, ComplexNumber X, ComplexNumber Y, boolean fix) {
         assert y != null;
         assert Y != null;
-        if(y.equals(Double.NaN) || Y.equals(Double.NaN))
+        assert !x.isNaN();
+        assert !X.isNaN();
+        if(y.isNaN() || Y.isNaN())
             return;
         if(!fix && grapher.components().type().equals(West.Math.Display.GraphComponents.GraphTypes.POLAR)){
-            Double r = y;
-            y = y * Math.sin(x); // y is r, x is theta
-            x = r * Math.cos(x); // y is r, x is theta
+            assert y.isOnlyReal() : y + " can only be real when graphing!";
+            assert Y.isOnlyReal() : Y + " can only be real when graphing!";
+            ComplexNumber r = y;
+            y = y.times(x.sin()); // y is r, x is theta
+            x = r.times(x.cos()); // y is r, x is theta
             r = Y;
-            Y = Y * Math.sin(X); // Y is r, X is theta
-            X = r * Math.cos(X); // Y is r, X is theta
+            Y = Y.times(X.sin()); // Y is r, X is theta
+            X = r.times(X.cos()); // Y is r, X is theta
         }
-        double[] xy=fix(x, y);
-        double[] XY=fix(X, Y);
+        if(!fix && grapher.components().type().equals(West.Math.Display.GraphComponents.GraphTypes.IMAG)){
+            assert false;
+        }
+        double[] xy=fix(x.aIsOnlyReal().real(), y.aIsOnlyReal().real());
+        double[] XY=fix(X.aIsOnlyReal().real(), Y.aIsOnlyReal().real());
         drawer.drawLine((int) xy[0], (int)xy[1], (int)XY[0], (int)XY[1]); //  width, height
     }
   
@@ -214,7 +225,7 @@ public class DisplayComponent extends JLabel implements MathObject {
     }
 
     /** TODO: JAVADOC */
-    public Collection<NumberCollection<Double>> numc(){
+    public Collection<NumberCollection<ComplexNumber>> numc(){
         return numc;
     }
 

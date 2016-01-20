@@ -3,7 +3,10 @@ package West.Math.Set;
 import West.Math.MathObject;
 import West.Print;
 import West.Math.Equation.EquationSystem;
-import West.Math.Equation.Equation;import West.Math.Display.Grapher;
+import West.Math.ComplexNumber;
+import West.Math.Equation.Equation;
+import West.Math.Display.Grapher;
+import West.Math.ComplexNumber;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -64,15 +67,15 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         super.addE(pObj);
         return this;
     }
-    public double pred(double pVal) { // might not have to be double, not sure.
+    public ComplexNumber pred(double pVal) { // might not have to be double, not sure.
         return pred(pVal, linReg());
     }
 
-    public static double pred(Number pVal, final EquationSystem pEqSys) {
+    public static ComplexNumber pred(Number pVal, final EquationSystem pEqSys) {
         return pEqSys.eval("y", new EquationSystem().add("x", "" + pVal));
     }
 
-    public static double pred(Number pVal, final EquationSystem pEqSys, final EquationSystem pEqSys2) {
+    public static ComplexNumber pred(Number pVal, final EquationSystem pEqSys, final EquationSystem pEqSys2) {
         return pEqSys.eval("y", pEqSys2.add("x = " + pVal));
     }
 
@@ -331,11 +334,11 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
      * TODO: JAVADOC
      */
     public <M extends Number> void graph(NumberCollection<M> pNC) { // the number line on the bottom can be different.
-        NumberCollection<Double> nc1 = new NumberCollection<Double>();
+        NumberCollection<ComplexNumber> nc1 = new NumberCollection<ComplexNumber>();
 
-        NumberCollection<Double> nc2 = new NumberCollection<Double>();
-        for(Number n : pNC) nc1.add(Double.parseDouble("" + n));
-        for(Number n : this) nc2.add(Double.parseDouble("" + n));
+        NumberCollection<ComplexNumber> nc2 = new NumberCollection<ComplexNumber>();
+        for(Number n : pNC) nc1.add(new ComplexNumber("" + n));
+        for(Number n : this) nc2.add(new ComplexNumber("" + n));
         new Grapher(nc1, nc2).graph();
     }
 

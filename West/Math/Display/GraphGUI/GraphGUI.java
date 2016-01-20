@@ -287,7 +287,7 @@ public class GraphGUI extends JFrame implements ActionListener{
         double[] ret = new double[eqBounds.size()];
         EquationSystem eqsys = eqsys();
         for(int i = 0; i < eqBounds.size(); i++){
-            ret[i] = eqsys.eval("__TEMP__", new EquationSystem().add("__TEMP__="+eqBounds.get(i).getText()));
+            ret[i] = eqsys.evald("__TEMP__", new EquationSystem().add("__TEMP__="+eqBounds.get(i).getText()));
         }
         return ret;
     }
@@ -299,7 +299,7 @@ public class GraphGUI extends JFrame implements ActionListener{
             if(step.get(i).getText().isEmpty() && i <= 2)
                 ret[i] = eqBounds()[2 * i];
             else
-                ret[i] = eqsys.eval("__TEMP__",new EquationSystem().add("__TEMP__="+step.get(i).getText()));
+                ret[i] = eqsys.evald("__TEMP__",new EquationSystem().add("__TEMP__="+step.get(i).getText()));
         }
         return ret;
     }

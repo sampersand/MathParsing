@@ -6,6 +6,7 @@ import West.Math.Equation.Equation;
 import West.Math.Set.NumberCollection;
 import West.Math.Set.Collection;
 import West.Math.Display.GraphComponents;
+import West.Math.ComplexNumber;
  
 import javax.swing.*;
 import javax.swing.JFrame;
@@ -38,7 +39,7 @@ public class Grapher extends JPanel implements MathObject {
     protected JLayeredPane layeredPane;
 
     /** TODO: JAVADOC */
-    protected Collection<Collection<NumberCollection<Double>>> numcs;
+    protected Collection<Collection<NumberCollection<ComplexNumber>>> numcs;
 
     /** TODO: JAVADOC */
     protected EquationSystem equationsToGraph;
@@ -58,9 +59,9 @@ public class Grapher extends JPanel implements MathObject {
     }
 
     /** TODO: JAVADOC */
-    public Grapher(NumberCollection<Double> pnumc1, NumberCollection<Double> pnumc2) {
-        this(null, null, new Collection<Collection<NumberCollection<Double>>>(){{
-            add(new Collection<NumberCollection<Double>>());
+    public Grapher(NumberCollection<ComplexNumber> pnumc1, NumberCollection<ComplexNumber> pnumc2) {
+        this(null, null, new Collection<Collection<NumberCollection<ComplexNumber>>>(){{
+            add(new Collection<NumberCollection<ComplexNumber>>());
             get(-1).add(pnumc1);
             get(-1).add(pnumc2);
         }}, new GraphComponents());
@@ -69,7 +70,7 @@ public class Grapher extends JPanel implements MathObject {
     /** TODO: JAVADOC */
     public Grapher(final EquationSystem pEqSysToGraph,
                    final EquationSystem pEqSysToUse,
-                   Collection<Collection<NumberCollection<Double>>> pNumberCollections,
+                   Collection<Collection<NumberCollection<ComplexNumber>>> pNumberCollections,
                    GraphComponents pGraph) {
         numcs = pNumberCollections;
         equationsToGraph = pEqSysToGraph;
@@ -79,7 +80,7 @@ public class Grapher extends JPanel implements MathObject {
         if(pEqSysToUse == null)
             equationsToUse = pEqSysToGraph;
         if(pNumberCollections == null)
-            numcs = new Collection<Collection<NumberCollection<Double>>>();
+            numcs = new Collection<Collection<NumberCollection<ComplexNumber>>>();
         components = pGraph;
         displays = new Collection<DisplayComponent>();
         displays.add(new DisplayComponent(this)); // adds axis
@@ -157,7 +158,7 @@ public class Grapher extends JPanel implements MathObject {
     }
 
     /** TODO: JAVADOC */
-    public Collection<Collection<NumberCollection<Double>>> numcs() { return numcs; }
+    public Collection<Collection<NumberCollection<ComplexNumber>>> numcs() { return numcs; }
 
     /** TODO: JAVADOC */
     public EquationSystem equationsToGraph() { return equationsToGraph; }
@@ -191,9 +192,9 @@ public class Grapher extends JPanel implements MathObject {
     public String toFancyString(int idtLvl) {
         String ret = indent(idtLvl) + "Grapher:";
         ret += "\n" + indent(idtLvl + 1) + "NumberCollections:";
-        for(Collection<NumberCollection<Double>> sa : numcs){
+        for(Collection<NumberCollection<ComplexNumber>> sa : numcs){
             assert sa.size() == 2 && sa.get(0).size() == sa.get(1).size();
-            for(NumberCollection<Double> s : sa)
+            for(NumberCollection<ComplexNumber> s : sa)
                 ret += "\n" + s.toFancyString(idtLvl + 2);
         }
 
@@ -216,9 +217,9 @@ public class Grapher extends JPanel implements MathObject {
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "Grapher:";
         ret += "\n" + indent(idtLvl + 1) + "NumberCollections:";
-        for(Collection<NumberCollection<Double>> sa : numcs){
+        for(Collection<NumberCollection<ComplexNumber>> sa : numcs){
             assert sa.size() == 2 && sa.get(0).size() == sa.get(1).size();
-            for(NumberCollection<Double> s : sa)
+            for(NumberCollection<ComplexNumber> s : sa)
                 ret += "\n" + s.toFullString(idtLvl + 2);
         }
         if(numcs.size() == 0)

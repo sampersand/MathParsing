@@ -5,6 +5,8 @@ import West.Print;
 import West.Math.Display.Grapher;
 import West.Math.Equation.EquationSystem;
 import java.util.ArrayList;
+import West.Math.ComplexNumber;
+
 /**
  * The class that represents Sets in mathematics - that is, each element in them has to be unique.
  * 
@@ -12,10 +14,10 @@ import java.util.ArrayList;
  * @version 1.1
  * @since 0.7
  */
-public class MathCollection extends NumberCollection<Double> {
+public class MathCollection extends NumberCollection<ComplexNumber> {
 
     protected String notation;
-    protected NumberCollection<Double> enumer;
+    protected NumberCollection<ComplexNumber> enumer;
 
     private static String minregex = "(^\\{.*\\}.*)min:([-.\\d]+)(.*)";
     private static String maxregex = "(^\\{.*\\}.*)max:([-.\\d]+)(.*)";
@@ -36,18 +38,18 @@ public class MathCollection extends NumberCollection<Double> {
         super();
         double i = min;
         assert cStep > 0;
-        enumer = new NumberCollection<Double>();
+        enumer = new NumberCollection<ComplexNumber>();
         while(i < max){
             add(pEqSys.eval("firstVar", new EquationSystem().add("x = " + (i+=cStep))));
-            enumer.add(i);
+            enumer.add(new ComplexNumber(i));
         }
 
     }
 
     @Override
     public void graph() {
-        NumberCollection<Double> nc1 = new NumberCollection<Double>();
-        NumberCollection<Double> nc2 = new NumberCollection<Double>();
+        NumberCollection<ComplexNumber> nc1 = new NumberCollection<ComplexNumber>();
+        NumberCollection<ComplexNumber> nc2 = new NumberCollection<ComplexNumber>();
         elements.forEach(nc1::add);
         enumer.forEach(nc2::add);
         new Grapher(nc2, nc1).graph();
@@ -74,7 +76,7 @@ public class MathCollection extends NumberCollection<Double> {
      * returns false if the thing cannot add it
      */
     @Override
-    public boolean add(Double pEle){
+    public boolean add(ComplexNumber pEle){
         if(elements.contains(pEle) && !pEle.isNaN())
             return false;
         return elements.add(pEle);
@@ -91,7 +93,7 @@ public class MathCollection extends NumberCollection<Double> {
         return notation;
     }
 
-    public NumberCollection<Double> enumer(){
+    public NumberCollection<ComplexNumber> enumer(){
         return enumer;
     }
 

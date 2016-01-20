@@ -21,9 +21,15 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
         this(null, null);
         assert false;
     }
+
     public ComplexNumber(double pR){
         this(new Double(pR) , NaN);
     }
+
+    public ComplexNumber(int pR){
+        this(new Double(pR), NaN);
+    }
+
     public ComplexNumber(Double pR, Double pI){
         real = pR == null ? NaN : pR;
         imag = pI == null ? NaN : pI;
