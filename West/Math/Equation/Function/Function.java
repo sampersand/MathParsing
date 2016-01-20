@@ -70,6 +70,36 @@ public class Function implements MathObject {
                                     ret += Math.pow(((TokenNode)tnd).evald(hm, eqsys),2);
                                 return Math.pow(ret, 0.5);
                         }
+                    case "{":
+                        switch(p[1]){
+                            case "}":
+                                assert s == 3 : tn;
+                                assert !tn.get(0).isFinal() && tn.get(0).get(0).isFinal(): tn;
+                                assert tn.get(1).token().isDelim() && (tn.get(1).token().val().equals("|") ||
+                                                                       tn.get(1).token().val().equals(":")) : tn;
+                                assert tn.get(2).token().isDelim() && tn.get(2).token().val().equals("$") : tn;
+                                assert tn.get(2).size() == 3 : tn;
+                                Collection<Double> col = new Collection<Double>();
+                                String toeval = tn.get(0).token().val();
+                                TokenNode condits = tn.get(1).get(0);
+                                Double min = tn.get(2).get(0).evald(hm, eqsys);
+                                Double max = tn.get(2).get(1).evald(hm, eqsys);
+                                Double step = tn.get(2).get(2).evald(hm, eqsys);
+                                assert !min.isNaN();
+                                assert !max.isNaN();
+                                assert !step.isNaN();
+                                for(Double d = min; d < max; d+=step){
+                                    assert false : "TODO: SET NOTATION";
+                                    // Double d2 = 
+                                    // Double d2 = new EquationSystem().add(toeval+"="+d).eval(toeval,hm, eqsys);
+                                                              // West.Math.Equation.Token.Type.VAR)).evald(hm, eqsys);
+                                    // if(!d.isNaN())
+                                    //     col.add(d2);
+                                }
+                                return new Double(col.size());
+
+                            }
+
                     case "√":
                         switch(p[1]){
                             case ")":
@@ -85,7 +115,7 @@ public class Function implements MathObject {
                     case "(": case "": default:
                         switch(p[1]){
                             case ")":case "":
-                                assert s == 1 : tn;
+                                assert s == 1 || tn.token().isDelim(): tn;
                                 return tn.get(0).evald(hm, eqsys);
                             default:
                                 throw new IllegalArgumentException("The Parenthesis '" + p[0] + ", " + p[1] +
