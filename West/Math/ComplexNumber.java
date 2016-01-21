@@ -126,6 +126,7 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
 
     // Standard Arithmetic
     public ComplexNumber div(ComplexNumber c){
+        if(isNaN() || c.isNaN()) return NaN;
         ComplexNumber top = times(c.imagConjugate());
         ComplexNumber bottom = c.times(c.imagConjugate()).aIsOnlyReal();
         return new ComplexNumber(top.real / bottom.real, top.imag / bottom.real);
@@ -173,7 +174,7 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
 
     public ComplexNumber factorial(){
         // System.out.println("Factorial isn't working very well atm!");
-        return compareTo(ONE) < 1 ? this : this.times(minus(ONE).factorial());
+        return isNaN() ? this : compareTo(ONE) <= 0 ? this : this.times(minus(ONE).factorial());
     }
 
     public ComplexNumber abs(){
@@ -201,8 +202,7 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
                     "__TEMP3__=(–1)^__TEMP2__·__TEMP1__^(2·__TEMP2__+1)/fac(2·__TEMP2__+1))"));
     }
     public ComplexNumber cos(){
-        assert false;
-        return null;
+        return plus(new EquationSystem().add("__TEMP__=π/4").eval("__TEMP__")).sin();
     }
     public ComplexNumber tan(){
         return sin().div(cos());
