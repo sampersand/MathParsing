@@ -11,7 +11,7 @@ import West.Math.Set.Node.TokenNode;
 public class ComplexNumber extends Number implements DoubleSupplier, Comparable<Number>, MathObject {
 
     public static final ComplexNumber NaN = new ComplexNumber();
-    public static final ComplexNumber INF_P = new ComplexNumber(1E2);
+    public static final ComplexNumber INF_P = new ComplexNumber(4);
     public static final ComplexNumber INF_N = new ComplexNumber(-1E9);
     public static final ComplexNumber ONE = new ComplexNumber(1D); //Unit vector
     public static final ComplexNumber NEG_ONE = new ComplexNumber(-1D);
@@ -174,11 +174,15 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
 
     public ComplexNumber factorial(){
         // System.out.println("Factorial isn't working very well atm!");
-        return isNaN() ? this : compareTo(ONE) <= 0 ? this : this.times(minus(ONE).factorial());
+        return isNaN() ? this : compareTo(ONE) <= 0 ? equals(ZERO) ? ONE : this : this.times(minus(ONE).factorial());
     }
 
     public ComplexNumber abs(){
         return new ComplexNumber(Math.abs(real), Math.abs(imag));
+    }
+
+    public ComplexNumber magnitude(){
+        return new ComplexNumber(toDouble());
     }
 
     public ComplexNumber imagConjugate(){
@@ -196,16 +200,24 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     // Trigonometric Functions
         // Standard Trigonometric Functions
     public ComplexNumber sin(){
-        return new EquationSystem().eval("__TEMP0__",
+        return isOnlyReal() ? new ComplexNumber(Math.sin(real)) : new EquationSystem().eval("__TEMP0__",
                 new EquationSystem().add("__TEMP1__="+this).add(
                     "__TEMP0__=Σ(__TEMP2__, 0, ∞, __TEMP3__, "+
                     "__TEMP3__=(–1)^__TEMP2__·__TEMP1__^(2·__TEMP2__+1)/fac(2·__TEMP2__+1))"));
     }
     public ComplexNumber cos(){
-        return plus(new EquationSystem().add("__TEMP__=π/4").eval("__TEMP__")).sin();
+        // return magnitude().plus(new EquationSystem().add("__TEMP__=¼·π").eval("__TEMP__")).sin();
+        // return isOnlyReal() ? new ComplexNumber(Math.sin(real)) : new EquationSystem().eval("__TEMP0__",
+        System.out.println( new EquationSystem().eval("__TEMP0__",
+                new EquationSystem().add("__TEMP1__="+this).add(
+                    "__TEMP0__=(–1)^1·__TEMP1__^(2·1)/fac(2·1)")));
+        return new EquationSystem().eval("__TEMP0__",
+                new EquationSystem().add("__TEMP1__="+this).add(
+                    "__TEMP0__=Σ(__TEMP2__, 0, ∞, __TEMP3__, "+
+                    "__TEMP3__=(–1)^__TEMP2__·__TEMP1__^(2·__TEMP2__)/fac(2·__TEMP2__))"));
     }
     public ComplexNumber tan(){
-        return sin().div(cos());
+        return isOnlyReal() ? new ComplexNumber(Math.tan(real)) : sin().div(cos());
     }
 
         // Inverse Trigonometric Functions
@@ -221,45 +233,37 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
 
         // Hyperbolic Trigonometric Functions
     public ComplexNumber sinh(){
-        // sinh(a,-i 5.9) = 2 sum_(k=0)^infinity I_(1+2 k)(a,-i 5.9)
-        // return Function.get("sinh").eval("n",0,);
-        assert false;
-        return null;
+        return new ComplexNumber(Math.sinh(aIsOnlyReal().real));
     }
     public ComplexNumber cosh(){
-        assert false;
-        return null;
+        return new ComplexNumber(Math.cosh(aIsOnlyReal().real));
     }
     public ComplexNumber tanh(){
-        assert false;
-        return null;
+        return new ComplexNumber(Math.tanh(aIsOnlyReal().real));
     }
 
         // Arc- Trigonometric Functions
     public ComplexNumber asin(){
-        assert false;
-        return null;
+        return new ComplexNumber(Math.asin(aIsOnlyReal().real));
     }
     public ComplexNumber acos(){
-        assert false;
-        return null;
+        return new ComplexNumber(Math.acos(aIsOnlyReal().real));
     }
     public ComplexNumber atan(){
-        assert false;
-        return null;
+        return new ComplexNumber(Math.atan(aIsOnlyReal().real));
     }
 
 
     // Byte shifting
     public ComplexNumber byteShiftLeft(ComplexNumber c){
-        assert false;
-        return null;
+        return new ComplexNumber(intValue() << c.intValue());
     }
     public ComplexNumber byteShiftRight(ComplexNumber c){
-        assert false;
-        return null;
+        return new ComplexNumber(intValue() >> c.intValue());
     }
-
+    public ComplexNumber digitShiftLeft(ComplexNumber c){
+        return div(c);
+    }
 
     // Misc
         // Rounding
@@ -274,8 +278,8 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     }
 
     public ComplexNumber round(int decimals){
-        assert false;
         return null;
+        // return new ComplexNumber(Math.round(real, decimals), Math.round(imag, decimals));
     }
 
         // Logarithms

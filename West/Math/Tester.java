@@ -22,7 +22,9 @@ public class Tester {
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
-            args = new String[]{"y=tan(pi/3)"};
+            args = new String[]{"y=round(2.3)"};
+            // args = new String[]{"--d","y","y1","--i","x","--e","y=cos(x)","y1=sin(x)","--s","100"};
+            // args = new String[]{"--d","y","y1","y2","--e","y=sin(pi/3)","y1=cos(2·pi/3)","y2=tan(pi/3)"};
             //  args = new String[]{"y={x | x＜–2 ∨ x＞2 $(–10,10,1)}"};
         }
 
@@ -86,7 +88,7 @@ public class Tester {
                         String[] spl = args[i].split(",");
                         assert spl.length == 1 || spl.length == 3 : "Step is 'Step' or 'Min, Max, Step'";
                         try{
-                            if(spl.length == 0)
+                            if(spl.length == 1)
                                 step = new double[]{(double)eqsys.evald("b0", new EquationSystem().add("b0="+spl[0]))};
                             else
                                 step = new double[]{(double)eqsys.evald("b0", new EquationSystem().add("b0="+spl[0])),

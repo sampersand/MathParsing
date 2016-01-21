@@ -367,7 +367,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         }
         else if(token.isConst())
             return token.val();
-        assert false;
+        assert false : token+":"+elements;
         return null;
     }
 
