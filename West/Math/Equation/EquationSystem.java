@@ -209,16 +209,24 @@ public class EquationSystem implements MathObject{
                        EquationSystem pEqSys) {
         return copy().add(pEqSys).eval(toEval);
     }
+
+    public ComplexNumber eval(String toEval, EquationSystem pEqSys, HashMap<String, DoubleSupplier> hm){
+        return copy().add(pEqSys).eval(toEval, hm);
+    }
+    
     /**
      * Evaluates the variable <code>toEval</code>.
      * @param toEval    The variable to solve for.
      * @return A double that represents the value of <code>toEval</code>.
      */
     public ComplexNumber eval(String toEval) {
+        return eval(toEval, new HashMap<String, DoubleSupplier>());
+    }
+    public ComplexNumber eval(String toEval, HashMap<String, DoubleSupplier> hm) {
         assert equations.size() != 0 : "Cannot evaluate an EquationSystem with no equations!";
         EquationSystem eqsys = copy().isolate(toEval);
         DoubleSupplier ret = eqsys.equations().get(0).subEquations().
-                eval(new HashMap<String, DoubleSupplier>(), eqsys).
+                eval(hm, eqsys).
                 get(toEval);
         assert ret instanceof ComplexNumber : ret + "isn't a ComplexNumber!";
         return (ComplexNumber)ret;

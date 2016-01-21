@@ -286,6 +286,9 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             case "NaN": case "nan":
                 return appendHashMap(pVars, val, Double.NaN);
 
+            case "inf": case "∞":
+                return appendHashMap(pVars, val, ComplexNumber.INF_P);
+
             case "rand": case "random":
                 return appendHashMap(pVars, val, Math.random()); 
 
@@ -359,7 +362,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     ret += ((TokenNode)n).toExprString();
                     ret += " " + (token == null ? "" : token.val()) + " ";
                 }
-                return ret.substring(0, ret.length() >=2 ? ret.length() - 2 : ret.length());
+                return ret.substring(0, ret.length() >=3 ? ret.length() - 3 : ret.length());
             }
         }
         else if(token.isConst())

@@ -601,21 +601,35 @@ public class Function implements MathObject {
             "Σ(V, S, E, EQ)",
             DEFAULT_PRIORITY,
             Type.NORM,
-            new Collection.Builder<Integer>().add(3).add(4).build(),
+            new Collection.Builder<Integer>().add(5).build(),
             (hm, eqsys, tn) -> {
-                String var = tn.get(1).toString();
-                ComplexNumber max, min = (ComplexNumber)tn.get(1).evald(hm, eqsys);
-                if(tn.size() == 3)
-                    max = ComplexNumber.INF_P;
-                else
-                    max = (ComplexNumber)tn.get(2).evald(hm, eqsys);
-                TokenNode toparse = tn.get(tn.size() == 3 ? 2 : 3);
+                String incVar = tn.get(0).get(0).toString(); // without second get(0), it's still a delim
+                ComplexNumber ret = ComplexNumber.ZERO;
+                ComplexNumber min = (ComplexNumber)tn.get(1).evald(hm, eqsys);
+                ComplexNumber max = (ComplexNumber)tn.get(2).evald(hm, eqsys);
+                String findVar = tn.get(3).get(0).toString(); // without second get(0), it's still a delim
+                TokenNode equ = tn.get(4).get(0); // without second get(0), it's still a delim
                 assert min.isOnlyReal() && max.isOnlyReal() : min + " | " + max + " <-- needs to be only real";
-                ComplexNumber ret = new ComplexNumber(0D);
-                while(min.compareTo(max) > 1){
-                    assert false;
+                System.out.println();
+                System.out.println("min:'"+min+"'");
+                System.out.println("max:'"+max+"'");
+                System.out.println("ivr:'"+incVar+"'");
+                System.out.println("equ:'"+equ+"'");
+                System.out.println("fvr:'"+findVar+"'");
+                System.out.println("ReT:'"+ret+"'");
+                System.out.println();
+                while(min.compareTo(max) <= 0){
+                    EquationSystem neqsys = new EquationSystem().add(equ.toString()).add(incVar+"="+min);//.add(eqsys);
+                    System.out.println(neqsys);
+                    System.out.println(neqsys.eval(findVar, hm));
+                    ret = ret.plus(new EquationSystem().add(equ.toString()).add(incVar+"="+min).//add(eqsys).
+                                       eval(findVar));
+                    min = min.plus(ComplexNumber.ONE);
+                    System.out.println("RET:"+ret);
+                    System.out.println("MIN:"+min);
                 }
-                return null;
+                System.out.println("ret:"+ret);
+                return ret;
             }
         ));
 

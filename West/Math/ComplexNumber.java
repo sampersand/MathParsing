@@ -73,8 +73,9 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     public boolean isBoth(){return isImag() && isReal();}
     public boolean isOnlyReal(){ return isReal() && !isImag(); }
     public boolean isOnlyImag(){ return isImag() && !isReal(); }
-    public boolean isReal(){ return !real.isNaN() &&! real.equals(0D); }
-    public boolean isImag(){ return !imag.isNaN() &&! imag.equals(0D); }
+    public boolean isOrigin(){ return real.equals(ZERO) && real.equals(ZERO);}
+    public boolean isReal(){ return !real.isNaN() &&! real.equals(ZERO); }
+    public boolean isImag(){ return !imag.isNaN() &&! imag.equals(ZERO); }
     public ComplexNumber aIsOnlyReal(){
         assert isOnlyReal() : "Complex Number '"+this+"' has to have no imaginary component!";
         return this;
@@ -85,7 +86,8 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     public static ComplexNumber parseComplex(String s){
         s = s.trim().replaceAll(" ","");
         // System.out.println("parsing '"+s+"'");
-        assert s.matches(COMPLEX_REGEX) : "'" + s + "' isn't a complex number!";
+        if(!s.matches(COMPLEX_REGEX))
+            throw new NumberFormatException("'" + s + "' isn't a complex number!");
         String s0 = s.replaceAll(COMPLEX_REGEX, "$1");
         String s1 = s.replaceAll(COMPLEX_REGEX, "$2");
         Double r = s0.isEmpty() ? Double.NaN : 
@@ -162,7 +164,7 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     }
 
     public ComplexNumber pow(ComplexNumber c){
-        System.out.println("pow can currently only take real numbers :(");
+        // System.out.println("pow can currently only take real numbers :(");
         if(isNaN() && c.isNaN()) return NaN;
         if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
         return new ComplexNumber(Math.pow(aIsOnlyReal().real,c.aIsOnlyReal().real)).aIsOnlyReal();
@@ -313,7 +315,8 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
 
     @Override
     public String toString(){
-        return (isReal() ? real + (isImag() ? " + " : "") : "") + (isImag() ? imag + "j" : isReal() ? "" : "NaN");
+        return (isReal() ? real + (isImag() ? " + " : "") : "") + (isImag() ? imag + "j" : isReal() ? "" : 
+                                                                   isOrigin() ? real : "NaN");
     }
 
     @Override
