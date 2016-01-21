@@ -9,6 +9,7 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     public static final ComplexNumber NaN = new ComplexNumber();
     public static final ComplexNumber INF_P = new ComplexNumber(1E9);
     public static final ComplexNumber INF_N = new ComplexNumber(-1E9);
+    public static final ComplexNumber UNIT = new ComplexNumber(1); //Unit vector
     public static final String COMPLEX_REGEX= "((?:\\+|-)?(?:\\d*\\.)?\\d+(?![\\d.]*(?:i|j)))?"+
                                               "(?:((?:\\+|-)?(?:\\d*\\.)?\\d*)(?:i|j))?";
     private Double real;
@@ -259,8 +260,9 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
 
         // Logarithms
     public ComplexNumber ln(){
-        assert false;
-        return null;
+        // assert false;
+        System.out.println("TODO: LN");
+        return UNIT;
     }
     public ComplexNumber log10(){
         assert false;

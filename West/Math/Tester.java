@@ -22,7 +22,7 @@ public class Tester {
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
-            args = new String[]{"y=(5+4j)/(3-2j)"};
+            args = new String[]{"y=e^(–pi*j)"};
             //  args = new String[]{"y={x | x＜–2 ∨ x＞2 $(–10,10,1)}"};
         }
 
@@ -118,7 +118,6 @@ public class Tester {
             }
             if(indep.isEmpty()){
                 int pref = prefix;
-                System.out.println(eqsys.toFancyString());
                 dep.forEach(s -> Print.printi("RESULT ("+s+"):", 
                             EquationSystem.appendMetricSuffix(
                                                               eqsysfinal.eval(s),
