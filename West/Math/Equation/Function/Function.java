@@ -594,18 +594,19 @@ public class Function implements MathObject {
         ));
 
         add(new Function(new Collection<String>(){{add("summation");add("Σ");}},
-            "Summation of 'EQ' starting at 'S' and ending at 'E'. If 'E' is left out, it is assumed to be ∞",
-            "Σ(S, E, EQ)",
+            "Summation of 'EQ', with 'V' starting at 'S' and ending at 'E' . If 'E' is left out, it is assumed to be ∞",
+            "Σ(V, S, E, EQ)",
             DEFAULT_PRIORITY,
             Type.NORM,
-            new Collection.Builder<Integer>().add(2).add(3).build(),
+            new Collection.Builder<Integer>().add(3).add(4).build(),
             (hm, eqsys, tn) -> {
-                ComplexNumber max, min = (ComplexNumber)tn.get(0).evald(hm, eqsys);
-                if(tn.size() == 2)
+                String var = tn.get(1).toString();
+                ComplexNumber max, min = (ComplexNumber)tn.get(1).evald(hm, eqsys);
+                if(tn.size() == 3)
                     max = ComplexNumber.INF_P;
                 else
-                    max = (ComplexNumber)tn.get(1).evald(hm, eqsys);
-                TokenNode toparse = tn.get(tn.size() == 2 ? 1 : 2);
+                    max = (ComplexNumber)tn.get(2).evald(hm, eqsys);
+                TokenNode toparse = tn.get(tn.size() == 3 ? 2 : 3);
                 assert min.isOnlyReal() && max.isOnlyReal() : min + " | " + max + " <-- needs to be only real";
                 ComplexNumber ret = new ComplexNumber(0D);
                 while(min.compareTo(max) > 1){

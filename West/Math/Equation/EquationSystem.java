@@ -286,7 +286,7 @@ public class EquationSystem implements MathObject{
         return 
                 (param.isReal() ? appendMetricSuffix(param.real(), normStuffOnly) + 
                                 (param.isImag() ? " + " : "") : "")+
-                (param.isImag() ? appendMetricSuffix(param.imag(), normStuffOnly)+"i": 
+                (param.isImag() ? appendMetricSuffix(param.imag(), normStuffOnly)+"j": 
                                 (param.isReal() ? "" : param.toString()));
     }
     public static String appendMetricSuffix(Double param, int normStuffOnly){

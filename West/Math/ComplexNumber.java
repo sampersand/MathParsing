@@ -4,14 +4,21 @@ import java.lang.Number;
 import java.util.HashMap;
 import West.Math.Equation.EquationSystem;
 import West.Math.MathObject;
+import West.Math.Equation.Token;
+import West.Math.Equation.Function.Function;
+import West.Math.Set.Node.TokenNode;
+
 public class ComplexNumber extends Number implements DoubleSupplier, Comparable<Number>, MathObject {
 
     public static final ComplexNumber NaN = new ComplexNumber();
     public static final ComplexNumber INF_P = new ComplexNumber(1E9);
     public static final ComplexNumber INF_N = new ComplexNumber(-1E9);
     public static final ComplexNumber UNIT = new ComplexNumber(1); //Unit vector
-    public static final String COMPLEX_REGEX= "((?:\\+|-)?(?:\\d*\\.)?\\d+(?![\\d.]*(?:i|j)))?"+
-                                              "(?:((?:\\+|-)?(?:\\d*\\.)?\\d*)(?:i|j))?";
+    public static final String COMPLEX_REGEX= "^((.+)(?![\\d.]*(?:i|j)))?"+
+                                              "(?:(.*)(?:i|j))?$";
+
+    // public static final String COMPLEX_REGEX= "((?:\\+|-)?(?:\\d*\\.)?\\d+(?![\\d.]*(?:i|j)))?"+
+    //                                           "(?:((?:\\+|-)?(?:\\d*\\.)?\\d*)(?:i|j))?";
     private Double real;
     private Double imag;
 
@@ -75,8 +82,10 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
         assert s.matches(COMPLEX_REGEX) : "'" + s + "' isn't a complex number!";
         String s0 = s.replaceAll(COMPLEX_REGEX, "$1");
         String s1 = s.replaceAll(COMPLEX_REGEX, "$2");
-        Double r = s0.isEmpty() ? Double.NaN : Double.parseDouble(s0);
-        Double i = s1.isEmpty() ? Double.NaN : Double.parseDouble(s1);
+        Double r = s0.isEmpty() ? Double.NaN : 
+                TokenNode.getVarInFinal(new HashMap<String, DoubleSupplier>(), s0).get(s0).toDouble();
+        Double i = s1.isEmpty() ? Double.NaN : 
+                TokenNode.getVarInFinal(new HashMap<String, DoubleSupplier>(), s1).get(s1).toDouble();
         return new ComplexNumber(r, i);
     }
 
@@ -200,7 +209,8 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
 
         // Hyperbolic Trigonometric Functions
     public ComplexNumber sinh(){
-        // sinh(9+i 3.2) = sum_(k=0)^infinity (9+3.2 i)^(1+2 k)/((1+2 k)!)
+        sinh(a,-i 5.9) = 2 sum_(k=0)^infinity I_(1+2 k)(a,-i 5.9)
+        return Function.get("sinh").eval("n",0,);
         assert false;
         return null;
     }

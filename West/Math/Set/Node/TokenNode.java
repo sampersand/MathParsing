@@ -200,19 +200,19 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return this;
     }
 
-    private HashMap<String, DoubleSupplier> appendHashMap(HashMap<String, DoubleSupplier> a, Object b){
+    private static HashMap<String, DoubleSupplier> appendHashMap(HashMap<String, DoubleSupplier> a, Object b){
         if(b != null)
             a.putAll((HashMap<String, DoubleSupplier>)b);
         return a;
     }
 
-    private HashMap<String, DoubleSupplier> appendHashMap(HashMap<String, DoubleSupplier> a,
+    private static HashMap<String, DoubleSupplier> appendHashMap(HashMap<String, DoubleSupplier> a,
                                                           String b,
                                                           DoubleSupplier c){
         a.put(b, c);
         return a;
     }
-    private HashMap<String, DoubleSupplier> appendHashMap(HashMap<String, DoubleSupplier> a, String b, Double c){
+    private static HashMap<String, DoubleSupplier> appendHashMap(HashMap<String, DoubleSupplier> a, String b, Double c){
             a.put(b, new ComplexNumber(c));
         return a;
     }
@@ -255,70 +255,85 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 return pEqSys.functions().get(token.val()).exec(pVars, pEqSys, this); // no work
             return Function.exec(pVars, token.val(), pEqSys, this); // no else needed
         } else if(isFinal()){
-            val = token.val();
-            try{
-                return appendHashMap(pVars, val, new ComplexNumber(val));
-            } catch(NumberFormatException err){ 
-                switch(val) {
-                    case "e":
-                        return appendHashMap(pVars, val, Math.E);
-                    case "k": // Coloumn's constant
-                        return appendHashMap(pVars, val, 8.9875517873681764E9);
-                    case "pi": case "π": case "Π":
-                        return appendHashMap(pVars, val, Math.PI);
-                    case "NaN": case "nan":
-                        return appendHashMap(pVars, val, Double.NaN);
-                    case "rand": case "random":
-                        return appendHashMap(pVars, val, Math.random()); 
-
-                    //  X / 2
-                    case "½": return appendHashMap(pVars, val, 1/2D);
-
-                    //  X / 3
-                    case "⅓": return appendHashMap(pVars, val, 1/3D);
-                    case "⅔": return appendHashMap(pVars, val, 2/3D);
-
-                    //  X / 4
-                    case "¼": return appendHashMap(pVars, val, 1/4D);
-                    case "¾": return appendHashMap(pVars, val, 3/4D);
-                    
-                    //  X / 5
-                    case "⅕": return appendHashMap(pVars, val, 1/5D);
-                    case "⅖": return appendHashMap(pVars, val, 2/5D);
-                    case "⅗": return appendHashMap(pVars, val, 3/5D);
-                    case "⅘": return appendHashMap(pVars, val, 4/5D);
-
-                    //  X / 6
-                    case "⅙": return appendHashMap(pVars, val, 1/6D);
-                    case "⅚": return appendHashMap(pVars, val, 5/6D);
-
-                    //  X / 7
-                    case "⅐": return appendHashMap(pVars, val, 1/7D);
-
-                    //  X / 8
-                    case "⅛": return appendHashMap(pVars, val, 1/8D);
-                    case "⅜": return appendHashMap(pVars, val, 3/8D);
-                    case "⅝": return appendHashMap(pVars, val, 5/8D);
-                    case "⅞": return appendHashMap(pVars, val, 7/8D);
-
-                    // X / 9
-                    case "⅑": return appendHashMap(pVars, val, 1/9D);
-
-                    // X / 10
-                    case "⅒": return appendHashMap(pVars, val, 1/10D);
-
-                    default:
-                        System.err.println("Variable '" + val + "' doesn't exist in '"+pVars+"'; returning NaN instead");
-                        return appendHashMap(pVars, val, Double.NaN);
-                }
-            }
+            return getVarInFinal(pVars, token.val());
         } else
             throw new UnsupportedOperationException("This shouldn't happen! There is no way to evaluate node: " +
                                                     token.val());
     }
 
+    public DoubleSupplier evald(){
+        return evald(new HashMap<String, DoubleSupplier>(), new EquationSystem());
+    }
+    
     public DoubleSupplier evald(HashMap<String, DoubleSupplier> hm, final EquationSystem pEqSys){
         return eval(hm, pEqSys).get(toString());
+    }
+
+    public static HashMap<String, DoubleSupplier> getVarInFinal(HashMap<String, DoubleSupplier> pVars, String val){
+        switch(val) {
+            case "e":
+                return appendHashMap(pVars, val, Math.E);
+
+            case "k": // Coloumn's constant
+                return appendHashMap(pVars, val, 8.9875517873681764E9);
+
+            case "pi": case "π": case "Π":
+                return appendHashMap(pVars, val, Math.PI);
+
+            case "i": case "j":
+                return appendHashMap(pVars, val, new ComplexNumber(0D, 1D));
+
+            case "NaN": case "nan":
+                return appendHashMap(pVars, val, Double.NaN);
+
+            case "rand": case "random":
+                return appendHashMap(pVars, val, Math.random()); 
+
+            //  X / 2
+            case "½": return appendHashMap(pVars, val, 1/2D);
+
+            //  X / 3
+            case "⅓": return appendHashMap(pVars, val, 1/3D);
+            case "⅔": return appendHashMap(pVars, val, 2/3D);
+
+            //  X / 4
+            case "¼": return appendHashMap(pVars, val, 1/4D);
+            case "¾": return appendHashMap(pVars, val, 3/4D);
+            
+            //  X / 5
+            case "⅕": return appendHashMap(pVars, val, 1/5D);
+            case "⅖": return appendHashMap(pVars, val, 2/5D);
+            case "⅗": return appendHashMap(pVars, val, 3/5D);
+            case "⅘": return appendHashMap(pVars, val, 4/5D);
+
+            //  X / 6
+            case "⅙": return appendHashMap(pVars, val, 1/6D);
+            case "⅚": return appendHashMap(pVars, val, 5/6D);
+
+            //  X / 7
+            case "⅐": return appendHashMap(pVars, val, 1/7D);
+
+            //  X / 8
+            case "⅛": return appendHashMap(pVars, val, 1/8D);
+            case "⅜": return appendHashMap(pVars, val, 3/8D);
+            case "⅝": return appendHashMap(pVars, val, 5/8D);
+            case "⅞": return appendHashMap(pVars, val, 7/8D);
+
+            // X / 9
+            case "⅑": return appendHashMap(pVars, val, 1/9D);
+
+            // X / 10
+            case "⅒": return appendHashMap(pVars, val, 1/10D);
+
+
+            default:
+                try{
+                    return appendHashMap(pVars, val, new ComplexNumber(val));
+                } catch(NumberFormatException err){ 
+                    System.err.println("Variable '" + val + "' doesn't exist in '"+pVars+"'; returning NaN instead");
+                    return appendHashMap(pVars, val, Double.NaN);
+                }
+        }
     }
 
     public String toExprString(){
