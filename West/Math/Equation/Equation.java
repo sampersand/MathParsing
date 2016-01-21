@@ -79,7 +79,8 @@ public class Equation implements MathObject {
     public static String fixNode(String pEq) {
         if(pEq.charAt(0) == '@')
             return pEq.substring(1);
-        pEq = pEq.replaceAll("^([\\wΘπ]+)=-","$1=–"); // makes parsing better. thrown together, however.
+        pEq = pEq.replaceAll("^([\\wΘπ]+|__TEMP__)=-","$1=–"); // makes parsing better. thrown together, however.
+        pEq = pEq.replaceAll(",-",",–"); // makes parsing better. thrown together, however.
         if(pEq.matches(".*([0-9.–-]+)[Ee]([0-9.–-]+).*"))
             pEq = pEq.replaceAll("([\\d.–-]+)[Ee]([\\d.–-]+)","$1*10^$2").replaceAll("-","–"); //  sci notation
         pEq = pEq.replaceAll("²", "^2"); //  exponents

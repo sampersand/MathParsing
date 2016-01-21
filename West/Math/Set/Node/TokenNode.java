@@ -213,7 +213,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return a;
     }
     private static HashMap<String, DoubleSupplier> appendHashMap(HashMap<String, DoubleSupplier> a, String b, Double c){
-            a.put(b, new ComplexNumber(c));
+        a.put(b, new ComplexNumber(c));
         return a;
     }
 
@@ -328,10 +328,14 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
             default:
                 try{
-                    return appendHashMap(pVars, val, new ComplexNumber(val));
+                    return appendHashMap(pVars, val, new ComplexNumber(Double.parseDouble(val)));
                 } catch(NumberFormatException err){ 
-                    System.err.println("Variable '" + val + "' doesn't exist in '"+pVars+"'; returning NaN instead");
-                    return appendHashMap(pVars, val, Double.NaN);
+                    try{
+                        return appendHashMap(pVars, val, new ComplexNumber(val));
+                    } catch (NumberFormatException err2){
+                        System.err.println("Variable '" + val +"' doesn't exist in '"+pVars+"'; returning NaN instead");
+                        return appendHashMap(pVars, val, Double.NaN);
+                    }
                 }
         }
     }

@@ -304,6 +304,7 @@ public class Function implements MathObject {
             (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).
                                  modulo(((ComplexNumber)tn.get(1).evald(hm, eqsys)))
         ));
+
         add(new Function(new Collection<String>(){{add("^");}},
             "Raises 'A' to 'B'", "A ^ B",
             6,
@@ -486,12 +487,14 @@ public class Function implements MathObject {
             Type.NORM,
             new Collection.Builder<Integer>().add(-1).build(),
             (hm, eqsys, tn) -> {
-                    if(tn.size() <= 1)
+                    if(tn.size() <= 0)
                         return NaN;
-                    ComplexNumber ret = new ComplexNumber(0D);
+                    ComplexNumber ret = ComplexNumber.ZERO;
                     for(West.Math.Set.Node.Node<?, ?> tnd : tn)
-                        ret = ret.plus(((ComplexNumber)((TokenNode)tnd).evald(hm, eqsys)).pow(2D));
-                    return ret.pow(0.5D);
+                        ret = ret.plus(
+                                ((ComplexNumber)((TokenNode)tnd).evald(hm, eqsys)
+                                 ).pow(new ComplexNumber(2D)));
+                    return ret.pow(new ComplexNumber(0.5D));
                 }
         ));
 

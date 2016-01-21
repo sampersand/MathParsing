@@ -22,7 +22,7 @@ public class Tester {
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
-            args = new String[]{"y=e^(pi*j)"};
+            args = new String[]{"y=(5+2i)%(4+9i)"};
             //  args = new String[]{"y={x | x＜–2 ∨ x＞2 $(–10,10,1)}"};
         }
 
