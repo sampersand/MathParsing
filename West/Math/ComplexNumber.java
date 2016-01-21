@@ -11,7 +11,7 @@ import West.Math.Set.Node.TokenNode;
 public class ComplexNumber extends Number implements DoubleSupplier, Comparable<Number>, MathObject {
 
     public static final ComplexNumber NaN = new ComplexNumber();
-    public static final ComplexNumber INF_P = new ComplexNumber(1E9);
+    public static final ComplexNumber INF_P = new ComplexNumber(1E2);
     public static final ComplexNumber INF_N = new ComplexNumber(-1E9);
     public static final ComplexNumber ONE = new ComplexNumber(1D); //Unit vector
     public static final ComplexNumber NEG_ONE = new ComplexNumber(-1D);
@@ -172,7 +172,7 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     }
 
     public ComplexNumber factorial(){
-        System.out.println("Factorial isn't working very well atm!");
+        // System.out.println("Factorial isn't working very well atm!");
         return compareTo(ONE) < 1 ? this : this.times(minus(ONE).factorial());
     }
 
@@ -195,12 +195,10 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     // Trigonometric Functions
         // Standard Trigonometric Functions
     public ComplexNumber sin(){
-        return NEG_ONE.times(new ComplexNumber(real)).cosh().
-                times(new ComplexNumber(imag).sin()).
-                plus(
-                     NEG_ONE.times(new ComplexNumber(imag)).sinh().
-                     times(new ComplexNumber(real).cos())
-                );
+        return new EquationSystem().eval("__TEMP0__",
+                new EquationSystem().add("__TEMP1__="+this).add(
+                    "__TEMP0__=Σ(__TEMP2__, 0, ∞, __TEMP3__, "+
+                    "__TEMP3__=(–1)^__TEMP2__·__TEMP1__^(2·__TEMP2__+1)/fac(2·__TEMP2__+1))"));
     }
     public ComplexNumber cos(){
         assert false;

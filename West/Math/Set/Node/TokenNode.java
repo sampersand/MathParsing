@@ -352,8 +352,8 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         if((token.isFunc() && !token.isBinOper()) || token.isDelim()){
             ret += token.val() + parens[0];
             for(Node n : this)
-                ret += ((TokenNode)n).toExprString();
-            return ret + parens[1];
+                ret += ((TokenNode)n).toExprString()+" ";
+            return (ret.length() > 0 ? ret.substring(0, ret.length() - 1) : ret) + parens[1];
         } else if(token.isBinOper()){
             if(size() == 1) //  TODO: FIX THIS
                 ret += token.val() + " " + ((TokenNode)get(0)).toExprString();
@@ -367,8 +367,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         }
         else if(token.isConst())
             return token.val();
-        else
-            assert false;
+        assert false;
         return null;
     }
 
