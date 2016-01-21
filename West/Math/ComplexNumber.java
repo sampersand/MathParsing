@@ -122,11 +122,10 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
         return toDouble().longValue();
     }
 
-
     // Standard Arithmetic
     public ComplexNumber div(ComplexNumber c){
-        ComplexNumber top = times(c.conj());
-        ComplexNumber bottom = c.times(c.conj()).aIsOnlyReal();
+        ComplexNumber top = times(c.imagConjugate());
+        ComplexNumber bottom = c.times(c.imagConjugate()).aIsOnlyReal();
         return new ComplexNumber(top.real / bottom.real, top.imag / bottom.real);
     }
 
@@ -179,14 +178,16 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
         return new ComplexNumber(Math.abs(real), Math.abs(imag));
     }
 
-    public ComplexNumber conj(){
+    public ComplexNumber imagConjugate(){
         return new ComplexNumber(real, -1 * imag);
     }
-
+    public ComplexNumber realConjugate(){
+        return new ComplexNumber(real * -1, imag);
+    }
     public ComplexNumber modulo(ComplexNumber c){
         // if(compareTo(c) <= 0)
         //     return this
-        return minus(c.times(div(c).ceil()));
+        return plus(c.times(div(c).realConjugate().ceil()));
     }
 
     // Trigonometric Functions
