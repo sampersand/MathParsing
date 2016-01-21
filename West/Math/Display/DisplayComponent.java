@@ -132,8 +132,8 @@ public class DisplayComponent extends JLabel implements MathObject {
             assert numc.size() == 2;
             assert numc.get(0).size() == numc.get(1).size();
             for(int x = 0; x < numc.get(0).size(); x++) {
-                double d1 = numc.get(0).get(x).getAsDouble();
-                double d2 = numc.get(1).get(x).getAsDouble();
+                double d1 = numc.get(0).get(x).toDouble();
+                double d2 = numc.get(1).get(x).toDouble();
                 if(d1 == Double.NaN)
                     Print.printi("d1 is " + d1 + ". Not graphing (" + d1 + ", " + d2 + ").");
                 if(d2 == Double.NaN)

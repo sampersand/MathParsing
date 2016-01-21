@@ -52,7 +52,7 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     }
 
     @Override
-    public Double getAsDouble(HashMap<String, DoubleSupplier> hm, EquationSystem eqsys){
+    public Double toDouble(HashMap<String, DoubleSupplier> hm, EquationSystem eqsys){
         assert eqsys.eval("__TEMP__",new EquationSystem().add("__TEMP__=<" + real + "," + imag + ">")).isOnlyReal();
         return eqsys.eval("__TEMP__",new EquationSystem().add("__TEMP__=<" + real + "," + imag + ">")).real();
     }

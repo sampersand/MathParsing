@@ -226,11 +226,11 @@ public class EquationSystem implements MathObject{
     }
 
     public Double evald(String toEval, EquationSystem pEqSys){
-        return eval(toEval, pEqSys).getAsDouble();
+        return eval(toEval, pEqSys).toDouble();
     }
     
     public Double evald(String toEval){
-        return eval(toEval).getAsDouble();
+        return eval(toEval).toDouble();
     }
     
     /**
