@@ -10,17 +10,15 @@ import West.Math.Set.Node.TokenNode;
 
 public class ComplexNumber extends Number implements DoubleSupplier, Comparable<Number>, MathObject {
 
-    public static final ComplexNumber NaN = new ComplexNumber();
-    public static final ComplexNumber INF_P = new ComplexNumber(4);
+    public static final ComplexNumber NAN = new ComplexNumber();
+    public static final ComplexNumber INF_P = new ComplexNumber(1E2);
     public static final ComplexNumber INF_N = new ComplexNumber(-1E9);
     public static final ComplexNumber ONE = new ComplexNumber(1D); //Unit vector
     public static final ComplexNumber NEG_ONE = new ComplexNumber(-1D);
     public static final ComplexNumber ZERO = new ComplexNumber(0D);
 
-    public static final String COMPLEX_REGEX= "^(.+(?=.*[^ij]))?"+
-                                              "(?:(.*)[ij])?$";
-    // public static final String COMPLEX_REGEX= "((?:\\+|-)?(?:\\d*\\.)?\\d+(?![\\d.]*(?:i|j)))?"+
-    //                                           "(?:((?:\\+|-)?(?:\\d*\\.)?\\d*)(?:i|j))?";
+    public static final String COMPLEX_REGEX= "^(.+?(?=.*[^ij]))?\+?(?:(.*)[ij])?$";
+    
     private Double real;
     private Double imag;
 
@@ -81,13 +79,13 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
         return this;
     }
 
-    public boolean isNaN(){ return equals(NaN); }
+    public boolean isNaN(){ return equals(NAN); }
 
     public static ComplexNumber parseComplex(String s){
         s = s.trim().replaceAll(" ","");
         // System.out.println("parsing '"+s+"'");
         if(!s.matches(COMPLEX_REGEX))
-            throw new NumberFormatException("'" + s + "' isn't a complex number!");
+                throw new NumberFormatException("'" + s + "' isn't a complex number!");
         String s0 = s.replaceAll(COMPLEX_REGEX, "$1");
         String s1 = s.replaceAll(COMPLEX_REGEX, "$2");
         Double r = s0.isEmpty() ? Double.NaN : 
@@ -126,14 +124,14 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
 
     // Standard Arithmetic
     public ComplexNumber div(ComplexNumber c){
-        if(isNaN() || c.isNaN()) return NaN;
+        if(isNaN() || c.isNaN()) return NAN;
         ComplexNumber top = times(c.imagConjugate());
         ComplexNumber bottom = c.times(c.imagConjugate()).aIsOnlyReal();
         return new ComplexNumber(top.real / bottom.real, top.imag / bottom.real);
     }
 
     public ComplexNumber times(ComplexNumber c){
-        if(isNaN() || c.isNaN()) return NaN;
+        if(isNaN() || c.isNaN()) return NAN;
         Double rreal = Double.NaN, rimag = Double.NaN;
 
         if(isReal() && c.isReal()) rreal = real * c.real;
@@ -145,14 +143,14 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     }
 
     public ComplexNumber plus(ComplexNumber c){
-        if(isNaN() && c.isNaN()) return NaN;
+        if(isNaN() && c.isNaN()) return NAN;
         if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
         return new ComplexNumber(isReal() ? c.isReal() ? real + c.real : real : c.real,
                                  isImag() ? c.isImag() ? imag + c.imag : imag : c.imag);
     }
 
     public ComplexNumber minus(ComplexNumber c){
-        if(isNaN() && c.isNaN()) return NaN;
+        if(isNaN() && c.isNaN()) return NAN;
         if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
         return new ComplexNumber(isReal() ? c.isReal() ? real - c.real : real : -1 * c.real,
                                  isImag() ? c.isImag() ? imag - c.imag : imag : -1 * c.imag);
@@ -166,7 +164,7 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
 
     public ComplexNumber pow(ComplexNumber c){
         // System.out.println("pow can currently only take real numbers :(");
-        if(isNaN() && c.isNaN()) return NaN;
+        if(isNaN() && c.isNaN()) return NAN;
         if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
         return new ComplexNumber(Math.pow(aIsOnlyReal().real,c.aIsOnlyReal().real)).aIsOnlyReal();
         // return ln().times(c).cosh().minus(ln().times(c).sinh());
@@ -206,11 +204,8 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
                     "__TEMP3__=(–1)^__TEMP2__·__TEMP1__^(2·__TEMP2__+1)/fac(2·__TEMP2__+1))"));
     }
     public ComplexNumber cos(){
-        // return magnitude().plus(new EquationSystem().add("__TEMP__=¼·π").eval("__TEMP__")).sin();
+        // return magnitude().plus(new Equ    ationSystem().add("__TEMP__=¼·π").eval("__TEMP__")).sin();
         // return isOnlyReal() ? new ComplexNumber(Math.sin(real)) : new EquationSystem().eval("__TEMP0__",
-        System.out.println( new EquationSystem().eval("__TEMP0__",
-                new EquationSystem().add("__TEMP1__="+this).add(
-                    "__TEMP0__=(–1)^1·__TEMP1__^(2·1)/fac(2·1)")));
         return new EquationSystem().eval("__TEMP0__",
                 new EquationSystem().add("__TEMP1__="+this).add(
                     "__TEMP0__=Σ(__TEMP2__, 0, ∞, __TEMP3__, "+
@@ -261,9 +256,6 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     public ComplexNumber byteShiftRight(ComplexNumber c){
         return new ComplexNumber(intValue() >> c.intValue());
     }
-    public ComplexNumber digitShiftLeft(ComplexNumber c){
-        return div(c);
-    }
 
     // Misc
         // Rounding
@@ -278,8 +270,8 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     }
 
     public ComplexNumber round(int decimals){
-        return null;
-        // return new ComplexNumber(Math.round(real, decimals), Math.round(imag, decimals));
+        ComplexNumber dec = ONE.minus(new ComplexNumber(new Double(Math.pow(10, 0-decimals))));
+        return new ComplexNumber(times(dec).intValue()).div(dec);
     }
 
         // Logarithms
@@ -318,7 +310,7 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     @Override
     public String toString(){
         return (isReal() ? real + (isImag() ? " + " : "") : "") + (isImag() ? imag + "j" : isReal() ? "" : 
-                                                                   isOrigin() ? real : "NaN");
+                                                                   isOrigin() ? real : "NAN");
     }
 
     @Override

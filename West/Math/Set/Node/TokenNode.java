@@ -283,7 +283,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             case "i": case "j":
                 return appendHashMap(pVars, val, new ComplexNumber(0D, 1D));
 
-            case "NaN": case "nan":
+            case "NAN": case "nan":
                 return appendHashMap(pVars, val, Double.NaN);
 
             case "inf": case "∞":
@@ -336,7 +336,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                     try{
                         return appendHashMap(pVars, val, new ComplexNumber(val));
                     } catch (NumberFormatException err2){
-                        System.err.println("Variable '" + val +"' doesn't exist in '"+pVars+"'; returning NaN instead");
+                        // System.err.println("Variable '" + val +"' doesn't exist in '"+pVars+"'; returning NAN instead");
                         return appendHashMap(pVars, val, Double.NaN);
                     }
                 }
