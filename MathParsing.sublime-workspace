@@ -1,0 +1,1354 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"Dou",
+				"Double"
+			],
+			[
+				"comp",
+				"compareTo"
+			],
+			[
+				"compo",
+				"compareTo"
+			],
+			[
+				"ima",
+				"imagConjugate"
+			],
+			[
+				"com",
+				"compareTo"
+			],
+			[
+				"sub",
+				"substring"
+			],
+			[
+				"Fun",
+				"Function"
+			],
+			[
+				"iso",
+				"isOrigin"
+			],
+			[
+				"Do",
+				"DoubleSupplier"
+			],
+			[
+				"complex",
+				"ComplexNumber"
+			],
+			[
+				"Mi",
+				"minus"
+			],
+			[
+				"comple",
+				"ComplexNumber"
+			],
+			[
+				"compl",
+				"COMPLEX_REGEX"
+			],
+			[
+				"Com",
+				"ComplexNumber"
+			],
+			[
+				"float",
+				"floatValue"
+			],
+			[
+				"isa",
+				"aIsOnlyReal"
+			],
+			[
+				"Funct",
+				"Functions"
+			],
+			[
+				"Tok",
+				"TokenNode"
+			],
+			[
+				"eval",
+				"evald"
+			],
+			[
+				"RE",
+				"COMPLEX_REGEX"
+			],
+			[
+				"Math",
+				"MathObject"
+			],
+			[
+				"Compl",
+				"ComplexNumber"
+			],
+			[
+				"is",
+				"isImag"
+			],
+			[
+				"COM",
+				"ComplexNumber"
+			],
+			[
+				"dou",
+				"doubleValue"
+			],
+			[
+				"peq",
+				"pEqSys"
+			],
+			[
+				"fa",
+				"factorial"
+			],
+			[
+				"no",
+				"normalStuffOnly"
+			],
+			[
+				"Comp",
+				"ComplexNumber"
+			],
+			[
+				"Co",
+				"ComplexNumber"
+			],
+			[
+				"Equ",
+				"EquationSystem"
+			],
+			[
+				"tof",
+				"toFancyString"
+			],
+			[
+				"I",
+				"IllegalArgumentException"
+			],
+			[
+				"tokn",
+				"token"
+			],
+			[
+				"repl",
+				"replaceAll"
+			],
+			[
+				"get",
+				"getText"
+			],
+			[
+				"isp",
+				"isParen"
+			],
+			[
+				"pto",
+				"pTokens"
+			],
+			[
+				"isf",
+				"isFunc"
+			],
+			[
+				"Eq",
+				"EquationSystem"
+			],
+			[
+				"pare",
+				"parens"
+			],
+			[
+				"remo",
+				"removeExtraFuncs"
+			],
+			[
+				"Toke",
+				"TokenNode"
+			],
+			[
+				"sys",
+				"sysp	System.out.println"
+			],
+			[
+				"paren",
+				"PAREN_R"
+			],
+			[
+				"ty",
+				"Type"
+			],
+			[
+				"P",
+				"PAREN_L"
+			],
+			[
+				"token",
+				"Token"
+			],
+			[
+				"pass",
+				"passTokens"
+			],
+			[
+				"Token",
+				"Token"
+			],
+			[
+				"pas",
+				"passTokens"
+			],
+			[
+				"s",
+				"SIZE"
+			],
+			[
+				"eq",
+				"EquationSystem"
+			],
+			[
+				"print",
+				"printI"
+			],
+			[
+				"pri",
+				"printI"
+			],
+			[
+				"par",
+				"parseNumbers"
+			],
+			[
+				"pars",
+				"parsedParens"
+			],
+			[
+				"pa",
+				"parsed"
+			],
+			[
+				"obj",
+				"Object"
+			],
+			[
+				"SU",
+				"sum"
+			],
+			[
+				"nu",
+				"numbers"
+			],
+			[
+				"fil",
+				"FileObj"
+			],
+			[
+				"cl",
+				"classes"
+			],
+			[
+				"fi",
+				"FileObj"
+			],
+			[
+				"ar",
+				"ArrayList"
+			],
+			[
+				"Fil",
+				"FileObj"
+			],
+			[
+				"name",
+				"NAME"
+			],
+			[
+				"Fi",
+				"FileObj"
+			],
+			[
+				"po",
+				"Project"
+			],
+			[
+				"class",
+				"classReg"
+			],
+			[
+				"fore",
+				"forEachRemaining"
+			],
+			[
+				"for",
+				"forEach"
+			],
+			[
+				"to",
+				"toSort"
+			],
+			[
+				"clos",
+				"closestPos"
+			],
+			[
+				"clo",
+				"closestPos"
+			],
+			[
+				"equ",
+				"equation"
+			],
+			[
+				"equation",
+				"equationsys"
+			],
+			[
+				"dep",
+				"depVars"
+			],
+			[
+				"inde",
+				"indepVar"
+			],
+			[
+				"Inde",
+				"Independent"
+			],
+			[
+				"Indep",
+				"indepVar"
+			],
+			[
+				"indep",
+				"indepVar"
+			],
+			[
+				"id",
+				"independentVar"
+			],
+			[
+				"ind",
+				"independentVar"
+			],
+			[
+				"gco",
+				"pGComp"
+			],
+			[
+				"gra",
+				"GraphComponents"
+			],
+			[
+				"ste",
+				"stepregex"
+			],
+			[
+				"min",
+				"minregex"
+			],
+			[
+				"Ste",
+				"stepregex"
+			],
+			[
+				"MAth",
+				"MathCollection"
+			],
+			[
+				"Array",
+				"ArrayList"
+			],
+			[
+				"con",
+				"containsKey"
+			],
+			[
+				"typ",
+				"Type"
+			],
+			[
+				"ASS",
+				"ASSIGN"
+			],
+			[
+				"Gra",
+				"GraphComponents"
+			],
+			[
+				"Graph",
+				"GraphingComponents"
+			],
+			[
+				"double",
+				"Double"
+			],
+			[
+				"doubl",
+				"Double"
+			],
+			[
+				"iter",
+				"Iterable"
+			],
+			[
+				"EQuatio",
+				"EquationSystem"
+			],
+			[
+				"toe",
+				"toExprString"
+			],
+			[
+				"us",
+				"USING_BIN_OPERS"
+			],
+			[
+				"sysp",
+				"syspl	System.out.print"
+			],
+			[
+				"FUN",
+				"Function"
+			],
+			[
+				"BI",
+				"BIN"
+			],
+			[
+				"funct",
+				"functions"
+			],
+			[
+				"fun",
+				"FUNCTIONS"
+			],
+			[
+				"ispa",
+				"isParenR"
+			],
+			[
+				"PA",
+				"PAREN_L"
+			],
+			[
+				"func",
+				"FUNCTIONS"
+			],
+			[
+				"isc",
+				"isConst"
+			],
+			[
+				"isop",
+				"isOper"
+			],
+			[
+				"pe",
+				"peles"
+			],
+			[
+				"TOke",
+				"TokenNode"
+			],
+			[
+				"in",
+				"InBuiltFunction"
+			],
+			[
+				"nd",
+				"nD"
+			],
+			[
+				"fu",
+				"FUNCTIONS"
+			],
+			[
+				"In",
+				"InBuiltFunction"
+			],
+			[
+				"Get",
+				"getD"
+			],
+			[
+				"inte",
+				"intValue"
+			],
+			[
+				"value",
+				"valueOf"
+			],
+			[
+				"To",
+				"TokenNode"
+			],
+			[
+				"rem",
+				"removeExtraFuncs"
+			],
+			[
+				"getSD",
+				"getASD"
+			],
+			[
+				"tos",
+				"toString"
+			],
+			[
+				"SE",
+				"subEquations"
+			],
+			[
+				"toke",
+				"TokenNode"
+			],
+			[
+				"compa",
+				"compareTo"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "West/Math/Equation/Function/Function.java",
+			"settings":
+			{
+				"buffer_size": 38069,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "West/Math/ComplexNumber.java",
+			"settings":
+			{
+				"buffer_size": 11334,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "West/Math/Equation/Equation.java",
+			"settings":
+			{
+				"buffer_size": 10031,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "West/Math/Tester.java",
+			"settings":
+			{
+				"buffer_size": 7139,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Cache/C++/C++.sublime-build",
+					""
+				],
+				[
+					"Cache/C++/C++.sublime-build",
+					"Run"
+				]
+			],
+			[
+				"Cache/C++/C++.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Cache/C++/C++^2.sublime-build",
+					""
+				],
+				[
+					"Cache/C++/C++^2.sublime-build",
+					"Run"
+				]
+			],
+			[
+				"Cache/C++/C++^2.sublime-build",
+				"Run"
+			]
+		],
+		[
+			[
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					""
+				],
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					"Run"
+				]
+			],
+			[
+				"Packages/C++/C++ Single File.sublime-build",
+				"Run"
+			]
+		],
+		[
+			[
+				[
+					"Packages/Java/Ant.sublime-build",
+					""
+				],
+				[
+					"Packages/Java/JavaC.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Java/JavaC.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				"Syntax Check"
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"Snippet: ",
+				"Snippet: if __name__ == '__main__'"
+			],
+			[
+				"",
+				"Preferences: Key Bindings - User"
+			],
+			[
+				"class",
+				"Snippet: class"
+			],
+			[
+				"main",
+				"Snippet: method (main)"
+			]
+		],
+		"width": 602.0
+	},
+	"console":
+	{
+		"height": 153.0,
+		"history":
+		[
+			"1+1",
+			"import this"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/westerhack/code/java/class/personal projects/Math/West",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Display",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Display/Calculator",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Display/GraphGUI",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation/Function",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Set",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Set/Node"
+	],
+	"file_history":
+	[
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/ComplexNumber.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Set/Node/TokenNode.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Display/GraphGUI/GraphGUI.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation/Function/Function.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation/EquationSystem.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation/Equation.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/DoubleSupplier.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Display/DisplayComponent.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Set/Collection.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Set/MathCollection.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Set/NumberCollection.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Display/GraphComponents.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Display/Grapher.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Tester.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/MathObject.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Display/Calculator/CalcWindow.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Display/Calculator/EquationDisplay.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Display/Calculator/GraphDisplay.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Display/Calculator/MainClass.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation/Token.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation/Function/CustomFunction.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation/Function/CustomFunctions/f.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Set/Node/Node.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/MathSet.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Print.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Set/SetTester.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation/Find Results",
+		"/Users/westerhack/code/python/test.py",
+		"/Users/westerhack/code/java/testJavaCode.java",
+		"/Users/westerhack/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/westerhack/code/python/thingwithjumps.py",
+		"/Users/westerhack/code/java/class/projects/westerhack-APCS_Projects/Project 6/Card.java",
+		"/Users/westerhack/code/java/class/projects/westerhack-APCS_Projects/Project 6/CardTester.java",
+		"/Users/westerhack/code/java/class/projects/westerhack-APCS_Projects/Project 6/Deck.java",
+		"/Users/westerhack/code/java/class/projects/westerhack-APCS_Projects/Project 6/Elevens.java",
+		"/Users/westerhack/code/java/class/projects/westerhack-APCS_Projects/inheritcrawler/Project/Parent.java",
+		"/Users/westerhack/code/java/class/projects/westerhack-APCS_Projects/inheritcrawler/Project/Father.java",
+		"/Users/westerhack/code/java/class/projects/westerhack-APCS_Projects/inheritcrawler/Crawler.java",
+		"/Users/westerhack/code/java/class/projects/westerhack-APCS_Projects/inheritcrawler/FileObj.java",
+		"/Users/westerhack/code/java/class/projects/westerhack-APCS_Projects/inheritcrawler/Project/Human.java",
+		"/Users/westerhack/Desktop/checkstyle-6.14.1-all.jar",
+		"/Users/westerhack/Desktop/TestJava.java",
+		"/Users/westerhack/Desktop/doctypehtml.html",
+		"/Users/westerhack/code/java/class/personal projects/Math/genCompile.py",
+		"/Users/westerhack/code/java/class/projects/westerhack-APCS_Projects/inheritcrawler/Project/GrandParent.java",
+		"/Users/westerhack/code/java/class/projects/westerhack-APCS_Projects/inheritcrawler/Project/Grandpa.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation/Function/GraphFunction.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation/Function/InBuiltFunction.java",
+		"/Users/westerhack/code/java/class/personal projects/Math Expression backup/Math/Equation/Node.java",
+		"/Users/westerhack/code/v2untap/checklines.py",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Set/Node/EquationNode.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation/Function/OperationFunction.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation/Function/CustomFunctions/summation.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Print.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Exception/MathException.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Exception/NotDefinedException.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Exception/TypeMisMatchException.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Set/DualCollection.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Set/CoupleCollection.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation/Node.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Set/MathSet.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Exception/untitled",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Set/CompareCollection.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Set/TokenNode.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Set/Node.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation/FinalNode.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation/Expression.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation/ExpressionBackup.txt",
+		"/Users/westerhack/Desktop/test/wtest.py",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Declare.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation/Function/CustomFunctions/graphbackup.java",
+		"/Users/westerhack/code/python/Python2014-2015Class/westerhack-PPIC04/set_c.py",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Set/MathSet.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/Domain.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/Expression.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/EquationSystem.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/Function/OperationFunction.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Display/DisplayComponent.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/Equation.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/FinalNode.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/ExpressionBackup.txt",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Set/NumberCollection.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/Token.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Set/Collection.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Display/Grapher.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Tester.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/Function/GraphFunction.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Display/GraphComponents.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Set/CompareCollection.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Set/SetTester.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/Function/CustomFunctions/graphbackup.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Set/Group.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/Collection.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/Node.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/Function/InBuiltFunction.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/Function/Function.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/Function/CustomFunction.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Display/Calculator/CalcWindow.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/Function/CustomFunctions/f.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/Function/CustomFunctions/summation.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/untitled",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Print.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/MathObject.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/CustomFunction.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Display/Calculator/MainClass.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Display/Calculator/GraphDisplay.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Display/Calculator/EquationDisplay.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Exception/TypeMisMatchException.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Exception/NotDefinedException.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Exception/MathException.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/OperationFunction.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/Function.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Set/Set.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/Factors.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Exception/DoesntExistException.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Exception/InvalidArgsException.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Declare.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/InBuiltFunction.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/GraphFunction.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/CustomFunctions/graphbackup.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/graph.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/CustomFunctions/f.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Assert.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/CustomFunctions/graph.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/CustomFunctions/summation.java",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/README.md",
+		"/Users/westerhack/code/java/class/personal projects/Math/README.md",
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/untitled"
+	],
+	"find":
+	{
+		"height": 39.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"",
+			"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Set",
+			"",
+			"/Users/westerhack/code/java/class/projects/westerhack-APCS_Projects/inheritcrawler",
+			"",
+			"<current file>",
+			"",
+			"<current file>",
+			"",
+			"<current file>",
+			"",
+			"<current file>",
+			"-Token",
+			"",
+			"-FinalNode.java,-Node.java",
+			"-FinalNode.java -Node.java",
+			"-FinalNode.java",
+			"<open folders>",
+			"",
+			"<open folders>",
+			"",
+			"/Users/westerhack/code/java/class/personal projects/Math/Math/,-*.html",
+			"/Users/westerhack/code/java/class/personal projects/Math/Math/,-*.htmly",
+			"/Users/westerhack/code/java/class/personal projects/Math/Math/,-*.html",
+			"/Users/westerhack/code/java/class/personal projects/Math/Math/",
+			"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation",
+			"/Users/westerhack/code/java/class/personal projects/Math/Math",
+			"<open files>",
+			"",
+			"/Users/westerhack/code/v2untap/untap/deploy/app",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"COMPLEX_REGEX",
+			"System\\.(out|err)\\.println",
+			"System\\.",
+			"doesn't exist",
+			"__TEMP3__",
+			"__TEMP2__",
+			"__TEMP1__",
+			"__TEMP0__",
+			"aIsOnlyReal",
+			"round",
+			"digitShiftLeft",
+			"(?<!is)(?<!Double\\.)NaN",
+			"(?<!is)(?<!\\.)NaN",
+			"(?!<is)(?<!\\.)NaN",
+			"(?!<is)(?!<\\.)NaN",
+			"(?!<is)(?!<Double\\.)NaN",
+			"(?!<is)NaN",
+			"Nan",
+			"(?!<is)Nan",
+			"(?<!is)Nan",
+			"(?!<is)Nan",
+			"getEq",
+			"graph",
+			"round",
+			");",
+			"tan",
+			"return ",
+			"≫",
+			"≫ ",
+			"return null;",
+			"ONE.div(",
+			"ONE.div(sin());",
+			"assert false;",
+			"return ",
+			"0",
+			"__TEMP2__",
+			"al)",
+			"return",
+			"real",
+			"eal",
+			"2·__TEMP2__",
+			"+1",
+			"hypot",
+			"sin",
+			".eva",
+			"+",
+			"+1",
+			"pow",
+			"size",
+			"null",
+			"sin",
+			"null",
+			"sin",
+			"hm",
+			"n",
+			"sin",
+			"new HashMap<String, DoubleSupplier>()",
+			"hm, ",
+			"2",
+			"toE",
+			"toex",
+			"\"+",
+			"incVar",
+			"var",
+			"pi",
+			"add",
+			"currently",
+			"; &&",
+			"0D",
+			"isReal",
+			"toString",
+			"NaN",
+			"ZERO",
+			"equation",
+			"min",
+			"catch",
+			"evald",
+			"summa",
+			"toDouble",
+			"conjugate",
+			"conj",
+			"invertReal",
+			"modu",
+			"min",
+			"ceil",
+			"div",
+			"plus",
+			"\n        ",
+			"add\\(",
+			"new ComplexNumber(-1D)",
+			"floor",
+			"this",
+			"isNaN\\(\\)\\{",
+			"isNaN",
+			"\"\\|",
+			"\\|",
+			"|",
+			"s1=",
+			"s=",
+			"s\\=",
+			"s=",
+			"? ",
+			"System\\.",
+			"addingDS",
+			"assert false",
+			"assert",
+			"eal",
+			"toDou",
+			"pow",
+			"parsing",
+			"appendHashMap",
+			"ZERO",
+			"isImag",
+			"modulo",
+			"toDouble",
+			"<",
+			"b",
+			"pow",
+			"plus",
+			"toDouble",
+			"abs().",
+			"compareTo",
+			"ret.",
+			"1D",
+			"new ComplexNumber(1D).",
+			"1D",
+			"ZERO",
+			"0D"
+		],
+		"highlight": false,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"NAN",
+			"toDouble",
+			"((ComplexNumber)tn.get($1).evald(hm, eqsys\\))",
+			"// $1",
+			"tn.get(0).evald(hm, eqsys).$1()",
+			"HashMap<String, West.Math.DoubleSupplier>",
+			" * @version 1.1",
+			".evald(hm, eqsys)",
+			".evald(ret, eqsys)",
+			".eval(ret, eqsys)",
+			"tn.size()",
+			"a.size()",
+			"tn.get($1).eval(eqsys)",
+			"a[$1].eval(eqsys)",
+			"$1 $2",
+			"if (",
+			"for {",
+			"    ",
+			"$1 {",
+			"$1\"",
+			"DEFAULT_PRIORITY",
+			",\n",
+			"$1\"",
+			"$1,",
+			"$1,\\n$3,\\n$2,\\n",
+			"$1,\\n$3,\\n$2",
+			"DEFAULT_PRIORITY",
+			"$1$2,\\n$1Type.$4,\\n$1$3",
+			"add(\"$1$2$4\");}}\\n$3",
+			"add(\"$1$2$4\");}}\\n$3   ",
+			"add(\"$1$2$3\");}}\\n$4   ",
+			"add(\"$1$2$3\");}}\\n            ",
+			"add(\"$1$2$3\");}}\\n {12}",
+			"add(\"$1$2$3\");}}\\n",
+			"add(\"$1$2$3\");}}",
+			"add(\"$1$2\");}}",
+			"add(\"$1$2);}}",
+			"func.names()",
+			" * @version 0.90",
+			"substring",
+			"Collection<Integer> pArgsLength,",
+			" * @version 0.89",
+			"evalDouble",
+			"@version 0.85",
+			"checkBounds",
+			"* @version 0.82",
+			"get(-1)",
+			"@version 0.80",
+			"((TokenNode)$1).eval(",
+			"elements",
+			"import West.Math.Set.Node.Node",
+			"$1",
+			"N",
+			"MathCollection",
+			"add(",
+			" * @version 0.76",
+			"Object",
+			"T",
+			"Node",
+			"Node<E>",
+			"import West.Math.Set.Node.Node;",
+			"setToken",
+			"elements",
+			"import West.Math.Set.Node;",
+			"token()",
+			"subEquations",
+			"",
+			".isEmpty()",
+			"isFunc()",
+			"generateMasterNode",
+			"generadeMasterNode",
+			"MathSet",
+			"MathException",
+			"MathObject",
+			"package West.Math.\\1",
+			"package West.Math;",
+			"package West.Math",
+			"ArrayList<NumberCollection<Double>>",
+			"ArrayList<ArrayList<NumberCollection<Double>>>",
+			"add(E[] pElements)",
+			"<Double>",
+			"import Math.Equation.Function.\\1Function;",
+			"import Math.Equation.Function.\\1Function",
+			"@version 0.72",
+			"@version 0.71",
+			"@version 0.7",
+			"Set",
+			"if(pObj == null || !(pObj instanceof ",
+			"if(pObj == null || !(pObj instanceof Token))",
+			"pObj",
+			"",
+			"IllegalArgumentException",
+			"indent(",
+			" * @version 0.67",
+			"* @version 0.66",
+			"TODO: JAVADOC",
+			"* @version 0.65",
+			"- 1",
+			"@version 0.6",
+			"toFancyString",
+			"toFancyString(int idtLvl)",
+			"toFullString(int idtLvl)",
+			"* @return",
+			" * @version 0.5\n  * @version 0.5\n * @since 0.1\n",
+			" * @version 0.5\n * @since 0.1",
+			" * @version 0.5\n * @since 0.1\n",
+			" * @version 0.5",
+			"    ",
+			" * @version 0.5\n    ",
+			" * @version 0.5\n * @since 0.1",
+			" * @version 0.5",
+			"isolate",
+			") {",
+			"else {",
+			"try {",
+			"* Takes the parameter {@link Node} (and {@link EquationSystem}, does whatever operations it was programmed to do, and spits a result back.",
+			"peration",
+			"MathObject {",
+			"Default Constructor",
+			"name",
+			"linReg",
+			"/**\n",
+			".arr2()",
+			".arr1()",
+			") {",
+			"throw new NotDefinedException();",
+			"dVal",
+			"val"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "West/Math/Equation/Function/Function.java",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 38069,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								35256,
+								35260
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 13567.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "West/Math/ComplexNumber.java",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11334,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2734,
+								2734
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1176.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "West/Math/Equation/Equation.java",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10031,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2626,
+								2626
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1229.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "West/Math/Tester.java",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7139,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								775,
+								775
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 31.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 427.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.unsaved_changes":
+	{
+		"height": 154.0
+	},
+	"pinned_build_system": "Packages/Java User/JavaCBin.sublime-build",
+	"project": "MathParsing.sublime-project",
+	"replace":
+	{
+		"height": 58.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 392.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 174.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
