@@ -682,18 +682,12 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/westerhack/code/java/class/personal projects/Math/West",
-		"/Users/westerhack/code/java/class/personal projects/Math/West/Math",
-		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Display",
-		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Display/Calculator",
-		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Display/GraphGUI",
-		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation",
-		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Equation/Function",
-		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Set",
-		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Set/Node"
+		"/Users/westerhack/code/java/class/personal projects/Math"
 	],
 	"file_history":
 	[
+		"/Users/westerhack/code/java/class/personal projects/Math/MathParsing.sublime-project",
+		"/Users/westerhack/code/java/class/personal projects/Math/MathParsing.sublime-workspace",
 		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/ComplexNumber.java",
 		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Set/Node/TokenNode.java",
 		"/Users/westerhack/code/java/class/personal projects/Math/West/Math/Display/GraphGUI/GraphGUI.java",
@@ -819,9 +813,7 @@
 		"/Users/westerhack/code/java/class/personal projects/Math/Math/Assert.java",
 		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/CustomFunctions/graph.java",
 		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/CustomFunctions/summation.java",
-		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/README.md",
-		"/Users/westerhack/code/java/class/personal projects/Math/README.md",
-		"/Users/westerhack/code/java/class/personal projects/Math/Math/untitled"
+		"/Users/westerhack/code/java/class/personal projects/Math/Math/Equation/README.md"
 	],
 	"find":
 	{
