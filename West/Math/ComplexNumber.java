@@ -17,7 +17,7 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     public static final ComplexNumber NEG_ONE = new ComplexNumber(-1D);
     public static final ComplexNumber ZERO = new ComplexNumber(0D);
 
-    public static final String COMPLEX_REGEX= "^(.+?(?=.*[^ij]))?\+?(?:(.*)[ij])?$";
+    public static final String COMPLEX_REGEX= "^(.+?(?=.*[^ij]))?\\+?(?:(.*)[ij])?$";
     
     private Double real;
     private Double imag;
