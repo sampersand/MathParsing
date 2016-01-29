@@ -22,9 +22,8 @@ public class Tester {
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
-            args = new String[]{"y = round(15434.391234,3)"};
-            // args = new String[]{"--d","y","y1","--i","x","--e","y=cos(x)","y1=sin(x)","--s","100"};
-            // args = new String[]{"--d","y","y1","y2","--e","y=sin(pi/3)","y1=cos(2·pi/3)","y2=tan(pi/3)"};
+            args = new String[]{"y = abs(x-2) + 3", "--i", "x"};
+            // args = new String[]{"y = cos(1+3j)"};
             //  args = new String[]{"y={x | x＜–2 ∨ x＞2 $(–10,10,1)}"};
         }
 

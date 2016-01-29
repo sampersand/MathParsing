@@ -488,8 +488,6 @@ public class Function implements MathObject {
             Type.NORM,
             new Collection.Builder<Integer>().add(-1).build(),
             (hm, eqsys, tn) -> {
-                    if(tn.size() <= 0)
-                        return NAN;
                     ComplexNumber ret = ComplexNumber.ZERO;
                     for(West.Math.Set.Node.Node<?, ?> tnd : tn)
                         ret = ret.plus(

@@ -45,6 +45,13 @@ public class DisplayComponent extends JLabel implements MathObject {
     /** TODO: JAVADOC */
     protected Color color;
 
+    /** TODO: JAVADOC */
+    protected boolean drawTickMarks;
+
+    /** TODO: JAVADOC */
+    protected boolean drawNumbers;
+
+
     /** The element that draws the lines. */
     public Graphics2D drawer;   
  
@@ -91,9 +98,18 @@ public class DisplayComponent extends JLabel implements MathObject {
     /** TODO: JAVADOC */
     private DisplayComponent(Grapher pGrapher, Equation pEquation, final EquationSystem pEqSys,
                              Collection<NumberCollection<ComplexNumber>> pNC, Color pColor) {
+        this(pGrapher, pEquation, pEqSys, null, pColor, true, false);
+    }
+
+    /** TODO: JAVADOC */
+    private DisplayComponent(Grapher pGrapher, Equation pEquation, final EquationSystem pEqSys,
+                             Collection<NumberCollection<ComplexNumber>> pNC, Color pColor, boolean pTicks,
+                             boolean pNumbers) {
         grapher = pGrapher;
         equation = pEquation;
         equationsys = pEqSys;
+        drawTickMarks = pTicks;
+        drawNumbers = pNumbers;
         numc = pNC;
         assert numc == null || numc.size() == 2;
         assert numc == null || numc.get(0).size() == numc.get(1).size() : 
@@ -178,6 +194,7 @@ public class DisplayComponent extends JLabel implements MathObject {
     private void drawl(Double x, Double y, Double X, Double Y, boolean fix) {
         drawl(new ComplexNumber(x), new ComplexNumber(y), new ComplexNumber(X), new ComplexNumber(Y), fix);
     }
+
     /** TODO: JAVADOC */
     private void drawl(ComplexNumber x, ComplexNumber y, ComplexNumber X, ComplexNumber Y, boolean fix) {
         assert y != null;
