@@ -286,7 +286,7 @@ public class Function implements MathObject {
             Type.BIN,
             new Collection.Builder<Integer>().add(2).build(),
             (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).
-                                 times(((ComplexNumber)tn.get(1).evald(hm, eqsys)))
+                                 mult(((ComplexNumber)tn.get(1).evald(hm, eqsys)))
         ));
         add(new Function(new Collection<String>(){{add("/");add("÷");}},
             "Divides 'A' to 'B'", "A / B",
@@ -326,7 +326,7 @@ public class Function implements MathObject {
             8,
             Type.UNL,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> new ComplexNumber(-1D).times(((ComplexNumber)tn.get(0).evald(hm, eqsys)))
+            (hm, eqsys, tn) -> new ComplexNumber(-1D).mult(((ComplexNumber)tn.get(0).evald(hm, eqsys)))
         ));
         // UN_R
         add(new Function(new Collection<String>(){{add("!");}}, // negation
@@ -533,6 +533,22 @@ public class Function implements MathObject {
             (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).pow(0.5D)
         ));
 
+        add(new Function(new Collection<String>(){{add("real");}},
+            "real component of'A'", "real(A)",
+            DEFAULT_PRIORITY,
+            Type.NORM,
+            new Collection.Builder<Integer>().add(1).build(),
+            (hm, eqsys, tn) -> new ComplexNumber(((ComplexNumber)tn.get(0).evald(hm, eqsys)).real())
+        ));
+
+        add(new Function(new Collection<String>(){{add("imag");}},
+            "imaginary component of'A'", "imag(A)",
+            DEFAULT_PRIORITY,
+            Type.NORM,
+            new Collection.Builder<Integer>().add(1).build(),
+            (hm, eqsys, tn) -> new ComplexNumber(((ComplexNumber)tn.get(0).evald(hm, eqsys)).imag())
+        ));
+
         add(new Function(new Collection<String>(){{add("deg");}},
             "turns 'A' into degrees (from radians)", "degrees(A)",
             DEFAULT_PRIORITY,
@@ -584,10 +600,10 @@ public class Function implements MathObject {
                         return new ComplexNumber(Math.random());
                     case 1:
                         return new ComplexNumber(new Random().nextDouble()).
-                            times(((ComplexNumber)tn.get(0).evald(hm, eqsys)).aIsOnlyReal());
+                            mult(((ComplexNumber)tn.get(0).evald(hm, eqsys)).aIsOnlyReal());
                     case 2:
                         return new ComplexNumber(new Random().nextDouble()).plus(
-                                                 ((ComplexNumber)tn.get(0).evald(hm, eqsys))).aIsOnlyReal().times(
+                                                 ((ComplexNumber)tn.get(0).evald(hm, eqsys))).aIsOnlyReal().mult(
                                                  ((ComplexNumber)tn.get(1).evald(hm, eqsys)).aIsOnlyReal());
                 default:
                     throw new IllegalArgumentException();
@@ -630,7 +646,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection.Builder<Integer>().add(1).build(),
-            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).times(new ComplexNumber(-1D))
+            (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).mult(new ComplexNumber(-1D))
         ));
 
         add(new Function(new Collection<String>(){{add("sign");}},

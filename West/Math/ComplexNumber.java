@@ -11,7 +11,7 @@ import West.Math.Set.Node.TokenNode;
 public class ComplexNumber extends Number implements DoubleSupplier, Comparable<Number>, MathObject {
 
     public static final ComplexNumber NAN = new ComplexNumber();
-    public static final ComplexNumber INF_P = new ComplexNumber(1E9);
+    public static final ComplexNumber INF_P = new ComplexNumber(1E2);
     public static final ComplexNumber INF_N = new ComplexNumber(-1E9);
     public static final ComplexNumber ONE = new ComplexNumber(1D); //Unit vector
     public static final ComplexNumber NEG_ONE = new ComplexNumber(-1D);
@@ -135,15 +135,15 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
         if(isNaN() && c.isNaN()) return NAN;
         if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
 
-        ComplexNumber top = times(c.imagConjugate());
-        ComplexNumber bottom = c.times(c.imagConjugate()).aIsOnlyReal();
+        ComplexNumber top = mult(c.imagConjugate());
+        ComplexNumber bottom = c.mult(c.imagConjugate()).aIsOnlyReal();
         return new ComplexNumber(top.real / bottom.real, top.imag / bottom.real);
     }
 
-    public static ComplexNumber times(Double c, Double b){
-        return new ComplexNumber(c).times(new ComplexNumber(b));
+    public static ComplexNumber mult(Double c, Double b){
+        return new ComplexNumber(c).mult(new ComplexNumber(b));
     }
-    public ComplexNumber times(ComplexNumber c){
+    public ComplexNumber mult(ComplexNumber c){
         if(isNaN() && c.isNaN()) return NAN;
         if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
 
@@ -187,18 +187,21 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
         return new ComplexNumber(c).pow(new ComplexNumber(b));
     }
     public ComplexNumber pow(ComplexNumber c){
-        System.out.println("TODO: LN");
+        // System.out.println("TODO: LN");
         if(isNaN() && c.isNaN()) return NAN;
         if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
-        return isOnlyReal() ? new ComplexNumber(Math.pow(aIsOnlyReal().real(), c.aIsOnlyReal().real())) : 
-                              new ComplexNumber(ComplexNumber.times(Math.exp(real), Math.cos(imag)),
-                                 ComplexNumber.times(Math.exp(real), Math.sin(imag)));
+        l = exp(z.real);
+        r.real = l*cos(z.imag);
+        r.imag = l*sin(z.imag);
+        return //isOnlyReal() ? new ComplexNumber(Math.pow(aIsOnlyReal().real(), c.aIsOnlyReal().real())) : 
+                              new ComplexNumber(ComplexNumber.mult(Math.exp(real), Math.cos(imag)),
+                                 ComplexNumber.mult(Math.exp(real), Math.sin(imag)));
 
     }
 
     public ComplexNumber factorial(){
-        System.out.println("TODO: LN");
-        return isNaN() ? this : compareTo(ONE) <= 0 ? equals(ZERO) ? ONE : this : this.times(minus(ONE).factorial());
+        // System.out.println("TODO: LN");
+        return isNaN() ? this : compareTo(ONE) <= 0 ? equals(ZERO) ? ONE : this : this.mult(minus(ONE).factorial());
     }
 
     public ComplexNumber abs(){
@@ -218,19 +221,21 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     public ComplexNumber modulo(ComplexNumber c){
         // if(compareTo(c) <= 0)
         //     return this
-        return plus(c.times(div(c).realConjugate().ceil()));
+        return plus(c.mult(div(c).realConjugate().ceil()));
     }
 
     // Trigonometric Functions
         // Standard Trigonometric Functions
     public ComplexNumber sin() {
-        return new ComplexNumber(Math.sin(aIsOnlyReal().toDouble()));
-        // return new ComplexNumber(Math.sin(real) * Math.cosh(imag), +Math.cos(real) * Math.sinh(imag));
+        // return new ComplexNumber(Math.sin(aIsOnlyReal().toDouble()));
+        return new ComplexNumber(ComplexNumber.mult(+Math.sin(real), +Math.cosh(imag)),
+                                 ComplexNumber.mult(+Math.cos(real), +Math.sinh(imag)));
     }
 
     public ComplexNumber cos() {
-        return new ComplexNumber(Math.cos(aIsOnlyReal().toDouble()));
-
+        // return new ComplexNumber(Math.cos(aIsOnlyReal().toDouble()));
+        return new ComplexNumber(ComplexNumber.mult(+Math.cos(real), +Math.cosh(imag)),
+                                 ComplexNumber.mult(-Math.sin(real), +Math.sinh(imag)));
         // return new ComplexNumber(Math.cos(real) * Math.cosh(imag), -Math.sin(real) * Math.sinh(imag));
     }
 
@@ -244,8 +249,8 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     //     // return magnitude().plus(new Equ    ationSystem().add("__TEMP__=¼·π").eval("__TEMP__")).sin();
     //     // return isOnlyReal() ? new ComplexNumber(Math.sin(real)) : new EquationSystem().eval("__TEMP0__",
     //     return new EquationSystem().eval("__TEMP0__",
-    //             new EquationSystem().add("__TEMP1__="+this).add(
-    //                 "__TEMP0__=Σ(__TEMP2__, 0, ∞, __TEMP3__, "+
+    //             new EquationSystem().add("__TEMP1__=" + this).add(
+    //                 "__TEMP0__=Σ(__TEMP2__, 0, ∞, __TEMP3__, " +
     //                 "__TEMP3__=(–1)^__TEMP2__·__TEMP1__^(2·__TEMP2__)/fac(2·__TEMP2__))"));
     // }
     public ComplexNumber tan(){
@@ -308,7 +313,7 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
 
     public ComplexNumber round(int decimals){
         ComplexNumber dec = ONE.minus(new ComplexNumber(new Double(Math.pow(10, 0-decimals))));
-        return new ComplexNumber(times(dec).intValue()).div(dec);
+        return new ComplexNumber(mult(dec).intValue()).div(dec);
     }
 
         // Logarithms

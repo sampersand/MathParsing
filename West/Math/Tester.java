@@ -22,8 +22,9 @@ public class Tester {
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
-            args = new String[]{"y = abs(x-2) + 3", "--i", "x"};
-            // args = new String[]{"y = cos(1+3j)"};
+            // args = new String[]{"y = abs(x-2) + 3", "--i", "x"};
+            args = new String[]{"y = (5+1j)^4"};
+            // args = new String[]{"y = cos4"};
             //  args = new String[]{"y={x | x＜–2 ∨ x＞2 $(–10,10,1)}"};
         }
 

@@ -207,11 +207,11 @@ public class DisplayComponent extends JLabel implements MathObject {
             assert y.isOnlyReal() : y + " can only be real when graphing!";
             assert Y.isOnlyReal() : Y + " can only be real when graphing!";
             ComplexNumber r = y;
-            y = y.times(x.sin()); // y is r, x is theta
-            x = r.times(x.cos()); // y is r, x is theta
+            y = y.mult(x.sin()); // y is r, x is theta
+            x = r.mult(x.cos()); // y is r, x is theta
             r = Y;
-            Y = Y.times(X.sin()); // Y is r, X is theta
-            X = r.times(X.cos()); // Y is r, X is theta
+            Y = Y.mult(X.sin()); // Y is r, X is theta
+            X = r.mult(X.cos()); // Y is r, X is theta
         }
         if(!fix && grapher.components().type().equals(West.Math.Display.GraphComponents.GraphTypes.IMAG)){
             assert false;
