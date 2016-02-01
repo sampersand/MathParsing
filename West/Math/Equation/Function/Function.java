@@ -832,7 +832,8 @@ public class Function implements MathObject {
             for(West.Math.Set.Node.Node<?, ?> n : pNode)
                 ret.putAll(((TokenNode)n).eval(ret, pEqSys));
         assert argsLength.contains(pNode.size()) || argsLength.contains(-1) :
-        "'" +names+ "' got bad args. Allowed args: " + argsLength + ", inputted args = '("+ pNode.size() +"') " + pNode;
+        "'" + names + "' got bad args. Allowed args: '" + syntax + "' (" + argsLength + ").   Inputted args = '("
+                + pNode.size() +"') " + pNode;
         try{
             return addArgs(ret, pNode.toString(), funcObj.exec(ret, pEqSys, pNode));
         } catch (java.lang.NullPointerException n ){

@@ -228,8 +228,6 @@ public class EquationSystem implements MathObject{
         DoubleSupplier ret = eqsys.equations().get(0).subEquations().
                 eval(hm, eqsys).
                 get(toEval);
-        // System.out.println(ret+"|"+toEval+"|"+hm);
-        // eqsys.equations.forEach(System.out::println);
         assert ret instanceof ComplexNumber : ret + "isn't a ComplexNumber!";
         return (ComplexNumber)ret;
 

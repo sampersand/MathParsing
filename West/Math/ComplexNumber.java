@@ -11,7 +11,7 @@ import West.Math.Set.Node.TokenNode;
 public class ComplexNumber extends Number implements DoubleSupplier, Comparable<Number>, MathObject {
 
     public static final ComplexNumber NAN = new ComplexNumber();
-    public static final ComplexNumber INF_P = new ComplexNumber(1E2);
+    public static final ComplexNumber INF_P = new ComplexNumber(1E4);
     public static final ComplexNumber INF_N = new ComplexNumber(-1E9);
     public static final ComplexNumber ONE = new ComplexNumber(1D); //Unit vector
     public static final ComplexNumber NEG_ONE = new ComplexNumber(-1D);
@@ -190,10 +190,10 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
         // System.out.println("TODO: LN");
         if(isNaN() && c.isNaN()) return NAN;
         if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
-        l = exp(z.real);
-        r.real = l*cos(z.imag);
-        r.imag = l*sin(z.imag);
-        return //isOnlyReal() ? new ComplexNumber(Math.pow(aIsOnlyReal().real(), c.aIsOnlyReal().real())) : 
+        // l = exp(z.real);
+        // r.real = l*cos(z.imag);
+        // r.imag = l*sin(z.imag);
+        return isOnlyReal() ? new ComplexNumber(Math.pow(aIsOnlyReal().real(), c.aIsOnlyReal().real())) : 
                               new ComplexNumber(ComplexNumber.mult(Math.exp(real), Math.cos(imag)),
                                  ComplexNumber.mult(Math.exp(real), Math.sin(imag)));
 
