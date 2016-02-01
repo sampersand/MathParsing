@@ -549,7 +549,7 @@ public class Function implements MathObject {
             (hm, eqsys, tn) -> new ComplexNumber(((ComplexNumber)tn.get(0).evald(hm, eqsys)).imag())
         ));
 
-        add(new Function(new Collection<String>(){{add("deg");}},
+        add(new Function(new Collection<String>(){{add("deg");add("degrees");add("toDegrees");}},
             "turns 'A' into degrees (from radians)", "degrees(A)",
             DEFAULT_PRIORITY,
             Type.NORM,
@@ -557,7 +557,7 @@ public class Function implements MathObject {
             (hm, eqsys, tn) -> ((ComplexNumber)tn.get(0).evald(hm, eqsys)).toDegrees()
         ));
 
-        add(new Function(new Collection<String>(){{add("rad");}},
+        add(new Function(new Collection<String>(){{add("rad");add("radians");add("toRadians");}},
             "turns 'A' into radians (from degrees)", "radians(A)",
             DEFAULT_PRIORITY,
             Type.NORM,
