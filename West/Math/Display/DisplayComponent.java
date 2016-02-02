@@ -173,8 +173,8 @@ public class DisplayComponent extends JLabel implements MathObject {
             }
         }
         else {
-            drawl(0D, dispBounds[1], 0D, dispBounds[3], true); // axis.
-            drawl(dispBounds[0], 0D, dispBounds[2], 0D, true); // axis.
+            drawl(0d, dispBounds[1], 0d, dispBounds[3], true); // axis.
+            drawl(dispBounds[0], 0d, dispBounds[2], 0d, true); // axis.
         }
     }
  
@@ -262,17 +262,19 @@ public class DisplayComponent extends JLabel implements MathObject {
     public String toFancyString(int idtLvl) {
         String ret = indent(idtLvl) + "DisplayComponent:";
         ret += "\n" + indent(idtLvl + 1) + "EquationSystem for Graphing:\n";
-        ret += equationsys == null ? indent(idtLvl + 2) + "null" : equationsys.toFancyString(idtLvl + 2);
+        ret += equationsys == null ? indentE(idtLvl + 2) + "null" : equationsys.toFancyString(idtLvl + 2);
         ret += "\n" + indent(idtLvl + 1) + "Equation to Graph:\n";
-        ret += equation == null ? indent(idtLvl + 2) + "null" : equation.toFancyString(idtLvl + 2);
+        ret += equation == null ? indentE(idtLvl + 2) + "null" : equation.toFancyString(idtLvl + 2);
 
         ret += "\n" + indent(idtLvl + 1) + "NumberCollection to Graph:\n";
-        assert numc.size() == 2;
-        assert numc.get(0).size() == numc.get(1).size();
-        ret += numc == null ? indent(idtLvl + 2) + "null" :
+        if(numc != null){
+            assert numc.size() == 2;
+            assert numc.get(0).size() == numc.get(1).size();
+        }
+        ret += numc == null ? indentE(idtLvl + 2) + "null" :
                numc.get(0).toFancyString(idtLvl + 2) + "\n" + numc.get(1).toFancyString(idtLvl + 2);
 
-        ret += "\n" + indent(idtLvl + 1) + "Color:\n" + indent(idtLvl + 2) + color;
+        ret += "\n" + indentE(idtLvl + 1) + "Color:\n" + indentE(idtLvl + 2) + color;
         return ret;
     }
 

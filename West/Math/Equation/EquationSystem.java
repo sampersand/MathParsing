@@ -104,6 +104,7 @@ public class EquationSystem implements MathObject{
         for(String eq : pEqStrings) {
             assert eq != null;
             equations.add(new Equation().add(eq));
+            assert new Equation().add(eq) != null;
         }
         return this;
     }
@@ -262,7 +263,8 @@ public class EquationSystem implements MathObject{
         for(Equation eq : equations)
             if(eq.getVar().equals(var))
                 return eq;
-        return null;
+        System.err.println("[Warning] var '" + var + "' isn't in the EquationSystem '" + this + "'");
+        return new Equation();
     }
     
     /**
@@ -345,21 +347,13 @@ public class EquationSystem implements MathObject{
     @Override
     public String toString() {
         String ret = "Equations = (";
-        if(equations == null) {
-            ret += "null";
-        } else {
-            for(Equation eq : equations) {
-                ret += "'" + eq + "', ";
-            }
+        for(Equation eq : equations) {
+            ret += "'" + eq + "', ";
         }
         ret = ret.substring(0, ret.length() - (equations.size() == 0 ? 0 : 2));
         ret += "), Functions = (";
-        if(functions == null) {
-            ret += "null";
-        } else {
-            for(String name : functions.keySet()) {
-                ret += "'" + name + ":" + functions.get(name) + "', ";
-            }
+        for(String name : functions.keySet()) {
+            ret += "'" + name + ":" + functions.get(name) + "', ";
         }
         return ret.substring(0, ret.length() - (functions.size() == 0 ? 0 : 2)) + ")";
     }

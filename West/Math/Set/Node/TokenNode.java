@@ -281,7 +281,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 return appendHashMap(pVars, val, Math.PI);
 
             case "i": case "j":
-                return appendHashMap(pVars, val, new ComplexNumber(0D, 1D));
+                return appendHashMap(pVars, val, new ComplexNumber(0d, 1d));
 
             case "NAN": case "nan":
                 return appendHashMap(pVars, val, Double.NaN);
@@ -293,40 +293,40 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 return appendHashMap(pVars, val, Math.random()); 
 
             //  X / 2
-            case "½": return appendHashMap(pVars, val, 1/2D);
+            case "½": return appendHashMap(pVars, val, 1/2d);
 
             //  X / 3
-            case "⅓": return appendHashMap(pVars, val, 1/3D);
-            case "⅔": return appendHashMap(pVars, val, 2/3D);
+            case "⅓": return appendHashMap(pVars, val, 1/3d);
+            case "⅔": return appendHashMap(pVars, val, 2/3d);
 
             //  X / 4
-            case "¼": return appendHashMap(pVars, val, 1/4D);
-            case "¾": return appendHashMap(pVars, val, 3/4D);
+            case "¼": return appendHashMap(pVars, val, 1/4d);
+            case "¾": return appendHashMap(pVars, val, 3/4d);
             
             //  X / 5
-            case "⅕": return appendHashMap(pVars, val, 1/5D);
-            case "⅖": return appendHashMap(pVars, val, 2/5D);
-            case "⅗": return appendHashMap(pVars, val, 3/5D);
-            case "⅘": return appendHashMap(pVars, val, 4/5D);
+            case "⅕": return appendHashMap(pVars, val, 1/5d);
+            case "⅖": return appendHashMap(pVars, val, 2/5d);
+            case "⅗": return appendHashMap(pVars, val, 3/5d);
+            case "⅘": return appendHashMap(pVars, val, 4/5d);
 
             //  X / 6
-            case "⅙": return appendHashMap(pVars, val, 1/6D);
-            case "⅚": return appendHashMap(pVars, val, 5/6D);
+            case "⅙": return appendHashMap(pVars, val, 1/6d);
+            case "⅚": return appendHashMap(pVars, val, 5/6d);
 
             //  X / 7
-            case "⅐": return appendHashMap(pVars, val, 1/7D);
+            case "⅐": return appendHashMap(pVars, val, 1/7d);
 
             //  X / 8
-            case "⅛": return appendHashMap(pVars, val, 1/8D);
-            case "⅜": return appendHashMap(pVars, val, 3/8D);
-            case "⅝": return appendHashMap(pVars, val, 5/8D);
-            case "⅞": return appendHashMap(pVars, val, 7/8D);
+            case "⅛": return appendHashMap(pVars, val, 1/8d);
+            case "⅜": return appendHashMap(pVars, val, 3/8d);
+            case "⅝": return appendHashMap(pVars, val, 5/8d);
+            case "⅞": return appendHashMap(pVars, val, 7/8d);
 
             // X / 9
-            case "⅑": return appendHashMap(pVars, val, 1/9D);
+            case "⅑": return appendHashMap(pVars, val, 1/9d);
 
             // X / 10
-            case "⅒": return appendHashMap(pVars, val, 1/10D);
+            case "⅒": return appendHashMap(pVars, val, 1/10d);
 
 
             default:

@@ -22,7 +22,7 @@ public class f extends CustomFunction{
         //  double ret = 0;
         //  for(double val : args)
         //      if(val != 0)
-        //          ret += 1D / val;
+        //          ret += 1d / val;
         //  rethm.put(pNode.token().val(), ret);
         //  return rethm;
     }

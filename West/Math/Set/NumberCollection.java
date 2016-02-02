@@ -19,20 +19,13 @@ import java.util.ArrayList;
  * @version 1.1
  * @since 0.72
  */
+//TODO: change double to Number
 public class NumberCollection<N extends Number> extends Collection<N> implements MathObject {
-    public static class NumberBuilder<N extends Number> extends Builder{
-
-        @Override
-        public NumberCollection build(){
-            return new NumberCollection(this);
-        }
-    }
     public NumberCollection(){
         super();
     }
-
-    public NumberCollection(Builder<N> pBuilder) {
-        super(pBuilder);
+    public NumberCollection(ArrayList<N> arl) {
+        super(arl);
     }
 
     public NumberCollection(final EquationSystem pEqSys) {
@@ -67,7 +60,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         super.addE(pObj);
         return this;
     }
-    public ComplexNumber pred(double pVal) { // might not have to be double, not sure.
+    public ComplexNumber pred(N pVal) { // might not have to be double, not sure.
         return pred(pVal, linReg());
     }
 
@@ -112,8 +105,8 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     }
     public <M extends Number> EquationSystem linReg(NumberCollection<M> pNC){
 
-        double b1 = r(pNC) * pNC.stdev() / stdev();
-        double b0 = pNC.mean() - b1 * mean();
+        ComplexNumber b1 = r(pNC).mult(pNC.stdev()).div(stdev());
+        ComplexNumber b0 = pNC.mean().minus(b1).mult(mean());
         return new EquationSystem().add(new Equation().add("y = b0 + b1 * x"))
                                    .add(new Equation().add("b0 = " + b0)) 
                                    .add(new Equation().add("b1 = " + b1));
@@ -122,78 +115,55 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         return linReg(enumeration());
     }
 
-    public <M extends Number> double r(NumberCollection<M> pNC){
-        assert size() == pNC.size() : size() + " ≠ " + pNC.size();
-        throw new NullPointerException(); // TODO: THIS
-        //  double sigZxZy = 0;
-        //  for(int i = 0; i < size(); i++)
-        //      sigZxZy += Z(get(i)) * pNC.Z(pNC.get(i));
-        //  return sigZxZy / (size() -1);
+    public ComplexNumber r(NumberCollection<? extends Number> pNC){
+        assert size() == pNC.size() : "size '" + size() + "' ≠ '" + pNC.size() + "'.";
+        ComplexNumber sigZxZy = ComplexNumber.ZERO;
+        for(int i = 0; i < size(); i++){
+            sigZxZy = sigZxZy.plus(Z(get(i)).mult(pNC.Z(pNC.get(i))));
+        }
+        return sigZxZy.div(new ComplexNumber(size() - 1));
     }
 
-    public <M extends Number> double R2(NumberCollection<M> pNC){
-        return Math.pow(r(pNC), 2);
+    public ComplexNumber R2(NumberCollection<? extends Number> pNC){
+        return r(pNC).pow(2d);
     }
 
-    public <M extends Number> double Z(M x) {
-        return (Double.parseDouble("" + x) - mean()) / stdev();
+    public ComplexNumber Z(Number x) {
+        return new ComplexNumber(x).minus(mean()).div(stdev());
     }
 
-    public NumberCollection<N> Z() {
-        NumberCollection<N> ret = new NumberCollection<N>();
-        throw new NullPointerException();// TODO: THIS
-        //  for(N ele : this)
-        //      ret.add((N)new Double(Z(ele)));
-        //  return ret;
+    public NumberCollection<ComplexNumber> Z() {
+        NumberCollection<ComplexNumber> ret = new NumberCollection<ComplexNumber>();
+         for(N ele : this)
+             ret.add(new ComplexNumber(Z(ele)));
+         return ret;
     }
 
-    public double avg() {
-        return mean();
-    }
-
-    public double mean() {
+    public ComplexNumber mean() {
         assert size() != 0 : "cannot take the average of an empty array!";
-        throw new NullPointerException(); // TODO: THIS
-        //  double sum = 0;
-        //  for(N e : this)
-        //      sum += Double.parseDouble("" + e); // aha cheating
-        //  return sum / size();
+         ComplexNumber sum = ComplexNumber.ZERO;
+         for(N e : this)
+             sum.plus(new ComplexNumber(e)); // aha cheating
+         return sum.div(new ComplexNumber(size()));
     }
-
-    //  public N instantiate(Number num){
-    //      try{ 
-    //          for(java.lang.reflect.Constructor c : get(0).getClass().getConstructors()){
-    //              if(c.getParameterCount() == 1){
-    //                  return (N)c.newInstance(c.getParameterTypes()[0].cast(num));
-    //              }
-    //          }
-    //      } catch(InstantiationException err){
-    //          System.err.println(err);
-    //      } catch(IllegalAccessException err){
-    //          System.err.println(err);
-    //      } catch(java.lang.reflect.InvocationTargetException err){
-    //          System.err.println(err);
-    //      }
-    //      return null;
-    //  }
 
     public NumberCollection<N> outliers() {
-        double std = stdev(); // so it wont have to be called very time.
-        double mean = mean(); // so it wont have to be called very time.
+        ComplexNumber std = stdev(); // so it wont have to be called very time.
+        ComplexNumber mean = mean(); // so it wont have to be called very time.
         NumberCollection<N> ret = new NumberCollection<N>();
-        throw new NullPointerException(); // TODO: THIS
-        //  for(N e : this)
-        //      if(e < mean - std * 3.0 || e > mean + std * 3.0) 
-        //          ret.add(e);
-        //  return ret;
+         // for(N e : this)
+         //     if(e < mean - std * 3.0 || e > mean + std * 3.0) 
+         //         ret.add(e);
+         return ret;
     }
 
-    public double stdev() { 
-        double sigYy_ = 0;
-        double y_  = mean();
+    public ComplexNumber stdev() { 
+        ComplexNumber sigYy_ = ComplexNumber.ZERO;
+        ComplexNumber y_  = mean();
         for(N y : this)
-            sigYy_  += Math.pow(Double.parseDouble("" + y) - y_, 2); // aha cheating
-        return Math.sqrt(sigYy_  / stdPos(-1));
+            sigYy_ = sigYy_.plus(new ComplexNumber(y).minus(y_).pow(2d));
+        return sigYy_.sqrt().div(new ComplexNumber(stdPos(-1)));
+        // return sigYy_.sqrt().div(stdPos(-1)); // what is stdDos??
     }
 
     public NumberCollection<N> fns() {
@@ -345,16 +315,28 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     public void graph() {
         graph(enumeration());
     }
-    public void graphWLinReg() {
-        //  Grapher grapher = new Grapher(linReg(),
-        //      new ArrayList<ArrayList<NumberCollection<Double>>>(){{
-        //          add(new ArrayList<NumberCollection<Double>>(){{
-        //              add((NumberCollection<Double>)copy());
-        //              add((NumberCollection<Double>)enumeration());
-        //          }});
-        //      }});
-        //  grapher.graph();
-        throw new NullPointerException(); // TODO: THIS
+    public <M extends Number> void graphWithLinReg(NumberCollection<M> pNC) {
+        EquationSystem linreg = linReg(pNC);
+        EquationSystem yEquals = new EquationSystem().add(
+                                        linreg.getEq("y") //the reason it's y is because linReg yields y.
+                                    );
+        NumberCollection<ComplexNumber> yaxis = new NumberCollection<ComplexNumber>();
+        for(N n : copy()){
+            yaxis.add(new ComplexNumber(n));
+        }
+        NumberCollection<ComplexNumber> xaxis = new NumberCollection<ComplexNumber>();
+        enumeration().forEach(e -> xaxis.add(new ComplexNumber(e.doubleValue())));
+
+        Grapher grapher = new Grapher(linreg,
+                                      yEquals,
+                                      new Collection<Collection<NumberCollection<ComplexNumber>>>(){{
+                                        add(new Collection<NumberCollection<ComplexNumber>>(){{
+                                            add(yaxis);
+                                            add(xaxis);
+                                        }});
+                                       }},
+                                      new West.Math.Display.GraphComponents());
+        grapher.graph();
         // TODO: FIX THIS
     }
 
@@ -374,9 +356,8 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         return toFullString(idtLvl);
     }
     @Override
-    public NumberCollection copy(){
-        throw new NullPointerException();
-        //  return new NumberBuilder<N>().addAll(elements).build();
+    public NumberCollection<N> copy(){
+         return new NumberCollection<N>().addAllE(elements);
     }
 
 

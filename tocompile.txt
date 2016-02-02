@@ -20,5 +20,6 @@ West/Math/Equation/Function/CustomFunctions/f.java
 West/Math/Set/Collection.java
 West/Math/Set/MathCollection.java
 West/Math/Set/NumberCollection.java
+West/Math/Set/NumberCollectionTester.java
 West/Math/Set/Node/Node.java
 West/Math/Set/Node/TokenNode.java

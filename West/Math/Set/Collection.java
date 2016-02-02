@@ -44,6 +44,10 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
         elements = builder.elements;
     }
 
+    public Collection(ArrayList<E> eles){
+        elements = eles;
+    }
+
     // returns a Collection
     public Collection addE(Object pObj){
         add((E)pObj);
@@ -199,19 +203,24 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
         String ret = indent(idtLvl) + "Collection:\n";
 
         int columns = 5; //  amount of columns
-        int spacing = 0; //  amount of spaces. Note that there will be an additional one between columns
+        int spacing = 10; //  amount of spaces. Note that there will be an additional one between columns
         for(E e : this)
             if(e.toString().length() > spacing)
                 spacing = e.toString().length();
         String spaces = "";
         for(int i = 0; i < spacing; i++) spaces += " ";
-        ret += indent(idtLvl + 1) + "Elements:";
+        ret += indentE(idtLvl + 1) + "Elements:";
         for(int i = 0; i < elements.size(); i++){
-            if(i % columns == 0)
-                ret += "\n" + indent(idtLvl + 2);
-            ret += "'" + (get(i) + "'" + spaces).substring(0, spacing) + " | ";
+            if(i % columns == 0){
+                if(i > elements.size() - columns - 1){
+                    ret += "\n" + indentE(idtLvl + 2);
+                } else {
+                    ret += "\n" + indent(idtLvl + 2);
+                }
+            }
+            ret += (get(i) + spaces).substring(0, spacing ) + ((i + 1) % columns == 0 ? "" : " # ");
         }
-        return ret + "\n";
+        return ret;
 
     }
 

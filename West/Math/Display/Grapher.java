@@ -38,7 +38,11 @@ public class Grapher extends JPanel implements MathObject {
     /** TODO: JAVADOC */
     protected JLayeredPane layeredPane;
 
-    /** TODO: JAVADOC */
+    /*
+    TODO: JAVADOC
+    Inner to outermost
+    ComplexNumber -> An axis (x / y) -> whole data set (both axis) -> multiple data sets
+    */
     protected Collection<Collection<NumberCollection<ComplexNumber>>> numcs;
 
     /** TODO: JAVADOC */
@@ -84,12 +88,17 @@ public class Grapher extends JPanel implements MathObject {
         components = pGraph;
         displays = new Collection<DisplayComponent>();
         displays.add(new DisplayComponent(this)); // adds axis
-        for(int i = 0; i < equationsToGraph.size(); i++){
-            displays.add(new DisplayComponent(this, equationsToGraph.equations().get(i),
-                    equationsToUse.copy()/*.add(equationsToGraph)*/, COLORS[i % COLORS.length]));
-        }
-        for(int i = 0; i < numcs.size(); i++)
+        System.out.println(pEqSysToGraph+"|"+equationsToUse);
+        System.out.println(numcs);
+        // for(int i = 0; i < equationsToGraph.size(); i++){
+        //     displays.add(new DisplayComponent(this, equationsToGraph.equations().get(i),
+        //             equationsToUse.copy()/*.add(equationsToGraph)*/, COLORS[i % COLORS.length]));
+        // }
+        for(int i = 0; i < numcs.size(); i++){
+            numcs.forEach(System.out::println);
             displays.add(new DisplayComponent(this, numcs.get(i), COLORS[i % COLORS.length]));
+        }
+        // System.out.println(displays);
         graphSetup();
     }
 
@@ -130,6 +139,7 @@ public class Grapher extends JPanel implements MathObject {
     /** TODO: JAVADOC */
     public void graph() {
         // Create and set up the window.
+        System.out.println(toFancyString());
         String title = "Graph of ";
         if(equationsToGraph.size() + numcs.size() > 3) {
             title += "A lot of stuff";
@@ -193,7 +203,7 @@ public class Grapher extends JPanel implements MathObject {
         String ret = indent(idtLvl) + "Grapher:";
         ret += "\n" + indent(idtLvl + 1) + "NumberCollections:";
         for(Collection<NumberCollection<ComplexNumber>> sa : numcs){
-            assert sa.size() == 2 && sa.get(0).size() == sa.get(1).size();
+            assert sa.size() == 2 && sa.get(0).size() == sa.get(1).size() : sa;
             for(NumberCollection<ComplexNumber> s : sa)
                 ret += "\n" + s.toFancyString(idtLvl + 2);
         }

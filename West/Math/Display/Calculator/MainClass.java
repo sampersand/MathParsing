@@ -42,11 +42,11 @@ public class MainClass implements MathObject {
     /**
      * Overloaded setUpAndDrawGraph function, taking only the eq argument.
      * This calls <code>setUpAndDrawGraph</code> with <code>EQUATION</code> as <code>eq</code>,
-     * <code>LIMIT</code> as <code>10</code>, and <code>STEP</code> as <code>0.1D</code>.
+     * <code>LIMIT</code> as <code>10</code>, and <code>STEP</code> as <code>0.1d</code>.
      * @param eq            The equation that will be passed along to graph.
      */
     public void setUpAndDrawGraph(String eq) {
-        setUpAndDrawGraph(eq, 10, 0.1D);
+        setUpAndDrawGraph(eq, 10, 0.1d);
     }
 
     /**
@@ -63,13 +63,13 @@ public class MainClass implements MathObject {
     /**
      * Overloaded setUpAndDrawGraph function, taking the eq and limit arguments.
      * This calls <code>setUpAndDrawGraph</code> with <code>EQUATION</code> as <code>eq</code>,
-     * <code>LIMIT</code> as <code>limit</code>, and <code>STEP</code> as <code>0.1D</code>.
+     * <code>LIMIT</code> as <code>limit</code>, and <code>STEP</code> as <code>0.1d</code>.
      * @param eq            The equation that will be passed along to graph.
      * @param limit         The x and y boundries for the graph. For example, if 
      *                      <code>limit = 10</code>, the boundries would be (- 10x, 10x, - 10y, 10y).
      */
     public void setUpAndDrawGraph(String eq, int limit) {
-        setUpAndDrawGraph(eq, limit, 0.1D);
+        setUpAndDrawGraph(eq, limit, 0.1d);
     }
 
     /**
@@ -86,7 +86,7 @@ public class MainClass implements MathObject {
         Color[] colors = { Color.RED, Color.BLUE, Color.ORANGE, Color.MAGENTA, Color.PINK,
                            Color.CYAN, Color.GREEN, Color.YELLOW };
         limit = 10;
-        step = 0.1D;
+        step = 0.1d;
         JFrame frame = new JFrame();
         int xScreenLimit = 500; //  note this is the physical screen limits
         int yScreenLimit = 500; //  note this is the physical screen limits        

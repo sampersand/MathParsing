@@ -134,9 +134,9 @@ public class GraphComponents implements MathObject {
         ret += indent(idtLvl + 1) + "Window Bounds (X, Y) = [" + winBounds[0] + ", " + winBounds[1] + "]\n";
         ret += indent(idtLvl + 1) + "Display Bounds (x, y, X, Y) = [" + dispBounds[0] + ", " + dispBounds[1] + ", " +
                dispBounds[2] + ", " + dispBounds[3] + "]\n";
-        ret += indent(idtLvl + 1) + "Step = " + stepInfo + " (cStep = " + cStep() + ")";
-        ret += indent(idtLvl + 1) + "Independent Var = " + indepVar;
-        ret += indent(idtLvl + 1) + "Dependant Var = " + new Collection<String>().addAllE(depVars);
+        ret += indent(idtLvl + 1) + "Step = " + stepInfo + " (cStep = " + cStep() + ")\n";
+        ret += indent(idtLvl + 1) + "Independent Var = " + indepVar + "\n";
+        ret += indentE(idtLvl + 1) + "Dependant Var = " + new Collection<String>().addAllE(depVars);
         return ret;
     }
 
