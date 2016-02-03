@@ -37,11 +37,7 @@ public class Collection<E> extends AbstractList<E> implements MathObject{
 
     // empty
     public Collection(){
-        this(new Builder());
-    }
-
-    public Collection(Builder<E> builder){
-        elements = builder.elements;
+        this(new ArrayList<E>());
     }
 
     public Collection(ArrayList<E> eles){
@@ -135,7 +131,7 @@ public class Collection<E> extends AbstractList<E> implements MathObject{
     }
 
     public boolean isUnique(){
-        Collection<E> ms = new Builder<E>().addAll(this).build();
+        Collection<E> ms = copy();
         while(ms.size() > 0)
             if(ms.elements().contains(ms.pop()))
                 return false;
@@ -170,7 +166,7 @@ public class Collection<E> extends AbstractList<E> implements MathObject{
         assert get(0) instanceof java.lang.Comparable;
         E[] ele = (E[])elements.toArray();
         java.util.Arrays.sort(ele);
-        return new Collection.Builder<E>().addAll(ele).build();
+        return new Collection<E>().addAllE(ele);
     }
 
     private class Iter implements Iterator<E> {
@@ -226,7 +222,7 @@ public class Collection<E> extends AbstractList<E> implements MathObject{
 
     @Override
     public Collection<E> copy(){
-        return new Builder<E>().addAll(elements).build();
+        return new Collection<E>().addAllE(elements); // NOT SO SURE THAT THIS IS COPYING ELEMENTS...
     }
 
     @Override

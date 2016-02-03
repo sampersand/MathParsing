@@ -57,7 +57,7 @@ public class EquationSystem implements MathObject{
      */
     public EquationSystem(Collection<Equation> pEqs,
                           HashMap<String, CustomFunction> pFuncs) {
-        equations = new Collection.Builder<Equation>().addAll(pEqs).build();
+        equations = new Collection<Equation>().addAllE(pEqs);
         functions = new HashMap<String, CustomFunction>();
         functions.putAll(pFuncs);
     }
