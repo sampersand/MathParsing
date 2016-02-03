@@ -341,8 +341,9 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
                                 gComp
                                 );
     }
-    public static <M extends Number> void graphMultWithLinReg(Collection<Collection<NumberCollection<Complex>>> pCollections,
-                                            GraphComponents gComp) {
+    public static <M extends Number> void graphMultWithLinReg(
+                                Collection<Collection<NumberCollection<Complex>>> pCollections,
+                                GraphComponents gComp) {
         EquationSystem allEquations = new EquationSystem();
         EquationSystem toGraph = new EquationSystem();
         EquationSystem linreg;
