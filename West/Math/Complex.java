@@ -20,7 +20,6 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
     public static final Complex E = new Complex(Math.E);
 
     public static final String COMPLEX_REGEX= "^(.+?(?=.*[^ij]))?\\+?(?:(.*)[ij])?$";
-    // public static final String COMPLEX_REGEX= "^(.+?(?=.*[^ij]))?\\+?(?:(.*)[ij])?$";
     
     private Double real;
     private Double imag;
