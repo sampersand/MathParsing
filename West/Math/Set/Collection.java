@@ -14,25 +14,6 @@ import java.util.AbstractList;
  */ 
 public class Collection<E> extends AbstractList<E> implements MathObject{
 
-    // public static class Builder<C>{
-    //     public AbstractList elements;
-    //     public Builder(){
-    //         elements = new ArrayList<C>();
-    //     }
-    //     public <K extends C> Builder add(K pObj){
-    //         elements.add(pObj);
-    //         return this;
-    //     }
-    //     public <K extends C> Builder addAll(Object pObj) throws IllegalArgumentException{
-    //         assert pObj instanceof java.lang.Iterable;
-    //         ((java.lang.Iterable)pObj).forEach(elements::add);
-    //         return this;
-    //     }
-    //     public Collection build(){
-    //         return new Collection<C>(this);
-    //     }
-
-    // }
     protected ArrayList<E> elements;
 
     // empty
