@@ -18,30 +18,21 @@ class NumberCollectionTester {
                 add(new Collection<NumberCollection<Complex>>(){{ // a new data set
                     add(new NumberCollection<Complex>(){{ // x axis
                         for(Double d : new Double[]{-3d, -2d, -1d, +0d, +1d, +2d, +3d}) 
-                            add(new Complex(d)); // a new element
+                            add(new Complex(d)); // a new element   
                     }});
                     add(new NumberCollection<Complex>(){{ // y axis
-                        for(Double d : new Double[]{-0d, -0d, -0d, +1d, +0d, +0d, +0d}) 
-                        // for(Double d : new Double[]{-9d, -4d, -1d, +0d, +1d, +4d, +9d}) 
+                        for(Double d : new Double[]{+9d, +4d, +1d, +0d, +1d, +4d, +9d}) 
                             add(new Complex(d)); // a new element
                     }});
-                    // add(new NumberCollection<Complex>(){{ // x axis
-                    //     for(Double d : new Double[]{+ 0d, + 2d, + 4d, + 6d, + 8d, +10d}) 
-                    //         add(new Complex(d)); // a new element
-                    // }});
-                    // add(new NumberCollection<Complex>(){{ // y axis
-                    //     for(Double d : new Double[]{- 9d, +8d, - 7d, +6d, - 5d, +4d}) 
-                    //         add(new Complex(d)); // a new element
-                    // }});
                 }});
 
                 add(new Collection<NumberCollection<Complex>>(){{ // a new data set
                     add(new NumberCollection<Complex>(){{ // x axis
-                        for(Double d : new Double[]{- 0d, - 1d, - 2d, - 3d, - 4d, - 5d}) 
+                        for(Double d : new Double[]{- 0d, - 1d, - 2d, - 3d, - 4d,  1d}) 
                             add(new Complex(d)); // a new element
                     }});
                     add(new NumberCollection<Complex>(){{ // y axis
-                        for(Double d : new Double[]{+ 0d, + 1d, + 2d, + 3d, + 4d, + 5d}) 
+                        for(Double d : new Double[]{+ 0d, + 1d, + 2d, + 3d, + 4d, + 2d}) 
                             add(new Complex(d)); // a new element
                     }});
                 }});
