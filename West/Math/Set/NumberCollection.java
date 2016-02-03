@@ -105,8 +105,8 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     }
     public <M extends Number> EquationSystem linReg(NumberCollection<M> pNC){
 
-        Complex b1 = r(pNC).mult(pNC.stdev()).div(stdev());
-        Complex b0 = pNC.mean().minus(b1).mult(mean());
+        Complex b1 = r(pNC).mult(pNC.stdev().div(stdev()));
+        Complex b0 = pNC.mean().minus(b1.mult(mean()));
         return new EquationSystem().add(new Equation().add("y = b0 + b1 * x"))
                                    .add(new Equation().add("b0 = " + b0)) 
                                    .add(new Equation().add("b1 = " + b1));
@@ -118,7 +118,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     private <M extends Number> EquationSystem linReg(NumberCollection<M> pNC, int n){
 
         Complex b1 = r(pNC).mult(pNC.stdev()).div(stdev());
-        Complex b0 = pNC.mean().minus(b1).mult(mean());
+        Complex b0 = pNC.mean().minus(b1.mult(mean()));
         return new EquationSystem()
                 .add(new Equation().add("__y" + n + "__ = __b0_" + n + "__  +  __b1_" + n + "__ * x"))
                 .add(new Equation().add("__b0_" + n + "__ = " + b0)) 
@@ -157,7 +157,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         assert size() != 0 : "cannot take the average of an empty array!";
          Complex sum = Complex.ZERO;
          for(N e : this)
-             sum.plus(new Complex(e)); // aha cheating
+             sum = sum.plus(new Complex(e)); // aha cheating
          return sum.div(new Complex(size()));
     }
 
@@ -332,7 +332,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         }
         NumberCollection<Complex> xaxis = new NumberCollection<Complex>();
         forEach(e -> xaxis.add(new Complex(e.doubleValue())));
-        graphMultWithLinReg(new Collection<Collection<NumberCollection<Complex>>>(){{
+        graphMultiWithLinReg(new Collection<Collection<NumberCollection<Complex>>>(){{
                                         add(new Collection<NumberCollection<Complex>>(){{
                                             add(yaxis);
                                             add(xaxis);
@@ -341,7 +341,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
                                 gComp
                                 );
     }
-    public static <M extends Number> void graphMultWithLinReg(
+    public static <M extends Number> void graphMultiWithLinReg(
                                 Collection<Collection<NumberCollection<Complex>>> pCollections,
                                 GraphComponents gComp) {
         EquationSystem allEquations = new EquationSystem();
@@ -353,6 +353,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
                 (setpair == null ? "the set pairs were null" : setpair.size() + " was the size") +
                 " for the given Collection!";
             linreg = setpair.get(0).linReg(setpair.get(1), num);
+            System.out.println(setpair.get(0) + " >> linreg with << " + setpair.get(1) + "\t\t becomes:\t"+linreg);
             allEquations.add(linreg);
             assert linreg.getEq("__y" + num + "__") != null;
             toGraph.add(linreg.getEq("__y" + num++ + "__"));

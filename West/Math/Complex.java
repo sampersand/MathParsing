@@ -52,6 +52,7 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
         real = pR == null ? Double.NaN : new Double(pR.doubleValue());
         imag = pI == null ? Double.NaN : new Double(pI.doubleValue());
     }
+
     public Complex(Complex pR, Complex pI){
         real = pR == null ? Double.NaN : pR.aIsOnlyReal().real;
         imag = pI == null ? Double.NaN : pI.aIsOnlyReal().real;
@@ -69,7 +70,7 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
     public Double toDouble(HashMap<String, DoubleSupplier> hm, EquationSystem eqsys){
         if(isNaN())
             return Double.NaN;
-        return eqsys.eval("__TEMP__",
+        return isOnlyReal() ? real : isOnlyImag() ? imag : eqsys.eval("__TEMP__",
                 new EquationSystem().add("__TEMP__=hypot(" +
                                          (isReal() ? real : "") + (isBoth() ? "," : "") + 
                                          (isImag() ? imag : "") + ")")).aIsOnlyReal().real;
@@ -85,7 +86,7 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
         return this;
     }
 
-    public boolean isNaN(){  return equals(NAN);}//!isReal() && !isImag();}
+    public boolean isNaN(){ return equals(NAN); }//!isReal() && !isImag();}
 
     public static Complex parseComplex(String s){
         s = s.trim().replaceAll(" ","");

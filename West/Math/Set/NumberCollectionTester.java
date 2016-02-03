@@ -1,40 +1,51 @@
 package West.Math.Set;
 import West.Math.Set.NumberCollection;
 import West.Math.Equation.EquationSystem;
-import West.Math.Display.GraphComponent;
+import West.Math.Display.GraphComponents;
+import West.Math.Complex;
 class NumberCollectionTester {
     public static void main(String[] args) {
 
         // Collection<Collection<NumberCollection<Complex>>> 
         // 
-        // Collection<------------------------------------->    <-- A collection of data sets (both axis)
-        //            Collection<------------------------->     <-- A collection of axes [x, y] (single set of data).
-        //                       NumberCollection<------->      <-- A collection of data apoints (A single axis)
+        // Collection<#####################################>    <-- A collection of data sets (both axis)
+        //            Collection<#########################>     <-- A collection of axes [x, y] (single set of data).
+        //                       NumberCollection<#######>      <-- A collection of data apoints (A single axis)
         //                                        Complex       <-- A single data point
 
         Collection<Collection<NumberCollection<Complex>>> datasets =
             new Collection<Collection<NumberCollection<Complex>>>(){{ // new collection of data sets
                 add(new Collection<NumberCollection<Complex>>(){{ // a new data set
-                    add(new NumberCollection<Complex>(){{ // a new axis
-                        for(Double d : new Double[]{})
+                    add(new NumberCollection<Complex>(){{ // x axis
+                        for(Double d : new Double[]{-3d, -2d, -1d, +0d, +1d, +2d, +3d}) 
                             add(new Complex(d)); // a new element
                     }});
-                    add(new NumberCollection<Complex>(){{ // a new axis
-                        for(Double d : new Double[]{})
+                    add(new NumberCollection<Complex>(){{ // y axis
+                        for(Double d : new Double[]{-0d, -0d, -0d, +1d, +0d, +0d, +0d}) 
+                        // for(Double d : new Double[]{-9d, -4d, -1d, +0d, +1d, +4d, +9d}) 
                             add(new Complex(d)); // a new element
                     }});
+                    // add(new NumberCollection<Complex>(){{ // x axis
+                    //     for(Double d : new Double[]{+ 0d, + 2d, + 4d, + 6d, + 8d, +10d}) 
+                    //         add(new Complex(d)); // a new element
+                    // }});
+                    // add(new NumberCollection<Complex>(){{ // y axis
+                    //     for(Double d : new Double[]{- 9d, +8d, - 7d, +6d, - 5d, +4d}) 
+                    //         add(new Complex(d)); // a new element
+                    // }});
                 }});
-                
+
                 add(new Collection<NumberCollection<Complex>>(){{ // a new data set
-                    add(new NumberCollection<Complex>(){{ // a new axis
-                        for(Double d : new Double[]{})
+                    add(new NumberCollection<Complex>(){{ // x axis
+                        for(Double d : new Double[]{- 0d, - 1d, - 2d, - 3d, - 4d, - 5d}) 
                             add(new Complex(d)); // a new element
                     }});
-                    add(new NumberCollection<Complex>(){{ // a new axis
-                        for(Double d : new Double[]{})
+                    add(new NumberCollection<Complex>(){{ // y axis
+                        for(Double d : new Double[]{+ 0d, + 1d, + 2d, + 3d, + 4d, + 5d}) 
                             add(new Complex(d)); // a new element
                     }});
                 }});
+
         }};
         NumberCollection nc1 = new NumberCollection<Double>();
         NumberCollection nc2 = new NumberCollection<Double>();
@@ -45,7 +56,7 @@ class NumberCollectionTester {
         // System.out.println(eqsys);
         // eqsys.graph("x", "y");
 
-        NumberCollection.graphWithLinReg(datasets, new GraphComponent());
+        NumberCollection.graphMultiWithLinReg(datasets, new GraphComponents());
 
     }
 }
