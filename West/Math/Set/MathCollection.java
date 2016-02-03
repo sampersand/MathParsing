@@ -83,7 +83,7 @@ public class MathCollection extends NumberCollection<Complex> {
     }
 
     @Override
-    public MathCollection copy(){
+    public MathCollection clone(){
         return new MathCollection(){{
             elements.forEach(this::add);
         }};

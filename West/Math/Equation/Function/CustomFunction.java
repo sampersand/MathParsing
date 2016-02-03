@@ -190,7 +190,7 @@ public class CustomFunction extends Function implements MathObject {
         return ret + "\n" + indentE(idtLvl + 1);
     }
     @Override
-    public CustomFunction copy(){
+    public CustomFunction clone(){
         return new CustomFunction(names, help, syntax, priority, type, argsLength, funcObj);
     }
 

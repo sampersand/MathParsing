@@ -135,7 +135,7 @@ public class Token implements MathObject {
     }
 
     @Override
-    public Token copy(){
+    public Token clone(){
         return new Token(val, type);
     }
 

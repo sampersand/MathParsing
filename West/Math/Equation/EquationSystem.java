@@ -208,11 +208,11 @@ public class EquationSystem implements MathObject{
      */
     public Complex eval(String toEval,
                        EquationSystem pEqSys) {
-        return copy().add(pEqSys).eval(toEval);
+        return clone().add(pEqSys).eval(toEval);
     }
 
     public Complex eval(String toEval, EquationSystem pEqSys, HashMap<String, DoubleSupplier> hm){
-        return copy().add(pEqSys).eval(toEval, hm);
+        return clone().add(pEqSys).eval(toEval, hm);
     }
     
     /**
@@ -225,7 +225,7 @@ public class EquationSystem implements MathObject{
     }
     public Complex eval(String toEval, HashMap<String, DoubleSupplier> hm) {
         assert equations.size() != 0 : "Cannot evaluate an EquationSystem with no equations!";
-        EquationSystem eqsys = copy().isolate(toEval);
+        EquationSystem eqsys = clone().isolate(toEval);
         DoubleSupplier ret = eqsys.equations().get(0).subEquations().
                 eval(hm, eqsys).
                 get(toEval);
@@ -394,7 +394,7 @@ public class EquationSystem implements MathObject{
     }
 
     @Override
-    public EquationSystem copy() {
+    public EquationSystem clone() {
         return new EquationSystem(equations, functions);
     }
 

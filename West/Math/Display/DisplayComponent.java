@@ -285,7 +285,7 @@ public class DisplayComponent extends JLabel implements MathObject {
     }
 
     @Override
-    public DisplayComponent copy(){
+    public DisplayComponent clone(){
         return new DisplayComponent(grapher, equation, equationsys, numc, color);
     }
 

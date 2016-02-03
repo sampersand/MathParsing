@@ -217,7 +217,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     }
 
     public NumberCollection<N> sort() {
-        NumberCollection<N> ret = copy();
+        NumberCollection<N> ret = clone();
         //  bubble sort b/c screw it
         //  TODO: BETTER SORT METHOD
         int x = -1;
@@ -327,7 +327,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
 
     public <M extends Number> void graphWithLinReg(NumberCollection<M> pNC, GraphComponents gComp) {
         NumberCollection<Complex> yaxis = new NumberCollection<Complex>();
-        for(N n : copy()){
+        for(N n : clone()){
             yaxis.add(new Complex(n));
         }
         NumberCollection<Complex> xaxis = new NumberCollection<Complex>();
@@ -378,7 +378,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         return toFullString(idtLvl);
     }
     @Override
-    public NumberCollection<N> copy(){
+    public NumberCollection<N> clone(){
          return new NumberCollection<N>().addAllE(elements);
     }
 

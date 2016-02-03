@@ -109,7 +109,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
     }
 
     @Override
-    public Node copy(){
+    public Node clone(){
         return new Node<T, N>(elements).setToken(token);
     }
 

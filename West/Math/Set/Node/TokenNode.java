@@ -41,7 +41,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
     protected Object[] condeseNodes(AbstractList<Token> pTokens) {
         int pos = 0;
-        TokenNode node = copy();
+        TokenNode node = clone();
         while(pos < pTokens.size()) {
             Token t = pTokens.get(pos);
             if(t.isConst() || t.isBinOper() || t.isUNL() || t.isUNR())
@@ -372,7 +372,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
     }
 
     @Override
-    public TokenNode copy(){
+    public TokenNode clone(){
         assert elements != null;
         return (TokenNode)new TokenNode(this).setElements(elements);
     }

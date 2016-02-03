@@ -253,7 +253,7 @@ public class Equation implements MathObject {
     }
 
     @Override
-    public Equation copy(){
+    public Equation clone(){
         return new Equation(subEquations.token().toString()).add(subEquations);
     }
 

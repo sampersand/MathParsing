@@ -296,7 +296,7 @@ public class EquationDisplay extends JComponent implements MathObject {
     }
 
     @Override
-    public EquationDisplay copy(){
+    public EquationDisplay clone(){
         return new EquationDisplay(EQUATION, EQUATION_BOUNDS, STEPS, WINDOW_BOUNDS, DISPLAY_BOUNDS, ISEQIMAG, COLOR);
     }
     

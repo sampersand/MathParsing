@@ -80,12 +80,7 @@ public interface MathObject {
     public default String indentM(int idtLvl){
         return indentU(idtLvl) + (idtLvl % 2 == 0 ? "├─ ": "╠═ ");
     }
-
-    /**
-     * Copies this object.
-     * @return An exact copy of this object.
-     */
-    public Object copy();
-
+    
+    @Override
     public boolean equals(Object obj);
 }

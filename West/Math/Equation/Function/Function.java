@@ -874,7 +874,7 @@ public class Function implements MathObject {
     }
 
     @Override
-    public Function copy(){
+    public Function clone(){
         return new Function(names, help, syntax, priority, type, argsLength, funcObj);
     }
 

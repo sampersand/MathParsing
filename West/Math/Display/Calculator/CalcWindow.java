@@ -393,7 +393,7 @@ public class CalcWindow extends JFrame implements ActionListener, MathObject {
     }
 
     @Override
-    public CalcWindow copy(){
+    public CalcWindow clone(){
         throw new NullPointerException();
     }
     

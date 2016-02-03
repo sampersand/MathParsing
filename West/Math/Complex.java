@@ -404,7 +404,7 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
     }
 
     @Override
-    public Complex copy(){
+    public Complex clone(){
         return new Complex(this);
     }
 

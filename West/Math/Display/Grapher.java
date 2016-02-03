@@ -90,7 +90,7 @@ public class Grapher extends JPanel implements MathObject {
         displays.add(new DisplayComponent(this)); // adds axis
         for(int i = 0; i < equationsToGraph.size(); i++){
             displays.add(new DisplayComponent(this, equationsToGraph.equations().get(i),
-                    equationsToUse.copy()/*.add(equationsToGraph)*/, COLORS[i % COLORS.length]));
+                    equationsToUse.clone()/*.add(equationsToGraph)*/, COLORS[i % COLORS.length]));
         }
         for(int i = 0; i < numcs.size(); i++){
             displays.add(new DisplayComponent(this, numcs.get(i), COLORS[i % COLORS.length]));
@@ -261,7 +261,7 @@ public class Grapher extends JPanel implements MathObject {
 
 
     @Override
-    public Grapher copy(){
+    public Grapher clone(){
         return new Grapher(equationsToGraph,equationsToUse,numcs, components);
 
     }

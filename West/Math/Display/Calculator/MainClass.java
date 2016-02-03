@@ -128,7 +128,7 @@ public class MainClass implements MathObject {
     }
 
     @Override
-    public GraphDisplay copy(){
+    public GraphDisplay clone(){
         throw new NullPointerException();
     }
 

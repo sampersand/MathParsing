@@ -164,7 +164,7 @@ public class GraphComponents implements MathObject {
     }
 
     @Override
-    public GraphComponents copy(){
+    public GraphComponents clone(){
         return new GraphComponents(winBounds, dispBounds, stepInfo, type, indepVar, depVars);
     }
 

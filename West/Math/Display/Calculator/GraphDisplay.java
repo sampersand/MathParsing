@@ -233,7 +233,7 @@ public class GraphDisplay extends JComponent implements MathObject {
     }
 
     @Override
-    public GraphDisplay copy(){
+    public GraphDisplay clone(){
         return new GraphDisplay(EQUATIONS, EQUATION_BOUNDS, new double[]{0}, WINDOW_BOUNDS,
                                 DISPLAY_BOUNDS, false, COLORS);
     }
