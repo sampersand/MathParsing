@@ -16,34 +16,17 @@ public class Collection<E> extends AbstractList<E> implements MathObject{
 
     protected AbstractList<E> elements;
 
-    // empty
+    // Initializers
     public Collection(){
-        this(new ArrayList<E>());
-    }
+        this(new ArrayList<E>());}
 
     public Collection(AbstractList<E> eles){
-        elements = eles;
-    }
+        elements = eles;}
 
-    // returns a Collection
-    public Collection addE(Object pObj){
+    //Adding elements
+    public Collection<E> addE(Object pObj){
         add((E)pObj);
         return this;
-    }
-
-    public Collection<E> addAllE(Object pObj){
-        addAll(pObj);
-        return this;
-    }
-    // adds elements. does not check to make sure they are actual valid elements
-    @Override
-    public boolean add(E pObj){
-        return elements.add(pObj); //  might throw exception
-    }
-
-    @Override
-    public void add(int pos, E pObj){
-        elements.add(pos, pObj); //  might throw exception
     }
 
     public boolean addAll(Object pObj){
@@ -56,45 +39,37 @@ public class Collection<E> extends AbstractList<E> implements MathObject{
         return true;
     }
 
-
-    public AbstractList<E> elements(){
-        return elements;
+    public Collection<E> addAllE(Object pObj){
+        addAll(pObj);
+        return this;
     }
+
+
     public Collection setElements(AbstractList<E> pElements){
         elements = pElements;
         return this;
     }
 
-    public boolean isEmpty(){
-        return elements.isEmpty();}
-    public int size(){
-        return elements.size();}
-    public int stdPos(int pPos){
-        return pPos < 0 ? size() + pPos : pPos;}
-
-    public E get(int pPos){
-        return elements.get(stdPos(pPos));}
-    public E set(int pPos, E pEle){
-        return elements.set(stdPos(pPos), pEle);}
-    public E pop(){
-        return remove(-1);}
-    public E pop(int pPos){
-        return remove(pPos);}
-    public E remove(int pPos){
-        return elements.remove(stdPos(pPos));}
-
-
-
-    public List<E> subList(int start){
-        return subList(start, size());
-    }
-    public List<E> subList(int start, int end){
-        return elements.subList(stdPos(start), stdPos(end));
-    }
+    @Override public void            add      (int p, E e)    { elements.add(p, e);                            }
+    @Override public boolean         add      (E e)           { return elements.add(e);                        }
+    @Override public boolean         contains (Object o)      { return elements.contains(o);                   }
+    @Override public Iterator<E>     iterator ()              { return (Iterator<E>) new Iter();               }
+              public AbstractList<E> elements ()              { return elements;                               }
+              public boolean         isEmpty  ()              { return elements.isEmpty();                     }
+              public E               get      (int p        ) { return elements.get(stdPos(p));                }
+              public E               set      (int p, E pEle) { return elements.set(stdPos(p), pEle);          }
+              public E               pop      ()              { return remove(-1);                             }
+              public E               pop      (int p)         { return remove(p);                              }
+              public E               remove   (int p)         { return elements.remove(stdPos(p));             }
+              public int             size     ()              { return elements.size();                        }
+              public int             stdPos   (int p)         { return p < 0 ? size() + p : p;                 }
+              public List<E>         subList  (int s)         { return subList(s, size());                     }
+              public List<E>         subList  (int s, int e)  { return elements.subList(stdPos(s), stdPos(e)); }
+              public void            append   (E o)           { elements.add(o);                               }
+              public void            prepend  (E o)           { elements.add(0, o);                            }
+              public void            clear    ()              { elements.clear();                              }
     
-    public void append(E obj){
-        elements.add(obj);
-    }
+    
     public Collection<E> appendC(E obj){// append copy
         Collection<E> ret = copy();
         ret.append(obj);
@@ -102,18 +77,12 @@ public class Collection<E> extends AbstractList<E> implements MathObject{
     }
 
 
-    public void prepend(E obj){
-        elements.add(0, obj);
-    }
     public Collection<E> prependC(E obj){ //prepend copy
         Collection<E> ret = copy();
         ret.prepend(obj);
         return ret;
     }
 
-    public void clear(){
-        elements.clear();
-    }
 
     //  THIS ∪ PRGROUP
     public Collection<E> union(Collection<E> pCollection){
@@ -154,14 +123,6 @@ public class Collection<E> extends AbstractList<E> implements MathObject{
         }};
     }
 
-    public boolean contains(Object obj){
-        return elements.contains(obj);
-    }
-
-    @Override
-    public Iterator<E> iterator() {
-        return (Iterator<E>) new Iter();
-    }
 
     @Override
     public void forEach(Consumer<? super E> action){
