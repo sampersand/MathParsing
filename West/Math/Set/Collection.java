@@ -12,7 +12,7 @@ import java.util.function.Consumer;
  * @version 1.1
  * @since 0.75
  */ 
-public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
+public class Collection<E> extends ArrayList<E> implements MathObject{
 
     public static class Builder<C>{
         public ArrayList elements;

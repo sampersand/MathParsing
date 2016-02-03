@@ -1,4 +1,4 @@
-West/Math/ComplexNumber.java
+West/Math/Complex.java
 West/Math/Declare.java
 West/Math/DoubleSupplier.java
 West/Math/MathObject.java

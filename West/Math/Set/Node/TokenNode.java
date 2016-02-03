@@ -8,7 +8,7 @@ import West.Math.MathObject;
 import West.Math.Equation.Equation;
 import java.util.HashMap;
 import West.Math.DoubleSupplier;
-import West.Math.ComplexNumber;
+import West.Math.Complex;
 
 /**
 * TODO: JAVADOC
@@ -213,7 +213,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return a;
     }
     private static HashMap<String, DoubleSupplier> appendHashMap(HashMap<String, DoubleSupplier> a, String b, Double c){
-        a.put(b, new ComplexNumber(c));
+        a.put(b, new Complex(c));
         return a;
     }
 
@@ -281,13 +281,13 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 return appendHashMap(pVars, val, Math.PI);
 
             case "i": case "j":
-                return appendHashMap(pVars, val, new ComplexNumber(0d, 1d));
+                return appendHashMap(pVars, val, new Complex(0d, 1d));
 
             case "NAN": case "nan":
                 return appendHashMap(pVars, val, Double.NaN);
 
             case "inf": case "∞":
-                return appendHashMap(pVars, val, ComplexNumber.INF_P);
+                return appendHashMap(pVars, val, Complex.INF_P);
 
             case "rand": case "random":
                 return appendHashMap(pVars, val, Math.random()); 
@@ -331,10 +331,10 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
 
             default:
                 try{
-                    return appendHashMap(pVars, val, new ComplexNumber(Double.parseDouble(val)));
+                    return appendHashMap(pVars, val, new Complex(Double.parseDouble(val)));
                 } catch(NumberFormatException err){ 
                     try{
-                        return appendHashMap(pVars, val, new ComplexNumber(val));
+                        return appendHashMap(pVars, val, new Complex(val));
                     } catch (NumberFormatException err2){
                         // System.err.println("Variable '" + val +"' doesn't exist in '"+pVars+"'; returning NAN instead");
                         return appendHashMap(pVars, val, Double.NaN);

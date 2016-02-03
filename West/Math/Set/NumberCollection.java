@@ -3,10 +3,10 @@ package West.Math.Set;
 import West.Math.MathObject;
 import West.Print;
 import West.Math.Equation.EquationSystem;
-import West.Math.ComplexNumber;
+import West.Math.Complex;
 import West.Math.Equation.Equation;
 import West.Math.Display.Grapher;
-import West.Math.ComplexNumber;
+import West.Math.Complex;
 import West.Math.Display.GraphComponents;
 
 import java.util.HashMap;
@@ -60,15 +60,15 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         super.addE(pObj);
         return this;
     }
-    public ComplexNumber pred(N pVal) { // might not have to be double, not sure.
+    public Complex pred(N pVal) { // might not have to be double, not sure.
         return pred(pVal, linReg());
     }
 
-    public static ComplexNumber pred(Number pVal, final EquationSystem pEqSys) {
+    public static Complex pred(Number pVal, final EquationSystem pEqSys) {
         return pEqSys.eval("y", new EquationSystem().add("x", "" + pVal));
     }
 
-    public static ComplexNumber pred(Number pVal, final EquationSystem pEqSys, final EquationSystem pEqSys2) {
+    public static Complex pred(Number pVal, final EquationSystem pEqSys, final EquationSystem pEqSys2) {
         return pEqSys.eval("y", pEqSys2.add("x = " + pVal));
     }
 
@@ -105,8 +105,8 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     }
     public <M extends Number> EquationSystem linReg(NumberCollection<M> pNC){
 
-        ComplexNumber b1 = r(pNC).mult(pNC.stdev()).div(stdev());
-        ComplexNumber b0 = pNC.mean().minus(b1).mult(mean());
+        Complex b1 = r(pNC).mult(pNC.stdev()).div(stdev());
+        Complex b0 = pNC.mean().minus(b1).mult(mean());
         return new EquationSystem().add(new Equation().add("y = b0 + b1 * x"))
                                    .add(new Equation().add("b0 = " + b0)) 
                                    .add(new Equation().add("b1 = " + b1));
@@ -117,8 +117,8 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
      */
     private <M extends Number> EquationSystem linReg(NumberCollection<M> pNC, int n){
 
-        ComplexNumber b1 = r(pNC).mult(pNC.stdev()).div(stdev());
-        ComplexNumber b0 = pNC.mean().minus(b1).mult(mean());
+        Complex b1 = r(pNC).mult(pNC.stdev()).div(stdev());
+        Complex b0 = pNC.mean().minus(b1).mult(mean());
         return new EquationSystem()
                 .add(new Equation().add("__y" + n + "__ = __b0_" + n + "__  +  __b1_" + n + "__ * x"))
                 .add(new Equation().add("__b0_" + n + "__ = " + b0)) 
@@ -129,41 +129,41 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         return linReg(enumeration());
     }
 
-    public ComplexNumber r(NumberCollection<? extends Number> pNC){
+    public Complex r(NumberCollection<? extends Number> pNC){
         assert size() == pNC.size() : "size '" + size() + "' ≠ '" + pNC.size() + "'.";
-        ComplexNumber sigZxZy = ComplexNumber.ZERO;
+        Complex sigZxZy = Complex.ZERO;
         for(int i = 0; i < size(); i++){
             sigZxZy = sigZxZy.plus(Z(get(i)).mult(pNC.Z(pNC.get(i))));
         }
-        return sigZxZy.div(new ComplexNumber(size() - 1));
+        return sigZxZy.div(new Complex(size() - 1));
     }
 
-    public ComplexNumber R2(NumberCollection<? extends Number> pNC){
+    public Complex R2(NumberCollection<? extends Number> pNC){
         return r(pNC).pow(2d);
     }
 
-    public ComplexNumber Z(Number x) {
-        return new ComplexNumber(x).minus(mean()).div(stdev());
+    public Complex Z(Number x) {
+        return new Complex(x).minus(mean()).div(stdev());
     }
 
-    public NumberCollection<ComplexNumber> Z() {
-        NumberCollection<ComplexNumber> ret = new NumberCollection<ComplexNumber>();
+    public NumberCollection<Complex> Z() {
+        NumberCollection<Complex> ret = new NumberCollection<Complex>();
          for(N ele : this)
              ret.add(Z(ele));
          return ret;
     }
 
-    public ComplexNumber mean() {
+    public Complex mean() {
         assert size() != 0 : "cannot take the average of an empty array!";
-         ComplexNumber sum = ComplexNumber.ZERO;
+         Complex sum = Complex.ZERO;
          for(N e : this)
-             sum.plus(new ComplexNumber(e)); // aha cheating
-         return sum.div(new ComplexNumber(size()));
+             sum.plus(new Complex(e)); // aha cheating
+         return sum.div(new Complex(size()));
     }
 
     public NumberCollection<N> outliers() {
-        ComplexNumber std = stdev(); // so it wont have to be called very time.
-        ComplexNumber mean = mean(); // so it wont have to be called very time.
+        Complex std = stdev(); // so it wont have to be called very time.
+        Complex mean = mean(); // so it wont have to be called very time.
         NumberCollection<N> ret = new NumberCollection<N>();
          // for(N e : this)
          //     if(e < mean - std * 3.0 || e > mean + std * 3.0) 
@@ -171,13 +171,13 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
          return ret;
     }
 
-    public ComplexNumber stdev() { 
-        ComplexNumber sigYy_ = ComplexNumber.ZERO;
-        ComplexNumber y_  = mean();
+    public Complex stdev() { 
+        Complex sigYy_ = Complex.ZERO;
+        Complex y_  = mean();
         for(N y : this){
-            sigYy_ = sigYy_.plus(new ComplexNumber(y).minus(y_).pow(2d));
+            sigYy_ = sigYy_.plus(new Complex(y).minus(y_).pow(2d));
         }
-        return sigYy_.div(new ComplexNumber(size() - 1)).sqrt();
+        return sigYy_.div(new Complex(size() - 1)).sqrt();
     }
 
     public NumberCollection<N> fns() {
@@ -310,11 +310,11 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
      * TODO: JAVADOC
      */
     public <M extends Number> void graph(NumberCollection<M> pNC) { // the number line on the bottom can be different.
-        NumberCollection<ComplexNumber> nc1 = new NumberCollection<ComplexNumber>();
+        NumberCollection<Complex> nc1 = new NumberCollection<Complex>();
 
-        NumberCollection<ComplexNumber> nc2 = new NumberCollection<ComplexNumber>();
-        for(Number n : pNC) nc1.add(new ComplexNumber(n));
-        for(Number n : this) nc2.add(new ComplexNumber(n));
+        NumberCollection<Complex> nc2 = new NumberCollection<Complex>();
+        for(Number n : pNC) nc1.add(new Complex(n));
+        for(Number n : this) nc2.add(new Complex(n));
         new Grapher(nc1, nc2).graph();
     }
 
@@ -326,14 +326,14 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     }
 
     public <M extends Number> void graphWithLinReg(NumberCollection<M> pNC, GraphComponents gComp) {
-        NumberCollection<ComplexNumber> yaxis = new NumberCollection<ComplexNumber>();
+        NumberCollection<Complex> yaxis = new NumberCollection<Complex>();
         for(N n : copy()){
-            yaxis.add(new ComplexNumber(n));
+            yaxis.add(new Complex(n));
         }
-        NumberCollection<ComplexNumber> xaxis = new NumberCollection<ComplexNumber>();
-        forEach(e -> xaxis.add(new ComplexNumber(e.doubleValue())));
-        graphMultWithLinReg(new Collection<Collection<NumberCollection<ComplexNumber>>>(){{
-                                        add(new Collection<NumberCollection<ComplexNumber>>(){{
+        NumberCollection<Complex> xaxis = new NumberCollection<Complex>();
+        forEach(e -> xaxis.add(new Complex(e.doubleValue())));
+        graphMultWithLinReg(new Collection<Collection<NumberCollection<Complex>>>(){{
+                                        add(new Collection<NumberCollection<Complex>>(){{
                                             add(yaxis);
                                             add(xaxis);
                                         }});
@@ -341,13 +341,13 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
                                 gComp
                                 );
     }
-    public static <M extends Number> void graphMultWithLinReg(Collection<Collection<NumberCollection<ComplexNumber>>> pCollections,
+    public static <M extends Number> void graphMultWithLinReg(Collection<Collection<NumberCollection<Complex>>> pCollections,
                                             GraphComponents gComp) {
         EquationSystem allEquations = new EquationSystem();
         EquationSystem toGraph = new EquationSystem();
         EquationSystem linreg;
         int num = 0; // im using it like this because it's sleeker with the for each statement.
-        for(Collection<NumberCollection<ComplexNumber>> setpair : pCollections){
+        for(Collection<NumberCollection<Complex>> setpair : pCollections){
             assert setpair != null && setpair.size() == 2 : "Set Pairs have to be in the format 'X axis, Y axis'. " + 
                 (setpair == null ? "the set pairs were null" : setpair.size() + " was the size") +
                 " for the given Collection!";

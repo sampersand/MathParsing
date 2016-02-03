@@ -11,7 +11,7 @@ import java.util.Iterator;
 import West.Math.Set.Collection;
 import West.Math.Set.Node.TokenNode;
 import West.Math.DoubleSupplier;
-import West.Math.ComplexNumber;
+import West.Math.Complex;
 /**
  * The main class for all equation-related things. It keeps track of different equations, and of names of 
  * {@link CustomFunction}s (and the corresponding classes for them).
@@ -206,12 +206,12 @@ public class EquationSystem implements MathObject{
      * @param pEqSys    The EquationSystem that will be evaluated.
      * @return A double that represents the value of <code>toEval</code>.
      */
-    public ComplexNumber eval(String toEval,
+    public Complex eval(String toEval,
                        EquationSystem pEqSys) {
         return copy().add(pEqSys).eval(toEval);
     }
 
-    public ComplexNumber eval(String toEval, EquationSystem pEqSys, HashMap<String, DoubleSupplier> hm){
+    public Complex eval(String toEval, EquationSystem pEqSys, HashMap<String, DoubleSupplier> hm){
         return copy().add(pEqSys).eval(toEval, hm);
     }
     
@@ -220,17 +220,17 @@ public class EquationSystem implements MathObject{
      * @param toEval    The variable to solve for.
      * @return A double that represents the value of <code>toEval</code>.
      */
-    public ComplexNumber eval(String toEval) {
+    public Complex eval(String toEval) {
         return eval(toEval, new HashMap<String, DoubleSupplier>());
     }
-    public ComplexNumber eval(String toEval, HashMap<String, DoubleSupplier> hm) {
+    public Complex eval(String toEval, HashMap<String, DoubleSupplier> hm) {
         assert equations.size() != 0 : "Cannot evaluate an EquationSystem with no equations!";
         EquationSystem eqsys = copy().isolate(toEval);
         DoubleSupplier ret = eqsys.equations().get(0).subEquations().
                 eval(hm, eqsys).
                 get(toEval);
-        assert ret instanceof ComplexNumber : ret + "isn't a ComplexNumber!";
-        return (ComplexNumber)ret;
+        assert ret instanceof Complex : ret + "isn't a Complex!";
+        return (Complex)ret;
 
     }
 
@@ -292,7 +292,7 @@ public class EquationSystem implements MathObject{
     }
 
 
-    public static String appendMetricSuffix(ComplexNumber param, int normStuffOnly){
+    public static String appendMetricSuffix(Complex param, int normStuffOnly){
         return 
                 (param.isReal() ? appendMetricSuffix(param.real(), normStuffOnly) + 
                                 (param.isImag() ? " + " : "") : "")+

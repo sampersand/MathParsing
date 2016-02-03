@@ -8,16 +8,16 @@ import West.Math.Equation.Token;
 import West.Math.Equation.Function.Function;
 import West.Math.Set.Node.TokenNode;
 
-public class ComplexNumber extends Number implements DoubleSupplier, Comparable<Number>, MathObject {
+public class Complex extends Number implements DoubleSupplier, Comparable<Number>, MathObject {
 
-    public static final ComplexNumber NAN = new ComplexNumber();
-    public static final ComplexNumber INF_P = new ComplexNumber(1E4);
-    public static final ComplexNumber INF_N = new ComplexNumber(-1E9);
-    public static final ComplexNumber ONE = new ComplexNumber(1d); //Unit vector
-    public static final ComplexNumber NEG_ONE = new ComplexNumber(-1d);
-    public static final ComplexNumber ZERO = new ComplexNumber(0d);
-    public static final ComplexNumber PI = new ComplexNumber(Math.PI);
-    public static final ComplexNumber E = new ComplexNumber(Math.E);
+    public static final Complex NAN = new Complex();
+    public static final Complex INF_P = new Complex(1E4);
+    public static final Complex INF_N = new Complex(-1E9);
+    public static final Complex ONE = new Complex(1d); //Unit vector
+    public static final Complex NEG_ONE = new Complex(-1d);
+    public static final Complex ZERO = new Complex(0d);
+    public static final Complex PI = new Complex(Math.PI);
+    public static final Complex E = new Complex(Math.E);
 
     public static final String COMPLEX_REGEX= "^(.+?(?=.*[^ij]))?\\+?(?:(.*)[ij])?$";
     // public static final String COMPLEX_REGEX= "^(.+?(?=.*[^ij]))?\\+?(?:(.*)[ij])?$";
@@ -25,35 +25,35 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     private Double real;
     private Double imag;
 
-    public ComplexNumber(){
+    public Complex(){
         this(Double.NaN, Double.NaN);
     }
 
-    public ComplexNumber(String inp){
+    public Complex(String inp){
         this(parseComplex(inp));
     }
 
-    public ComplexNumber(double pR){
+    public Complex(double pR){
         this(new Double(pR));
     }
 
-    public ComplexNumber(int pR){
+    public Complex(int pR){
         this(new Double(pR));
     }
 
-    public ComplexNumber(Number pR){
+    public Complex(Number pR){
         this(pR, Double.NaN);
     }
 
-    public ComplexNumber(ComplexNumber cn){
+    public Complex(Complex cn){
         this(cn.real, cn.imag);
     }
 
-    public ComplexNumber(Number pR, Number pI){
+    public Complex(Number pR, Number pI){
         real = pR == null ? Double.NaN : new Double(pR.doubleValue());
         imag = pI == null ? Double.NaN : new Double(pI.doubleValue());
     }
-    public ComplexNumber(ComplexNumber pR, ComplexNumber pI){
+    public Complex(Complex pR, Complex pI){
         real = pR == null ? Double.NaN : pR.aIsOnlyReal().real;
         imag = pI == null ? Double.NaN : pI.aIsOnlyReal().real;
     }
@@ -79,16 +79,16 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     public boolean isOnlyReal(){ return isReal() && !isImag(); }
     public boolean isOnlyImag(){ return isImag() && !isReal(); }
     public boolean isOrigin(){ return real.equals(ZERO) && real.equals(ZERO);}
-    public boolean isReal(){ return !real.isNaN();}// && !new ComplexNumber(real).equals(ZERO); }
-    public boolean isImag(){ return !imag.isNaN();}// && !new ComplexNumber(imag).equals(ZERO); }
-    public ComplexNumber aIsOnlyReal(){
+    public boolean isReal(){ return !real.isNaN();}// && !new Complex(real).equals(ZERO); }
+    public boolean isImag(){ return !imag.isNaN();}// && !new Complex(imag).equals(ZERO); }
+    public Complex aIsOnlyReal(){
         assert isOnlyReal() : "Complex Number '" + this + "' has to have no imaginary component!";
         return this;
     }
 
     public boolean isNaN(){  return equals(NAN);}//!isReal() && !isImag();}
 
-    public static ComplexNumber parseComplex(String s){
+    public static Complex parseComplex(String s){
         s = s.trim().replaceAll(" ","");
         if(!s.matches(COMPLEX_REGEX))
                 throw new NumberFormatException("'" + s + "' isn't a complex number!");
@@ -98,14 +98,14 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
                 TokenNode.getVarInFinal(new HashMap<String, DoubleSupplier>(), s0).get(s0).toDouble();
         Double i = s1.isEmpty() ? Double.NaN : 
                 TokenNode.getVarInFinal(new HashMap<String, DoubleSupplier>(), s1).get(s1).toDouble();
-        return new ComplexNumber(r, i);
+        return new Complex(r, i);
     }
 
     @Override
     public int compareTo(Number n){
-        if(!isOnlyReal() || (n instanceof ComplexNumber ? !((ComplexNumber)n).isOnlyReal() : false))
+        if(!isOnlyReal() || (n instanceof Complex ? !((Complex)n).isOnlyReal() : false))
             System.err.println("inequalities are not well-defined in the complex plane");
-        ComplexNumber cn = (ComplexNumber)n;
+        Complex cn = (Complex)n;
         return isReal() && cn.isReal()
                ?
                isImag() && cn.isImag()
@@ -139,37 +139,37 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     }
 
     // Standard Arithmetic
-    public static ComplexNumber div(Number c, Number b){
-        return new ComplexNumber(c).div(new ComplexNumber(b));
+    public static Complex div(Number c, Number b){
+        return new Complex(c).div(new Complex(b));
     }
 
-    public static ComplexNumber mult(Double c, Double b){
-        return new ComplexNumber(c).mult(new ComplexNumber(b));
+    public static Complex mult(Double c, Double b){
+        return new Complex(c).mult(new Complex(b));
     }
 
-    public static ComplexNumber plus(Double c, Double b){
-        return new ComplexNumber(c).plus(new ComplexNumber(b));
+    public static Complex plus(Double c, Double b){
+        return new Complex(c).plus(new Complex(b));
     }
     
-    public static ComplexNumber minus(Double c, Double b){
-        return new ComplexNumber(c).minus(new ComplexNumber(b));
+    public static Complex minus(Double c, Double b){
+        return new Complex(c).minus(new Complex(b));
     }
-    public ComplexNumber div(ComplexNumber c){
+    public Complex div(Complex c){
         if (isOnlyReal() && c.isOnlyReal()){
-            return new ComplexNumber(real * 1f / c.real);
+            return new Complex(real * 1f / c.real);
         }
         if(isNaN() && c.isNaN()) return NAN;
         if(isNaN() || c.isNaN()) return NAN; 
         // if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
 
-        ComplexNumber top = mult(c.imagConjugate());
-        ComplexNumber bottom = c.mult(c.imagConjugate()).aIsOnlyReal();
-        return new ComplexNumber(top.real / bottom.real, top.imag / bottom.real);
+        Complex top = mult(c.imagConjugate());
+        Complex bottom = c.mult(c.imagConjugate()).aIsOnlyReal();
+        return new Complex(top.real / bottom.real, top.imag / bottom.real);
     }
 
-    public ComplexNumber mult(ComplexNumber c){
+    public Complex mult(Complex c){
         if (isOnlyReal() && c.isOnlyReal()){
-            return new ComplexNumber(real * c.real);
+            return new Complex(real * c.real);
         }
         if(isNaN() && c.isNaN()) return NAN;
         if(isNaN() || c.isNaN()) return NAN; 
@@ -182,78 +182,78 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
 
         if(isReal() && c.isImag()) rimag = real * c.imag;
         if(isImag() && c.isReal()) rimag = (rimag.isNaN() ? 0 : rimag) + imag * c.real;
-        return new ComplexNumber(rreal, rimag);
+        return new Complex(rreal, rimag);
     }
 
-    public ComplexNumber plus(ComplexNumber c){
+    public Complex plus(Complex c){
         if (isOnlyReal() && c.isOnlyReal()){
-            return new ComplexNumber(real + c.real);
+            return new Complex(real + c.real);
         }
         if(isNaN() && c.isNaN()) return NAN;
         if(isNaN() || c.isNaN()) return NAN; 
         // if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
-        return new ComplexNumber(isReal() ? c.isReal() ? real + c.real : real : c.real,
+        return new Complex(isReal() ? c.isReal() ? real + c.real : real : c.real,
                                  isImag() ? c.isImag() ? imag + c.imag : imag : c.imag);
     }
 
-    public ComplexNumber minus(ComplexNumber c){
+    public Complex minus(Complex c){
         if (isOnlyReal() && c.isOnlyReal()){
-            return new ComplexNumber(real - c.real);
+            return new Complex(real - c.real);
         }
         if(isNaN() && c.isNaN()) return NAN;
         if(isNaN() || c.isNaN()) return NAN; 
         // if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
-        return new ComplexNumber(isReal() ? c.isReal() ? real - c.real : real : -1 * c.real,
+        return new Complex(isReal() ? c.isReal() ? real - c.real : real : -1 * c.real,
                                  isImag() ? c.isImag() ? imag - c.imag : imag : -1 * c.imag);
     }
 
     // Non-Standard Arithmetic
-    public ComplexNumber pow(Double d){
-        return pow(new ComplexNumber(d));
+    public Complex pow(Double d){
+        return pow(new Complex(d));
     }
 
-    public static ComplexNumber pow(Double c, Double b){
-        return new ComplexNumber(c).pow(new ComplexNumber(b));
+    public static Complex pow(Double c, Double b){
+        return new Complex(c).pow(new Complex(b));
     }
-    public ComplexNumber pow(ComplexNumber c){
+    public Complex pow(Complex c){
         if (isOnlyReal() && c.isOnlyReal()){
-            return new ComplexNumber(Math.pow(real, c.real));
+            return new Complex(Math.pow(real, c.real));
         }
         if(isNaN() && c.isNaN()) return NAN;
         if(isNaN() || c.isNaN()) return NAN; 
         // if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
         return isOnlyReal() && c.isOnlyReal() ?
-                new ComplexNumber(Math.pow(aIsOnlyReal().real, c.aIsOnlyReal().real))
+                new Complex(Math.pow(aIsOnlyReal().real, c.aIsOnlyReal().real))
                 :
-                new ComplexNumber(ComplexNumber.mult(Math.exp(real), Math.cos(imag)),
-                                  ComplexNumber.mult(Math.exp(real), Math.sin(imag)));
+                new Complex(Complex.mult(Math.exp(real), Math.cos(imag)),
+                                  Complex.mult(Math.exp(real), Math.sin(imag)));
 
     }
-    public ComplexNumber sqrt(){
+    public Complex sqrt(){
         return pow(0.5d);
     }
 
-    public ComplexNumber factorial(){
+    public Complex factorial(){
         // System.out.println("TODO: LN");
         return isNaN() ? this : compareTo(ONE) <= 0 ? ONE : this.mult(minus(ONE).factorial());
     }
 
-    public ComplexNumber abs(){
-        return new ComplexNumber(isReal() ? Math.abs(real) : Double.NaN,
+    public Complex abs(){
+        return new Complex(isReal() ? Math.abs(real) : Double.NaN,
                                  isImag() ? Math.abs(imag) : Double.NaN);
     }
 
-    public ComplexNumber magnitude(){
-        return new ComplexNumber(toDouble());
+    public Complex magnitude(){
+        return new Complex(toDouble());
     }
 
-    public ComplexNumber imagConjugate(){
-        return new ComplexNumber(real, -1 * imag);
+    public Complex imagConjugate(){
+        return new Complex(real, -1 * imag);
     }
-    public ComplexNumber realConjugate(){
-        return new ComplexNumber(real * -1, imag);
+    public Complex realConjugate(){
+        return new Complex(real * -1, imag);
     }
-    public ComplexNumber modulo(ComplexNumber c){
+    public Complex modulo(Complex c){
         // if(compareTo(c) <= 0)
         //     return this
         return plus(c.mult(div(c).realConjugate().ceil()));
@@ -261,126 +261,126 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
 
     // Trigonometric Functions
         // Standard Trigonometric Functions
-    public ComplexNumber sin() {
+    public Complex sin() {
         return isOnlyReal() ?
-                new ComplexNumber(Math.sin(aIsOnlyReal().toDouble()))
+                new Complex(Math.sin(aIsOnlyReal().toDouble()))
                 :
-                new ComplexNumber(ComplexNumber.mult(+Math.sin(real), +Math.cosh(imag)),
-                                  ComplexNumber.mult(+Math.cos(real), +Math.sinh(imag)));
+                new Complex(Complex.mult(+Math.sin(real), +Math.cosh(imag)),
+                                  Complex.mult(+Math.cos(real), +Math.sinh(imag)));
     }
 
-    public ComplexNumber cos() {
+    public Complex cos() {
         return isOnlyReal() ?
-                new ComplexNumber(Math.cos(aIsOnlyReal().toDouble()))
+                new Complex(Math.cos(aIsOnlyReal().toDouble()))
                 :
-                new ComplexNumber(ComplexNumber.mult(+Math.cos(real), +Math.cosh(imag)),
-                                  ComplexNumber.mult(-Math.sin(real), +Math.sinh(imag)));
+                new Complex(Complex.mult(+Math.cos(real), +Math.cosh(imag)),
+                                  Complex.mult(-Math.sin(real), +Math.sinh(imag)));
     }
 
-    // public ComplexNumber sin(){
-    //     return isOnlyReal() ? new ComplexNumber(Math.sin(real)) : new EquationSystem().eval("__TEMP0__",
+    // public Complex sin(){
+    //     return isOnlyReal() ? new Complex(Math.sin(real)) : new EquationSystem().eval("__TEMP0__",
     //             new EquationSystem().add("__TEMP1__="+this).add(
     //                 "__TEMP0__=Σ(__TEMP2__, 0, ∞, __TEMP3__, "+
     //                 "__TEMP3__=(–1)^__TEMP2__·__TEMP1__^(2·__TEMP2__+1)/fac(2·__TEMP2__+1))"));
     // }
-    // public ComplexNumber cos(){
+    // public Complex cos(){
     //     // return magnitude().plus(new Equ    ationSystem().add("__TEMP__=¼·π").eval("__TEMP__")).sin();
-    //     // return isOnlyReal() ? new ComplexNumber(Math.sin(real)) : new EquationSystem().eval("__TEMP0__",
+    //     // return isOnlyReal() ? new Complex(Math.sin(real)) : new EquationSystem().eval("__TEMP0__",
     //     return new EquationSystem().eval("__TEMP0__",
     //             new EquationSystem().add("__TEMP1__=" + this).add(
     //                 "__TEMP0__=Σ(__TEMP2__, 0, ∞, __TEMP3__, " +
     //                 "__TEMP3__=(–1)^__TEMP2__·__TEMP1__^(2·__TEMP2__)/fac(2·__TEMP2__))"));
     // }
-    public ComplexNumber tan(){
+    public Complex tan(){
         return isOnlyReal() ?
-               new ComplexNumber(Math.tan(real))
+               new Complex(Math.tan(real))
                :
                sin().div(cos());
     }
 
         // Inverse Trigonometric Functions
-    public ComplexNumber csc(){
+    public Complex csc(){
         return ONE.div(sin());
     }
-    public ComplexNumber sec(){
+    public Complex sec(){
         return ONE.div(cos());
     }
-    public ComplexNumber cot(){
+    public Complex cot(){
         return ONE.div(tan());
     }
 
         // Hyperbolic Trigonometric Functions
-    public ComplexNumber sinh(){
-        return new ComplexNumber(Math.sinh(aIsOnlyReal().real));
+    public Complex sinh(){
+        return new Complex(Math.sinh(aIsOnlyReal().real));
     }
-    public ComplexNumber cosh(){
-        return new ComplexNumber(Math.cosh(aIsOnlyReal().real));
+    public Complex cosh(){
+        return new Complex(Math.cosh(aIsOnlyReal().real));
     }
-    public ComplexNumber tanh(){
-        return new ComplexNumber(Math.tanh(aIsOnlyReal().real));
+    public Complex tanh(){
+        return new Complex(Math.tanh(aIsOnlyReal().real));
     }
 
         // Arc- Trigonometric Functions
-    public ComplexNumber asin(){
-        return new ComplexNumber(Math.asin(aIsOnlyReal().real));
+    public Complex asin(){
+        return new Complex(Math.asin(aIsOnlyReal().real));
     }
-    public ComplexNumber acos(){
-        return new ComplexNumber(Math.acos(aIsOnlyReal().real));
+    public Complex acos(){
+        return new Complex(Math.acos(aIsOnlyReal().real));
     }
-    public ComplexNumber atan(){
-        return new ComplexNumber(Math.atan(aIsOnlyReal().real));
+    public Complex atan(){
+        return new Complex(Math.atan(aIsOnlyReal().real));
     }
 
 
     // Byte shifting
-    public ComplexNumber byteShiftLeft(ComplexNumber c){
-        return new ComplexNumber(intValue() << c.intValue());
+    public Complex byteShiftLeft(Complex c){
+        return new Complex(intValue() << c.intValue());
     }
-    public ComplexNumber byteShiftRight(ComplexNumber c){
-        return new ComplexNumber(intValue() >> c.intValue());
+    public Complex byteShiftRight(Complex c){
+        return new Complex(intValue() >> c.intValue());
     }
 
     // Misc
         // Rounding
-    public ComplexNumber ceil(){
-        return new ComplexNumber(isReal() ? Math.ceil(real) : Double.NaN, isImag() ? Math.ceil(imag) : Double.NaN);
+    public Complex ceil(){
+        return new Complex(isReal() ? Math.ceil(real) : Double.NaN, isImag() ? Math.ceil(imag) : Double.NaN);
     }
-    public ComplexNumber floor(){
-        return new ComplexNumber(isReal() ? Math.floor(real) : Double.NaN, isImag() ? Math.floor(imag) : Double.NaN);
+    public Complex floor(){
+        return new Complex(isReal() ? Math.floor(real) : Double.NaN, isImag() ? Math.floor(imag) : Double.NaN);
     }
-    public ComplexNumber round(){
+    public Complex round(){
         return round(0);
     }
 
-    public ComplexNumber round(int decimals){
-        ComplexNumber dec = ONE.minus(new ComplexNumber(new Double(Math.pow(10, 0-decimals))));
-        return new ComplexNumber(mult(dec).intValue()).div(dec);
+    public Complex round(int decimals){
+        Complex dec = ONE.minus(new Complex(new Double(Math.pow(10, 0-decimals))));
+        return new Complex(mult(dec).intValue()).div(dec);
     }
 
         // Logarithms
-    public ComplexNumber ln(){
-        return new ComplexNumber(Math.log(aIsOnlyReal().real));
+    public Complex ln(){
+        return new Complex(Math.log(aIsOnlyReal().real));
     }
-    public ComplexNumber log10(){
-        return new ComplexNumber(Math.log10(aIsOnlyReal().real));
+    public Complex log10(){
+        return new Complex(Math.log10(aIsOnlyReal().real));
     }
-    public ComplexNumber log(ComplexNumber c){
-        return new ComplexNumber(Math.log(aIsOnlyReal().real) / (1F * Math.log(c.aIsOnlyReal().real)));
+    public Complex log(Complex c){
+        return new Complex(Math.log(aIsOnlyReal().real) / (1F * Math.log(c.aIsOnlyReal().real)));
     }
 
         // Changing
-    public ComplexNumber toDegrees(){
-        return aIsOnlyReal().mult(new ComplexNumber(180)).div(PI);
+    public Complex toDegrees(){
+        return aIsOnlyReal().mult(new Complex(180)).div(PI);
     }
-    public ComplexNumber toRadians(){
-        return aIsOnlyReal().mult(PI).div(new ComplexNumber(180));
+    public Complex toRadians(){
+        return aIsOnlyReal().mult(PI).div(new Complex(180));
     }
 
 
     @Override
     public boolean equals(Object o){
-        return o instanceof ComplexNumber &&
-                ((ComplexNumber)o).real.equals(real) &&  ((ComplexNumber)o).imag.equals(imag);
+        return o instanceof Complex &&
+                ((Complex)o).real.equals(real) &&  ((Complex)o).imag.equals(imag);
     }
 
     @Override
@@ -396,7 +396,7 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
 
     @Override
     public String toFullString(int idtlevel){
-        String ret = indent(idtlevel) + "ComplexNumber '"+this+"':\n";
+        String ret = indent(idtlevel) + "Complex '"+this+"':\n";
         ret += indent(idtlevel + 1) + "Real: " + real + "\n";
         ret += indentE(idtlevel + 1) + "Imag: " + imag + "\n";
         return ret + indentE(idtlevel);
@@ -404,8 +404,8 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     }
 
     @Override
-    public ComplexNumber copy(){
-        return new ComplexNumber(this);
+    public Complex copy(){
+        return new Complex(this);
     }
 
 }

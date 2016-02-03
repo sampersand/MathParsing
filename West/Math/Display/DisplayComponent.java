@@ -6,7 +6,7 @@ import West.Math.Equation.Equation;
 import West.Math.Equation.EquationSystem;
 import West.Math.Set.NumberCollection;
 import West.Math.Set.Collection;
-import West.Math.ComplexNumber;
+import West.Math.Complex;
 
 import java.util.ArrayList;
 
@@ -40,7 +40,7 @@ public class DisplayComponent extends JLabel implements MathObject {
     protected EquationSystem equationsys;
 
     /** TODO: JAVADOC */
-    protected Collection<NumberCollection<ComplexNumber>> numc;
+    protected Collection<NumberCollection<Complex>> numc;
 
     /** TODO: JAVADOC */
     protected Color color;
@@ -66,12 +66,12 @@ public class DisplayComponent extends JLabel implements MathObject {
      * I draw a set
      * TODO: JAVADOC
      */
-    public DisplayComponent(Grapher pGrapher, Collection<NumberCollection<ComplexNumber>> pNC) {
+    public DisplayComponent(Grapher pGrapher, Collection<NumberCollection<Complex>> pNC) {
         this(pGrapher, pNC, Color.BLUE);
     }
 
     /** TODO: JAVADOC */
-    public DisplayComponent(Grapher pGrapher, Collection<NumberCollection<ComplexNumber>> pNC, Color pColor) {
+    public DisplayComponent(Grapher pGrapher, Collection<NumberCollection<Complex>> pNC, Color pColor) {
         this(pGrapher, null, null, pNC, pColor);
     }
 
@@ -90,7 +90,7 @@ public class DisplayComponent extends JLabel implements MathObject {
 
     /** TODO: JAVADOC */
     private DisplayComponent(Grapher pGrapher, Equation pEquation, final EquationSystem pEqSys,
-                             Collection<NumberCollection<ComplexNumber>> pNC, Color pColor) {
+                             Collection<NumberCollection<Complex>> pNC, Color pColor) {
         grapher = pGrapher;
         equation = pEquation;
         equationsys = pEqSys;
@@ -143,12 +143,12 @@ public class DisplayComponent extends JLabel implements MathObject {
         } else if(equation != null) {
             double cStep = grapher.components().cStep();
             for(double x = stepInfo[0]; x < stepInfo[1]; x += cStep) {
-                drawl(new ComplexNumber(x),
+                drawl(new Complex(x),
                       equationsys.eval(equation.getVar(),
                                        new EquationSystem().add(
                                                                 grapher.components().indepVar()
                                                                 + "=" + x)), 
-                      new ComplexNumber(x + cStep),
+                      new Complex(x + cStep),
                       equationsys.eval(equation.getVar(),
                                        new EquationSystem().add(
                                                                 grapher.components().indepVar()
@@ -175,11 +175,11 @@ public class DisplayComponent extends JLabel implements MathObject {
     }
 
     private void drawl(Double x, Double y, Double X, Double Y, boolean fix) {
-        drawl(new ComplexNumber(x), new ComplexNumber(y), new ComplexNumber(X), new ComplexNumber(Y), fix);
+        drawl(new Complex(x), new Complex(y), new Complex(X), new Complex(Y), fix);
     }
 
     /** TODO: JAVADOC */
-    private void drawl(ComplexNumber x, ComplexNumber y, ComplexNumber X, ComplexNumber Y, boolean fix) {
+    private void drawl(Complex x, Complex y, Complex X, Complex Y, boolean fix) {
         assert y != null;
         assert Y != null;
         assert !x.isNaN();
@@ -189,7 +189,7 @@ public class DisplayComponent extends JLabel implements MathObject {
         if(!fix && grapher.components().type().equals(West.Math.Display.GraphComponents.GraphTypes.POLAR)){
             assert y.isOnlyReal() : y + " can only be real when graphing!";
             assert Y.isOnlyReal() : Y + " can only be real when graphing!";
-            ComplexNumber r = y;
+            Complex r = y;
             y = y.mult(x.sin()); // y is r, x is theta
             x = r.mult(x.cos()); // y is r, x is theta
             r = Y;
@@ -225,7 +225,7 @@ public class DisplayComponent extends JLabel implements MathObject {
     }
 
     /** TODO: JAVADOC */
-    public Collection<NumberCollection<ComplexNumber>> numc(){
+    public Collection<NumberCollection<Complex>> numc(){
         return numc;
     }
 
