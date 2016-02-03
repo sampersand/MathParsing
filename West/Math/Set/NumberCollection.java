@@ -160,11 +160,10 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     public ComplexNumber stdev() { 
         ComplexNumber sigYy_ = ComplexNumber.ZERO;
         ComplexNumber y_  = mean();
-        for(N y : this)
+        for(N y : this){
             sigYy_ = sigYy_.plus(new ComplexNumber(y).minus(y_).pow(2d));
-        // System.out.println(stdPos(-1));
+        }
         return sigYy_.div(new ComplexNumber(size() - 1)).sqrt();
-        // return sigYy_.sqrt().div(stdPos(-1)); // what is stdDos??
     }
 
     public NumberCollection<N> fns() {
@@ -320,22 +319,27 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         graphWithLinReg(pNC, new GraphComponents());
     }
     public <M extends Number> void graphWithLinReg(NumberCollection<M> pNC, GraphComponents gComp) {
+    }
         EquationSystem linreg = linReg(pNC);
         EquationSystem yEquals = new EquationSystem().add(
                                         linreg.getEq("y") //the reason it's y is because linReg yields y.
                                     );
-        NumberCollection<ComplexNumber> yaxis = new NumberCollection<ComplexNumber>();
-        for(N n : copy()){
-            yaxis.add(new ComplexNumber(n));
-        }
-        NumberCollection<ComplexNumber> xaxis = new NumberCollection<ComplexNumber>();
-        forEach(e -> xaxis.add(new ComplexNumber(e.doubleValue())));
+        NumberCollection 
         // enumeration().forEach(e -> xaxis.add(new ComplexNumber(e.doubleValue())));
 
         Grapher grapher = new Grapher(yEquals,
                                       linreg,
                                       new Collection<Collection<NumberCollection<ComplexNumber>>>(){{
                                         add(new Collection<NumberCollection<ComplexNumber>>(){{
+                                            NumberCollection<ComplexNumber> yaxis =
+                                                new NumberCollection<ComplexNumber>();
+                                            NumberCollection<ComplexNumber> xaxis =
+                                                new NumberCollection<ComplexNumber>();
+                                            for(N n : copy()){
+                                                yaxis.add(new ComplexNumber(n));
+                                            }
+                                            forEach(e -> xaxis.add(new ComplexNumber(e.doubleValue())));
+
                                             add(yaxis);
                                             add(xaxis);
                                         }});
