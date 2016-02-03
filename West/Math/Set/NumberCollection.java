@@ -111,6 +111,20 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
                                    .add(new Equation().add("b0 = " + b0)) 
                                    .add(new Equation().add("b1 = " + b1));
     }
+
+    /**
+     * Used internally when multiple linear regressions are needed, and are required to be distinct.
+     */
+    private <M extends Number> EquationSystem linReg(NumberCollection<M> pNC, int n){
+
+        ComplexNumber b1 = r(pNC).mult(pNC.stdev()).div(stdev());
+        ComplexNumber b0 = pNC.mean().minus(b1).mult(mean());
+        return new EquationSystem()
+                .add(new Equation().add("__y" + n + "__ = __b0_" + n + "__  +  __b1_" + n + "__ * x"))
+                .add(new Equation().add("__b0_" + n + "__ = " + b0)) 
+                .add(new Equation().add("__b1_" + n + "__ = " + b1));
+    }
+
     public EquationSystem linReg(){
         return linReg(enumeration());
     }
@@ -318,7 +332,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         }
         NumberCollection<ComplexNumber> xaxis = new NumberCollection<ComplexNumber>();
         forEach(e -> xaxis.add(new ComplexNumber(e.doubleValue())));
-        graphMultipleCollectionsWithLinReg(new Collection<Collection<NumberCollection<ComplexNumber>>>(){{
+        graphMultWithLinReg(new Collection<Collection<NumberCollection<ComplexNumber>>>(){{
                                         add(new Collection<NumberCollection<ComplexNumber>>(){{
                                             add(yaxis);
                                             add(xaxis);
@@ -327,19 +341,23 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
                                 gComp
                                 );
     }
-    public static <M extends Number> void graphMultipleCollectionsWithLinReg(
-                                            Collection<Collection<NumberCollection<ComplexNumber>>> pCollections,
-                                                          GraphComponents gComp) {
+    public static <M extends Number> void graphMultWithLinReg(Collection<Collection<NumberCollection<ComplexNumber>>> pCollections,
+                                            GraphComponents gComp) {
         EquationSystem allEquations = new EquationSystem();
         EquationSystem toGraph = new EquationSystem();
         EquationSystem linreg;
+        int num = 0; // im using it like this because it's sleeker with the for each statement.
         for(Collection<NumberCollection<ComplexNumber>> setpair : pCollections){
             assert setpair != null && setpair.size() == 2 : "Set Pairs have to be in the format 'X axis, Y axis'. " + 
                 (setpair == null ? "the set pairs were null" : setpair.size() + " was the size") +
                 " for the given Collection!";
-            linreg = setpair.get(0).linReg(setpair.get(1));
+            linreg = setpair.get(0).linReg(setpair.get(1), num);
+            allEquations.add(linreg);
+            assert linreg.getEq("__y" + num + "__") != null;
+            toGraph.add(linreg.getEq("__y" + num++ + "__"));
         }
         Grapher grapher = new Grapher(toGraph, allEquations, pCollections, gComp);
+        grapher.graph();
     }
 
     @Override
