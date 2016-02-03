@@ -46,15 +46,15 @@ public class MathCollection extends NumberCollection<Complex> {
 
     }
 
-    @Override
-    public void graph() {
-        NumberCollection<Complex> nc1 = new NumberCollection<Complex>();
-        NumberCollection<Complex> nc2 = new NumberCollection<Complex>();
-        elements.forEach(nc1::add);
-        enumer.forEach(nc2::add);
-        new Grapher(nc2, nc1).graph();
+    // @Override
+    // public void graph(boolean linreg) {
+    //     NumberCollection<Complex> nc1 = new NumberCollection<Complex>();
+    //     NumberCollection<Complex> nc2 = new NumberCollection<Complex>();
+    //     elements.forEach(nc1::add);
+    //     enumer.forEach(nc2::add);
+    //     new Grapher(nc2, nc1).graph();
 
-    }
+    // }
 
     public static EquationSystem eqFromSetNotation(String pSetNot){
         pSetNot = pSetNot.replaceAll(" ","");

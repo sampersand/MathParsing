@@ -298,9 +298,9 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
             fns.get(0), fns.get(1), fns.get(2), fns.get(3), fns.get(4), mean(), stdev());
     }
 
-    public <M extends Number> void graphe(NumberCollection<M> pNC) {
+    public void graphe(NumberCollection<? extends Number> pNC) {
         // TODO: SEE IF THIS WORKS
-        resid(pNC).graph(enumeration()); 
+        resid(pNC).graph(false); 
     }
 
 
@@ -310,16 +310,16 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
      * TODO: JAVADOC
      */
 
-    public void graph(boolean linreg) {
-        graph(enumeration(), linreg);
+    public void graph(boolean dolinreg) {
+        graph(enumeration(), dolinreg);
     }
 
-    public void graph(NumberCollection<M> pNC, boolean linreg) {
-        graph(pNC, linreg, new GraphComponents());
+    public void graph(NumberCollection<? extends Number> pNC, boolean dolinreg) {
+        graph(pNC, dolinreg, new GraphComponents());
     }
 
 
-    public void graph(NumberCollection<? extends Number> pNC, GraphComponents gComp, boolean linreg) {
+    public void graph(NumberCollection<? extends Number> pNC, boolean dolinreg, GraphComponents gComp) {
         NumberCollection<Complex> yaxis = new NumberCollection<Complex>();
         for(N n : clone()){
             yaxis.add(new Complex(n));
@@ -333,24 +333,25 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
                                         }});
                                     }},
                         gComp,
-                        linreg);
+                        dolinreg);
     }
-    public static void graphMultiple(
-                                List<List<NumberCollection<Complex>>> pCollections,
-                                GraphComponents gComp) {
-        EquationSystem allEquations = new EquationSystem();
-        EquationSystem toGraph = new EquationSystem();
+    public static void graphMultiple(List<List<NumberCollection<Complex>>> pCollections,
+                                     GraphComponents gComp,
+                                     boolean dolinreg) {
+        EquationSystem allEquations = dolinreg ? new EquationSystem() : null;
+        EquationSystem toGraph = dolinreg ? new EquationSystem() : null;
         EquationSystem linreg;
         int num = 0; // im using it like this because it's sleeker with the for each statement.
-        for(List<NumberCollection<Complex>> setpair : pCollections){
-            assert setpair != null && setpair.size() == 2 : "Set Pairs have to be in the format 'X axis, Y axis'. " + 
-                (setpair == null ? "the set pairs were null" : setpair.size() + " was the size") +
-                " for the given Collection!";
-            linreg = setpair.get(0).linReg(setpair.get(1), num);
-            System.out.println(setpair.get(0) + " >> linreg with << " + setpair.get(1) + "\t\t becomes:\t"+linreg);
-            allEquations.add(linreg);
-            assert linreg.getEq("__y" + num + "__") != null;
-            toGraph.add(linreg.getEq("__y" + num++ + "__"));
+        if(dolinreg){
+            for(List<NumberCollection<Complex>> setpair : pCollections){
+                assert setpair != null && setpair.size() == 2 : "Set Pairs have to be in the format 'X axis, Y axis'. "+ 
+                    (setpair == null ? "the set pairs were null" : setpair.size() + " was the size") +
+                    " for the given Collection!";
+                linreg = setpair.get(0).linReg(setpair.get(1), num);
+                allEquations.add(linreg);
+                assert linreg.getEq("__y" + num + "__") != null : "__y"+num+"__ doesnt exist in '"+linreg+"'! uh oh!";
+                toGraph.add(linreg.getEq("__y" + num++ + "__"));
+            }
         }
         Grapher grapher = new Grapher(toGraph, allEquations, pCollections, gComp);
         grapher.graph();
