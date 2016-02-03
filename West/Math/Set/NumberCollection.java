@@ -135,7 +135,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     public NumberCollection<ComplexNumber> Z() {
         NumberCollection<ComplexNumber> ret = new NumberCollection<ComplexNumber>();
          for(N ele : this)
-             ret.add(new ComplexNumber(Z(ele)));
+             ret.add(Z(ele));
          return ret;
     }
 
@@ -162,7 +162,8 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         ComplexNumber y_  = mean();
         for(N y : this)
             sigYy_ = sigYy_.plus(new ComplexNumber(y).minus(y_).pow(2d));
-        return sigYy_.sqrt().div(new ComplexNumber(stdPos(-1)));
+        // System.out.println(stdPos(-1));
+        return sigYy_.div(new ComplexNumber(size() - 1)).sqrt();
         // return sigYy_.sqrt().div(stdPos(-1)); // what is stdDos??
     }
 
