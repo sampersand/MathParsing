@@ -88,17 +88,13 @@ public class Grapher extends JPanel implements MathObject {
         components = pGraph;
         displays = new Collection<DisplayComponent>();
         displays.add(new DisplayComponent(this)); // adds axis
-        System.out.println(pEqSysToGraph+"|"+equationsToUse);
-        System.out.println(numcs);
-        // for(int i = 0; i < equationsToGraph.size(); i++){
-        //     displays.add(new DisplayComponent(this, equationsToGraph.equations().get(i),
-        //             equationsToUse.copy()/*.add(equationsToGraph)*/, COLORS[i % COLORS.length]));
-        // }
+        for(int i = 0; i < equationsToGraph.size(); i++){
+            displays.add(new DisplayComponent(this, equationsToGraph.equations().get(i),
+                    equationsToUse.copy()/*.add(equationsToGraph)*/, COLORS[i % COLORS.length]));
+        }
         for(int i = 0; i < numcs.size(); i++){
-            numcs.forEach(System.out::println);
             displays.add(new DisplayComponent(this, numcs.get(i), COLORS[i % COLORS.length]));
         }
-        // System.out.println(displays);
         graphSetup();
     }
 
@@ -139,7 +135,6 @@ public class Grapher extends JPanel implements MathObject {
     /** TODO: JAVADOC */
     public void graph() {
         // Create and set up the window.
-        System.out.println(toFancyString());
         String title = "Graph of ";
         if(equationsToGraph.size() + numcs.size() > 3) {
             title += "A lot of stuff";
@@ -207,18 +202,18 @@ public class Grapher extends JPanel implements MathObject {
             for(NumberCollection<ComplexNumber> s : sa)
                 ret += "\n" + s.toFancyString(idtLvl + 2);
         }
-
-        if(numcs.size() == 0)
-            ret += "\n" + indent(idtLvl + 2) + "null";
-
+        ret += "\n" + indentE(idtLvl + 2);
         ret += "\n" + indent(idtLvl + 1) + "Equations to Graph:\n" + equationsToGraph.toFancyString(idtLvl + 2);
-        ret += "\n" + indent(idtLvl + 1) +"Graphing Components:\n" + components.toFancyString(idtLvl + 2);
-
+        ret += "\n" + indentE(idtLvl + 2);
+        ret += "\n" + indent(idtLvl + 1) + "Graphing Components:\n" + components.toFancyString(idtLvl + 2);
+        ret += "\n" + indentE(idtLvl + 2);
         ret += "\n" + indent(idtLvl + 1) + "Displays:";
         if(displays.size() == 0)
             ret += "\n" + indent(idtLvl + 2) + "null";
         for(DisplayComponent d : displays)
             ret += "\n" + d.toFancyString(idtLvl + 2);
+        ret += "\n" + indentE(idtLvl + 2);
+        ret += "\n" + indentE(idtLvl + 1);
         return ret;
     }
 
@@ -227,24 +222,40 @@ public class Grapher extends JPanel implements MathObject {
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "Grapher:";
         ret += "\n" + indent(idtLvl + 1) + "NumberCollections:";
+
         for(Collection<NumberCollection<ComplexNumber>> sa : numcs){
             assert sa.size() == 2 && sa.get(0).size() == sa.get(1).size();
             for(NumberCollection<ComplexNumber> s : sa)
                 ret += "\n" + s.toFullString(idtLvl + 2);
         }
-        if(numcs.size() == 0)
-            ret += "\n" + indent(idtLvl + 2) + "null";
 
-        ret += "\n" + indent(idtLvl + 1) + "Equations to Graph:\n" + equationsToGraph.toFullString(idtLvl + 2);
-        ret += "\n" + indent(idtLvl + 1) + "Equations to Use:\n" + equationsToUse.toFullString(idtLvl + 2);
+        if(numcs == null || numcs.size() == 0)
+            ret += "\n" + indent(idtLvl + 2);
 
+        ret += "\n" + indent(idtLvl + 1) + "Equations to Graph:";
+
+        if(equationsToGraph != null){
+            ret += "\n" + equationsToGraph.toFullString(idtLvl + 2);
+        }
+
+        ret += "\n" + indentE(idtLvl + 2);
+        ret += "\n" + indent(idtLvl + 1) + "Equations to Use:";
+
+        if(equationsToUse != null){
+            ret += "\n" + equationsToUse.toFullString(idtLvl + 2);
+        }
+
+        ret += "\n" + indentE(idtLvl + 2);
         ret += "\n" + indent(idtLvl + 1) +"Graphing Components:\n" + components.toFullString(idtLvl + 2);
 
+        ret += "\n" + indentE(idtLvl + 2);
         ret += "\n" + indent(idtLvl + 1) + "Displays:";
         if(displays.size() == 0)
-            ret += "\n" + indent(idtLvl + 2) + "null";
+            ret += "\n" + indent(idtLvl + 2);
         for(DisplayComponent d : displays)
             ret += "\n" + d.toFullString(idtLvl + 2);
+        ret += "\n" + indentE(idtLvl + 2    );
+        ret += "\n" + indentE(idtLvl + 1);
         return ret;
     }
 

@@ -7,6 +7,7 @@ import West.Math.ComplexNumber;
 import West.Math.Equation.Equation;
 import West.Math.Display.Grapher;
 import West.Math.ComplexNumber;
+import West.Math.Display.GraphComponents;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -19,7 +20,6 @@ import java.util.ArrayList;
  * @version 1.1
  * @since 0.72
  */
-//TODO: change double to Number
 public class NumberCollection<N extends Number> extends Collection<N> implements MathObject {
     public NumberCollection(){
         super();
@@ -307,8 +307,8 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         NumberCollection<ComplexNumber> nc1 = new NumberCollection<ComplexNumber>();
 
         NumberCollection<ComplexNumber> nc2 = new NumberCollection<ComplexNumber>();
-        for(Number n : pNC) nc1.add(new ComplexNumber("" + n));
-        for(Number n : this) nc2.add(new ComplexNumber("" + n));
+        for(Number n : pNC) nc1.add(new ComplexNumber(n));
+        for(Number n : this) nc2.add(new ComplexNumber(n));
         new Grapher(nc1, nc2).graph();
     }
 
@@ -316,6 +316,9 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         graph(enumeration());
     }
     public <M extends Number> void graphWithLinReg(NumberCollection<M> pNC) {
+        graphWithLinReg(pNC, new GraphComponents());
+    }
+    public <M extends Number> void graphWithLinReg(NumberCollection<M> pNC, GraphComponents gComp) {
         EquationSystem linreg = linReg(pNC);
         EquationSystem yEquals = new EquationSystem().add(
                                         linreg.getEq("y") //the reason it's y is because linReg yields y.
@@ -325,17 +328,17 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
             yaxis.add(new ComplexNumber(n));
         }
         NumberCollection<ComplexNumber> xaxis = new NumberCollection<ComplexNumber>();
-        enumeration().forEach(e -> xaxis.add(new ComplexNumber(e.doubleValue())));
+        forEach(e -> xaxis.add(new ComplexNumber(e.doubleValue())));
+        // enumeration().forEach(e -> xaxis.add(new ComplexNumber(e.doubleValue())));
 
-        Grapher grapher = new Grapher(linreg,
-                                      yEquals,
+        Grapher grapher = new Grapher(yEquals,
+                                      linreg,
                                       new Collection<Collection<NumberCollection<ComplexNumber>>>(){{
                                         add(new Collection<NumberCollection<ComplexNumber>>(){{
                                             add(yaxis);
                                             add(xaxis);
                                         }});
-                                       }},
-                                      new West.Math.Display.GraphComponents());
+                                       }}, gComp);
         grapher.graph();
         // TODO: FIX THIS
     }

@@ -50,8 +50,8 @@ public class ComplexNumber extends Number implements DoubleSupplier, Comparable<
     }
 
     public ComplexNumber(Number pR, Number pI){
-        real = pR == null ? Double.NaN : (Double)pR;
-        imag = pI == null ? Double.NaN : (Double)pI;
+        real = pR == null ? Double.NaN : new Double(pR.doubleValue());
+        imag = pI == null ? Double.NaN : new Double(pI.doubleValue());
     }
     public ComplexNumber(ComplexNumber pR, ComplexNumber pI){
         real = pR == null ? Double.NaN : pR.aIsOnlyReal().real;

@@ -209,7 +209,7 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
                 spacing = e.toString().length();
         String spaces = "";
         for(int i = 0; i < spacing; i++) spaces += " ";
-        ret += indentE(idtLvl + 1) + "Elements:";
+        ret += indent(idtLvl + 1) + "Elements:";
         for(int i = 0; i < elements.size(); i++){
             if(i % columns == 0){
                 if(i > elements.size() - columns - 1){
@@ -220,7 +220,7 @@ public class Collection<E> extends java.util.ArrayList<E> implements MathObject{
             }
             ret += (get(i) + spaces).substring(0, spacing ) + ((i + 1) % columns == 0 ? "" : " # ");
         }
-        return ret;
+        return ret + "\n" + indentE(idtLvl + 1);
 
     }
 

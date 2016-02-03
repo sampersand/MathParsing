@@ -11,5 +11,6 @@ class NumberCollectionTester {
         // System.out.println(eqsys);
         // eqsys.graph("x", "y");
         nc1.graphWithLinReg(nc2);
+        // nc1.graph();
     }
 }

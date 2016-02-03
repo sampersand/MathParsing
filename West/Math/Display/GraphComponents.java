@@ -134,7 +134,9 @@ public class GraphComponents implements MathObject {
         ret += indent(idtLvl + 1) + "Window Bounds (X, Y) = [" + winBounds[0] + ", " + winBounds[1] + "]\n";
         ret += indent(idtLvl + 1) + "Display Bounds (x, y, X, Y) = [" + dispBounds[0] + ", " + dispBounds[1] + ", " +
                dispBounds[2] + ", " + dispBounds[3] + "]\n";
-        ret += indent(idtLvl + 1) + "Step = " + stepInfo + " (cStep = " + cStep() + ")\n";
+        ret += indent(idtLvl + 1) + "Step = start: " + stepInfo[0] +
+                                           ", end: " + stepInfo[1] + 
+                                          ", step: " + stepInfo[2] + " (cStep = " + cStep() + ")\n";
         ret += indent(idtLvl + 1) + "Independent Var = " + indepVar + "\n";
         ret += indentE(idtLvl + 1) + "Dependant Var = " + new Collection<String>().addAllE(depVars);
         return ret;
@@ -145,16 +147,20 @@ public class GraphComponents implements MathObject {
         assert winBounds.length == 2;
         assert dispBounds.length == 4;
         String ret = indent(idtLvl) + "GraphComponents:\n";
-        ret += indent(idtLvl + 1) + "Window Bounds (X, Y):\n" + indent(idtLvl + 2) + "[" + winBounds[0] + ", " +
+        ret += indent(idtLvl + 1) + "Window Bounds (X, Y):\n" + indentE(idtLvl + 2) + "[" + winBounds[0] + ", " +
                winBounds[1] + "]\n";
-        ret += indent(idtLvl + 1) + "Display Bounds (x, y, X, Y):\n" + indent(idtLvl + 2) + "[" + dispBounds[0] + ", " +
+        ret += indent(idtLvl + 1) + "Display Bounds (x, y, X, Y):\n" + indentE(idtLvl + 2) + "[" + dispBounds[0] + ", " +
                dispBounds[1] + ", " + dispBounds[2] + ", " + dispBounds[3] + "]\n";
-        ret += indent(idtLvl + 1) + "Step:\n" + indent(idtLvl + 2) + "\n";
-        ret += indent(idtLvl + 2) + "(cStep: " + cStep() + ")";
-        ret += indent(idtLvl + 1) + "Independent Var:\n" + indentE(idtLvl + 2) + indepVar;
+        ret += indent(idtLvl + 1) + "Step\n"
+                                  + indent(idtLvl + 2) + "start  = " + stepInfo[0] + "\n"
+                                  + indent(idtLvl + 2) + "end    = " + stepInfo[1] + "\n"
+                                  + indent(idtLvl + 2) + "step   = " + stepInfo[2] + "\n"
+                                  + indentE(idtLvl + 2) + "cStep = " + cStep() + "\n";
+        ret += indent(idtLvl + 1) + "Independent Var:\n" + indentE(idtLvl + 2) + indepVar + "\n";
         ret += indent(idtLvl + 1) + "Dependant Var:\n" + indentE(idtLvl + 2) +
                                     new Collection<String>().addAllE(depVars);
-        return ret + "\n" + indentE(idtLvl + 1);
+        ret += "\n" + indentE(idtLvl + 1);
+        return ret;
     }
 
     @Override

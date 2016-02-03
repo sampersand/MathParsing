@@ -45,13 +45,6 @@ public class DisplayComponent extends JLabel implements MathObject {
     /** TODO: JAVADOC */
     protected Color color;
 
-    /** TODO: JAVADOC */
-    protected boolean drawTickMarks;
-
-    /** TODO: JAVADOC */
-    protected boolean drawNumbers;
-
-
     /** The element that draws the lines. */
     public Graphics2D drawer;   
  
@@ -98,18 +91,9 @@ public class DisplayComponent extends JLabel implements MathObject {
     /** TODO: JAVADOC */
     private DisplayComponent(Grapher pGrapher, Equation pEquation, final EquationSystem pEqSys,
                              Collection<NumberCollection<ComplexNumber>> pNC, Color pColor) {
-        this(pGrapher, pEquation, pEqSys, null, pColor, true, false);
-    }
-
-    /** TODO: JAVADOC */
-    private DisplayComponent(Grapher pGrapher, Equation pEquation, final EquationSystem pEqSys,
-                             Collection<NumberCollection<ComplexNumber>> pNC, Color pColor, boolean pTicks,
-                             boolean pNumbers) {
         grapher = pGrapher;
         equation = pEquation;
         equationsys = pEqSys;
-        drawTickMarks = pTicks;
-        drawNumbers = pNumbers;
         numc = pNC;
         assert numc == null || numc.size() == 2;
         assert numc == null || numc.get(0).size() == numc.get(1).size() : 
@@ -143,17 +127,17 @@ public class DisplayComponent extends JLabel implements MathObject {
 
         double[] dispBounds = grapher.components().dispBounds();
         double[] stepInfo = grapher.components().stepInfo();
-
         if(numc != null) {
             assert numc.size() == 2;
             assert numc.get(0).size() == numc.get(1).size();
             for(int x = 0; x < numc.get(0).size(); x++) {
                 double d1 = numc.get(0).get(x).toDouble();
                 double d2 = numc.get(1).get(x).toDouble();
-                if(d1 == Double.NaN)
+                if(d1 == Double.NaN){
                     Print.printi("d1 is " + d1 + ". Not graphing (" + d1 + ", " + d2 + ").");
-                if(d2 == Double.NaN)
+                } if(d2 == Double.NaN){
                     Print.printi("d2 is " + d2 + ". Not graphing (" + d1 + ", " + d2 + ").");
+                }
                 drawp(d1, d2);
             }
         } else if(equation != null) {
@@ -171,8 +155,7 @@ public class DisplayComponent extends JLabel implements MathObject {
                                                                 + "=" + (x + cStep))),
                       false);
             }
-        }
-        else {
+        } else {
             drawl(0d, dispBounds[1], 0d, dispBounds[3], true); // axis.
             drawl(dispBounds[0], 0d, dispBounds[2], 0d, true); // axis.
         }
@@ -254,7 +237,7 @@ public class DisplayComponent extends JLabel implements MathObject {
 
     @Override
     public String toString() {
-        return "Display of " + (numc == null ? equation == null ? "Axis" : equation : numc +
+        return "Display of " + (numc == null ? equation == null ? "Axis" : equation : "(" + numc + ")" +
             (equation != null ? " && " + equation : ""));
     } 
 
@@ -274,7 +257,9 @@ public class DisplayComponent extends JLabel implements MathObject {
         ret += numc == null ? indentE(idtLvl + 2) + "null" :
                numc.get(0).toFancyString(idtLvl + 2) + "\n" + numc.get(1).toFancyString(idtLvl + 2);
 
-        ret += "\n" + indentE(idtLvl + 1) + "Color:\n" + indentE(idtLvl + 2) + color;
+        ret += "\n" + indent(idtLvl + 1) + "Color:\n" + indentE(idtLvl + 2) + color;
+        ret += "\n" + indentE(idtLvl + 1);
+
         return ret;
     }
 
@@ -282,18 +267,20 @@ public class DisplayComponent extends JLabel implements MathObject {
     public String toFullString(int idtLvl) {
         String ret = indent(idtLvl) + "DisplayComponent:";
         ret += "\n" + indent(idtLvl + 1) + "EquationSystem for Graphing:\n";
-        ret += equationsys == null ? indent(idtLvl + 2) + "null" : equationsys.toFullString(idtLvl + 2);
+        ret += equationsys == null ? indentE(idtLvl + 2) + "" : equationsys.toFullString(idtLvl + 2);
 
         ret += "\n" + indent(idtLvl + 1) + "Equation to Graph:\n";
-        ret += equation == null ? indent(idtLvl + 2) + "null" : equation.toFullString(idtLvl + 2);
+        ret += equation == null ? indentE(idtLvl + 2) + "" : equation.toFullString(idtLvl + 2);
 
         ret += "\n" + indent(idtLvl + 1) + "NumberCollection to Graph:\n";
-        assert numc.size() == 2;
-        assert numc.get(0).size() == numc.get(1).size();
-        ret += numc == null ? indent(idtLvl + 2) + "null" :
+
+        // assert numc.size() == 2;
+        // assert numc.get(0).size() == numc.get(1).size();
+        ret += numc == null ? indent(idtLvl + 2) + "" :
                numc.get(0).toFullString(idtLvl + 2) + "\n" + numc.get(1).toFullString(idtLvl + 2);
 
-        ret += "\n" + indent(idtLvl + 1) + "Color:\n" + indent(idtLvl + 2) + color;
+        ret += "\n" + indent(idtLvl + 1) + "Color:\n" + indentE(idtLvl + 2) + color;
+        ret += "\n" + indentE(idtLvl + 1);
         return ret;
     }
 

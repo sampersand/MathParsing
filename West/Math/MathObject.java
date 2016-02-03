@@ -23,7 +23,7 @@ public interface MathObject {
      * @see #toFancyString(int)
      */
     public default String toFancyString(){
-        return toFancyString(0);
+        return toFancyString(0) + "\n" + indentE(0);
     }
 
     /**
@@ -42,7 +42,7 @@ public interface MathObject {
      * @return the complete string representation of this class.
      */
     public default String toFullString(){
-        return toFullString(0);
+        return toFullString(0) + "\n" + indentE(0);
     }
 
     /**
