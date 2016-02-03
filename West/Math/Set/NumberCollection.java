@@ -318,34 +318,28 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     public <M extends Number> void graphWithLinReg(NumberCollection<M> pNC) {
         graphWithLinReg(pNC, new GraphComponents());
     }
+
     public <M extends Number> void graphWithLinReg(NumberCollection<M> pNC, GraphComponents gComp) {
-    }
-        EquationSystem linreg = linReg(pNC);
-        EquationSystem yEquals = new EquationSystem().add(
-                                        linreg.getEq("y") //the reason it's y is because linReg yields y.
-                                    );
-        NumberCollection 
-        // enumeration().forEach(e -> xaxis.add(new ComplexNumber(e.doubleValue())));
-
-        Grapher grapher = new Grapher(yEquals,
-                                      linreg,
-                                      new Collection<Collection<NumberCollection<ComplexNumber>>>(){{
+        NumberCollection<ComplexNumber> yaxis = new NumberCollection<ComplexNumber>();
+        for(N n : copy()){
+            yaxis.add(new ComplexNumber(n));
+        }
+        NumberCollection<ComplexNumber> xaxis = new NumberCollection<ComplexNumber>();
+        forEach(e -> xaxis.add(new ComplexNumber(e.doubleValue())));
+        graphWithLinReg(new Collection<Collection<NumberCollection<ComplexNumber>>>(){{
                                         add(new Collection<NumberCollection<ComplexNumber>>(){{
-                                            NumberCollection<ComplexNumber> yaxis =
-                                                new NumberCollection<ComplexNumber>();
-                                            NumberCollection<ComplexNumber> xaxis =
-                                                new NumberCollection<ComplexNumber>();
-                                            for(N n : copy()){
-                                                yaxis.add(new ComplexNumber(n));
-                                            }
-                                            forEach(e -> xaxis.add(new ComplexNumber(e.doubleValue())));
-
                                             add(yaxis);
                                             add(xaxis);
                                         }});
-                                       }}, gComp);
-        grapher.graph();
-        // TODO: FIX THIS
+                                    }},
+                                gComp
+                                );
+    }
+    public static <M extends Number> void graphWithLinReg(Collection<Collection<NumberCollection<ComplexNumber>>> pSets,
+                                                          GraphComponents gComp) {
+        EquationSystem allEquations = new EquationSystem();
+        EquationSystem toGraph = new EquationSystem();
+        Grapher grapher = new Grapher(toGraph, allEquations, pSets, gComp);
     }
 
     @Override
