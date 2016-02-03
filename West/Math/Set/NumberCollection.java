@@ -10,7 +10,7 @@ import West.Math.Complex;
 import West.Math.Display.GraphComponents;
 
 import java.util.HashMap;
-import java.util.AbstractList;
+import java.util.List;
 
 /**
  * The class that represents NumberCollections in mathamatics. This one also includes a lot of different functions that are utilized
@@ -24,7 +24,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     public NumberCollection(){
         super();
     }
-    public NumberCollection(AbstractList<N> arl) {
+    public NumberCollection(List<N> arl) {
         super(arl);
     }
 
@@ -309,46 +309,40 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
      * pNC is x axis
      * TODO: JAVADOC
      */
-    public <M extends Number> void graph(NumberCollection<M> pNC) { // the number line on the bottom can be different.
-        NumberCollection<Complex> nc1 = new NumberCollection<Complex>();
 
-        NumberCollection<Complex> nc2 = new NumberCollection<Complex>();
-        for(Number n : pNC) nc1.add(new Complex(n));
-        for(Number n : this) nc2.add(new Complex(n));
-        new Grapher(nc1, nc2).graph();
+    public void graph(boolean linreg) {
+        graph(enumeration(), linreg);
     }
 
-    public void graph() {
-        graph(enumeration());
-    }
-    public <M extends Number> void graphWithLinReg(NumberCollection<M> pNC) {
-        graphWithLinReg(pNC, new GraphComponents());
+    public void graph(NumberCollection<M> pNC, boolean linreg) {
+        graph(pNC, linreg, new GraphComponents());
     }
 
-    public <M extends Number> void graphWithLinReg(NumberCollection<M> pNC, GraphComponents gComp) {
+
+    public void graph(NumberCollection<? extends Number> pNC, GraphComponents gComp, boolean linreg) {
         NumberCollection<Complex> yaxis = new NumberCollection<Complex>();
         for(N n : clone()){
             yaxis.add(new Complex(n));
         }
         NumberCollection<Complex> xaxis = new NumberCollection<Complex>();
         forEach(e -> xaxis.add(new Complex(e.doubleValue())));
-        graphMultiWithLinReg(new Collection<Collection<NumberCollection<Complex>>>(){{
+        graphMultiple(new Collection<List<NumberCollection<Complex>>>(){{
                                         add(new Collection<NumberCollection<Complex>>(){{
                                             add(yaxis);
                                             add(xaxis);
                                         }});
                                     }},
-                                gComp
-                                );
+                        gComp,
+                        linreg);
     }
-    public static void graphMultiWithLinReg(
-                                Collection<Collection<NumberCollection<Complex>>> pCollections,
+    public static void graphMultiple(
+                                List<List<NumberCollection<Complex>>> pCollections,
                                 GraphComponents gComp) {
         EquationSystem allEquations = new EquationSystem();
         EquationSystem toGraph = new EquationSystem();
         EquationSystem linreg;
         int num = 0; // im using it like this because it's sleeker with the for each statement.
-        for(Collection<NumberCollection<Complex>> setpair : pCollections){
+        for(List<NumberCollection<Complex>> setpair : pCollections){
             assert setpair != null && setpair.size() == 2 : "Set Pairs have to be in the format 'X axis, Y axis'. " + 
                 (setpair == null ? "the set pairs were null" : setpair.size() + " was the size") +
                 " for the given Collection!";

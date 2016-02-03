@@ -3,6 +3,7 @@ import West.Math.Set.NumberCollection;
 import West.Math.Equation.EquationSystem;
 import West.Math.Display.GraphComponents;
 import West.Math.Complex;
+import java.util.List;
 class NumberCollectionTester {
     public static void main(String[] args) {
 
@@ -13,8 +14,8 @@ class NumberCollectionTester {
         //                       NumberCollection<#######>      <-- A collection of data apoints (A single axis)
         //                                        Complex       <-- A single data point
 
-        Collection<Collection<NumberCollection<Complex>>> datasets =
-            new Collection<Collection<NumberCollection<Complex>>>(){{ // new collection of data sets
+        Collection<List<NumberCollection<Complex>>> datasets =
+            new Collection<List<NumberCollection<Complex>>>(){{ // new collection of data sets
                 add(new Collection<NumberCollection<Complex>>(){{ // a new data set
                     add(new NumberCollection<Complex>(){{ // x axis
                         for(Double d : new Double[]{-3d, -2d, -1d, +0d, +1d, +2d, +3d}) 
@@ -47,7 +48,7 @@ class NumberCollectionTester {
         // System.out.println(eqsys);
         // eqsys.graph("x", "y");
 
-        NumberCollection.graphMultiWithLinReg(datasets, new GraphComponents());
+        NumberCollection.graphMultiple(datasets, new GraphComponents(), false);
 
     }
 }

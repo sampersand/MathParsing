@@ -1,10 +1,10 @@
 package West.Math.Set;
 import West.Math.MathObject;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Iterator;
 import java.util.function.Consumer;
 import java.util.AbstractList;
+import java.util.List;
 /**
  * TODO: JAVADOC
  * 
@@ -12,15 +12,15 @@ import java.util.AbstractList;
  * @version 1.1
  * @since 0.75
  */ 
-public class Collection<E> extends AbstractList<E> implements MathObject, Cloneable{
+public class Collection<E> extends AbstractList<E> implements MathObject, Cloneable, List<E>{
 
-    protected AbstractList<E> elements;
+    protected List<E> elements;
 
     // Initializers
     public Collection(){
         this(new ArrayList<E>());}
 
-    public Collection(AbstractList<E> eles){
+    public Collection(List<E> eles){
         elements = eles;}
 
     //Adding elements
@@ -35,14 +35,14 @@ public class Collection<E> extends AbstractList<E> implements MathObject, Clonea
     @Override public boolean         add      (E e)          { return elements.add(e);                        }
     @Override public void            add      (int p, E e)   {        elements.add(p, e);                     }
               public E               get      (int p     )   { return elements.get(stdPos(p));                }
-              public E               set      (int p, E e)   { return elements.set(stdPos(p), e);          }
+              public E               set      (int p, E e)   { return elements.set(stdPos(p), e);             }
               public E               pop      ()             { return remove(-1);                             }
               public E               pop      (int p)        { return remove(p);                              }
               public E               remove   (int p)        { return elements.remove(stdPos(p));             }
               public boolean         isEmpty  ()             { return elements.isEmpty();                     }
               public int             size     ()             { return elements.size();                        }
               public int             stdPos   (int p)        { return (p < 0 ? size() : 0) + p;               }
-              public AbstractList<E> elements ()             { return elements;                               }
+              public List<E>         elements ()             { return elements;                               }
               public List<E>         subList  (int s)        { return subList(s, size());                     }
               public List<E>         subList  (int s, int e) { return elements.subList(stdPos(s), stdPos(e)); }
               public void            append   (E o)          {        elements.add(o);                        }
@@ -64,7 +64,7 @@ public class Collection<E> extends AbstractList<E> implements MathObject, Clonea
         addAll(pObj);
         return this;
     }
-    public Collection setElements(AbstractList<E> pElements){
+    public Collection setElements(List<E> pElements){
         elements = pElements;
         return this;
     }
@@ -111,12 +111,12 @@ public class Collection<E> extends AbstractList<E> implements MathObject, Clonea
     // Set stuff
 
     //  THIS ∪ PRGROUP
-    public Collection<? extends E> union(AbstractList<? extends E> pCollection){
+    public Collection<? extends E> union(List<? extends E> pCollection){
         return clone().addAllE(pCollection);
     }
 
     //  THIS ∩ PGROUP
-    public Collection<? extends E> intersect(AbstractList<? extends E> pCollection){
+    public Collection<? extends E> intersect(List<? extends E> pCollection){
         Collection<E> ret = new Collection<E>();
         for(E d : this)
             if(pCollection.contains(d))
@@ -125,7 +125,7 @@ public class Collection<E> extends AbstractList<E> implements MathObject, Clonea
     }
     
     //  ¬ THIS
-    public Collection<E> not(AbstractList<E> universe){
+    public Collection<E> not(List<E> universe){
         Collection<E> me = this;
         return new Collection<E>(){{
             for(E e : universe)

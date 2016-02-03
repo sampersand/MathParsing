@@ -1,7 +1,7 @@
 package West.Math.Display;
 
 import West.Math.MathObject;
-import West.Math.Set.Collection;
+import West.Math.Set.Collection; // not 100% sure it's necessary....
 
 /**
  * Keeps track of different thigns about graphing - like window sizes

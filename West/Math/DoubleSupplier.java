@@ -6,4 +6,5 @@ public interface DoubleSupplier {
     public default Double toDouble(){
         return toDouble(new HashMap<String, DoubleSupplier>(), new EquationSystem());
     }
+    public boolean isNaN();
 }

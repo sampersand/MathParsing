@@ -85,7 +85,7 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
         assert isOnlyReal() : "Complex Number '" + this + "' has to have no imaginary component!";
         return this;
     }
-
+    @Override
     public boolean isNaN(){ return equals(NAN); }//!isReal() && !isImag();}
 
     public static Complex parseComplex(String s){
@@ -136,6 +136,10 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
     @Override
     public long longValue() {
         return toDouble().longValue();
+    }
+    // @Override
+    public boolean booleanValue() {
+        return isNaN();
     }
 
     // Standard Arithmetic
@@ -258,6 +262,48 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
         //     return this
         return plus(c.mult(div(c).realConjugate().ceil()));
     }
+
+
+
+
+    public Complex and(Complex c){
+        return booleanValue() ? c : this;
+    }
+    public Complex or(Complex c){
+        return booleanValue() ? this : c;
+    }
+    public Complex xor(Complex c){
+        return null;
+        // return booleanValue() ? c.booleanValue() ? ;
+    }
+    public Complex nand(Complex c){
+        return not(and(c));
+    }
+    public Complex nor(Complex c){
+        return not(nor(c));
+    }
+    public Complex not(Complex c){ //negate
+        return null;
+    }
+
+    // public Complex band(Complex c){
+    //     return new ComplexNumber(intValue() & c.intValue());
+    // }
+    // public Complex bor(Complex c){
+    //     return booleanValue() ? this : c;
+    // }
+    // public Complex bxor(Complex c){
+    //     return booleanValue() ? c.booleanValue() ? ;
+    // }
+    // public Complex bnand(Complex c){
+    //     return not(and(c));
+    // }
+    // public Complex bnor(Complex c){
+    //     return not(nor(c));
+    // }
+    // public Complex bnot(Complex c){ //negate
+    //     return null;
+    // }
 
     // Trigonometric Functions
         // Standard Trigonometric Functions

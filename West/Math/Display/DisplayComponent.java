@@ -5,8 +5,8 @@ import West.Print;
 import West.Math.Equation.Equation;
 import West.Math.Equation.EquationSystem;
 import West.Math.Set.NumberCollection;
-import West.Math.Set.Collection;
 import West.Math.Complex;
+import java.util.List;
 
 import java.util.ArrayList;
 
@@ -40,7 +40,7 @@ public class DisplayComponent extends JLabel implements MathObject {
     protected EquationSystem equationsys;
 
     /** TODO: JAVADOC */
-    protected Collection<NumberCollection<Complex>> numc;
+    protected List<NumberCollection<Complex>> numc;
 
     /** TODO: JAVADOC */
     protected Color color;
@@ -66,12 +66,12 @@ public class DisplayComponent extends JLabel implements MathObject {
      * I draw a set
      * TODO: JAVADOC
      */
-    public DisplayComponent(Grapher pGrapher, Collection<NumberCollection<Complex>> pNC) {
+    public DisplayComponent(Grapher pGrapher, List<NumberCollection<Complex>> pNC) {
         this(pGrapher, pNC, Color.BLUE);
     }
 
     /** TODO: JAVADOC */
-    public DisplayComponent(Grapher pGrapher, Collection<NumberCollection<Complex>> pNC, Color pColor) {
+    public DisplayComponent(Grapher pGrapher, List<NumberCollection<Complex>> pNC, Color pColor) {
         this(pGrapher, null, null, pNC, pColor);
     }
 
@@ -90,7 +90,7 @@ public class DisplayComponent extends JLabel implements MathObject {
 
     /** TODO: JAVADOC */
     private DisplayComponent(Grapher pGrapher, Equation pEquation, final EquationSystem pEqSys,
-                             Collection<NumberCollection<Complex>> pNC, Color pColor) {
+                             List<NumberCollection<Complex>> pNC, Color pColor) {
         grapher = pGrapher;
         equation = pEquation;
         equationsys = pEqSys;
@@ -225,7 +225,7 @@ public class DisplayComponent extends JLabel implements MathObject {
     }
 
     /** TODO: JAVADOC */
-    public Collection<NumberCollection<Complex>> numc(){
+    public List<NumberCollection<Complex>> numc(){
         return numc;
     }
 

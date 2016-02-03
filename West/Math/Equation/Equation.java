@@ -7,8 +7,7 @@ import West.Math.Set.Node.TokenNode;
 import West.Math.Set.Node.Node;
 
 import java.util.HashMap;
-
-import West.Math.Set.Collection;
+import java.util.List;
 
 /**
  * A class that represents an equation in West.Math. It really is just a collection of Nodes that are equal to
@@ -109,9 +108,9 @@ public class Equation implements MathObject {
      * @return An Collection of tokens, each representing a different chunk of the expression. 
      * @see Token
      */
-    public static Collection<Token> parseTokens(String rEq) {
+    public static List<Token> parseTokens(String rEq) {
         rEq = fixNode(rEq.trim().replaceAll(" ","")); // remove all spaces
-        Collection<Token> tokens = new Collection<Token>();
+        List<Token> tokens = new West.Math.Set.Collection<Token>();
         String all = "", s;
 
         for(int x = 0; x < rEq.length(); x++) {

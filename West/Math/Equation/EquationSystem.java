@@ -12,6 +12,8 @@ import West.Math.Set.Collection;
 import West.Math.Set.Node.TokenNode;
 import West.Math.DoubleSupplier;
 import West.Math.Complex;
+import java.util.List;
+
 /**
  * The main class for all equation-related things. It keeps track of different equations, and of names of 
  * {@link CustomFunction}s (and the corresponding classes for them).
@@ -55,7 +57,7 @@ public class EquationSystem implements MathObject{
      * @param pEqs      An Collection of {@link Equation}s, used to instiate {@link #equations}.
      * @param pFuncs    An Collection of {@link CustomFunction}s, used to instatiate {@link #functions}.
      */
-    public EquationSystem(Collection<Equation> pEqs,
+    public EquationSystem(List<Equation> pEqs,
                           HashMap<String, CustomFunction> pFuncs) {
         equations = new Collection<Equation>().addAllE(pEqs);
         functions = new HashMap<String, CustomFunction>();
@@ -115,7 +117,7 @@ public class EquationSystem implements MathObject{
      * @param pEqs      An Collection of {@link Equation}s, all of which will be added to {@link #equations}.
      * @return This class, but with <code>pEqs</code> added to {@link #equations}.
      */
-    public EquationSystem add(Collection<Equation> pEqs) {
+    public EquationSystem add(List<Equation> pEqs) {
         assert pEqs != null;
         pEqs.forEach(this::add);
         return this;

@@ -1,6 +1,6 @@
 package West.Math.Set.Node;
 import West.Math.Set.Collection;
-import java.util.AbstractList;
+import java.util.List;
 import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Function.Function;
 import West.Math.Equation.Token;
@@ -39,7 +39,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         parens = pTokenNode.parens;
     }
 
-    protected Object[] condeseNodes(AbstractList<Token> pTokens) {
+    protected Object[] condeseNodes(List<Token> pTokens) {
         int pos = 0;
         TokenNode node = clone();
         while(pos < pTokens.size()) {
@@ -155,7 +155,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         assert tn != null : "attempting to add null to '"+toFullString()+"'";
         return super.add(tn);
     }
-    public static TokenNode generateMasterNode(AbstractList<Token> pTokens) {
+    public static TokenNode generateMasterNode(List<Token> pTokens) {
         TokenNode tn = (TokenNode)new TokenNode().condeseNodes(pTokens)[1]; // just to make it easier to read.
         tn = condense(new Collection<TokenNode>().addAllE(tn.elements));
         return tn.removeExtraFuncs();
