@@ -104,7 +104,7 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
     @Override
     public int compareTo(Number n){
         if(!isOnlyReal() || (n instanceof Complex ? !((Complex)n).isOnlyReal() : false))
-            System.err.println("inequalities are not well-defined in the complex plane");
+            System.err.println("inequalities are neg well-defined in the complex plane");
         Complex cn = (Complex)n;
         return isReal() && cn.isReal()
                ?
@@ -137,10 +137,7 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
     public long longValue() {
         return toDouble().longValue();
     }
-    // @Override
-    public boolean booleanValue() {
-        return isNaN();
-    }
+
 
     // Standard Arithmetic
     public static Complex div(Number c, Number b){
@@ -265,45 +262,66 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
 
 
 
-
+    //logic
     public Complex and(Complex c){
-        return booleanValue() ? c : this;
+        return isNaN() ? c : this;
     }
     public Complex or(Complex c){
-        return booleanValue() ? this : c;
+        return isNaN() ? this : c;
     }
     public Complex xor(Complex c){
-        return null;
-        // return booleanValue() ? c.booleanValue() ? ;
+        return isNaN() ? c.isNaN() ? NAN : c : c.isNaN() ? this : NAN;
     }
     public Complex nand(Complex c){
-        return not(and(c));
+        return and(c).not();
     }
     public Complex nor(Complex c){
-        return not(nor(c));
+        return or(c).not();
     }
-    public Complex not(Complex c){ //negate
-        return null;
+    public Complex not(){
+        return isNaN() ? ONE : NAN;
     }
 
-    // public Complex band(Complex c){
-    //     return new ComplexNumber(intValue() & c.intValue());
-    // }
-    // public Complex bor(Complex c){
-    //     return booleanValue() ? this : c;
-    // }
-    // public Complex bxor(Complex c){
-    //     return booleanValue() ? c.booleanValue() ? ;
-    // }
-    // public Complex bnand(Complex c){
-    //     return not(and(c));
-    // }
-    // public Complex bnor(Complex c){
-    //     return not(nor(c));
-    // }
-    // public Complex bnot(Complex c){ //negate
-    //     return null;
-    // }
+
+    public Complex eq(Complex c){
+        return  equals(c) ? ONE : NAN;
+    }
+    public Complex neq(Complex c){
+        return !equals(c) ? ONE : NAN;
+    }
+
+    public Complex lt(Complex c){
+        return compareTo(c) <  0 ? ONE : NAN;
+    }
+    public Complex gt(Complex c){
+        return compareTo(c) >  0 ? ONE : NAN;
+    }
+    public Complex lte(Complex c){
+        return compareTo(c) <= 0 ? ONE : NAN;
+    }
+    public Complex gte(Complex c){
+        return compareTo(c) >= 0 ? ONE : NAN;
+    }
+
+    //bitwise
+    public Complex band(Complex c){
+        return new Complex(intValue() & c.intValue());
+    }
+    public Complex bor(Complex c){
+        return new Complex(intValue() | c.intValue());
+    }
+    public Complex bxor(Complex c){
+        return new Complex(intValue() ^ c.intValue());
+    }
+    public Complex bneg(){ //bitwise negate
+        return new Complex(~intValue());
+    }
+    public Complex bsl(Complex c){
+        return new Complex(intValue() << c.intValue());
+    }
+    public Complex bsr(Complex c){
+        return new Complex(intValue() >> c.intValue());
+    }
 
     // Trigonometric Functions
         // Standard Trigonometric Functions
@@ -375,15 +393,6 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
     }
     public Complex atan(){
         return new Complex(Math.atan(aIsOnlyReal().real));
-    }
-
-
-    // Byte shifting
-    public Complex byteShiftLeft(Complex c){
-        return new Complex(intValue() << c.intValue());
-    }
-    public Complex byteShiftRight(Complex c){
-        return new Complex(intValue() >> c.intValue());
     }
 
     // Misc

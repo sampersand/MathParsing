@@ -1,5 +1,4 @@
 package West.Math.Equation.Function;
-
 import West.Math.MathObject;
 import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Equation;
@@ -35,25 +34,24 @@ public class Function implements MathObject {
         public DoubleSupplier exec(HashMap<String, DoubleSupplier> hm, EquationSystem eqsys, TokenNode tn);
     }
 
-    public static final int DEFAULT_PRIORITY = 100; // TODO: FIX
+    public static final int DEFAULT_PRIORITY = 12;
 
     public static Collection<Function> FUNCTIONS = new Collection<Function>() {{
         //  =                : 0
-        //  ()               : 1
-        //  ∧, ∨, ⊻, ⊼, ⊽    : 2
-        //  >, <, ≣, ≥, ≤, ≠ : 3
-        //  ^, ≫, ≪          : 4
-        //  *, /, %          : 5
-        //  +, -             : 6
-        //  unary !          : 7
-        //  unary –          : 8
-        add(new Function(new Collection<String>(){{add("=");}},
-            "Sets 'A' to 'B'", "A = B",
-            0,
-            Type.ASSIGN,
-            new Collection<Integer>().addE(2), 
-            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)) // doesnt matter
-        ));
+        //  ∨, ⊽,            : 1
+        //  ⊻                : 2
+        //  ∧, ⊼,            : 3
+        //  b|               : 4
+        //  b^               : 5
+        //  b&               : 6
+        //  ≣, ≠             : 7
+        //  >, <, ≥, ≤,       : 8
+        //  b≫, b≪           : 9
+        //  +, -             : 10
+        //  *, /, %          : 11
+        //  ^,               : 12
+        //  unary –, b~      : 13
+        //  unary !          : 14
 
         add(new Function(new Collection<String>(){{add("");}},
             "Parenthesis, literally: ('A')", "(A)",
@@ -128,64 +126,223 @@ public class Function implements MathObject {
                 }
             }
         ));
-        
 
-        // Comparators
+        // priority 0: equals
+        add(new Function(new Collection<String>(){{add("=");}},
+            "Sets 'A' to 'B'", "A = B",
+            0,
+            Type.ASSIGN,
+            new Collection<Integer>().addE(2), 
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)) // doesnt matter
+        ));
 
-            // Normal Comparators
-        add(new Function(new Collection<String>(){{add("＞");}},
-            "Checks if 'A' ＞ 'B'", "A ＞ B",
+        // priority 1: or / nor
+        add(new Function(new Collection<String>(){{add("∨"); add("or");}},
+            "Checks if 'A' ∨ 'B'", "A ∨ B",
+            1,
+            Type.BIN,
+            new Collection<Integer>().addE(2),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).or((Complex)eval(1, tn, hm, eqsys))
+        ));
+        add(new Function(new Collection<String>(){{add("⊽");add("nor");}},
+            "Checks if 'A' ⊽ 'B'", "A ⊽ B",
+            1,
+            Type.BIN,
+            new Collection<Integer>().addE(2),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).nor((Complex)eval(1, tn, hm, eqsys))
+        ));
+
+        // priority 2: xor
+        add(new Function(new Collection<String>(){{add("⊻"); add("xor");}},
+            "Checks if 'A' ⊻ 'B'", "A ⊻ B",
+            2,
+            Type.BIN,
+            new Collection<Integer>().addE(2),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).xor((Complex)eval(1, tn, hm, eqsys))
+        ));
+
+        // priority 3: and / nand
+        add(new Function(new Collection<String>(){{add("∧"); add("and");}},
+            "Checks if 'A' ∧ 'B'", "A ∧ B",
             3,
             Type.BIN,
             new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).
-                            compareTo(((Complex)eval(1, tn, hm, eqsys))) == 1 ? new Complex(1d) : NAN
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).and((Complex)eval(1, tn, hm, eqsys))
         ));
-
-        add(new Function(new Collection<String>(){{add("＜");}},
-            "Checks if 'A' ＜ 'B'", "A ＜ B",
+        add(new Function(new Collection<String>(){{add("⊼"); add("nand");}},
+            "Checks if 'A' ⊼ 'B'", "A ⊼ B",
             3,
             Type.BIN,
             new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).
-                            compareTo(((Complex)eval(1, tn, hm, eqsys))) == -1 ? new Complex(1d) : NAN
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).nand((Complex)eval(1, tn, hm, eqsys))
         ));
 
+        // priority 4:  b|
+        add(new Function(new Collection<String>(){{add("b|");}},
+            "Bitwise or of 'A' and 'B' (A|B)", "A b| B", 
+            4,
+            Type.BIN,
+            new Collection<Integer>().addE(2),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).bor((Complex)eval(1, tn, hm, eqsys))
+        ));
+
+        // priority 5: b^
+        add(new Function(new Collection<String>(){{add("b^");}},
+            "Bitwise xor of 'A' and 'B' (A^B)", "A b^ B", 
+            5,
+            Type.BIN,
+            new Collection<Integer>().addE(2),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).bxor((Complex)eval(1, tn, hm, eqsys))
+        ));
+
+        // priority 6: b&
+        add(new Function(new Collection<String>(){{add("b&");}},
+            "Bitwise and of 'A' and 'B' (A&B)", "A b& B", 
+            6,
+            Type.BIN,
+            new Collection<Integer>().addE(2),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).band((Complex)eval(1, tn, hm, eqsys))
+        ));
+
+        // priority 7: ≣, ≠
         add(new Function(new Collection<String>(){{add("≣");}},
             "Checks if 'A' == 'B'", "A ≣ B",
-            3,
+            7,
             Type.BIN,
             new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).
-                            compareTo(((Complex)eval(1, tn, hm, eqsys))) == 0 ? new Complex(1d) : NAN
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).eq((Complex)eval(1, tn, hm, eqsys))
         ));
-
-        add(new Function(new Collection<String>(){{add("≥");}},
-            "Checks if 'A' ≥ 'B'", "A ≥ B",
-            3,
-            Type.BIN,
-            new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).
-                            compareTo(((Complex)eval(1, tn, hm, eqsys))) != -1 ? new Complex(1d) : NAN
-        ));
-
-        add(new Function(new Collection<String>(){{add("≤");}},
-            "Checks if 'A' ≤ 'B'", "A ≤ B",
-            3,
-            Type.BIN,
-            new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).
-                            compareTo(((Complex)eval(1, tn, hm, eqsys))) != 1 ? new Complex(1d) : NAN
-        ));
-
         add(new Function(new Collection<String>(){{add("≠");}},
             "Checks if 'A' ≠ 'B'", "A ≠ B",
-            3,
+            7,
+            Type.BIN,
+            new Collection<Integer>().addE(2),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).neq((Complex)eval(1, tn, hm, eqsys))
+        ));
+
+        // priority 8: >, <, ≥, ≤
+        add(new Function(new Collection<String>(){{add("＜");}},
+            "Checks if 'A' ＜ 'B'", "A ＜ B",
+            8,
+            Type.BIN,
+            new Collection<Integer>().addE(2),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).lt((Complex)eval(1, tn, hm, eqsys))
+        ));
+        add(new Function(new Collection<String>(){{add("＞");}},
+            "Checks if 'A' ＞ 'B'", "A ＞ B",
+            8,
+            Type.BIN,
+            new Collection<Integer>().addE(2),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).gt((Complex)eval(1, tn, hm, eqsys))
+        ));
+        add(new Function(new Collection<String>(){{add("≤");}},
+            "Checks if 'A' ≤ 'B'", "A ≤ B",
+            8,
+            Type.BIN,
+            new Collection<Integer>().addE(2),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).lte((Complex)eval(1, tn, hm, eqsys))
+        ));
+        add(new Function(new Collection<String>(){{add("≥");}},
+            "Checks if 'A' ≥ 'B'", "A ≥ B",
+            8,
+            Type.BIN,
+            new Collection<Integer>().addE(2),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).gte((Complex)eval(1, tn, hm, eqsys))
+        ));
+
+        // priority 9: b≫, b≪
+        add(new Function(new Collection<String>(){{add("≫");add("b≫");}},
+            "'A' Shifted to the right 'B' bits", "≫(A, B)",
+            9,
+            Type.BIN,
+            new Collection<Integer>().addE(2),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).bsr((Complex)eval(1, tn, hm, eqsys))
+        ));
+        add(new Function(new Collection<String>(){{add("≪");add("b≪");}},
+            "'A' Shifted to the left 'B' bits", "≪(A, B)",
+            9,
+            Type.BIN,
+            new Collection<Integer>().addE(2),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).bsl((Complex)eval(1, tn, hm, eqsys))
+        ));
+
+        // priority 10: +, -
+        add(new Function(new Collection<String>(){{add("+");}},
+            "Adds 'A' to 'B'", "A + B", 
+            10,
+            Type.BIN,
+            new Collection<Integer>().addE(2),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).plus((Complex)eval(1, tn, hm, eqsys))
+        ));
+        add(new Function(new Collection<String>(){{add("-");}},
+            "Subtracts 'A' to 'B'", "A - B",
+            10,
             Type.BIN,
             new Collection<Integer>().addE(2),
             (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).
-                            compareTo(((Complex)eval(1, tn, hm, eqsys))) != 0 ? new Complex(1d) : NAN
+                                 minus((Complex)eval(1, tn, hm, eqsys))
+            // (hm, eqsys, tn) -> tn.size() == 1 ? 0 - ((Complex)eval(0, tn, hm, eqsys)) :
+            // ((Complex)eval(0, tn, hm, eqsys)) - ((Complex)eval(1, tn, hm, eqsys))
         ));
+
+        // priority 11: *, /, %
+        add(new Function(new Collection<String>(){{add("*");add("·");add("×");}},
+            "Multiplies 'A' to 'B'", "A * B",
+            11,
+            Type.BIN,
+            new Collection<Integer>().addE(2),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).mult((Complex)eval(1, tn, hm, eqsys))
+        ));
+        add(new Function(new Collection<String>(){{add("/");add("÷");}},
+            "Divides 'A' to 'B'", "A / B",
+            11,
+            Type.BIN,
+            new Collection<Integer>().addE(2),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).div((Complex)eval(1, tn, hm, eqsys))
+        ));
+        add(new Function(new Collection<String>(){{add("%");}},
+            "'A' Modulo 'B'", "A % B",
+            11,
+            Type.BIN,
+            new Collection<Integer>().addE(2),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).
+                                 modulo((Complex)eval(1, tn, hm, eqsys))
+        ));
+
+        // priority 12: ^
+        add(new Function(new Collection<String>(){{add("^");}},
+            "Raises 'A' to 'B'", "A ^ B",
+            12,
+            Type.BIN,
+            new Collection<Integer>().addE(2),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).pow((Complex)eval(1, tn, hm, eqsys))
+        ));
+
+        // priority 13: –ELE, b~ELE
+        add(new Function(new Collection<String>(){{add("–");}}, // negation
+            "negate 'A'", "–(A)",
+            13,
+            Type.UNL,
+            new Collection<Integer>().addE(1),
+            (hm, eqsys, tn) -> new Complex(-1d).mult(((Complex)eval(0, tn, hm, eqsys)))
+        ));
+        add(new Function(new Collection<String>(){{add("b~");}}, // negation
+            "bitwise negation of 'A' (~A)", "b~(A)",
+            13,
+            Type.UNL,
+            new Collection<Integer>().addE(1),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).bneg()
+        ));
+
+        //  priority 14: ELE!
+        add(new Function(new Collection<String>(){{add("!");}}, // negation
+            "factorial 'A'", "!(A)",
+            14,
+            Type.UNR,
+            new Collection<Integer>().addE(1),
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).factorial()
+        ));
+
 
         add(new Function(new Collection<String>(){{add("compare");}},
             "See Double.compare(A, B)", "compare(A, B)",
@@ -193,146 +350,7 @@ public class Function implements MathObject {
             Type.NORM,
             new Collection<Integer>().addE(2),
             (hm, eqsys, tn) -> new Complex(((Complex)eval(0, tn, hm, eqsys)).
-                                                 compareTo(((Complex)eval(1, tn, hm, eqsys))))
-        ));
-
-
-            // Boolean Comparators
-        add(new Function(new Collection<String>(){{add("∧"); add("and");}},
-            "Checks if 'A' ∧ 'B'", "A ∧ B",
-            2,
-            Type.BIN,
-            new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) ->
-                   !((Complex)eval(0, tn, hm, eqsys)).isNaN() &&
-                   !((Complex)eval(1, tn, hm, eqsys)).isNaN() &&
-                    ((Complex)eval(0, tn, hm, eqsys)).compareTo(0d) == 1 &&
-                    ((Complex)eval(1, tn, hm, eqsys)).compareTo(0d) == 1 ? new Complex(1d) : NAN
-        ));
-
-        add(new Function(new Collection<String>(){{add("∨"); add("or");}},
-            "Checks if 'A' ∨ 'B'", "A ∨ B",
-            2,
-            Type.BIN,
-            new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) ->
-                  !(((Complex)eval(0, tn, hm, eqsys)).isNaN() &&
-                    ((Complex)eval(1, tn, hm, eqsys)).isNaN()) &&
-                    (((Complex)eval(0, tn, hm, eqsys)).compareTo(0d) == 1 ||
-                    ((Complex)eval(1, tn, hm, eqsys)).compareTo(0d) == 1) ? new Complex(1d) : NAN
-        ));
-
-        add(new Function(new Collection<String>(){{add("⊻"); add("xor");}},
-            "Checks if 'A' ⊻ 'B'", "A ⊻ B",
-            2,
-            Type.BIN,
-            new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) -> 
-                   eval(0, tn, hm, eqsys).isNaN() || eval(1, tn, hm, eqsys).isNaN() ? NAN : 
-                    ((Complex)eval(0, tn, hm, eqsys)).xor((Complex)eval(0, tn, hm, eqsys))
-        ));
-
-        add(new Function(new Collection<String>(){{add("⊼"); add("nand");}},
-            "Checks if 'A' ⊼ 'B'", "A ⊼ B",
-            2,
-            Type.BIN,
-            new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) ->
-                   !((Complex)eval(0, tn, hm, eqsys)).isNaN() &&
-                   !((Complex)eval(1, tn, hm, eqsys)).isNaN() &&
-                    ((Complex)eval(0, tn, hm, eqsys)).compareTo(0d) != 1 &&
-                    ((Complex)eval(1, tn, hm, eqsys)).compareTo(0d) != 1 ? new Complex(1d) : NAN
-        ));
-        add(new Function(new Collection<String>(){{add("⊽");add("nor");}},
-            "Checks if 'A' ⊽ 'B'", "A ⊽ B",
-            2,
-            Type.BIN,
-            new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) ->
-                   !((Complex)eval(0, tn, hm, eqsys)).isNaN() &&
-                   !((Complex)eval(1, tn, hm, eqsys)).isNaN() &&
-                    ((Complex)eval(0, tn, hm, eqsys)).compareTo(0d) != 1 &&
-                    ((Complex)eval(1, tn, hm, eqsys)).compareTo(0d) != 1 ? new Complex(1d) : NAN
-        ));
-
-
-
-        //  Standard math operators
-        add(new Function(new Collection<String>(){{add("+");}},
-            "Adds 'A' to 'B'", "A + B", 
-            4,
-            Type.BIN,
-            new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).
-                                 plus(((Complex)eval(1, tn, hm, eqsys)))
-        ));
-
-        add(new Function(new Collection<String>(){{add("-");}},
-            "Subtracts 'A' to 'B'", "A - B",
-            4,
-            Type.BIN,
-            new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).
-                                 minus(((Complex)eval(1, tn, hm, eqsys)))
-            // (hm, eqsys, tn) -> tn.size() == 1 ? 0 - ((Complex)eval(0, tn, hm, eqsys)) :
-            // ((Complex)eval(0, tn, hm, eqsys)) - ((Complex)eval(1, tn, hm, eqsys))
-        ));
-
-        add(new Function(new Collection<String>(){{add("*");add("·");add("×");}},
-            "Multiplies 'A' to 'B'", "A * B",
-            5,
-            Type.BIN,
-            new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).
-                                 mult(((Complex)eval(1, tn, hm, eqsys)))
-        ));
-        add(new Function(new Collection<String>(){{add("/");add("÷");}},
-            "Divides 'A' to 'B'", "A / B",
-            5,
-            Type.BIN,
-            new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).
-                                 div(((Complex)eval(1, tn, hm, eqsys)))
-        ));
-
-        add(new Function(new Collection<String>(){{add("%");}},
-            "'A' Modulo 'B'", "A % B",
-            5,
-            Type.BIN,
-            new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).
-                                 modulo(((Complex)eval(1, tn, hm, eqsys)))
-        ));
-
-        add(new Function(new Collection<String>(){{add("^");}},
-            "Raises 'A' to 'B'", "A ^ B",
-            6,
-            Type.BIN,
-            new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).
-                                 pow(((Complex)eval(1, tn, hm, eqsys)))
-        ));
-
-
-
-        // UNARY
-
-
-        // UN_L
-        add(new Function(new Collection<String>(){{add("–");}}, // negation
-            "negate 'A'", "–(A)",
-            8,
-            Type.UNL,
-            new Collection<Integer>().addE(1),
-            (hm, eqsys, tn) -> new Complex(-1d).mult(((Complex)eval(0, tn, hm, eqsys)))
-        ));
-        // UN_R
-        add(new Function(new Collection<String>(){{add("!");}}, // negation
-            "factorial 'A'", "!(A)",
-            7,
-            Type.UNR,
-            new Collection<Integer>().addE(1),
-            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).factorial()
+                                                 compareTo((Complex)eval(1, tn, hm, eqsys)))
         ));
 
 
@@ -434,27 +452,6 @@ public class Function implements MathObject {
         ));
 
 
-
-        // Shifting
-        add(new Function(new Collection<String>(){{add("≫");}},
-            "'A' Shifted to the right 'B' bits", "≫(A, B)",
-            5,
-        Type.BIN,
-            new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).
-                                 byteShiftRight(((Complex)eval(1, tn, hm, eqsys)))
-        ));
-        add(new Function(new Collection<String>(){{add("≪");}},
-            "'A' Shifted to the left 'B' bits", "≪(A, B)",
-            5,
-        Type.BIN,
-            new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).
-                                 byteShiftLeft(((Complex)eval(1, tn, hm, eqsys)))
-        ));
-
-
-
         // Misc math functions
         add(new Function(new Collection<String>(){{add("abs");}},
             "absolute value of 'A'", "abs(a)",
@@ -511,7 +508,7 @@ public class Function implements MathObject {
             (hm, eqsys, tn) -> tn.size() == 1 ?
                                 ((Complex)eval(0, tn, hm, eqsys)).log10() : 
                                ((Complex)eval(0, tn, hm, eqsys)).
-                                 log(((Complex)eval(1, tn, hm, eqsys)))
+                                 log((Complex)eval(1, tn, hm, eqsys))
         ));
         add(new Function(new Collection<String>(){{add("round");}},
             "rounds 'A' to the nearest integer", "round(A)",
