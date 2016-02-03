@@ -12,7 +12,7 @@ import java.util.AbstractList;
  * @version 1.1
  * @since 0.75
  */ 
-public class Collection<E> extends AbstractList<E> implements MathObject{
+public class Collection<E> extends AbstractList<E> implements MathObject, Cloneable{
 
     protected AbstractList<E> elements;
 
@@ -29,26 +29,26 @@ public class Collection<E> extends AbstractList<E> implements MathObject{
         return this;
     }
 
-    @Override public Collection<E>   clone    ()              { return new Collection<E>().addAllE(elements);  } // NOT SO SURE THAT THIS IS COPYING ELEMENTS...
-    @Override public Iterator<E>     iterator ()              { return (Iterator<E>) new Iter();               }
-    @Override public boolean         contains (Object o)      { return elements.contains(o);                   }
-    @Override public boolean         add      (E e)           { return elements.add(e);                        }
-    @Override public void            add      (int p, E e)    {        elements.add(p, e);                     }
-              public E               get      (int p        ) { return elements.get(stdPos(p));                }
-              public E               set      (int p, E pEle) { return elements.set(stdPos(p), pEle);          }
-              public E               pop      ()              { return remove(-1);                             }
-              public E               pop      (int p)         { return remove(p);                              }
-              public E               remove   (int p)         { return elements.remove(stdPos(p));             }
-              public boolean         isEmpty  ()              { return elements.isEmpty();                     }
-              public int             size     ()              { return elements.size();                        }
-              public int             stdPos   (int p)         { return (p < 0 ? size() : 0) + p;               }
-              public AbstractList<E> elements ()              { return elements;                               }
-              public List<E>         subList  (int s)         { return subList(s, size());                     }
-              public List<E>         subList  (int s, int e)  { return elements.subList(stdPos(s), stdPos(e)); }
-              public void            append   (E o)           {        elements.add(o);                        }
-              public void            prepend  (E o)           {        elements.add(0, o);                     }
-              public void            clear    ()              {        elements.clear();                       }
-    
+    @Override public Collection<E>   clone    ()             { return new Collection<E>().addAllE(elements);  } // NOT SO SURE THAT THIS IS COPYING ELEMENTS...
+    @Override public Iterator<E>     iterator ()             { return (Iterator<E>) new Iter();               }
+    @Override public boolean         contains (Object o)     { return elements.contains(o);                   }
+    @Override public boolean         add      (E e)          { return elements.add(e);                        }
+    @Override public void            add      (int p, E e)   {        elements.add(p, e);                     }
+              public E               get      (int p     )   { return elements.get(stdPos(p));                }
+              public E               set      (int p, E e)   { return elements.set(stdPos(p), e);          }
+              public E               pop      ()             { return remove(-1);                             }
+              public E               pop      (int p)        { return remove(p);                              }
+              public E               remove   (int p)        { return elements.remove(stdPos(p));             }
+              public boolean         isEmpty  ()             { return elements.isEmpty();                     }
+              public int             size     ()             { return elements.size();                        }
+              public int             stdPos   (int p)        { return (p < 0 ? size() : 0) + p;               }
+              public AbstractList<E> elements ()             { return elements;                               }
+              public List<E>         subList  (int s)        { return subList(s, size());                     }
+              public List<E>         subList  (int s, int e) { return elements.subList(stdPos(s), stdPos(e)); }
+              public void            append   (E o)          {        elements.add(o);                        }
+              public void            prepend  (E o)          {        elements.add(0, o);                     }
+              public void            clear    ()             {        elements.clear();                       }
+
     // element modifying
     public boolean addAll(Object pObj){
         assert pObj instanceof java.lang.Iterable || pObj instanceof Object[]:
@@ -111,12 +111,12 @@ public class Collection<E> extends AbstractList<E> implements MathObject{
     // Set stuff
 
     //  THIS ∪ PRGROUP
-    public Collection<E> union(Collection<E> pCollection){
+    public Collection<? extends E> union(AbstractList<? extends E> pCollection){
         return clone().addAllE(pCollection);
     }
 
     //  THIS ∩ PGROUP
-    public Collection<E> intersect(Collection<E> pCollection){
+    public Collection<? extends E> intersect(AbstractList<? extends E> pCollection){
         Collection<E> ret = new Collection<E>();
         for(E d : this)
             if(pCollection.contains(d))
@@ -125,10 +125,11 @@ public class Collection<E> extends AbstractList<E> implements MathObject{
     }
     
     //  ¬ THIS
-    public Collection<E> not(Collection<E> universe){
+    public Collection<E> not(AbstractList<E> universe){
+        Collection<E> me = this;
         return new Collection<E>(){{
             for(E e : universe)
-                if(!contains(e))
+                if(!me.contains(e))
                     add(e);
         }};
     }

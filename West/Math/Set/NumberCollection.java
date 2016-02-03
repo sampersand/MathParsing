@@ -10,7 +10,7 @@ import West.Math.Complex;
 import West.Math.Display.GraphComponents;
 
 import java.util.HashMap;
-import java.util.ArrayList;
+import java.util.AbstractList;
 
 /**
  * The class that represents NumberCollections in mathamatics. This one also includes a lot of different functions that are utilized
@@ -24,7 +24,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     public NumberCollection(){
         super();
     }
-    public NumberCollection(ArrayList<N> arl) {
+    public NumberCollection(AbstractList<N> arl) {
         super(arl);
     }
 
@@ -100,10 +100,10 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
     public <M extends Number> EquationSystem polyReg(NumberCollection<M> pNC) {
         return polyReg(10, pNC);
     }
-    public <M extends Number> EquationSystem polyReg(int maxPower, NumberCollection<M> pNC) {
+    public EquationSystem polyReg(int maxPower, NumberCollection<? extends Number> pNC) {
         throw new NullPointerException();
     }
-    public <M extends Number> EquationSystem linReg(NumberCollection<M> pNC){
+    public EquationSystem linReg(NumberCollection<? extends Number> pNC){
 
         Complex b1 = r(pNC).mult(pNC.stdev().div(stdev()));
         Complex b0 = pNC.mean().minus(b1.mult(mean()));
@@ -341,7 +341,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
                                 gComp
                                 );
     }
-    public static <M extends Number> void graphMultiWithLinReg(
+    public static void graphMultiWithLinReg(
                                 Collection<Collection<NumberCollection<Complex>>> pCollections,
                                 GraphComponents gComp) {
         EquationSystem allEquations = new EquationSystem();
