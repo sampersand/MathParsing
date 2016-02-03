@@ -2,7 +2,7 @@ package West.Math.Set.Node;
 import West.Math.MathObject;
 import West.Math.Set.Collection;
 import West.Math.Equation.Token;
-import java.util.ArrayList;
+import java.util.AbstractList;
 /**
  * TODO: JAVADOC
  * LOL i'm going to have to figure out how to spell 'token' correctly XD
@@ -22,7 +22,7 @@ public class Node<T, N extends Node> extends Collection<Node<?, ?>> implements M
         token = null;
     }
 
-    public Node(ArrayList<Node<?, ?>> pElements){
+    public Node(AbstractList<Node<?, ?>> pElements){
         super();
         addAll(pElements);
         token = null;
