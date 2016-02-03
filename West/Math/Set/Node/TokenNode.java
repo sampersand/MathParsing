@@ -1,6 +1,6 @@
 package West.Math.Set.Node;
 import West.Math.Set.Collection;
-import java.util.ArrayList;
+import java.util.AbstractList;
 import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Function.Function;
 import West.Math.Equation.Token;
@@ -39,7 +39,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         parens = pTokenNode.parens;
     }
 
-    protected Object[] condeseNodes(ArrayList<Token> pTokens) {
+    protected Object[] condeseNodes(AbstractList<Token> pTokens) {
         int pos = 0;
         TokenNode node = copy();
         while(pos < pTokens.size()) {
@@ -124,9 +124,9 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
             return new TokenNode(new Token()){{
                 peles.forEach(e -> add(condense(new Collection<TokenNode>().addE(e))));
             }};
-        TokenNode u = condense(new Collection.Builder<TokenNode>().add(peles.get(fhp)).build());
-        TokenNode s = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(0, fhp)).build());
-        TokenNode e = condense(new Collection.Builder<TokenNode>().addAll(peles.subList(fhp + 1)).build());
+        TokenNode u = condense(new Collection<TokenNode>().addE(peles.get(fhp)));
+        TokenNode s = condense(new Collection<TokenNode>().addAllE(peles.subList(0, fhp)));
+        TokenNode e = condense(new Collection<TokenNode>().addAllE(peles.subList(fhp + 1)));
         if(s != null)
             u.add(s);
         if(e != null)
@@ -155,9 +155,9 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         assert tn != null : "attempting to add null to '"+toFullString()+"'";
         return super.add(tn);
     }
-    public static TokenNode generateMasterNode(ArrayList<Token> pTokens) {
+    public static TokenNode generateMasterNode(AbstractList<Token> pTokens) {
         TokenNode tn = (TokenNode)new TokenNode().condeseNodes(pTokens)[1]; // just to make it easier to read.
-        tn = condense(new Collection.Builder<TokenNode>().addAll(tn.elements).build());
+        tn = condense(new Collection<TokenNode>().addAllE(tn.elements));
         return tn.removeExtraFuncs();
     }
 

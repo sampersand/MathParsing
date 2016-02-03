@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 import java.util.function.Consumer;
-
+import java.util.AbstractList;
 /**
  * TODO: JAVADOC
  * 
@@ -12,27 +12,27 @@ import java.util.function.Consumer;
  * @version 1.1
  * @since 0.75
  */ 
-public class Collection<E> extends ArrayList<E> implements MathObject{
+public class Collection<E> extends AbstractList<E> implements MathObject{
 
-    public static class Builder<C>{
-        public ArrayList elements;
-        public Builder(){
-            elements = new ArrayList<C>();
-        }
-        public <K extends C> Builder add(K pObj){
-            elements.add(pObj);
-            return this;
-        }
-        public <K extends C> Builder addAll(Object pObj) throws IllegalArgumentException{
-            assert pObj instanceof java.lang.Iterable;
-            ((java.lang.Iterable)pObj).forEach(elements::add);
-            return this;
-        }
-        public Collection build(){
-            return new Collection<C>(this);
-        }
+    // public static class Builder<C>{
+    //     public AbstractList elements;
+    //     public Builder(){
+    //         elements = new ArrayList<C>();
+    //     }
+    //     public <K extends C> Builder add(K pObj){
+    //         elements.add(pObj);
+    //         return this;
+    //     }
+    //     public <K extends C> Builder addAll(Object pObj) throws IllegalArgumentException{
+    //         assert pObj instanceof java.lang.Iterable;
+    //         ((java.lang.Iterable)pObj).forEach(elements::add);
+    //         return this;
+    //     }
+    //     public Collection build(){
+    //         return new Collection<C>(this);
+    //     }
 
-    }
+    // }
     protected ArrayList<E> elements;
 
     // empty
