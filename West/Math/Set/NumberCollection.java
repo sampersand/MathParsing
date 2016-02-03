@@ -326,7 +326,7 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
         }
         NumberCollection<ComplexNumber> xaxis = new NumberCollection<ComplexNumber>();
         forEach(e -> xaxis.add(new ComplexNumber(e.doubleValue())));
-        graphWithLinReg(new Collection<Collection<NumberCollection<ComplexNumber>>>(){{
+        graphMultipleCollectionsWithLinReg(new Collection<Collection<NumberCollection<ComplexNumber>>>(){{
                                         add(new Collection<NumberCollection<ComplexNumber>>(){{
                                             add(yaxis);
                                             add(xaxis);
@@ -335,11 +335,12 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
                                 gComp
                                 );
     }
-    public static <M extends Number> void graphWithLinReg(Collection<Collection<NumberCollection<ComplexNumber>>> pSets,
+    public static <M extends Number> void graphMultipleCollectionsWithLinReg(
+                                            Collection<Collection<NumberCollection<ComplexNumber>>> pCollections,
                                                           GraphComponents gComp) {
         EquationSystem allEquations = new EquationSystem();
         EquationSystem toGraph = new EquationSystem();
-        Grapher grapher = new Grapher(toGraph, allEquations, pSets, gComp);
+        Grapher grapher = new Grapher(toGraph, allEquations, pCollections, gComp);
     }
 
     @Override
