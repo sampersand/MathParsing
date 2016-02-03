@@ -284,14 +284,6 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
             fns.get(0), fns.get(1), fns.get(2), fns.get(3), fns.get(4), mean(), stdev());
     }
 
-    public static NumberCollection<Double> enumerationD(double start, double end, double step){
-        return new NumberCollection<Double>()
-        {{
-            for(double i = start; i < end; i+=step)
-                add(i);
-        }};
-    }
-
     public <M extends Number> void graphe(NumberCollection<M> pNC) {
         // TODO: SEE IF THIS WORKS
         resid(pNC).graph(enumeration()); 
@@ -340,6 +332,13 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
                                                           GraphComponents gComp) {
         EquationSystem allEquations = new EquationSystem();
         EquationSystem toGraph = new EquationSystem();
+        EquationSystem linreg;
+        for(Collection<NumberCollection<ComplexNumber>> setpair : pCollections){
+            assert setpair != null && setpair.size() == 2 : "Set Pairs have to be in the format 'X axis, Y axis'. " + 
+                (setpair == null ? "the set pairs were null" : setpair.size() + " was the size") +
+                " for the given Collection!";
+            linreg = setpair.get(0).linReg(setpair.get(1));
+        }
         Grapher grapher = new Grapher(toGraph, allEquations, pCollections, gComp);
     }
 
