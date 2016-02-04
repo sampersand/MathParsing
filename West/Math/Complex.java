@@ -70,10 +70,10 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
     public Double toDouble(HashMap<String, DoubleSupplier> hm, EquationSystem eqsys){
         if(isNaN())
             return Double.NaN;
-        return isOnlyReal() ? real : isOnlyImag() ? imag : eqsys.eval("__TEMP__",
+        return isOnlyReal() ? real : isOnlyImag() ? imag : ((Complex)eqsys.eval("__TEMP__",
                 new EquationSystem().add("__TEMP__=hypot(" +
                                          (isReal() ? real : "") + (isBoth() ? "," : "") + 
-                                         (isImag() ? imag : "") + ")")).aIsOnlyReal().real;
+                                         (isImag() ? imag : "") + ")"))).aIsOnlyReal().real;
     }
     public boolean isBoth(){return isImag() && isReal();}
     public boolean isOnlyReal(){ return isReal() && !isImag(); }
@@ -141,21 +141,23 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
 
     // Standard Arithmetic
     public static Complex div(Number c, Number b){
-        return new Complex(c).div(new Complex(b));
+        return (Complex) new Complex(c).div(new Complex(b));
     }
 
     public static Complex mult(Double c, Double b){
-        return new Complex(c).mult(new Complex(b));
+        return (Complex) new Complex(c).mult(new Complex(b));
     }
 
     public static Complex plus(Double c, Double b){
-        return new Complex(c).plus(new Complex(b));
+        return (Complex) new Complex(c).plus(new Complex(b));
     }
     
     public static Complex minus(Double c, Double b){
-        return new Complex(c).minus(new Complex(b));
+        return (Complex) new Complex(c).minus(new Complex(b));
     }
-    public Complex div(Complex c){
+
+    @Override
+    public DoubleSupplier div(DoubleSupplier c){
         if (isOnlyReal() && c.isOnlyReal()){
             return new Complex(real * 1f / c.real);
         }
@@ -168,7 +170,8 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
         return new Complex(top.real / bottom.real, top.imag / bottom.real);
     }
 
-    public Complex mult(Complex c){
+    @Override
+    public DoubleSupplier mult(DoubleSupplier c){
         if (isOnlyReal() && c.isOnlyReal()){
             return new Complex(real * c.real);
         }
@@ -186,7 +189,8 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
         return new Complex(rreal, rimag);
     }
 
-    public Complex plus(Complex c){
+    @Override
+    public DoubleSupplier plus(DoubleSupplier c){
         if (isOnlyReal() && c.isOnlyReal()){
             return new Complex(real + c.real);
         }
@@ -197,7 +201,8 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
                                  isImag() ? c.isImag() ? imag + c.imag : imag : c.imag);
     }
 
-    public Complex minus(Complex c){
+    @Override
+    public DoubleSupplier minus(DoubleSupplier c){
         if (isOnlyReal() && c.isOnlyReal()){
             return new Complex(real - c.real);
         }
@@ -209,14 +214,16 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
     }
 
     // Non-Standard Arithmetic
-    public Complex pow(Double d){
+    @Override
+    public DoubleSupplier pow(Double d){
         return pow(new Complex(d));
     }
 
     public static Complex pow(Double c, Double b){
         return new Complex(c).pow(new Complex(b));
     }
-    public Complex pow(Complex c){
+    @Override
+    public DoubleSupplier pow(DoubleSupplier c){
         if (isOnlyReal() && c.isOnlyReal()){
             return new Complex(Math.pow(real, c.real));
         }

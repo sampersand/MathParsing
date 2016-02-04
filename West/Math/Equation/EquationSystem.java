@@ -208,12 +208,12 @@ public class EquationSystem implements MathObject{
      * @param pEqSys    The EquationSystem that will be evaluated.
      * @return A double that represents the value of <code>toEval</code>.
      */
-    public Complex eval(String toEval,
+    public DoubleSupplier eval(String toEval,
                        EquationSystem pEqSys) {
         return clone().add(pEqSys).eval(toEval);
     }
 
-    public Complex eval(String toEval, EquationSystem pEqSys, HashMap<String, DoubleSupplier> hm){
+    public DoubleSupplier eval(String toEval, EquationSystem pEqSys, HashMap<String, DoubleSupplier> hm){
         return clone().add(pEqSys).eval(toEval, hm);
     }
     
@@ -222,17 +222,16 @@ public class EquationSystem implements MathObject{
      * @param toEval    The variable to solve for.
      * @return A double that represents the value of <code>toEval</code>.
      */
-    public Complex eval(String toEval) {
+    public DoubleSupplier eval(String toEval) {
         return eval(toEval, new HashMap<String, DoubleSupplier>());
     }
-    public Complex eval(String toEval, HashMap<String, DoubleSupplier> hm) {
+    public DoubleSupplier eval(String toEval, HashMap<String, DoubleSupplier> hm) {
         assert equations.size() != 0 : "Cannot evaluate an EquationSystem with no equations!";
         EquationSystem eqsys = clone().isolate(toEval);
         DoubleSupplier ret = eqsys.equations().get(0).subEquations().
                 eval(hm, eqsys).
                 get(toEval);
-        assert ret instanceof Complex : ret + "isn't a Complex!";
-        return (Complex)ret;
+        return ret;
 
     }
 

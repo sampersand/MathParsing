@@ -8,6 +8,7 @@ import static West.Math.Declare.*;
 import java.util.HashMap;
 import java.util.Random;
 import West.Math.DoubleSupplier;
+import West.Math.Set.MathCollection;
 import West.Math.Complex;
 import static West.Math.Complex.NAN;
 
@@ -45,12 +46,12 @@ public class Function implements MathObject {
         //  b^               : 5
         //  b&               : 6
         //  ≣, ≠             : 7
-        //  >, <, ≥, ≤,       : 8
+        //  >, <, ≥, ≤,      : 8
         //  b≫, b≪           : 9
         //  +, -             : 10
         //  *, /, %          : 11
         //  ^,               : 12
-        //  unary –, b~      : 13
+        //  unary –, b~,     : 13
         //  unary !          : 14
 
         add(new Function(new Collection<String>(){{add("");}},
@@ -75,31 +76,8 @@ public class Function implements MathObject {
                     case "{":
                         switch(p[1]){
                             case "}":
-                                assert s == 3 : tn;
-                                assert !tn.get(0).isFinal() && tn.get(0).get(0).isFinal(): tn;
-                                assert tn.get(1).token().isDelim() && (tn.get(1).token().val().equals("|") ||
-                                                                       tn.get(1).token().val().equals(":")) : tn;
-                                assert tn.get(2).token().isDelim() && tn.get(2).token().val().equals("$") : tn;
-                                assert tn.get(2).size() == 3 : tn;
-                                Collection<Double> col = new Collection<Double>();
-                                String toeval = tn.get(0).token().val();
-                                TokenNode condits = tn.get(1).get(0);
-                                Double min = ((Complex)tn.get(2).get(0).evald(hm, eqsys)).aIsOnlyReal().real();
-                                Double max = ((Complex)tn.get(2).get(1).evald(hm, eqsys)).aIsOnlyReal().real();
-                                Double step = ((Complex)tn.get(2).get(2).evald(hm, eqsys)).aIsOnlyReal().real();
-                                assert !min.isNaN();
-                                assert !max.isNaN();
-                                assert !step.isNaN();
-                                for(Double d = min; d < max; d+=step){
-                                    assert false : "TODO: SET NOTATION";
-                                    //  Double d2 = 
-                                    //  Double d2 = new EquationSystem().add(toeval+"="+d).eval(toeval,hm, eqsys);
-                                                              //  West.Math.Equation.Token.Type.VAR)).evald(hm, eqsys);
-                                    //  if(!d.isNaN())
-                                    //      col.add(d2);
-                                }
-                                return new Complex(col.size());
-
+                            // { tosolve : increment : statements @(bounds)}
+                                return new MathCollection(tn, hm, eqsys);
                             }
 
                     case "√":
@@ -118,7 +96,7 @@ public class Function implements MathObject {
                         switch(p[1]){
                             case ")":case "":
                                 assert s == 1 || tn.token().isDelim(): tn;
-                                return ((Complex)eval(0, tn, hm, eqsys));
+                                return eval(0, tn, hm, eqsys);
                             default:
                                 throw new IllegalArgumentException("The Parenthesis '" + p[0] + ", " + p[1] +
                                                        "' (args: " + s + ") have no function associated!");
@@ -133,7 +111,7 @@ public class Function implements MathObject {
             0,
             Type.ASSIGN,
             new Collection<Integer>().addE(2), 
-            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)) // doesnt matter
+            (hm, eqsys, tn) -> eval(0, tn, hm, eqsys) // doesnt matter
         ));
 
         // priority 1: or / nor
@@ -604,9 +582,13 @@ public class Function implements MathObject {
 
         add(new Function(new Collection<String>(){{add("summation");add("Σ");}},
             "Summation of 'EQ', incrementing 'N' from 'S' to 'E', and solving for 'X'", "Σ(N, S, E, X, EQ)",
+            // "Σ(X, EQ)", // 2
+            // "Σ(N, X, EQ)", // 3
+            // "Σ(S, E, X, EQ)", // 4
+            // "Σ(N, S, E, X, EQ)", // 5
             DEFAULT_PRIORITY,
             Type.NORM,
-            new Collection<Integer>().addE(3).addE(5),
+            new Collection<Integer>().addE(2).addE(3).addE(4).addE(5),
             (hm, eqsys, tn) -> {
 
                 int siz = tn.size();
@@ -615,13 +597,13 @@ public class Function implements MathObject {
                 TokenNode equ;
                 ret = Complex.ZERO;
 
-                incVar = tn.get(0).get(0).toString(); // without second get(0), it's still a delim
-                findVar = tn.get(siz == 3 ? 1 : 3).get(0).toString(); // without second get(0), it's still a delim
-                equ = tn.get(siz == 3 ? 2 : 4).get(0); // without second get(0), it's still a delim
+                incVar = (siz & 1) == 1 ? tn.get(0).get(0).toString() : "n"; 
+                findVar = tn.get(siz - 2).get(0).toString(); 
+                equ = tn.get(siz - 1).get(0); 
                 
-                if(siz == 5){
-                    min = (Complex)tn.get(1).get(0).evald(new HashMap<String, DoubleSupplier>(), eqsys);
-                    max = (Complex)tn.get(2).get(0).evald(new HashMap<String, DoubleSupplier>(), eqsys);
+                if((siz & 1) == 1){
+                    min = (Complex)tn.get(siz - 4).get(0).evald(new HashMap<String, DoubleSupplier>(), eqsys);
+                    max = (Complex)tn.get(siz - 3).get(0).evald(new HashMap<String, DoubleSupplier>(), eqsys);
                 } else {
                     min = Complex.ONE;
                     max = Complex.P_INF;

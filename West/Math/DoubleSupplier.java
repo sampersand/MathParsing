@@ -7,4 +7,9 @@ public interface DoubleSupplier {
         return toDouble(new HashMap<String, DoubleSupplier>(), new EquationSystem());
     }
     public boolean isNaN();
+    public DoubleSupplier div(DoubleSupplier d);
+    public DoubleSupplier mult(DoubleSupplier d);
+    public DoubleSupplier plus(DoubleSupplier d);
+    public DoubleSupplier minus(DoubleSupplier d);
+    public DoubleSupplier pow(DoubleSupplier d);
 }

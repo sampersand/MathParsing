@@ -8,6 +8,7 @@ import West.Math.Equation.Equation;
 import West.Math.Display.Grapher;
 import West.Math.Complex;
 import West.Math.Display.GraphComponents;
+import West.Math.DoubleSupplier;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
  * @version 1.1
  * @since 0.72
  */
-public class NumberCollection<N extends Number> extends Collection<N> implements MathObject {
+public class NumberCollection<N extends Number> extends Collection<N>  implements DoubleSupplier, MathObject {
     public NumberCollection(){
         super();
     }
@@ -70,6 +71,32 @@ public class NumberCollection<N extends Number> extends Collection<N> implements
 
     public static Complex pred(Number pVal, final EquationSystem pEqSys, final EquationSystem pEqSys2) {
         return pEqSys.eval("y", pEqSys2.add("x = " + pVal));
+    }
+
+    @Override
+    public boolean isNaN(){
+        for(N n : this)
+            if(!new Complex(n).isNaN())
+                return true;
+        return false;
+    }
+
+    //todo: make these better
+    @Override
+    public Double toDouble(){
+        if(isNaN())
+            return Double.NaN;
+        return new Double(size());
+    }
+    @Override
+    public Double toDouble(HashMap<String, DoubleSupplier> hm, EquationSystem eqsys){
+        if(isNaN())
+            return Double.NaN;
+        return toDouble();
+        // return eqsys.eval("__TEMP__", 
+        //         new EquationSystem().add("__TEMP__=hypot(" +
+        //                                  (isReal() ? real : "") + (isBoth() ? "," : "") + 
+                                         // (isImag() ? imag : "") + ")")).aIsOnlyReal().real;
     }
 
 
