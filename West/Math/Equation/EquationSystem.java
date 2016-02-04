@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import West.Math.Set.Collection;
 import West.Math.Set.Node.TokenNode;
-import West.Math.DoubleSupplier;
+import West.Math.Operable;
 import West.Math.Complex;
 import java.util.List;
 
@@ -208,12 +208,12 @@ public class EquationSystem implements MathObject{
      * @param pEqSys    The EquationSystem that will be evaluated.
      * @return A double that represents the value of <code>toEval</code>.
      */
-    public DoubleSupplier eval(String toEval,
+    public Operable eval(String toEval,
                        EquationSystem pEqSys) {
         return clone().add(pEqSys).eval(toEval);
     }
 
-    public DoubleSupplier eval(String toEval, EquationSystem pEqSys, HashMap<String, DoubleSupplier> hm){
+    public Operable eval(String toEval, EquationSystem pEqSys, HashMap<String, Operable> hm){
         return clone().add(pEqSys).eval(toEval, hm);
     }
     
@@ -222,13 +222,13 @@ public class EquationSystem implements MathObject{
      * @param toEval    The variable to solve for.
      * @return A double that represents the value of <code>toEval</code>.
      */
-    public DoubleSupplier eval(String toEval) {
-        return eval(toEval, new HashMap<String, DoubleSupplier>());
+    public Operable eval(String toEval) {
+        return eval(toEval, new HashMap<String, Operable>());
     }
-    public DoubleSupplier eval(String toEval, HashMap<String, DoubleSupplier> hm) {
+    public Operable eval(String toEval, HashMap<String, Operable> hm) {
         assert equations.size() != 0 : "Cannot evaluate an EquationSystem with no equations!";
         EquationSystem eqsys = clone().isolate(toEval);
-        DoubleSupplier ret = eqsys.equations().get(0).subEquations().
+        Operable ret = eqsys.equations().get(0).subEquations().
                 eval(hm, eqsys).
                 get(toEval);
         return ret;

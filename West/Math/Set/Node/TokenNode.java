@@ -7,7 +7,7 @@ import West.Math.Equation.Token;
 import West.Math.MathObject;
 import West.Math.Equation.Equation;
 import java.util.HashMap;
-import West.Math.DoubleSupplier;
+import West.Math.Operable;
 import West.Math.Complex;
 
 /**
@@ -204,19 +204,19 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         return this;
     }
 
-    private static HashMap<String, DoubleSupplier> appendHashMap(HashMap<String, DoubleSupplier> a, Object b){
+    private static HashMap<String, Operable> appendHashMap(HashMap<String, Operable> a, Object b){
         if(b != null)
-            a.putAll((HashMap<String, DoubleSupplier>)b);
+            a.putAll((HashMap<String, Operable>)b);
         return a;
     }
 
-    private static HashMap<String, DoubleSupplier> appendHashMap(HashMap<String, DoubleSupplier> a,
+    private static HashMap<String, Operable> appendHashMap(HashMap<String, Operable> a,
                                                           String b,
-                                                          DoubleSupplier c){
+                                                          Operable c){
         a.put(b, c);
         return a;
     }
-    private static HashMap<String, DoubleSupplier> appendHashMap(HashMap<String, DoubleSupplier> a, String b, Double c){
+    private static HashMap<String, Operable> appendHashMap(HashMap<String, Operable> a, String b, Double c){
         a.put(b, new Complex(c));
         return a;
     }
@@ -241,7 +241,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
      * TODO: JAVADOC
      * returns Double.NaN if the result isnt in bounds
      */
-    public HashMap<String, DoubleSupplier> eval(HashMap<String, DoubleSupplier> pVars, final EquationSystem pEqSys){
+    public HashMap<String, Operable> eval(HashMap<String, Operable> pVars, final EquationSystem pEqSys){
         assert pEqSys != null : "Cannot evaluate a null EquationSystem!";
         String val = toExprString();
         if(pVars.containsKey(val)) // if the value is already in pVars, then just take a shortcut.
@@ -265,15 +265,15 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                                                     token.val());
     }
 
-    public DoubleSupplier evald(){
-        return evald(new HashMap<String, DoubleSupplier>(), new EquationSystem());
+    public Operable evald(){
+        return evald(new HashMap<String, Operable>(), new EquationSystem());
     }
     
-    public DoubleSupplier evald(HashMap<String, DoubleSupplier> hm, final EquationSystem pEqSys){
+    public Operable evald(HashMap<String, Operable> hm, final EquationSystem pEqSys){
         return eval(hm, pEqSys).get(toString());
     }
 
-    public static HashMap<String, DoubleSupplier> getVarInFinal(HashMap<String, DoubleSupplier> pVars, String val){
+    public static HashMap<String, Operable> getVarInFinal(HashMap<String, Operable> pVars, String val){
         switch(val) {
             case "e":
                 return appendHashMap(pVars, val, Math.E);

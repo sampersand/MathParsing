@@ -7,7 +7,7 @@ import West.Math.Set.Node.TokenNode;
 import West.Math.Equation.EquationSystem;
 import West.Math.Equation.Function.CustomFunctions.*;
 import West.Math.Set.Collection;
-import West.Math.DoubleSupplier;
+import West.Math.Operable;
 
 import java.lang.reflect.*;
 import java.util.HashMap;
@@ -135,14 +135,14 @@ public class CustomFunction extends Function implements MathObject {
      */
     @Override
     @SuppressWarnings("unchecked") // stupid cl.getDeclaredMethod
-    public HashMap<String, DoubleSupplier> exec(HashMap<String, DoubleSupplier> ret, final EquationSystem pEqSys,
+    public HashMap<String, Operable> exec(HashMap<String, Operable> ret, final EquationSystem pEqSys,
                        TokenNode pNode) throws
                            IllegalArgumentException {
         try {
             Class[] argType = {HashMap.class, EquationSystem.class, TokenNode.class};
             Method execMethod = cl.getDeclaredMethod("exec",argType);
             Object[] argListForInvokedExec = new Object[]{ret, pEqSys, pNode};
-            return (HashMap<String, DoubleSupplier>)execMethod.invoke(cl.newInstance(), argListForInvokedExec);
+            return (HashMap<String, Operable>)execMethod.invoke(cl.newInstance(), argListForInvokedExec);
         } catch (NoSuchMethodException err) {
             Print.printe("A NoSuchMethodException happened when attempting to execute a " +
                                "custom method in file '" + names + "'. ERROR: " + err + " | MESSAGE:  " +

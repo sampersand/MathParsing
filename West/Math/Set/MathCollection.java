@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import West.Math.Complex;
 import West.Math.Set.Node.TokenNode;
 import java.util.HashMap;
-import West.Math.DoubleSupplier;
+import West.Math.Operable;
 
 /**
  * The class that represents Sets in mathematics - that is, each element in them has to be unique.
@@ -34,7 +34,7 @@ public class MathCollection extends NumberCollection<Complex> {
     public MathCollection(EquationSystem pEqSys){
         this(pEqSys, -10, 10, 0.1);
     }
-    public MathCollection(TokenNode tn, HashMap<String, DoubleSupplier> hm, final EquationSystem pEqSys){
+    public MathCollection(TokenNode tn, HashMap<String, Operable> hm, final EquationSystem pEqSys){
 
         int s = tn.size();
         System.out.println(tn);

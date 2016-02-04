@@ -7,8 +7,9 @@ import West.Math.MathObject;
 import West.Math.Equation.Token;
 import West.Math.Equation.Function.Function;
 import West.Math.Set.Node.TokenNode;
+import West.Math.Set.MathCollection;
 
-public class Complex extends Number implements DoubleSupplier, Comparable<Number>, MathObject {
+public class Complex extends Number implements Operable, Comparable<Number>, MathObject {
 
     public static final Complex NAN = new Complex();
     public static final Complex P_INF = new Complex(1E4);
@@ -67,7 +68,7 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
     }
 
     @Override
-    public Double toDouble(HashMap<String, DoubleSupplier> hm, EquationSystem eqsys){
+    public Double toDouble(HashMap<String, Operable> hm, EquationSystem eqsys){
         if(isNaN())
             return Double.NaN;
         return isOnlyReal() ? real : isOnlyImag() ? imag : ((Complex)eqsys.eval("__TEMP__",
@@ -95,9 +96,9 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
         String s0 = s.replaceAll(COMPLEX_REGEX, "$1");
         String s1 = s.replaceAll(COMPLEX_REGEX, "$2");
         Double r = s0.isEmpty() ? Double.NaN : 
-                TokenNode.getVarInFinal(new HashMap<String, DoubleSupplier>(), s0).get(s0).toDouble();
+                TokenNode.getVarInFinal(new HashMap<String, Operable>(), s0).get(s0).toDouble();
         Double i = s1.isEmpty() ? Double.NaN : 
-                TokenNode.getVarInFinal(new HashMap<String, DoubleSupplier>(), s1).get(s1).toDouble();
+                TokenNode.getVarInFinal(new HashMap<String, Operable>(), s1).get(s1).toDouble();
         return new Complex(r, i);
     }
 
@@ -140,43 +141,45 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
 
 
     // Standard Arithmetic
-    public static Complex div(Number c, Number b){
-        return (Complex) new Complex(c).div(new Complex(b));
-    }
-
-    public static Complex mult(Double c, Double b){
-        return (Complex) new Complex(c).mult(new Complex(b));
-    }
-
-    public static Complex plus(Double c, Double b){
-        return (Complex) new Complex(c).plus(new Complex(b));
-    }
-    
-    public static Complex minus(Double c, Double b){
-        return (Complex) new Complex(c).minus(new Complex(b));
-    }
+    public static Complex div  (Number c, Number b){ return (Complex) new Complex(c).div  (new Complex(b)); }
+    public static Complex mult (Number c, Number b){ return (Complex) new Complex(c).mult (new Complex(b)); }
+    public static Complex plus (Number c, Number b){ return (Complex) new Complex(c).plus (new Complex(b)); }
+    public static Complex minus(Number c, Number b){ return (Complex) new Complex(c).minus(new Complex(b)); }
+    public static Complex pow  (Number c, Number b){ return (Complex) new Complex(c).pow  (new Complex(b)); }
 
     @Override
-    public DoubleSupplier div(DoubleSupplier c){
+    public <D extends Operable> D div(D ds){
+        if(ds instanceof MathCollection)
+            return ds;
+        assert ds instanceof Complex;
+        Complex c = (Complex)ds;
         if (isOnlyReal() && c.isOnlyReal()){
-            return new Complex(real * 1f / c.real);
+            return (D) new Complex(real * 1f / c.real);
         }
-        if(isNaN() && c.isNaN()) return NAN;
-        if(isNaN() || c.isNaN()) return NAN; 
+        if(isNaN() && c.isNaN())
+            return (D) NAN;
+        if(isNaN() || c.isNaN())
+            return (D) NAN; 
         // if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
 
         Complex top = mult(c.imagConjugate());
         Complex bottom = c.mult(c.imagConjugate()).aIsOnlyReal();
-        return new Complex(top.real / bottom.real, top.imag / bottom.real);
+        return (D) new Complex(top.real / bottom.real, top.imag / bottom.real);
     }
 
     @Override
-    public DoubleSupplier mult(DoubleSupplier c){
+    public <D extends Operable> D mult(D ds){
+        if(ds instanceof MathCollection)
+            return ds;
+        assert ds instanceof Complex;
+        Complex c = (Complex)ds;
         if (isOnlyReal() && c.isOnlyReal()){
-            return new Complex(real * c.real);
+            return (D) new Complex(real * c.real);
         }
-        if(isNaN() && c.isNaN()) return NAN;
-        if(isNaN() || c.isNaN()) return NAN; 
+        if(isNaN() && c.isNaN())
+            return (D) NAN;
+        if(isNaN() || c.isNaN())
+            return (D) NAN; 
         // if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
 
         Double rreal = Double.NaN, rimag = Double.NaN;
@@ -186,49 +189,57 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
 
         if(isReal() && c.isImag()) rimag = real * c.imag;
         if(isImag() && c.isReal()) rimag = (rimag.isNaN() ? 0 : rimag) + imag * c.real;
-        return new Complex(rreal, rimag);
+        return (D) new Complex(rreal, rimag);
     }
 
     @Override
-    public DoubleSupplier plus(DoubleSupplier c){
+    public <D extends Operable> D plus(D ds){
+        if(ds instanceof MathCollection)
+            return ds;
+        assert ds instanceof Complex;
+        Complex c = (Complex)ds;
         if (isOnlyReal() && c.isOnlyReal()){
-            return new Complex(real + c.real);
+            return (D) new Complex(real + c.real);
         }
-        if(isNaN() && c.isNaN()) return NAN;
-        if(isNaN() || c.isNaN()) return NAN; 
+        if(isNaN() && c.isNaN())
+            return (D) NAN;
+        if(isNaN() || c.isNaN())
+            return (D) NAN; 
         // if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
-        return new Complex(isReal() ? c.isReal() ? real + c.real : real : c.real,
+        return (D) new Complex(isReal() ? c.isReal() ? real + c.real : real : c.real,
                                  isImag() ? c.isImag() ? imag + c.imag : imag : c.imag);
     }
 
     @Override
-    public DoubleSupplier minus(DoubleSupplier c){
+    public <D extends Operable> D minus(D ds){
+        if(ds instanceof MathCollection)
+            return ds;
+        assert ds instanceof Complex;
+        Complex c = (Complex)ds;
         if (isOnlyReal() && c.isOnlyReal()){
-            return new Complex(real - c.real);
+            return (D) new Complex(real - c.real);
         }
-        if(isNaN() && c.isNaN()) return NAN;
-        if(isNaN() || c.isNaN()) return NAN; 
+        if(isNaN() && c.isNaN())
+            return (D) NAN;
+        if(isNaN() || c.isNaN())
+            return (D) NAN; 
         // if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
-        return new Complex(isReal() ? c.isReal() ? real - c.real : real : -1 * c.real,
+        return (D) new Complex(isReal() ? c.isReal() ? real - c.real : real : -1 * c.real,
                                  isImag() ? c.isImag() ? imag - c.imag : imag : -1 * c.imag);
     }
 
-    // Non-Standard Arithmetic
     @Override
-    public DoubleSupplier pow(Double d){
-        return pow(new Complex(d));
-    }
-
-    public static Complex pow(Double c, Double b){
-        return new Complex(c).pow(new Complex(b));
-    }
-    @Override
-    public DoubleSupplier pow(DoubleSupplier c){
+    public <D extends Operable> D pow(D ds){
+        if(ds instanceof MathCollection)
+            return ds;
+        Complex c = (Complex)ds;
         if (isOnlyReal() && c.isOnlyReal()){
-            return new Complex(Math.pow(real, c.real));
+            return (D) new Complex(Math.pow(real, c.real));
         }
-        if(isNaN() && c.isNaN()) return NAN;
-        if(isNaN() || c.isNaN()) return NAN; 
+        if(isNaN() && c.isNaN())
+            return (D) NAN;
+        if(isNaN() || c.isNaN())
+            return (D) NAN; 
         // if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
         return isOnlyReal() && c.isOnlyReal() ?
                 new Complex(Math.pow(aIsOnlyReal().real, c.aIsOnlyReal().real))
@@ -237,6 +248,9 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
                                   Complex.mult(Math.exp(real), Math.sin(imag)));
 
     }
+
+
+
     public Complex sqrt(){
         return pow(0.5d);
     }

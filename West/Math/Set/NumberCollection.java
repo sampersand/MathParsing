@@ -8,7 +8,7 @@ import West.Math.Equation.Equation;
 import West.Math.Display.Grapher;
 import West.Math.Complex;
 import West.Math.Display.GraphComponents;
-import West.Math.DoubleSupplier;
+import West.Math.Operable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.List;
  * @version 1.1
  * @since 0.72
  */
-public class NumberCollection<N extends Number> extends Collection<N>  implements DoubleSupplier, MathObject {
+public class NumberCollection<N extends Number> extends Collection<N>  implements Operable, MathObject {
     public NumberCollection(){
         super();
     }
@@ -89,7 +89,7 @@ public class NumberCollection<N extends Number> extends Collection<N>  implement
         return new Double(size());
     }
     @Override
-    public Double toDouble(HashMap<String, DoubleSupplier> hm, EquationSystem eqsys){
+    public Double toDouble(HashMap<String, Operable> hm, EquationSystem eqsys){
         if(isNaN())
             return Double.NaN;
         return toDouble();

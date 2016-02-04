@@ -7,7 +7,7 @@ import West.Math.Set.Collection;
 import static West.Math.Declare.*;
 import java.util.HashMap;
 import java.util.Random;
-import West.Math.DoubleSupplier;
+import West.Math.Operable;
 import West.Math.Set.MathCollection;
 import West.Math.Complex;
 import static West.Math.Complex.NAN;
@@ -32,7 +32,7 @@ public class Function implements MathObject {
     
     @FunctionalInterface
     public interface FuncObj{
-        public DoubleSupplier exec(HashMap<String, DoubleSupplier> hm, EquationSystem eqsys, TokenNode tn);
+        public Operable exec(HashMap<String, Operable> hm, EquationSystem eqsys, TokenNode tn);
     }
 
     public static final int DEFAULT_PRIORITY = 12;
@@ -602,8 +602,8 @@ public class Function implements MathObject {
                 equ = tn.get(siz - 1).get(0); 
                 
                 if((siz & 1) == 1){
-                    min = (Complex)tn.get(siz - 4).get(0).evald(new HashMap<String, DoubleSupplier>(), eqsys);
-                    max = (Complex)tn.get(siz - 3).get(0).evald(new HashMap<String, DoubleSupplier>(), eqsys);
+                    min = (Complex)tn.get(siz - 4).get(0).evald(new HashMap<String, Operable>(), eqsys);
+                    max = (Complex)tn.get(siz - 3).get(0).evald(new HashMap<String, Operable>(), eqsys);
                 } else {
                     min = Complex.ONE;
                     max = Complex.P_INF;
@@ -645,7 +645,7 @@ public class Function implements MathObject {
         ));
     }};
 
-    private static DoubleSupplier eval(int pos, TokenNode tn, HashMap<String, DoubleSupplier> hm, EquationSystem eqsys){
+    private static Operable eval(int pos, TokenNode tn, HashMap<String, Operable> hm, EquationSystem eqsys){
         return tn.get(pos).evald(hm, eqsys);
     }
 
@@ -809,7 +809,7 @@ public class Function implements MathObject {
      * @return A double representing the value of <code>pNode</code>, when solved for with <code>pEqSys</code>.
      * @throws IllegalArgumentException   Thrown when the function required parameters, and the ones passed aren't right.
      */
-    public HashMap<String, DoubleSupplier> exec(HashMap<String, DoubleSupplier> ret,
+    public HashMap<String, Operable> exec(HashMap<String, Operable> ret,
                                                 final EquationSystem pEqSys,
                                                 TokenNode pNode) {
         if(type == Type.ASSIGN){
@@ -834,7 +834,7 @@ public class Function implements MathObject {
         }
     }
 
-    public static HashMap<String, DoubleSupplier> exec(HashMap<String, DoubleSupplier> ret,
+    public static HashMap<String, Operable> exec(HashMap<String, Operable> ret,
                                               String pStr,
                                               final EquationSystem pEqSys,
                                               TokenNode pNode) {
@@ -844,9 +844,9 @@ public class Function implements MathObject {
         return f.exec(ret, pEqSys, pNode);
     }
 
-    public static HashMap<String, DoubleSupplier> addArgs(HashMap<String, DoubleSupplier> hm,
+    public static HashMap<String, Operable> addArgs(HashMap<String, Operable> hm,
                                                           String key,
-                                                          DoubleSupplier val){
+                                                          Operable val){
         hm.put(key, val);
         return hm;
     }
