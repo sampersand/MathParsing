@@ -52,7 +52,7 @@ public class Token implements MathObject {
     {{
         add(",");
         add(":");
-        add("$");
+        add("@");
     }};
 
     public static String isDelim(String s){
@@ -111,7 +111,7 @@ public class Token implements MathObject {
 
     @Override
     public String toString() {
-        return "["+val+":"+type.toString().substring(0,3)+"]";
+        return "{"+val+":"+type.toString().substring(0,3)+"}";
     }
 
     @Override

@@ -75,8 +75,6 @@ public class Function implements MathObject {
                     case "{":
                         switch(p[1]){
                             case "}":
-                                // if(true)return new Complex();
-                                System.out.println(tn.toFullString());
                                 assert s == 3 : tn;
                                 assert !tn.get(0).isFinal() && tn.get(0).get(0).isFinal(): tn;
                                 assert tn.get(1).token().isDelim() && (tn.get(1).token().val().equals("|") ||

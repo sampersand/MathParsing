@@ -22,7 +22,8 @@ public class Tester {
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if(args.length == 0){
-            //  args = new String[]{"y={x | x＜–2 ∨ x＞2 $(–10,10,1)}"};
+             // args = new String[]{"{a@(b:c)}"};
+             args = new String[]{"y={x | x＜–2 ∨ x＞2 @[–10,10,1]}"};
         }
 
 

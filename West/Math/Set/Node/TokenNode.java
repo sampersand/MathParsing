@@ -61,7 +61,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 for(Token tk : pTokens.subList(pos + 1, x))
                     passTokens.add(tk);
                 if(t.isFunc() && passTokens.get(passTokens.size()-1).isParen() && passTokens.get(0).isParen()){
-                    toAddParens[1] = pTokens.get(pos+++passTokens.size()).val();
+                    toAddParens[1] = pTokens.get(pos++ + passTokens.size()).val();
                     toAddParens[0] = pTokens.get(pos).val();
                     passTokens.remove(0);
                     passTokens.remove(passTokens.size()-1);
@@ -141,10 +141,14 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
         TokenNode ret = new TokenNode(this);
         for(Node<?, ?> n : elements){
             TokenNode tn = (TokenNode)n;
-            if(tn.size() == 1 && tn.get(0).token.isGroup())
+            if(tn.size() == 1 && tn.get(0).token.isGroup()){
+                if(tn.token.isDelim() && (tn.parens[0].isEmpty() || tn.parens[0].isEmpty())){
+                    tn.parens = tn.get(0).parens;
+                }
                 ret.add(new TokenNode(tn){{
                     tn.get(0).forEach(e -> this.add(((TokenNode)e).removeExtraFuncs()));
                 }});
+            }
             else
                 ret.add(tn.removeExtraFuncs());
         }
