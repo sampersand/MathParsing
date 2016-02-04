@@ -251,14 +251,14 @@ public class Function implements MathObject {
         ));
 
         // priority 9: b≫, b≪
-        add(new Function(new Collection<String>(){{add("≫");add("b≫");}},
+        add(new Function(new Collection<String>(){{add("≫");add("b≫");add("br");}},
             "'A' Shifted to the right 'B' bits", "≫(A, B)",
             9,
             Type.BIN,
             new Collection<Integer>().addE(2),
             (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).bsr((Complex)eval(1, tn, hm, eqsys))
         ));
-        add(new Function(new Collection<String>(){{add("≪");add("b≪");}},
+        add(new Function(new Collection<String>(){{add("≪");add("b≪");add("bl");}},
             "'A' Shifted to the left 'B' bits", "≪(A, B)",
             9,
             Type.BIN,
@@ -279,10 +279,7 @@ public class Function implements MathObject {
             10,
             Type.BIN,
             new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).
-                                 minus((Complex)eval(1, tn, hm, eqsys))
-            // (hm, eqsys, tn) -> tn.size() == 1 ? 0 - ((Complex)eval(0, tn, hm, eqsys)) :
-            // ((Complex)eval(0, tn, hm, eqsys)) - ((Complex)eval(1, tn, hm, eqsys))
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).minus((Complex)eval(1, tn, hm, eqsys))
         ));
 
         // priority 11: *, /, %
@@ -305,8 +302,7 @@ public class Function implements MathObject {
             11,
             Type.BIN,
             new Collection<Integer>().addE(2),
-            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).
-                                 modulo((Complex)eval(1, tn, hm, eqsys))
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).modulo((Complex)eval(1, tn, hm, eqsys))
         ));
 
         // priority 12: ^
@@ -324,7 +320,7 @@ public class Function implements MathObject {
             13,
             Type.UNL,
             new Collection<Integer>().addE(1),
-            (hm, eqsys, tn) -> new Complex(-1d).mult(((Complex)eval(0, tn, hm, eqsys)))
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).neg()
         ));
         add(new Function(new Collection<String>(){{add("b~");}}, // negation
             "bitwise negation of 'A' (~A)", "b~(A)",
@@ -628,7 +624,7 @@ public class Function implements MathObject {
                     max = (Complex)tn.get(2).get(0).evald(new HashMap<String, DoubleSupplier>(), eqsys);
                 } else {
                     min = Complex.ONE;
-                    max = Complex.INF_P;
+                    max = Complex.P_INF;
                 }
                 assert min.isOnlyReal() && max.isOnlyReal() : min + " | " + max + " <-- needs to be only real";
                 while(min.compareTo(max) <= 0){

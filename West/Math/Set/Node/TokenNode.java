@@ -287,7 +287,7 @@ public class TokenNode extends Node<Token, TokenNode> implements MathObject {
                 return appendHashMap(pVars, val, Double.NaN);
 
             case "inf": case "∞":
-                return appendHashMap(pVars, val, Complex.INF_P);
+                return appendHashMap(pVars, val, Complex.P_INF);
 
             case "rand": case "random":
                 return appendHashMap(pVars, val, Math.random()); 

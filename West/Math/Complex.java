@@ -11,10 +11,10 @@ import West.Math.Set.Node.TokenNode;
 public class Complex extends Number implements DoubleSupplier, Comparable<Number>, MathObject {
 
     public static final Complex NAN = new Complex();
-    public static final Complex INF_P = new Complex(1E4);
-    public static final Complex INF_N = new Complex(-1E9);
+    public static final Complex P_INF = new Complex(1E4);
+    public static final Complex N_INF = new Complex(-1E9);
     public static final Complex ONE = new Complex(1d); //Unit vector
-    public static final Complex NEG_ONE = new Complex(-1d);
+    public static final Complex N_ONE = new Complex(-1d);
     public static final Complex ZERO = new Complex(0d);
     public static final Complex PI = new Complex(Math.PI);
     public static final Complex E = new Complex(Math.E);
@@ -235,7 +235,6 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
     }
 
     public Complex factorial(){
-        // System.out.println("TODO: LN");
         return isNaN() ? this : compareTo(ONE) <= 0 ? ONE : this.mult(minus(ONE).factorial());
     }
 
@@ -280,6 +279,9 @@ public class Complex extends Number implements DoubleSupplier, Comparable<Number
     }
     public Complex not(){
         return isNaN() ? ONE : NAN;
+    }
+    public Complex neg(){
+        return mult(N_ONE);
     }
 
 
