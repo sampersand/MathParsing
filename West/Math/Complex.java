@@ -9,7 +9,7 @@ import West.Math.Equation.Function.Function;
 import West.Math.Set.Node.TokenNode;
 import West.Math.Set.MathCollection;
 
-public class Complex extends Number implements Operable, Comparable<Number>, MathObject {
+public class Complex extends Number implements Operable<Complex>, Comparable<Number>, MathObject {
 
     public static final Complex NAN = new Complex();
     public static final Complex P_INF = new Complex(1E4);
@@ -141,45 +141,63 @@ public class Complex extends Number implements Operable, Comparable<Number>, Mat
 
 
     // Standard Arithmetic
-    public static Complex div  (Number c, Number b){ return (Complex) new Complex(c).div  (new Complex(b)); }
-    public static Complex mult (Number c, Number b){ return (Complex) new Complex(c).mult (new Complex(b)); }
-    public static Complex plus (Number c, Number b){ return (Complex) new Complex(c).plus (new Complex(b)); }
-    public static Complex minus(Number c, Number b){ return (Complex) new Complex(c).minus(new Complex(b)); }
-    public static Complex pow  (Number c, Number b){ return (Complex) new Complex(c).pow  (new Complex(b)); }
+    public static Complex div  (Number c, Number b){
+        return (Complex) (c instanceof Complex ? (Complex) c : new Complex(c)).div
+            (b instanceof Complex ? (Complex) b : new Complex(b));
+    }
+    public static Complex mult (Number c, Number b){
+        return (Complex) (c instanceof Complex ? (Complex) c : new Complex(c)).mult
+            (b instanceof Complex ? (Complex) b : new Complex(b));
+    }
+    public static Complex plus (Number c, Number b){
+        return (Complex) (c instanceof Complex ? (Complex) c : new Complex(c)).plus
+            (b instanceof Complex ? (Complex) b : new Complex(b));
+    }
+    public static Complex minus(Number c, Number b){
+        return (Complex) (c instanceof Complex ? (Complex) c : new Complex(c)).minus
+            (b instanceof Complex ? (Complex) b : new Complex(b));
+    }
+    public static Complex pow  (Number c, Number b){
+        return (Complex) (c instanceof Complex ? (Complex) c : new Complex(c)).pow 
+            (b instanceof Complex ? (Complex) b : new Complex(b));
+    }
 
     @Override
-    public <D extends Operable> D div(D ds){
-        if(ds instanceof MathCollection)
-            return ds;
-        assert ds instanceof Complex;
+    public Complex div(Operable ds){
+        if(ds instanceof MathCollection){
+            assert false : "TODO: ME";
+            return this;
+        }        assert ds instanceof Complex;
         Complex c = (Complex)ds;
         if (isOnlyReal() && c.isOnlyReal()){
-            return (D) new Complex(real * 1f / c.real);
+            return new Complex(real * 1f / c.real);
         }
         if(isNaN() && c.isNaN())
-            return (D) NAN;
+            return NAN;
         if(isNaN() || c.isNaN())
-            return (D) NAN; 
+            return NAN; 
         // if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
 
         Complex top = mult(c.imagConjugate());
         Complex bottom = c.mult(c.imagConjugate()).aIsOnlyReal();
-        return (D) new Complex(top.real / bottom.real, top.imag / bottom.real);
+        return new Complex(top.real / bottom.real, top.imag / bottom.real);
     }
 
     @Override
-    public <D extends Operable> D mult(D ds){
-        if(ds instanceof MathCollection)
-            return ds;
+    public Complex mult(Operable ds){
+        if(ds instanceof MathCollection){
+            assert false : "TODO: ME";
+            return this;
+        }
         assert ds instanceof Complex;
         Complex c = (Complex)ds;
         if (isOnlyReal() && c.isOnlyReal()){
-            return (D) new Complex(real * c.real);
+            return new Complex(real * c.real);
         }
         if(isNaN() && c.isNaN())
-            return (D) NAN;
+            return NAN;
         if(isNaN() || c.isNaN())
-            return (D) NAN; 
+            return NAN; 
         // if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
 
         Double rreal = Double.NaN, rimag = Double.NaN;
@@ -189,57 +207,61 @@ public class Complex extends Number implements Operable, Comparable<Number>, Mat
 
         if(isReal() && c.isImag()) rimag = real * c.imag;
         if(isImag() && c.isReal()) rimag = (rimag.isNaN() ? 0 : rimag) + imag * c.real;
-        return (D) new Complex(rreal, rimag);
+        return new Complex(rreal, rimag);
     }
 
     @Override
-    public <D extends Operable> D plus(D ds){
-        if(ds instanceof MathCollection)
-            return ds;
-        assert ds instanceof Complex;
+    public Complex plus(Operable ds){
+        if(ds instanceof MathCollection){
+            assert false : "TODO: ME";
+            return this;
+        }        assert ds instanceof Complex;
         Complex c = (Complex)ds;
         if (isOnlyReal() && c.isOnlyReal()){
-            return (D) new Complex(real + c.real);
+            return new Complex(real + c.real);
         }
         if(isNaN() && c.isNaN())
-            return (D) NAN;
+            return NAN;
         if(isNaN() || c.isNaN())
-            return (D) NAN; 
+            return NAN; 
         // if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
-        return (D) new Complex(isReal() ? c.isReal() ? real + c.real : real : c.real,
+        return new Complex(isReal() ? c.isReal() ? real + c.real : real : c.real,
                                  isImag() ? c.isImag() ? imag + c.imag : imag : c.imag);
     }
 
     @Override
-    public <D extends Operable> D minus(D ds){
-        if(ds instanceof MathCollection)
-            return ds;
-        assert ds instanceof Complex;
+    public Complex minus(Operable ds){
+        if(ds instanceof MathCollection){
+            assert false : "TODO: ME";
+            return this;
+        }        assert ds instanceof Complex;
         Complex c = (Complex)ds;
         if (isOnlyReal() && c.isOnlyReal()){
-            return (D) new Complex(real - c.real);
+            return new Complex(real - c.real);
         }
         if(isNaN() && c.isNaN())
-            return (D) NAN;
+            return NAN;
         if(isNaN() || c.isNaN())
-            return (D) NAN; 
+            return NAN; 
         // if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
-        return (D) new Complex(isReal() ? c.isReal() ? real - c.real : real : -1 * c.real,
+        return new Complex(isReal() ? c.isReal() ? real - c.real : real : -1 * c.real,
                                  isImag() ? c.isImag() ? imag - c.imag : imag : -1 * c.imag);
     }
 
     @Override
-    public <D extends Operable> D pow(D ds){
-        if(ds instanceof MathCollection)
-            return ds;
+    public Complex pow(Operable ds){
+        if(ds instanceof MathCollection){
+            assert false : "TODO: ME";
+            return this;
+        }
         Complex c = (Complex)ds;
         if (isOnlyReal() && c.isOnlyReal()){
-            return (D) new Complex(Math.pow(real, c.real));
+            return new Complex(Math.pow(real, c.real));
         }
         if(isNaN() && c.isNaN())
-            return (D) NAN;
+            return NAN;
         if(isNaN() || c.isNaN())
-            return (D) NAN; 
+            return NAN; 
         // if(isNaN() ^ c.isNaN()) return isNaN() ? c : this;
         return isOnlyReal() && c.isOnlyReal() ?
                 new Complex(Math.pow(aIsOnlyReal().real, c.aIsOnlyReal().real))
@@ -251,8 +273,19 @@ public class Complex extends Number implements Operable, Comparable<Number>, Mat
 
 
 
+    @Override
     public Complex sqrt(){
-        return pow(0.5d);
+        return pow(this, new Complex(0.5d));
+    }
+
+    @Override
+    public Complex squared(){
+        return pow(this, new Complex(2d));
+    }
+
+    @Override
+    public Complex cubed(){
+        return pow(this, new Complex(3d));
     }
 
     public Complex factorial(){

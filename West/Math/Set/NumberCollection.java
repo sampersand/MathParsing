@@ -21,7 +21,7 @@ import java.util.List;
  * @version 1.1
  * @since 0.72
  */
-public class NumberCollection<N extends Number> extends Collection<N>  implements Operable, MathObject {
+public class NumberCollection<N extends Number> extends Collection<N>  implements Operable<Operable>, MathObject {
     public NumberCollection(){
         super();
     }
@@ -66,11 +66,11 @@ public class NumberCollection<N extends Number> extends Collection<N>  implement
     }
 
     public static Complex pred(Number pVal, final EquationSystem pEqSys) {
-        return pEqSys.eval("y", new EquationSystem().add("x", "" + pVal));
+        return new Complex(pEqSys.eval("y", new EquationSystem().add("x", pVal.toString())).toDouble());
     }
 
     public static Complex pred(Number pVal, final EquationSystem pEqSys, final EquationSystem pEqSys2) {
-        return pEqSys.eval("y", pEqSys2.add("x = " + pVal));
+        return new Complex(pEqSys.eval("y", pEqSys2.add("x = " + pVal)).toDouble());
     }
 
     @Override
@@ -98,6 +98,57 @@ public class NumberCollection<N extends Number> extends Collection<N>  implement
         //                                  (isReal() ? real : "") + (isBoth() ? "," : "") + 
                                          // (isImag() ? imag : "") + ")")).aIsOnlyReal().real;
     }
+
+    @Override
+    public NumberCollection div(Operable d){
+        assert false;
+        return this;
+    }
+
+    @Override
+    public NumberCollection mult(Operable d){
+        assert false;
+        return this;
+    }
+    
+    @Override
+    public NumberCollection plus(Operable d){
+        assert false;
+        return this;
+    }
+    
+    @Override
+    public NumberCollection minus(Operable d){
+        assert false;
+        return this;
+    }
+    
+    @Override
+    public NumberCollection pow(Operable d){
+        assert false;
+        return this;
+    }
+    
+    @Override
+    public NumberCollection sqrt(){
+        return (NumberCollection) this.pow(new Complex(0.5d));
+    }
+    
+    @Override
+    public NumberCollection squared(){
+        return (NumberCollection) this.pow(new Complex(2d));
+    }
+    
+    @Override
+    public NumberCollection cubed(){
+        return (NumberCollection) this.pow(new Complex(3d));
+    }
+
+
+
+
+
+
 
 
     public NumberCollection<N> es() {
@@ -166,7 +217,7 @@ public class NumberCollection<N extends Number> extends Collection<N>  implement
     }
 
     public Complex R2(NumberCollection<? extends Number> pNC){
-        return r(pNC).pow(2d);
+        return r(pNC).squared();
     }
 
     public Complex Z(Number x) {
@@ -202,7 +253,7 @@ public class NumberCollection<N extends Number> extends Collection<N>  implement
         Complex sigYy_ = Complex.ZERO;
         Complex y_  = mean();
         for(N y : this){
-            sigYy_ = sigYy_.plus(new Complex(y).minus(y_).pow(2d));
+            sigYy_ = sigYy_.plus(new Complex(y).minus(y_).squared());
         }
         return sigYy_.div(new Complex(size() - 1)).sqrt();
     }

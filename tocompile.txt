@@ -1,7 +1,7 @@
 West/Math/Complex.java
 West/Math/Declare.java
-West/Math/DoubleSupplier.java
 West/Math/MathObject.java
+West/Math/Operable.java
 West/Math/Tester.java
 West/Math/Display/DisplayComponent.java
 West/Math/Display/GraphComponents.java

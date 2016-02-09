@@ -120,7 +120,7 @@ public class Tester {
                 System.out.println(eqsys);
                 int pref = prefix;
                 dep.forEach(s -> Print.printi("RESULT ("+s+"):", 
-                            EquationSystem.appendMetricSuffix(
+                            EquationSystem.appendMetricSuffix((Complex)
                                                               eqsysfinal.eval(s),
                                                               pref)));
             } else {

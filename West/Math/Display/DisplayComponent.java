@@ -144,12 +144,12 @@ public class DisplayComponent extends JLabel implements MathObject {
             double cStep = grapher.components().cStep();
             for(double x = stepInfo[0]; x < stepInfo[1]; x += cStep) {
                 drawl(new Complex(x),
-                      equationsys.eval(equation.getVar(),
+                      (Complex) equationsys.eval(equation.getVar(),
                                        new EquationSystem().add(
                                                                 grapher.components().indepVar()
                                                                 + "=" + x)), 
                       new Complex(x + cStep),
-                      equationsys.eval(equation.getVar(),
+                      (Complex) equationsys.eval(equation.getVar(),
                                        new EquationSystem().add(
                                                                 grapher.components().indepVar()
                                                                 + "=" + (x + cStep))),

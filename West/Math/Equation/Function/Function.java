@@ -70,8 +70,8 @@ public class Function implements MathObject {
                                     return Complex.NAN;
                                 Complex ret = new Complex(0d);
                                 for(West.Math.Set.Node.Node<?, ?> tnd : tn)
-                                    ret = ret.plus(((Complex)((TokenNode)tnd).evald(hm, eqsys)).pow(2d));
-                                return ret.pow(0.5d);
+                                    ret = ret.plus(((Complex)((TokenNode)tnd).evald(hm, eqsys)).squared());
+                                return ret.sqrt();
                         }
                     case "{":
                         switch(p[1]){
@@ -84,7 +84,7 @@ public class Function implements MathObject {
                         switch(p[1]){
                             case ")":
                                 assert s == 1 : tn;
-                                return ((Complex)eval(0, tn, hm, eqsys)).pow(0.5d);
+                                return ((Complex)eval(0, tn, hm, eqsys)).sqrt();
                             }
                     case "|":
                         switch(p[1]){
@@ -499,7 +499,7 @@ public class Function implements MathObject {
             DEFAULT_PRIORITY,
             Type.NORM,
             new Collection<Integer>().addE(1),
-            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).pow(0.5d)
+            (hm, eqsys, tn) -> ((Complex)eval(0, tn, hm, eqsys)).sqrt()
         ));
 
         add(new Function(new Collection<String>(){{add("real");}},
@@ -610,8 +610,8 @@ public class Function implements MathObject {
                 }
                 assert min.isOnlyReal() && max.isOnlyReal() : min + " | " + max + " <-- needs to be only real";
                 while(min.compareTo(max) <= 0){
-                    ret = ret.plus(new EquationSystem().add(equ.toString()).
-                                   add(incVar + "=" + min).add(eqsys).eval(findVar));
+                    ret = (Complex)new EquationSystem().add(equ.toString()).
+                                   add(incVar + "=" + min).add(eqsys).eval(findVar).plus((Complex)ret);
                     min = min.plus(Complex.ONE);
                 }
                 return ret;

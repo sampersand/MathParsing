@@ -94,7 +94,7 @@ public class MathCollection extends NumberCollection<Complex> {
         assert cStep > 0;
         enumer = new NumberCollection<Complex>();
         while(i < max){
-            add(pEqSys.eval("firstVar", new EquationSystem().add("x = " + (i+=cStep))));
+            add((Complex) pEqSys.eval("firstVar", new EquationSystem().add("x = " + (i+=cStep))));
             enumer.add(new Complex(i));
         }
 
