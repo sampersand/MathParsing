@@ -464,8 +464,9 @@ public class Complex extends Number implements Operable<Complex>, Comparable<Num
     }
 
     public Complex round(int decimals){
-        Complex dec = ONE.minus(new Complex(new Double(Math.pow(10, 0-decimals))));
-        return new Complex(mult(dec).intValue()).div(dec);
+        return minus(modulo(new Complex(Math.pow(10, 0-decimals))));
+        // Complex dec = ONE.minus(new Complex(new Double(Math.pow(10, 0-decimals))));
+        // return new Complex(mult(dec).intValue()).div(dec);
     }
 
         // Logarithms
