@@ -303,34 +303,50 @@ public class EquationSystem implements MathObject{
     public static String appendMetricSuffix(Double param, int normStuffOnly){
         if(param == null || param.isNaN() || normStuffOnly == 0)
             return param.toString();
-        boolean NSO = normStuffOnly == 1;
         int size = new Double(Math.log10(param)).intValue(); 
-        if(size > +24 && !NSO) return param / Math.pow(10, +24) + " Y";
-        if(size < -24 && !NSO) return param / Math.pow(10, -24) + " y";
-        if(size > +12 &&  NSO) return param / Math.pow(10, +12) + " T";
-        if(size < -12 &&  NSO) return param / Math.pow(10, -12) + " p";
-        switch(size){
-            case +24:                     if(!NSO) return param / Math.pow(10, +24) + "Y" ; //  yotta
-            case +21: case +22: case +23: if(!NSO) return param / Math.pow(10, +21) + "Z" ; //  zetta
-            case +18: case +19: case +20: if(!NSO) return param / Math.pow(10, +18) + "E" ; //  exa
-            case +15: case +16: case +17: if(!NSO) return param / Math.pow(10, +15) + "P" ; //  peta
-            case +12: case +13: case +14:          return param / Math.pow(10, +12) + "T" ; //  tera
-            case + 9: case +10: case +11:          return param / Math.pow(10, + 9) + "G" ; //  giga
-            case + 6: case + 7: case + 8:          return param / Math.pow(10, + 6) + "M" ; //  mega
-            case + 3: case + 4: case + 5:          return param / Math.pow(10, + 3) + "k" ; //  kilo
-            case + 2:                     if(!NSO) return param / Math.pow(10, + 2) + "h" ; //  hecto
-            case + 1:                     if(!NSO) return param / Math.pow(10, + 1) + "da"; //  deca
-            case -24:                     if(!NSO) return param / Math.pow(10, -24) + "y" ; //  yocto
-            case -21: case -22: case -23: if(!NSO) return param / Math.pow(10, -21) + "z" ; //  zepto
-            case -18: case -19: case -20: if(!NSO) return param / Math.pow(10, -18) + "a" ; //  atto
-            case -15: case -16: case -17: if(!NSO) return param / Math.pow(10, -15) + "f" ; //  femto
-            case -12: case -13: case -14: if(!NSO) return param / Math.pow(10, -12) + "p" ; //  pico
-            case - 9: case -10: case -11: if(!NSO) return param / Math.pow(10, - 9) + "n" ; //  nano
-            case - 6: case - 7: case - 8:          return param / Math.pow(10, - 6) + "μ" ; //  micro
-            case - 3: case - 4: case - 5:          return param / Math.pow(10, - 3) + "m" ; //  milli
-            case - 1:                     if(!NSO) return param / Math.pow(10, - 1) + "d" ; //  deci
-            case - 2:                              return param / Math.pow(10, - 2) + "c" ; //  centi
-            case + 0: default:                     return param                     + ""  ; //  --
+        if(normStuffOnly == 1){
+            if(size > +12) return param / Math.pow(10, +12) + " T";
+            if(size < -12) return param / Math.pow(10, -6) + "μ";
+            switch(size){
+                case +12:                     return param / Math.pow(10, +12) + "T" ; //  tera
+                case + 9: case +10: case +11: return param / Math.pow(10, + 9) + "G" ; //  giga
+                case + 6: case + 7: case + 8: return param / Math.pow(10, + 6) + "M" ; //  mega
+                case + 3: case + 4: case + 5: return param / Math.pow(10, + 3) + "k" ; //  kilo
+                case - 6: case - 7: case - 8: return param / Math.pow(10, - 6) + "μ" ; //  micro
+                case - 3: case - 4: case - 5: return param / Math.pow(10, - 3) + "m" ; //  milli
+                case - 2:                     return param / Math.pow(10, - 2) + "c" ; //  centi
+                case + 0: default:            return param                     + ""  ; //  --
+            }
+        } else {
+            if(size > +24){
+                return param / Math.pow(10, +24) + " Y";
+            }
+            if(size < -24){
+                return param / Math.pow(10, -24) + " y";
+            }
+            switch(size){
+                case +24:                     return param / Math.pow(10, +24) + "Y" ; //  yotta
+                case +21: case +22: case +23: return param / Math.pow(10, +21) + "Z" ; //  zetta
+                case +18: case +19: case +20: return param / Math.pow(10, +18) + "E" ; //  exa
+                case +15: case +16: case +17: return param / Math.pow(10, +15) + "P" ; //  peta
+                case +12: case +13: case +14: return param / Math.pow(10, +12) + "T" ; //  tera
+                case + 9: case +10: case +11: return param / Math.pow(10, + 9) + "G" ; //  giga
+                case + 6: case + 7: case + 8: return param / Math.pow(10, + 6) + "M" ; //  mega
+                case + 3: case + 4: case + 5: return param / Math.pow(10, + 3) + "k" ; //  kilo
+                case + 2:                     return param / Math.pow(10, + 2) + "h" ; //  hecto
+                case + 1:                     return param / Math.pow(10, + 1) + "da"; //  deca
+                case -24:                     return param / Math.pow(10, -24) + "y" ; //  yocto
+                case -21: case -22: case -23: return param / Math.pow(10, -21) + "z" ; //  zepto
+                case -18: case -19: case -20: return param / Math.pow(10, -18) + "a" ; //  atto
+                case -15: case -16: case -17: return param / Math.pow(10, -15) + "f" ; //  femto
+                case -12: case -13: case -14: return param / Math.pow(10, -12) + "p" ; //  pico
+                case - 9: case -10: case -11: return param / Math.pow(10, - 9) + "n" ; //  nano
+                case - 6: case - 7: case - 8: return param / Math.pow(10, - 6) + "μ" ; //  micro
+                case - 3: case - 4: case - 5: return param / Math.pow(10, - 3) + "m" ; //  milli
+                case - 1:                     return param / Math.pow(10, - 1) + "d" ; //  deci
+                case - 2:                     return param / Math.pow(10, - 2) + "c" ; //  centi
+                case + 0: default:            return param                     + ""  ; //  --
+            }
         }
     }
 

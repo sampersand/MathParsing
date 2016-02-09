@@ -73,7 +73,8 @@ public class Tester {
                             eqsys.add(args[i], new CustomFunction(args[i])); // fix me.
                         }
                     } else if (type == 'e') {
-                        eqsys.add(new Equation().add(args[i]));
+                        eqsys.add(new Equation().add((eqsys.size() == 0 && (args[i].indexOf("=") == -1 || 
+                                               args[i].indexOf("=") > 5) ? "y=" : "") + args[i]));
                     } else if (type == 'i'){
                         indep = args[i];
                     } else if (type == 'd'){
