@@ -580,7 +580,7 @@ public class Function implements MathObject {
             }
         ));
 
-        add(new Function(new Collection<String>(){{add("summation");add("Σ");}},
+        add(new Function(new Collection<String>(){{add("summation");add("sum");add("Σ");}},
             "Summation of 'EQ', incrementing 'N' from 'S' to 'E', and solving for 'X'", "Σ(N, S, E, X, EQ)",
             // "Σ(X, EQ)", // 2
             // "Σ(N, X, EQ)", // 3
